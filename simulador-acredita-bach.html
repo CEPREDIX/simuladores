@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACREDITA-BACH MATEMÁTICAS</title>
+    <title>ACREDITA-BACH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Se eliminó la librería de EmailJS -->
@@ -649,7 +649,7 @@
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
             <div class="logo"></div>
-            <h1 class="text-2xl sm:text-3xl font-bold">ACREDITA-BACH MATEMÁTICAS</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">ACREDITA-BACH</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple</p>
         </header>
@@ -991,7 +991,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // MODIFICACIÓN 2: Eliminada inicialización de EmailJS
             
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/ACREDITABACH_JSON/refs/heads/main/MATEMATICAS_ACREDITA_BACH_JSON';
+            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/ACREDITABACH_JSON/refs/heads/main/ACREDITA_BACH_JSON';
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxF2v5plRObokCgrV-3olVosjn-3q08B9bMUpeLMuYXyzuiRmsKAEadMUMb-WH2Dg7F/exec';
@@ -2246,7 +2246,7 @@
                 if (isGuest) return;
                 
                 const formData = new FormData();
-                formData.append('EvaluationName', "ACREDITA-BACH MATEMÁTICAS");
+                formData.append('EvaluationName', "ACREDITA-BACH");
                 formData.append('Name', currentUser.name);
                 formData.append('Email', currentUser.email);
                 formData.append('WhatsApp', currentUser.whatsapp);
@@ -2389,7 +2389,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "ACREDITA-BACH MATEMÁTICAS";
+                summaryEvalName.textContent = "ACREDITA-BACH";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
