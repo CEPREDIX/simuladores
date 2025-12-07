@@ -6,7 +6,6 @@
     <title>FÍSICA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Se eliminó la librería de EmailJS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -26,11 +25,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Roboto', sans-serif;
             background-image: url('https://i.imgur.com/7ndIyWP.png');
@@ -43,33 +38,18 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: -1;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); z-index: -1;
         }
         .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;           
+            width: 100%; max-width: 1200px; margin: 0 auto;
+            display: flex; flex-direction: column;            
         }
         .header {
-            text-align: center;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
+            text-align: center; padding: 15px; border-radius: 15px; margin-bottom: 20px;
             background: linear-gradient(45deg, #0d47a1, #00695c, #ff6f00, #b71c1c, #4a148c);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -77,186 +57,76 @@
             100% { background-position: 0% 50%; }
         }
         .logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 10px;
+            width: 100px; height: 100px; margin: 0 auto 10px;
             background: url('https://i.imgur.com/I1unSiu.png') center/contain no-repeat;
         }
         .card {
-            background: rgba(25, 25, 35, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            width: 100%;
-            margin-bottom: 20px;
-            position: relative;
+            background: rgba(25, 25, 35, 0.85); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 100%; margin-bottom: 20px; position: relative;
         }
         .btn {
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            margin: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            padding: 10px 20px; font-size: 1.1rem; border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s ease; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); margin: 8px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-primary {
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
-            color: white;
-        }
-        .btn-secondary {
-            background: linear-gradient(45deg, #f44336, #ff9800);
-            color: white;
-        }
-        .btn-hint {
-            background: linear-gradient(45deg, #FFC107, #FF9800);
-            color: white;
-        }
-        .btn-correct {
-            background: linear-gradient(45deg, #4CAF50, #8BC34A);
-            color: white;
-        }
-        .btn-incorrect {
-            background: linear-gradient(45deg, #f44336, #ff5722);
-            color: white;
-        }
+        .btn-primary { background: linear-gradient(45deg, #2196F3, #21CBF3); color: white; }
+        .btn-secondary { background: linear-gradient(45deg, #f44336, #ff9800); color: white; }
+        .btn-hint { background: linear-gradient(45deg, #FFC107, #FF9800); color: white; }
+        .btn-correct { background: linear-gradient(45deg, #4CAF50, #8BC34A); color: white; }
+        .btn-incorrect { background: linear-gradient(45deg, #f44336, #ff5722); color: white; }
         .btn-disabled, .btn:disabled {
-            background: #9e9e9e;
-            cursor: not-allowed;
-            transform: none !important;
+            background: #9e9e9e; cursor: not-allowed; transform: none !important;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
         }
-        .btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        }
-        .btn:active:not(:disabled) {
-            transform: translateY(1px);
-        }
+        .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+        .btn:active:not(:disabled) { transform: translateY(1px); }
         .question-container {
-            margin: 15px 0 20px;
-            padding: 20px;
-            background: rgba(30, 30, 40, 0.8);
-            border-radius: 15px;
-            border-left: 5px solid #4fc3f7;
-            position: relative;
+            margin: 15px 0 20px; padding: 20px; background: rgba(30, 30, 40, 0.8);
+            border-radius: 15px; border-left: 5px solid #4fc3f7; position: relative;
         }
-        .question-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
-            justify-content: center;
-        }
+        .question-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; justify-content: center; }
         .tag {
-            background: rgba(79, 195, 247, 0.2);
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            border: 1px solid #4fc3f7;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: rgba(79, 195, 247, 0.2); padding: 4px 10px; border-radius: 15px;
+            font-size: 0.8rem; border: 1px solid #4fc3f7; cursor: pointer; transition: all 0.2s ease;
         }
-        .tag.selected {
-            background: rgba(79, 195, 247, 0.8);
-            color: white;
-            font-weight: bold;
-            transform: scale(1.05);
-        }
+        .tag.selected { background: rgba(79, 195, 247, 0.8); color: white; font-weight: bold; transform: scale(1.05); }
         .option-btn {
-            padding: 15px 15px 15px 50px;
-            background: rgba(50, 50, 70, 0.8);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-            border: 2px solid transparent;
-            text-align: left;
-            position: relative;
-            width: 100%;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
+            padding: 15px 15px 15px 50px; background: rgba(50, 50, 70, 0.8);
+            border-radius: 10px; cursor: pointer; transition: all 0.3s ease;
+            font-size: 1.1rem; border: 2px solid transparent; text-align: left;
+            position: relative; width: 100%; margin-bottom: 12px; display: flex; align-items: center;
         }
-        .option-btn:hover:not([disabled]) {
-            background: rgba(70, 70, 90, 0.9);
-            transform: translateY(-2px);
-        }
-        .option-btn.selected {
-            filter: brightness(0.7);
-            border-color: #ff9800;
-            box-shadow: 0 0 0 2px #ff9800;
-        }
+        .option-btn:hover:not([disabled]) { background: rgba(70, 70, 90, 0.9); transform: translateY(-2px); }
+        .option-btn.selected { filter: brightness(0.7); border-color: #ff9800; box-shadow: 0 0 0 2px #ff9800; }
         .option-btn.correct {
-            background: linear-gradient(45deg, #4CAF50, #8BC34A) !important;
-            color: white !important;
-            transform: scale(1.01);
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+            background: linear-gradient(45deg, #4CAF50, #8BC34A) !important; color: white !important;
+            transform: scale(1.01); box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
         }
         .option-btn.incorrect {
-            background: linear-gradient(45deg, #f44336, #ff5722) !important;
-            color: white !important;
+            background: linear-gradient(45deg, #f44336, #ff5722) !important; color: white !important;
             animation: shake 0.5s;
         }
         .option-letter {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 25px;
-            height: 25px;
-            background: rgba(79, 195, 247, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 25px; height: 25px; background: rgba(79, 195, 247, 0.3);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; margin-right: 10px;
         }
-        /* ESTILOS PARA EL BOTÓN DE CONFIRMACIÓN CON EMOJI */
         .option-btn .confirm-btn {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: rgba(255, 255, 255, 0.2); font-size: 1.5rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
         }
-        .option-btn .confirm-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-50%) scale(1.1);
-        }
+        .option-btn .confirm-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-50%) scale(1.1); }
         .justification {
-            background: rgba(40, 40, 50, 0.9);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: left;
-            border-left: 4px solid #4fc3f7;
+            background: rgba(40, 40, 50, 0.9); border-radius: 10px; padding: 15px;
+            margin-top: 20px; text-align: left; border-left: 4px solid #4fc3f7;
         }
-        .justification h4 {
-            color: #4fc3f7;
-            margin-bottom: 8px;
-            font-size: 1.2rem;
-        }
+        .justification h4 { color: #4fc3f7; margin-bottom: 8px; font-size: 1.2rem; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -266,20 +136,13 @@
         .timer-orange { color: #FF9800; }
         .timer-red { color: #f44336; }
         .calculator-container {
-            display: none;
-            background: rgba(30, 30, 40, 0.9);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px auto 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none; background: rgba(30, 30, 40, 0.9); border-radius: 15px;
+            padding: 15px; margin: 20px auto 0; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             max-width: 280px;
         }
         .calculator-toggle {
-            margin: 15px auto;
-            display: block;
-            background: linear-gradient(45deg, #9c27b0, #673ab7);
-            width: 100%;
-            max-width: 280px;
+            margin: 15px auto; display: block; background: linear-gradient(45deg, #9c27b0, #673ab7);
+            width: 100%; max-width: 280px;
         }
         .calculator-display {
             width: 100%; padding: 12px; font-size: 1.5rem; background: rgba(0,0,0,0.3);
@@ -303,19 +166,12 @@
         .stat-box h3 { font-size: 1.1rem; margin-bottom: 8px; color: #4fc3f7; }
         .stat-box p { font-size: 1.5rem; font-weight: 700; }
         #result-image-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 1.5rem auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100%; max-width: 600px; margin: 1.5rem auto; display: flex;
+            justify-content: center; align-items: center;
         }
         #result-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            object-fit: contain;
+            max-width: 100%; height: auto; border-radius: 0.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); object-fit: contain;
         }
         #image-container {
             position: relative; width: 100%; max-width: 400px; aspect-ratio: 1 / 1;
@@ -334,79 +190,38 @@
         }
         
         .question-id-tags {
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            transform: translateY(-50%);
-            z-index: 10;
-            display: flex;
-            gap: 8px;
+            position: absolute; top: -10px; left: 15px; background: rgba(0, 0, 0, 0.7);
+            padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: bold;
+            transform: translateY(-50%); z-index: 10; display: flex; gap: 8px;
         }
         .question-id { color: #4fc3f7; }
         .uni-tag-display { color: #81c784; }
         .level-tag-display { color: #ffd54f; }
         .question-tag {
-            background: rgba(79, 195, 247, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-right: 4px;
-            font-size: 0.7rem;
+            background: rgba(79, 195, 247, 0.3); padding: 2px 6px; border-radius: 4px;
+            margin-right: 4px; font-size: 0.7rem;
         }
         .video-link {
-            color: #4fc3f7;
-            font-style: italic;
-            margin-left: 5px;
-            text-decoration: underline;
+            color: #4fc3f7; font-style: italic; margin-left: 5px; text-decoration: underline;
         }
-        
-        /* Estilos para el contenedor de video desplegable y otros desplegables */
-        .video-container {
-            width: 100%;
-            margin: 15px 0;
-        }
+        .video-container { width: 100%; margin: 15px 0; }
         .video-toggle {
-            background: rgba(79, 195, 247, 0.2);
-            border: 1px solid #4fc3f7;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
+            background: rgba(79, 195, 247, 0.2); border: 1px solid #4fc3f7; color: white;
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; display: flex;
+            align-items: center; justify-content: space-between; transition: all 0.3s ease;
         }
-        .video-toggle:hover {
-            background: rgba(79, 195, 247, 0.4);
-        }
+        .video-toggle:hover { background: rgba(79, 195, 247, 0.4); }
         .video-content {
-            margin-top: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            padding: 15px;
-            overflow: hidden;
+            margin-top: 10px; background: rgba(0, 0, 0, 0.5); border-radius: 8px;
+            padding: 15px; overflow: hidden;
         }
         .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
-            height: 0;
-            overflow: hidden;
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
         }
         .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 5px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: none; border-radius: 5px;
         }
-        
         .volume-btn-new {
             width: 28px; height: 28px; border-radius: 50%; border: 1px solid #6b7280;
             background: rgba(50, 50, 70, 0.8); color: white; cursor: pointer;
@@ -416,174 +231,181 @@
         .volume-btn-new:hover { background: rgba(70, 70, 90, 0.9); }
         .volume-btn-new:active { transform: scale(0.95); }
 
-        /* --- ESTILOS PIZARRA --- */
-        #chalkboard-section {
-            width: 100%;
-            margin: 20px 0;
-        }
+        #chalkboard-section { width: 100%; margin: 20px 0; }
         #chalkboard-toggle {
-            background: rgba(100, 181, 246, 0.2);
-            border: 1px solid #64b5f6;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
+            background: rgba(100, 181, 246, 0.2); border: 1px solid #64b5f6; color: white;
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; display: flex;
+            align-items: center; justify-content: space-between; transition: all 0.3s ease;
         }
-        #chalkboard-toggle:hover {
-            background: rgba(100, 181, 246, 0.4);
-        }
+        #chalkboard-toggle:hover { background: rgba(100, 181, 246, 0.4); }
         #chalkboard-content {
-            margin-top: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            padding: 15px;
-            overflow: hidden;
+            margin-top: 10px; background: rgba(0, 0, 0, 0.5); border-radius: 8px;
+            padding: 15px; overflow: hidden;
         }
         #canvas-container {
-            width: 100%;
-            aspect-ratio: 4 / 3; /* Proporción más rectangular */
-            background-size: cover;
-            background-position: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            overflow: hidden;
+            width: 100%; aspect-ratio: 4 / 3; background-size: cover; background-position: center;
+            border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.3); overflow: hidden;
         }
-        #chalkboard {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+        #chalkboard { display: block; width: 100%; height: 100%; }
         #chalkboard-controls {
-            background: rgba(30, 30, 40, 0.9);
-            padding: 10px;
-            border-radius: 0.5rem;
-            margin-top: 10px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            background: rgba(30, 30, 40, 0.9); padding: 10px; border-radius: 0.5rem;
+            margin-top: 10px; width: 100%; display: flex; flex-wrap: wrap;
+            align-items: center; justify-content: center; gap: 12px;
         }
-        .control-btn.active {
-            box-shadow: 0 0 0 3px #4a90e2;
-            border-color: #4a90e2;
-        }
-        .color-picker-wrapper {
-            position: relative;
-            width: 36px;
-            height: 36px;
-        }
+        .control-btn.active { box-shadow: 0 0 0 3px #4a90e2; border-color: #4a90e2; }
+        .color-picker-wrapper { position: relative; width: 36px; height: 36px; }
         .color-picker-wrapper input[type="color"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
         }
         .color-picker-wrapper .color-preview {
-            width: 100%;
-            height: 100%;
-            border-radius: 0.375rem;
-            border: 2px solid white;
-            pointer-events: none;
+            width: 100%; height: 100%; border-radius: 0.375rem;
+            border: 2px solid white; pointer-events: none;
         }
         
+        #welcome-video-content { margin-top: 10px; }
+        
+        #graphing-tool-section { width: 100%; margin: 20px 0; }
+        #graphing-tool-toggle {
+            background: rgba(156, 39, 176, 0.2); border: 1px solid #9c27b0; color: white;
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; display: flex;
+            align-items: center; justify-content: space-between; transition: all 0.3s ease;
+        }
+        #graphing-tool-toggle:hover { background: rgba(156, 39, 176, 0.4); }
+        #graphing-tool-content {
+            margin-top: 10px; background: rgba(0, 0, 0, 0.5); border-radius: 8px;
+            padding: 15px; overflow: hidden;
+        }
+        .graphing-container {
+            background: rgba(30, 30, 40, 0.9); border-radius: 8px;
+            padding: 20px; margin-bottom: 15px;
+        }
+        .graphing-title { color: #9c27b0; font-size: 1.3rem; margin-bottom: 15px; text-align: center; }
+        .graphing-subtitle { color: #bdbdbd; font-size: 0.9rem; margin-bottom: 20px; text-align: center; }
+        .graphing-main-content { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
+        .graphing-canvas-container {
+            flex: 1; min-width: 300px; background: rgba(0, 0, 0, 0.3); border-radius: 8px;
+            padding: 15px; display: flex; flex-direction: column;
+        }
+        .graphing-controls-container {
+            width: 350px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 15px;
+        }
+        .graphing-section-title {
+            color: #4fc3f7; font-size: 1.1rem; margin-bottom: 15px;
+            padding-bottom: 8px; border-bottom: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        .graphing-function-buttons {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px;
+        }
+        .graphing-func-btn {
+            padding: 8px 5px; background-color: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 4px; cursor: pointer;
+            font-size: 0.8rem; color: white; transition: all 0.2s;
+        }
+        .graphing-func-btn:hover { background-color: rgba(79, 195, 247, 0.3); }
+        .graphing-func-btn.active { background-color: #9c27b0; color: white; border-color: #7b1fa2; }
+        .graphing-equation-display {
+            background-color: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 12px;
+            margin-bottom: 15px; font-family: 'Courier New', monospace; border-left: 3px solid #9c27b0;
+        }
+        .graphing-equation-display h3 { font-size: 0.9rem; margin-bottom: 8px; color: #4fc3f7; }
+        .graphing-equation { font-size: 1rem; color: #ffffff; min-height: 30px; }
+        .graphing-param-group { margin-bottom: 12px; }
+        .graphing-param-group label { display: block; margin-bottom: 5px; color: #bdbdbd; font-size: 0.85rem; }
+        .graphing-param-group input {
+            width: 100%; padding: 8px 12px; background: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 4px;
+            font-size: 0.9rem; color: white;
+        }
+        .graphing-param-group input:focus {
+            outline: none; border-color: #9c27b0; box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.2);
+        }
+        .graphing-controls-footer { display: flex; justify-content: space-between; margin-top: 20px; }
+        .graphing-btn {
+            padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;
+            font-weight: 500; transition: all 0.2s; font-size: 0.9rem;
+        }
+        .graphing-btn-primary { background: linear-gradient(45deg, #9c27b0, #7b1fa2); color: white; }
+        .graphing-btn-primary:hover { background: linear-gradient(45deg, #7b1fa2, #6a1b9a); }
+        .graphing-btn-secondary {
+            background: rgba(50, 50, 70, 0.8); color: white; border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        .graphing-btn-secondary:hover { background: rgba(70, 70, 90, 0.9); }
+        .graphing-info-box {
+            background-color: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 12px;
+            margin-top: 15px; font-size: 0.8rem; color: #bdbdbd;
+        }
+        .graphing-info-box h4 { color: #4fc3f7; margin-bottom: 5px; }
+        .graphing-form-toggle {
+            display: flex; margin-bottom: 15px; border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 4px; overflow: hidden;
+        }
+        .graphing-form-toggle-btn {
+            flex: 1; padding: 8px; text-align: center; background-color: rgba(50, 50, 70, 0.8);
+            border: none; cursor: pointer; font-size: 0.8rem; color: white; transition: all 0.2s;
+        }
+        .graphing-form-toggle-btn.active { background-color: #9c27b0; color: white; }
+        .graphing-select-control {
+            width: 100%; padding: 8px 12px; background: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 4px;
+            font-size: 0.9rem; color: white; margin-bottom: 12px;
+        }
+        .canvas-container {
+            position: relative; height: 300px; margin-top: 10px; flex-grow: 1; min-height: 300px;
+        }
+        .graphing-zoom-controls {
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            margin-top: 15px; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px;
+        }
+        .zoom-btn {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: rgba(79, 195, 247, 0.3); color: white; font-size: 1.2rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        }
+        .zoom-btn:hover:not(:disabled) { background: rgba(79, 195, 247, 0.5); transform: scale(1.1); }
+        .zoom-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .scale-indicator { font-size: 0.9rem; color: #bdbdbd; min-width: 80px; text-align: center; }
+        
         @media (max-width: 768px) {
-            .btn { font-size: 1rem; padding: 8px 16px; }
-            .option-btn { font-size: 1rem; padding: 12px 12px 12px 45px; }
+            .btn { font-size: 1rem; padding: 8px 16px; width: 100%; max-width: 300px; }
+            .option-btn { font-size: 0.9rem !important; padding: 12px 12px 12px 40px !important; }
             .question-controls, .global-controls { flex-direction: column; align-items: center; }
-            .btn { width: 100%; max-width: 300px; }
-            
-            /* Optimización para vistas verticales en móviles */
-            .header {
-                padding: 12px;
-            }
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            .header h2 {
-                font-size: 1.2rem;
-            }
-            .card {
-                padding: 15px;
-            }
-            .question-container {
-                padding: 15px;
-                margin: 10px 0;
-            }
-            #question-text {
-                font-size: 1.1rem;
-            }
-            .justification {
-                padding: 12px;
-            }
-            .option-btn {
-                padding: 12px 12px 12px 40px;
-                margin-bottom: 8px;
-            }
-            .option-letter {
-                width: 22px;
-                height: 22px;
-                font-size: 0.9rem;
-            }
-            #action-buttons {
-                gap: 10px;
-            }
-            #action-buttons .btn {
-                margin: 4px;
-            }
-            .results-container {
-                padding: 15px;
-            }
-            .stat-box {
-                min-width: 120px;
-                padding: 10px;
-            }
-            .stat-box h3 {
-                font-size: 1rem;
-            }
-            .stat-box p {
-                font-size: 1.3rem;
-            }
-            #results-table {
-                font-size: 0.8rem;
-            }
-            #results-table th, #results-table td {
-                padding: 8px 4px;
-            }
+            .header { padding: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .header h2 { font-size: 1.2rem; }
+            .card { padding: 15px; }
+            .question-container { padding: 15px; margin: 10px 0; }
+            #question-text { font-size: 1.2rem !important; }
+            .justification { padding: 12px; }
+            .option-letter { width: 22px; height: 22px; font-size: 0.9rem; }
+            #action-buttons { gap: 10px; }
+            #action-buttons .btn { margin: 4px; }
+            .results-container { padding: 15px; }
+            .stat-box { min-width: 120px; padding: 10px; }
+            .stat-box h3 { font-size: 1rem; }
+            .stat-box p { font-size: 1.3rem; }
+            #results-table { font-size: 0.8rem; }
+            #results-table th, #results-table td { padding: 8px 4px; }
+            .graphing-main-content { flex-direction: column; }
+            .graphing-controls-container { width: 100%; }
+            .graphing-canvas-container { min-width: auto; }
+            .graphing-zoom-controls { flex-wrap: wrap; }
         }
         @media (max-width: 480px) {
-            .option-btn { font-size: 0.95rem; padding: 10px 10px 10px 40px; }
-            .option-letter { width: 22px; height: 22px; font-size: 0.9rem; }
+            body { padding: 8px !important; }
+            .option-btn { font-size: 0.85rem !important; padding: 10px 10px 10px 35px !important; }
+            .option-letter { width: 20px !important; height: 20px !important; font-size: 0.8rem !important; left: 10px !important; }
             .btn { font-size: 0.9rem; padding: 7px 14px; }
-            .question-id-tags {
-                font-size: 0.6rem;
-                padding: 2px 5px;
-            }
-            .header h1 {
-                font-size: 1.3rem;
-            }
-            .header h2 {
-                font-size: 1.1rem;
-            }
-            #question-text {
-                font-size: 1rem;
-            }
-            #image-container {
-                max-width: 100%;
-            }
+            .question-id-tags { font-size: 0.6rem; padding: 2px 5px; }
+            .header h1 { font-size: 1.5rem !important; }
+            .header h2 { font-size: 1.2rem !important; }
+            #question-text { font-size: 1.1rem !important; }
+            #image-container { max-width: 100%; }
+            .graphing-function-buttons { grid-template-columns: repeat(2, 1fr); }
+            .justification h4 { font-size: 1rem !important; }
         }
         #game-mode-rules {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #4fc3f7;
-            animation: pulse 2s infinite;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid #4fc3f7; animation: pulse 2s infinite;
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.4); }
@@ -591,53 +413,10 @@
             100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0); }
         }
         .game-mode-loss {
-            background: rgba(244, 67, 54, 0.9);
-            border: 2px solid #f44336;
-            animation: shake 0.5s;
+            background: rgba(244, 67, 54, 0.9); border: 2px solid #f44336; animation: shake 0.5s;
         }
         .game-mode-win {
-            background: rgba(76, 175, 80, 0.9);
-            border: 2px solid #4CAF50;
-        }
-        /* NUEVAS REGLAS RESPONSIVAS AGREGADAS */
-        @media (max-width: 768px) {
-            #question-text {
-                font-size: 1.2rem !important; /* Ajuste para un tamaño más cómodo en tabletas */
-            }
-            .option-btn {
-                font-size: 0.9rem !important;
-                padding: 12px 12px 12px 40px !important;
-            }
-        }
-        @media (max-width: 480px) {
-            body {
-                padding: 8px !important;
-            }
-            .card {
-                padding: 15px;
-            }
-            .header h1 {
-                font-size: 1.5rem !important;
-            }
-            .header h2 {
-                font-size: 1.2rem !important;
-            }
-            #question-text {
-                font-size: 1.1rem !important;
-            }
-            .option-btn {
-                font-size: 0.85rem !important;
-                padding: 10px 10px 10px 35px !important;
-            }
-            .option-letter {
-                width: 20px !important;
-                height: 20px !important;
-                font-size: 0.8rem !important;
-                left: 10px !important;
-            }
-            .justification h4 {
-                font-size: 1rem !important;
-            }
+            background: rgba(76, 175, 80, 0.9); border: 2px solid #4CAF50;
         }
     </style>
 </head>
@@ -684,20 +463,17 @@
             <p id="login-error-message" class="text-red-400 text-center text-sm h-4"></p>
         </div>
         <div id="setup-screen" class="card p-6 sm:p-8 space-y-6 hidden">
-             <!-- MODIFICACIÓN 1: Contenedor de Video de Bienvenida al Inicio -->
-             <div class="video-container w-full mb-6">
+             <div class="video-container w-full mb-6" style="margin-top: 60px;">
                 <div class="video-toggle" id="welcome-video-toggle">
                     <span><i class="fab fa-youtube mr-2"></i> Ver Video de Bienvenida e Instrucciones</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="video-content hidden" id="welcome-video-content">
                     <div class="video-wrapper">
-                        <!-- REEMPLAZAR 'VIDEO_ID_AQUI' CON EL ID DEL VIDEO DE YOUTUBE -->
                         <iframe src="https://www.youtube.com/embed/VIDEO_ID_AQUI" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-            <!-- Fin Modificación 1 -->
 
             <div id="setup-volume-control" class="absolute top-4 right-4 flex items-center gap-2">
                 <button class="volume-btn-new" data-action="down">-</button>
@@ -709,9 +485,22 @@
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
                 <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
-            <div class="space-y-2">
-                <label for="num-questions" class="font-medium">Número de ejercicios (entre 5 y 30):</label>
-                <input type="number" id="num-questions" min="5" max="30" value="10" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white">
+
+            <div class="space-y-4">
+                <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
+                    <label class="font-medium flex items-center">
+                        <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5">
+                        MODO AVANCE CONTINUO 🚀 (Sin límite de preguntas)
+                    </label>
+                    <p class="text-xs text-gray-400">Responde preguntas del banco de forma aleatoria sin fin. Termina la ronda cuando quieras con "Evaluar avance".</p>
+                </div>
+                <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
+                    <label class="font-medium flex items-center">
+                        <input type="checkbox" id="game-mode-toggle" class="mr-2 h-5 w-5">
+                        MODO SIMULACRO MORTAL ☠ (Desafío)
+                    </label>
+                    <p class="text-xs text-gray-400">Temporizador fijo de 30 minutos, 20 ejercicios aleatorios y 3 vidas</p>
+                </div>
             </div>
 
             <div class="space-y-4">
@@ -740,22 +529,8 @@
                     </div>
                 </div>
             </div>
+            
             <button id="start-quiz-btn" class="btn btn-primary w-full text-lg">Empezar Cuestionario</button>
-
-            <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
-                <label class="font-medium flex items-center">
-                    <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5">
-                    MODO AVANCE CONTINUO 🚀 (Sin límite de preguntas)
-                </label>
-                <p class="text-xs text-gray-400">Responde preguntas del banco de forma aleatoria sin fin. Termina la ronda cuando quieras con "Evaluar avance".</p>
-            </div>
-            <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
-                <label class="font-medium flex items-center">
-                    <input type="checkbox" id="game-mode-toggle" class="mr-2 h-5 w-5">
-                    MODO SIMULACRO MORTAL ☠ (Desafío)
-                </label>
-                <p class="text-xs text-gray-400">Temporizador fijo de 30 minutos, 20 ejercicios aleatorios y 3 vidas </p>
-            </div>
             
             <p id="error-message" class="text-red-400 text-center text-sm h-4"></p>
             <div class="space-y-2 border-t border-gray-600 pt-4 mt-4">
@@ -842,38 +617,6 @@
                 </div>
                 <div id="options-container" class="w-full space-y-3"></div>
                 
-                <div id="chalkboard-section" class="w-full">
-                    <div id="chalkboard-toggle">
-                        <span><i class="fas fa-chalkboard mr-2"></i> Pizarra de Apuntes</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div id="chalkboard-content" class="hidden">
-                        <div id="canvas-container" style="background-image: url('https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Pizarra_html.png');">
-                            <canvas id="chalkboard"></canvas>
-                        </div>
-                        <div id="chalkboard-controls">
-                            <button id="undo-button" title="Deshacer" class="control-btn bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-lg transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
-                            </button>
-                            <button id="shape-assist-button" title="Ajustar Forma" class="control-btn bg-purple-600 hover:bg-purple-700 text-white font-bold p-2 rounded-lg transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-1.342-1.342L16.5 8.803l-1.14-1.14a1 1 0 0 0-1.415 0l-1.14 1.14-2.28 2.28a1 1 0 0 0 0 1.414l2.28 2.28 1.14 1.14a1 1 0 0 0 1.415 0l1.14-1.14 3.332-3.332z"/><path d="m7 21-4-4"/><path d="M21 3v4h-4"/></svg>
-                            </button>
-                            <button id="white-brush" class="p-1 rounded-md bg-white" title="Pincel Blanco"><div class="w-5 h-5"></div></button>
-                            <button id="yellow-brush" class="p-1 rounded-md bg-yellow-400" title="Pincel Amarillo"><div class="w-5 h-5"></div></button>
-                            <div class="color-picker-wrapper" title="Color Personalizado">
-                                <div id="color-preview" class="color-preview" style="background-color: #ff0000;"></div>
-                                <input type="color" id="color-picker" value="#ff0000">
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <span class="text-xs font-medium text-gray-300">Grosor:</span>
-                                <input type="range" id="brush-size" min="1" max="50" value="10" class="w-24 cursor-pointer">
-                                <span id="brush-size-value" class="text-xs font-semibold w-5 text-center">10</span>
-                            </div>
-                            <button id="clear-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm">Limpiar</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="justification-box" class="justification w-full hidden">
                     <h4>Justificación:</h4>
                     <p id="justification-text"></p>
@@ -890,6 +633,7 @@
                     <button id="next-btn" class="btn btn-secondary w-full hidden">Siguiente →</button>
                 </div>
             </div>
+            
             <button id="calculator-toggle" class="btn calculator-toggle !mt-6">
                 <i class="fas fa-calculator"></i> Mostrar/Ocultar Calculadora
             </button>
@@ -916,14 +660,104 @@
                     <button class="calculator-btn" data-value=".">.</button>
                 </div>
             </div>
+            
+            <div id="chalkboard-section" class="w-full">
+                <div id="chalkboard-toggle">
+                    <span><i class="fas fa-chalkboard mr-2"></i> Pizarra de Apuntes</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div id="chalkboard-content" class="hidden">
+                    <div id="canvas-container" style="background-image: url('https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Pizarra_html.png');">
+                        <canvas id="chalkboard"></canvas>
+                    </div>
+                    <div id="chalkboard-controls">
+                        <button id="undo-button" title="Deshacer" class="control-btn bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                        </button>
+                        <button id="shape-assist-button" title="Ajustar Forma" class="control-btn bg-purple-600 hover:bg-purple-700 text-white font-bold p-2 rounded-lg transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-1.342-1.342L16.5 8.803l-1.14-1.14a1 1 0 0 0-1.415 0l-1.14 1.14-2.28 2.28a1 1 0 0 0 0 1.414l2.28 2.28 1.14 1.14a1 1 0 0 0 1.415 0l1.14-1.14 3.332-3.332z"/><path d="m7 21-4-4"/><path d="M21 3v4h-4"/></svg>
+                        </button>
+                        <button id="white-brush" class="p-1 rounded-md bg-white" title="Pincel Blanco"><div class="w-5 h-5"></div></button>
+                        <button id="yellow-brush" class="p-1 rounded-md bg-yellow-400" title="Pincel Amarillo"><div class="w-5 h-5"></div></button>
+                        <div class="color-picker-wrapper" title="Color Personalizado">
+                            <div id="color-preview" class="color-preview" style="background-color: #ff0000;"></div>
+                            <input type="color" id="color-picker" value="#ff0000">
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs font-medium text-gray-300">Grosor:</span>
+                            <input type="range" id="brush-size" min="1" max="50" value="10" class="w-24 cursor-pointer">
+                            <span id="brush-size-value" class="text-xs font-semibold w-5 text-center">10</span>
+                        </div>
+                        <button id="clear-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="graphing-tool-section" class="w-full">
+                <div id="graphing-tool-toggle">
+                    <span><i class="fas fa-chart-line mr-2"></i> Visualizador de Ecuaciones</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div id="graphing-tool-content" class="hidden">
+                    <div class="graphing-container">
+                        <h2 class="graphing-title">Visualizador de Ecuaciones en el Plano Cartesiano</h2>
+                        <p class="graphing-subtitle">Explora funciones lineales, cuadráticas, trigonométricas, cónicas y más</p>
+                        
+                        <div class="graphing-main-content">
+                            <div class="graphing-canvas-container">
+                                <h3 class="graphing-section-title">Gráfica de la Ecuación</h3>
+                                <div class="canvas-container">
+                                    <canvas id="equationChart" style="width: 100%; height: 100%;"></canvas>
+                                </div>
+                                <div class="graphing-zoom-controls">
+                                    <button class="zoom-btn" id="zoom-out-btn" title="Alejar (Zoom Out)">-</button>
+                                    <span class="scale-indicator" id="scale-indicator">Escala: ±10</span>
+                                    <button class="zoom-btn" id="zoom-in-btn" title="Acercar (Zoom In)">+</button>
+                                </div>
+                            </div>
+                            
+                            <div class="graphing-controls-container">
+                                <h3 class="graphing-section-title">Controles de la Función</h3>
+                                
+                                <div class="graphing-function-buttons" id="graphingFunctionButtons">
+                                </div>
+                                
+                                <div class="graphing-form-toggle" id="graphingFormToggle">
+                                </div>
+                                
+                                <div class="graphing-equation-display">
+                                    <h3>Ecuación Actual</h3>
+                                    <div class="graphing-equation" id="graphingCurrentEquation">y = x</div>
+                                </div>
+                                
+                                <div class="graphing-param-controls" id="graphingParamControls">
+                                </div>
+                                
+                                <div class="graphing-controls-footer">
+                                    <button class="graphing-btn graphing-btn-secondary" id="graphingResetBtn">Restablecer</button>
+                                    <button class="graphing-btn graphing-btn-primary" id="graphingUpdateBtn">Actualizar Gráfica</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="graphing-info-box">
+                            <h4>Instrucciones:</h4>
+                            <p>1. Selecciona el tipo de función que deseas visualizar.</p>
+                            <p>2. Ingresa los valores de los parámetros manualmente.</p>
+                            <p>3. Alterna entre forma canónica y general usando los botones.</p>
+                            <p>4. Haz clic en "Actualizar Gráfica" para ver los cambios.</p>
+                            <p>5. Usa los botones +/- para ajustar el zoom del gráfico.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-4 grid grid-cols-1 gap-3">
                 <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">Reportar Error</a>
             </div>
             <div class="mt-4 grid grid-cols-2 gap-3">
                  <button id="cancel-btn" class="btn btn-secondary w-full text-sm">Volver al menú</button>
-                 <button id="finish-btn" class="btn btn-secondary w-full text-sm hidden">Evaluar avance</button>
-                 <!-- MODIFICACIÓN 4: Botón condicional para evaluar avance (min 5) -->
-                 <button id="early-eval-btn" class="btn btn-secondary w-full text-sm hidden col-span-2 bg-gradient-to-r from-purple-500 to-pink-500">Evaluar mi Avance</button>
+                 <button id="finish-btn" class="btn btn-secondary w-full text-sm hidden btn-disabled" disabled>Evaluar avance (0/10)</button>
             </div>
         </div>
         <div id="results-screen" class="card p-4 sm:p-8 text-center hidden">
@@ -961,7 +795,6 @@
             <div id="summary-box" class="card p-6 mt-8 text-left bg-gray-700">
                 <div class="flex justify-between items-start">
                     <h3 class="text-xl font-bold mb-4">Resumen de la Evaluación</h3>
-                    <!-- MODIFICACIÓN 2: Eliminado botón de enviar email -->
                 </div>
                 <div class="space-y-2">
                     <p><strong>Nombre del Cuestionario:</strong> <span id="summary-eval-name"></span></p>
@@ -989,8 +822,6 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // MODIFICACIÓN 2: Eliminada inicialización de EmailJS
-            
             const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/UNI_JSON_CEPREDIX/refs/heads/main/FISICA_JSON';
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
@@ -1056,7 +887,6 @@
             const hintBtn = document.getElementById('hint-btn');
             const cancelBtn = document.getElementById('cancel-btn');
             const finishBtn = document.getElementById('finish-btn');
-            const earlyEvalBtn = document.getElementById('early-eval-btn'); // MODIFICACIÓN 4
             const helperButtons = document.getElementById('helper-buttons');
             const resultImage = document.getElementById('result-image');
             const finalScore = document.getElementById('final-score');
@@ -1076,7 +906,6 @@
             const summaryScore = document.getElementById('summary-score');
             const summaryIds = document.getElementById('summary-ids');
             const summaryIdsAcumulados = document.getElementById('summary-ids-acumulados');
-            // MODIFICACIÓN 2: Eliminado const sendEmailBtn
             const calculatorToggle = document.getElementById('calculator-toggle');
             const calculatorContainer = document.getElementById('calculator-container');
             const calculatorDisplay = document.getElementById('calc-display');
@@ -1090,7 +919,6 @@
             const videoContent = document.getElementById('video-content');
             const videoIframe = document.getElementById('video-iframe');
             
-            // MODIFICACIÓN 1: Elementos del video de bienvenida
             const welcomeVideoToggle = document.getElementById('welcome-video-toggle');
             const welcomeVideoContent = document.getElementById('welcome-video-content');
 
@@ -1099,12 +927,25 @@
             const imageContent = document.getElementById('image-content');
             const volumeIndicatorSetup = document.getElementById('volume-indicator-setup');
             const volumeIndicatorQuiz = document.getElementById('volume-indicator-quiz');
-            // Elementos nuevos para el texto desplegable
+            
             const textSectionContainer = document.getElementById('text-section-container');
             const textToggle = document.getElementById('text-toggle');
             const textContent = document.getElementById('text-content');
             
-            // Elementos de audio
+            const graphingToolToggle = document.getElementById('graphing-tool-toggle');
+            const graphingToolContent = document.getElementById('graphing-tool-content');
+            const graphingFunctionButtons = document.getElementById('graphingFunctionButtons');
+            const graphingFormToggle = document.getElementById('graphingFormToggle');
+            const graphingCurrentEquation = document.getElementById('graphingCurrentEquation');
+            const graphingParamControls = document.getElementById('graphingParamControls');
+            const graphingResetBtn = document.getElementById('graphingResetBtn');
+            const graphingUpdateBtn = document.getElementById('graphingUpdateBtn');
+            const equationChartCanvas = document.getElementById('equationChart');
+            
+            const zoomInBtn = document.getElementById('zoom-in-btn');
+            const zoomOutBtn = document.getElementById('zoom-out-btn');
+            const scaleIndicator = document.getElementById('scale-indicator');
+            
             const correctSound = document.getElementById('correct-sound');
             const incorrectSound = document.getElementById('incorrect-sound');
             const buttonSound = document.getElementById('button-sound');
@@ -1125,9 +966,40 @@
             let calculatorWaitingForOperand = false;
             let calculatorOperator = null;
             let calculatorPreviousValue = '0';
-            let effectsVolume = 0.5; 
+            let effectsVolume = 0.5;
             
-            // --- INICIO: LÓGICA DE LA PIZARRA ---
+            let graphingChart = null;
+            let currentGraphingFunction = 'linear';
+            let isGraphingCanonical = true;
+            
+            let currentScale = 10;
+            const MIN_SCALE = 10;
+            const MAX_SCALE = 50;
+            
+            const graphingFunctionTypes = [
+                { id: 'linear', name: 'Lineal', canonical: 'y = m x + b', general: 'A x + B y + C = 0' },
+                { id: 'quadratic', name: 'Cuadrática', canonical: 'y = a x² + b x + c', general: 'y = a (x - h)² + k' },
+                { id: 'circle', name: 'Circunferencia', canonical: '(x - h)² + (y - k)² = r²', general: 'x² + y² + D x + E y + F = 0' },
+                { id: 'ellipse', name: 'Elipse', canonical: '(x - h)² / a² + (y - k)² / b² = 1', general: 'A x² + C y² + D x + E y + F = 0' },
+                { id: 'parabola', name: 'Parábola', canonical: 'y = a (x - h)² + k', general: 'y² = 4 p x  o  x² = 4 p y' },
+                { id: 'hyperbola', name: 'Hipérbola', canonical: '(x - h)² / a² - (y - k)² / b² = 1', general: 'A x² - C y² + D x + E y + F = 0' },
+                { id: 'sin', name: 'Seno', canonical: 'y = a · sin(b x + c)', general: 'y = a · sin(b (x - h)) + k' },
+                { id: 'cos', name: 'Coseno', canonical: 'y = a · cos(b x + c)', general: 'y = a · cos(b (x - h)) + k' },
+                { id: 'tan', name: 'Tangente', canonical: 'y = a · tan(b x + c)', general: 'y = a · tan(b (x - h)) + k' }
+            ];
+            let graphingParams = {
+                linear: { m: 1, b: 0, A: 1, B: -1, C: 0 },
+                quadratic: { a: 1, b: 0, c: 0, h: 0, k: 0 },
+                circle: { h: 0, k: 0, r: 3, D: 0, E: 0, F: -9 },
+                ellipse: { h: 0, k: 0, a: 3, b: 2, A: 1, C: 1.5, D: 0, E: 0, F: -9 },
+                parabola: { a: 1, h: 0, k: 0, p: 0.25, type: 'vertical' },
+                hyperbola: { h: 0, k: 0, a: 2, b: 1, A: 1, C: 1, D: 0, E: 0, F: -4 },
+                sin: { a: 1, b: 1, c: 0, h: 0, k: 0 },
+                cos: { a: 1, b: 1, c: 0, h: 0, k: 0 },
+                tan: { a: 1, b: 1, c: 0, h: 0, k: 0 }
+            };
+            let currentGraphingParams = JSON.parse(JSON.stringify(graphingParams.linear));
+
             const chalkboardToggle = document.getElementById('chalkboard-toggle');
             const chalkboardContent = document.getElementById('chalkboard-content');
             const canvas = document.getElementById('chalkboard');
@@ -1185,7 +1057,7 @@
                     const currentImageDataUrl = canvas.toDataURL();
                     const size = container.clientWidth;
                     canvas.width = size;
-                    canvas.height = size * (3/4); // Aspect ratio 4:3
+                    canvas.height = size * (3/4);
                     
                     const tempStroke = ctx.strokeStyle;
                     const tempWidth = ctx.lineWidth;
@@ -1327,7 +1199,6 @@
                         icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
                     } else {
                         icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                        // Redimensionar el canvas solo cuando se muestra para asegurar el tamaño correcto
                         setTimeout(resizeCanvas, 0);
                     }
                 });
@@ -1366,16 +1237,748 @@
                 resizeCanvas();
                 saveState();
             }
-            // --- FIN: LÓGICA DE LA PIZARRA ---
 
-            // Update Volume Display
+            function updateEvaluationButton() {
+                if (!finishBtn) return;
+                
+                const answeredCount = userAnswers.filter(a => a.status !== 'unanswered').length;
+                const minQuestionsRequired = 10;
+                
+                finishBtn.disabled = answeredCount < minQuestionsRequired;
+                finishBtn.classList.toggle('btn-disabled', answeredCount < minQuestionsRequired);
+                
+                if (answeredCount < minQuestionsRequired) {
+                    finishBtn.innerHTML = `Evaluar avance (${answeredCount}/${minQuestionsRequired})`;
+                } else {
+                    finishBtn.innerHTML = 'Evaluar avance ✓';
+                }
+                
+                finishBtn.classList.toggle('hidden', !isContinuousMode);
+            }
+
+            function initializeGraphingTool() {
+                graphingFunctionTypes.forEach(func => {
+                    const button = document.createElement('button');
+                    button.className = `graphing-func-btn ${func.id === currentGraphingFunction ? 'active' : ''}`;
+                    button.textContent = func.name;
+                    button.dataset.funcId = func.id;
+                    
+                    button.addEventListener('click', function() {
+                        document.querySelectorAll('.graphing-func-btn').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        currentGraphingFunction = func.id;
+                        currentGraphingParams = JSON.parse(JSON.stringify(graphingParams[func.id]));
+                        isGraphingCanonical = true;
+                        
+                        updateGraphingFormToggle();
+                        updateGraphingParamControls();
+                        updateGraphingEquationDisplay();
+                        updateGraphingChart();
+                    });
+                    
+                    graphingFunctionButtons.appendChild(button);
+                });
+                
+                updateGraphingFormToggle();
+                updateGraphingParamControls();
+                initializeGraphingChart();
+                
+                graphingResetBtn.addEventListener('click', resetGraphingParams);
+                graphingUpdateBtn.addEventListener('click', updateGraphingChart);
+                
+                if (zoomInBtn) {
+                    zoomInBtn.addEventListener('click', zoomIn);
+                }
+                
+                if (zoomOutBtn) {
+                    zoomOutBtn.addEventListener('click', zoomOut);
+                }
+                
+                updateScaleIndicator();
+                
+                graphingToolToggle.addEventListener('click', () => {
+                    const isHidden = graphingToolContent.classList.toggle('hidden');
+                    const icon = graphingToolToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
+                    if (isHidden) {
+                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                    } else {
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                        setTimeout(updateGraphingChart, 0);
+                    }
+                });
+            }
+            
+            function zoomIn() {
+                if (currentScale > MIN_SCALE) {
+                    currentScale -= 5;
+                    if (currentScale < MIN_SCALE) currentScale = MIN_SCALE;
+                    updateGraphingChart();
+                    updateScaleIndicator();
+                    updateZoomButtons();
+                }
+            }
+            
+            function zoomOut() {
+                if (currentScale < MAX_SCALE) {
+                    currentScale += 5;
+                    if (currentScale > MAX_SCALE) currentScale = MAX_SCALE;
+                    updateGraphingChart();
+                    updateScaleIndicator();
+                    updateZoomButtons();
+                }
+            }
+            
+            function updateScaleIndicator() {
+                if (scaleIndicator) {
+                    scaleIndicator.textContent = `Escala: ±${currentScale}`;
+                }
+            }
+            
+            function updateZoomButtons() {
+                if (zoomInBtn) {
+                    zoomInBtn.disabled = currentScale <= MIN_SCALE;
+                }
+                if (zoomOutBtn) {
+                    zoomOutBtn.disabled = currentScale >= MAX_SCALE;
+                }
+            }
+            
+            function updateGraphingFormToggle() {
+                graphingFormToggle.innerHTML = '';
+                
+                const canonicalBtn = document.createElement('button');
+                canonicalBtn.className = `graphing-form-toggle-btn ${isGraphingCanonical ? 'active' : ''}`;
+                canonicalBtn.textContent = 'Forma Canónica';
+                canonicalBtn.dataset.form = 'canonical';
+                
+                const generalBtn = document.createElement('button');
+                generalBtn.className = `graphing-form-toggle-btn ${!isGraphingCanonical ? 'active' : ''}`;
+                generalBtn.textContent = 'Forma General';
+                generalBtn.dataset.form = 'general';
+                
+                canonicalBtn.addEventListener('click', function() {
+                    isGraphingCanonical = true;
+                    canonicalBtn.classList.add('active');
+                    generalBtn.classList.remove('active');
+                    updateGraphingParamControls();
+                    updateGraphingEquationDisplay();
+                });
+                
+                generalBtn.addEventListener('click', function() {
+                    isGraphingCanonical = false;
+                    generalBtn.classList.add('active');
+                    canonicalBtn.classList.remove('active');
+                    updateGraphingParamControls();
+                    updateGraphingEquationDisplay();
+                });
+                
+                graphingFormToggle.appendChild(canonicalBtn);
+                graphingFormToggle.appendChild(generalBtn);
+            }
+            
+            function updateGraphingParamControls() {
+                graphingParamControls.innerHTML = '';
+                
+                const paramConfigs = getGraphingParamConfigs();
+                
+                paramConfigs.forEach(config => {
+                    const paramGroup = document.createElement('div');
+                    paramGroup.className = 'graphing-param-group';
+                    
+                    const label = document.createElement('label');
+                    label.textContent = `${config.label} (${config.param})`;
+                    label.htmlFor = `graphing-param-${config.param}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = 'any';
+                    input.value = currentGraphingParams[config.param];
+                    input.id = `graphing-param-${config.param}`;
+                    
+                    input.addEventListener('input', function() {
+                        const value = parseFloat(this.value);
+                        if (!isNaN(value)) {
+                            currentGraphingParams[config.param] = value;
+                        }
+                    });
+                    
+                    input.addEventListener('change', function() {
+                        const value = parseFloat(this.value);
+                        if (!isNaN(value)) {
+                            currentGraphingParams[config.param] = value;
+                            updateGraphingEquationDisplay();
+                        }
+                    });
+                    
+                    paramGroup.appendChild(label);
+                    paramGroup.appendChild(input);
+                    graphingParamControls.appendChild(paramGroup);
+                });
+                
+                if (currentGraphingFunction === 'parabola') {
+                    const typeGroup = document.createElement('div');
+                    typeGroup.className = 'graphing-param-group';
+                    
+                    const typeLabel = document.createElement('label');
+                    typeLabel.textContent = 'Orientación de la Parábola';
+                    
+                    const typeSelect = document.createElement('select');
+                    typeSelect.className = 'graphing-select-control';
+                    typeSelect.id = 'graphing-parabola-type';
+                    
+                    const option1 = document.createElement('option');
+                    option1.value = 'vertical';
+                    option1.textContent = isGraphingCanonical ? 'Vertical (y = a(x-h)² + k)' : 'Vertical (y² = 4px)';
+                    option1.selected = currentGraphingParams.type === 'vertical';
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = 'horizontal';
+                    option2.textContent = isGraphingCanonical ? 'Horizontal (x = a(y-k)² + h)' : 'Horizontal (x² = 4py)';
+                    option2.selected = currentGraphingParams.type === 'horizontal';
+                    
+                    typeSelect.appendChild(option1);
+                    typeSelect.appendChild(option2);
+                    
+                    typeSelect.addEventListener('change', function() {
+                        currentGraphingParams.type = this.value;
+                        updateGraphingEquationDisplay();
+                    });
+                    
+                    typeGroup.appendChild(typeLabel);
+                    typeGroup.appendChild(typeSelect);
+                    graphingParamControls.appendChild(typeGroup);
+                }
+            }
+            
+            function getGraphingParamConfigs() {
+                const configs = [];
+                
+                if (currentGraphingFunction === 'linear') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'm', label: 'Pendiente' });
+                        configs.push({ param: 'b', label: 'Intercepto Y' });
+                    } else {
+                        configs.push({ param: 'A', label: 'Coeficiente A' });
+                        configs.push({ param: 'B', label: 'Coeficiente B' });
+                        configs.push({ param: 'C', label: 'Constante C' });
+                    }
+                } else if (currentGraphingFunction === 'quadratic') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'a', label: 'Coeficiente a' });
+                        configs.push({ param: 'b', label: 'Coeficiente b' });
+                        configs.push({ param: 'c', label: 'Constante c' });
+                    } else {
+                        configs.push({ param: 'a', label: 'Coeficiente a' });
+                        configs.push({ param: 'h', label: 'Desplazamiento X' });
+                        configs.push({ param: 'k', label: 'Desplazamiento Y' });
+                    }
+                } else if (currentGraphingFunction === 'circle') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'h', label: 'Centro X' });
+                        configs.push({ param: 'k', label: 'Centro Y' });
+                        configs.push({ param: 'r', label: 'Radio' });
+                    } else {
+                        configs.push({ param: 'D', label: 'Coeficiente D' });
+                        configs.push({ param: 'E', label: 'Coeficiente E' });
+                        configs.push({ param: 'F', label: 'Constante F' });
+                    }
+                } else if (currentGraphingFunction === 'ellipse') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'h', label: 'Centro X' });
+                        configs.push({ param: 'k', label: 'Centro Y' });
+                        configs.push({ param: 'a', label: 'Semieje X (a)' });
+                        configs.push({ param: 'b', label: 'Semieje Y (b)' });
+                    } else {
+                        configs.push({ param: 'A', label: 'Coeficiente A' });
+                        configs.push({ param: 'C', label: 'Coeficiente C' });
+                        configs.push({ param: 'D', label: 'Coeficiente D' });
+                        configs.push({ param: 'E', label: 'Coeficiente E' });
+                        configs.push({ param: 'F', label: 'Constante F' });
+                    }
+                } else if (currentGraphingFunction === 'parabola') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'a', label: 'Coeficiente a' });
+                        configs.push({ param: 'h', label: 'Vértice X' });
+                        configs.push({ param: 'k', label: 'Vértice Y' });
+                    } else {
+                        configs.push({ param: 'p', label: 'Distancia focal (p)' });
+                    }
+                } else if (currentGraphingFunction === 'hyperbola') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'h', label: 'Centro X' });
+                        configs.push({ param: 'k', label: 'Centro Y' });
+                        configs.push({ param: 'a', label: 'Semieje real (a)' });
+                        configs.push({ param: 'b', label: 'Semieje imaginario (b)' });
+                    } else {
+                        configs.push({ param: 'A', label: 'Coeficiente A' });
+                        configs.push({ param: 'C', label: 'Coeficiente C' });
+                        configs.push({ param: 'D', label: 'Coeficiente D' });
+                        configs.push({ param: 'E', label: 'Coeficiente E' });
+                        configs.push({ param: 'F', label: 'Constante F' });
+                    }
+                } else {
+                    configs.push({ param: 'a', label: 'Amplitud (a)' });
+                    configs.push({ param: 'b', label: 'Frecuencia (b)' });
+                    
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'c', label: 'Desfase (c)' });
+                    } else {
+                        configs.push({ param: 'h', label: 'Desplazamiento X' });
+                        configs.push({ param: 'k', label: 'Desplazamiento Y' });
+                    }
+                }
+                
+                return configs;
+            }
+            
+            function updateGraphingEquationDisplay() {
+                const funcType = graphingFunctionTypes.find(f => f.id === currentGraphingFunction);
+                
+                if (isGraphingCanonical) {
+                    graphingCurrentEquation.textContent = funcType.canonical;
+                } else {
+                    graphingCurrentEquation.textContent = funcType.general;
+                }
+                
+                let equationText = graphingCurrentEquation.textContent;
+                
+                Object.keys(currentGraphingParams).forEach(param => {
+                    if (param !== 'type') {
+                        if (equationText.includes(param)) {
+                            const value = currentGraphingParams[param];
+                            const formattedValue = formatGraphingNumber(value);
+                            equationText = equationText.replace(param, formattedValue);
+                        }
+                    }
+                });
+                
+                if (currentGraphingFunction === 'parabola' && !isGraphingCanonical) {
+                    if (currentGraphingParams.type === 'vertical') {
+                        equationText = `y² = ${formatGraphingNumber(4 * currentGraphingParams.p)} x`;
+                    } else {
+                        equationText = `x² = ${formatGraphingNumber(4 * currentGraphingParams.p)} y`;
+                    }
+                }
+                
+                graphingCurrentEquation.textContent = equationText;
+            }
+            
+            function formatGraphingNumber(num) {
+                if (Math.abs(num) < 0.0001) return '0';
+                if (Math.abs(num - Math.PI) < 0.01) return 'π';
+                if (Math.abs(num + Math.PI) < 0.01) return '-π';
+                if (Math.abs(num - Math.PI/2) < 0.01) return 'π/2';
+                if (Math.abs(num + Math.PI/2) < 0.01) return '-π/2';
+                
+                const rounded = Math.round(num * 100) / 100;
+                return rounded.toString();
+            }
+            
+            function initializeGraphingChart() {
+                const ctx = equationChartCanvas.getContext('2d');
+                
+                graphingChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: []
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 1,
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'center',
+                                min: -currentScale,
+                                max: currentScale,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    stepSize: currentScale / 10,
+                                    color: '#bdbdbd',
+                                    callback: function(value) {
+                                        if (value === 0) return '0';
+                                        if (value === Math.PI) return 'π';
+                                        if (value === -Math.PI) return '-π';
+                                        return value;
+                                    }
+                                }
+                            },
+                            y: {
+                                type: 'linear',
+                                position: 'center',
+                                min: -currentScale,
+                                max: currentScale,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    stepSize: currentScale / 10,
+                                    color: '#bdbdbd',
+                                    callback: function(value) {
+                                        if (value === 0) return '0';
+                                        if (value === Math.PI) return 'π';
+                                        if (value === -Math.PI) return '-π';
+                                        return value;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function updateGraphingChart() {
+                if (!graphingChart) return;
+                
+                graphingChart.options.scales.x.min = -currentScale;
+                graphingChart.options.scales.x.max = currentScale;
+                graphingChart.options.scales.y.min = -currentScale;
+                graphingChart.options.scales.y.max = currentScale;
+                
+                graphingChart.options.scales.x.ticks.stepSize = currentScale / 10;
+                graphingChart.options.scales.y.ticks.stepSize = currentScale / 10;
+                
+                const datasets = [];
+                const dataPoints = [];
+                const step = currentScale / 200;
+                
+                if (currentGraphingFunction === 'linear') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.m * x + currentGraphingParams.b;
+                        } else {
+                            if (Math.abs(currentGraphingParams.B) > 0.0001) {
+                                y = (-currentGraphingParams.A/currentGraphingParams.B) * x - currentGraphingParams.C/currentGraphingParams.B;
+                            } else {
+                                continue;
+                            }
+                        }
+                        
+                        if (Math.abs(y) <= currentScale) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Lineal',
+                        data: dataPoints,
+                        borderColor: '#9c27b0',
+                        backgroundColor: '#9c27b0',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'quadratic') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.a * x * x + currentGraphingParams.b * x + currentGraphingParams.c;
+                        } else {
+                            y = currentGraphingParams.a * Math.pow(x - currentGraphingParams.h, 2) + currentGraphingParams.k;
+                        }
+                        
+                        if (Math.abs(y) <= currentScale) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Cuadrática',
+                        data: dataPoints,
+                        borderColor: '#4fc3f7',
+                        backgroundColor: '#4fc3f7',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'circle') {
+                    const h = isGraphingCanonical ? currentGraphingParams.h : -currentGraphingParams.D/2;
+                    const k = isGraphingCanonical ? currentGraphingParams.k : -currentGraphingParams.E/2;
+                    const r2 = isGraphingCanonical ? 
+                        currentGraphingParams.r * currentGraphingParams.r : 
+                        (h*h + k*k - currentGraphingParams.F);
+                    
+                    if (r2 > 0) {
+                        const r = Math.sqrt(r2);
+                        
+                        for (let angle = 0; angle < 2 * Math.PI; angle += 0.02) {
+                            const x = h + r * Math.cos(angle);
+                            const y = k + r * Math.sin(angle);
+                            
+                            if (Math.abs(x) <= currentScale && Math.abs(y) <= currentScale) {
+                                dataPoints.push({ x: x, y: y });
+                            }
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Circunferencia',
+                        data: dataPoints,
+                        borderColor: '#81c784',
+                        backgroundColor: '#81c784',
+                        pointRadius: 1,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'ellipse') {
+                    const h = isGraphingCanonical ? currentGraphingParams.h : -currentGraphingParams.D/(2*currentGraphingParams.A);
+                    const k = isGraphingCanonical ? currentGraphingParams.k : -currentGraphingParams.E/(2*currentGraphingParams.C);
+                    const a2 = isGraphingCanonical ? currentGraphingParams.a * currentGraphingParams.a : -currentGraphingParams.F/currentGraphingParams.A;
+                    const b2 = isGraphingCanonical ? currentGraphingParams.b * currentGraphingParams.b : -currentGraphingParams.F/currentGraphingParams.C;
+                    
+                    if (a2 > 0 && b2 > 0) {
+                        const a = Math.sqrt(a2);
+                        const b = Math.sqrt(b2);
+                        
+                        for (let angle = 0; angle < 2 * Math.PI; angle += 0.02) {
+                            const x = h + a * Math.cos(angle);
+                            const y = k + b * Math.sin(angle);
+                            
+                            if (Math.abs(x) <= currentScale && Math.abs(y) <= currentScale) {
+                                dataPoints.push({ x: x, y: y });
+                            }
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Elipse',
+                        data: dataPoints,
+                        borderColor: '#ffb74d',
+                        backgroundColor: '#ffb74d',
+                        pointRadius: 1,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'parabola') {
+                    if (isGraphingCanonical) {
+                        if (currentGraphingParams.type === 'vertical') {
+                            for (let x = -currentScale; x <= currentScale; x += step) {
+                                const y = currentGraphingParams.a * Math.pow(x - currentGraphingParams.h, 2) + currentGraphingParams.k;
+                                
+                                if (Math.abs(y) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y });
+                                }
+                            }
+                        } else {
+                            for (let y = -currentScale; y <= currentScale; y += step) {
+                                const x = currentGraphingParams.a * Math.pow(y - currentGraphingParams.k, 2) + currentGraphingParams.h;
+                                
+                                if (Math.abs(x) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y });
+                                }
+                            }
+                        }
+                    } else {
+                        const p = currentGraphingParams.p;
+                        if (currentGraphingParams.type === 'vertical') {
+                            for (let x = -currentScale; x <= currentScale; x += step) {
+                                if (4 * p * x >= 0) {
+                                    const y = Math.sqrt(4 * p * x);
+                                    const y2 = -Math.sqrt(4 * p * x);
+                                    
+                                    if (Math.abs(y) <= currentScale) {
+                                        dataPoints.push({ x: x, y: y });
+                                    }
+                                    if (Math.abs(y2) <= currentScale) {
+                                        dataPoints.push({ x: x, y: y2 });
+                                    }
+                                }
+                            }
+                        } else {
+                            for (let y = -currentScale; y <= currentScale; y += step) {
+                                if (4 * p * y >= 0) {
+                                    const x = Math.sqrt(4 * p * y);
+                                    const x2 = -Math.sqrt(4 * p * y);
+                                    
+                                    if (Math.abs(x) <= currentScale) {
+                                        dataPoints.push({ x: x, y: y });
+                                    }
+                                    if (Math.abs(x2) <= currentScale) {
+                                        dataPoints.push({ x: x2, y: y });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Parábola',
+                        data: dataPoints,
+                        borderColor: '#f06292',
+                        backgroundColor: '#f06292',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'hyperbola') {
+                    const h = isGraphingCanonical ? currentGraphingParams.h : -currentGraphingParams.D/(2*currentGraphingParams.A);
+                    const k = isGraphingCanonical ? currentGraphingParams.k : -currentGraphingParams.E/(2*currentGraphingParams.C);
+                    const a2 = isGraphingCanonical ? 
+                        currentGraphingParams.a * currentGraphingParams.a : 
+                        -currentGraphingParams.F/currentGraphingParams.A;
+                    const b2 = isGraphingCanonical ? 
+                        currentGraphingParams.b * currentGraphingParams.b : 
+                        currentGraphingParams.F/currentGraphingParams.C;
+                    
+                    if (a2 > 0 && b2 > 0) {
+                        const a = Math.sqrt(a2);
+                        const b = Math.sqrt(b2);
+                        
+                        for (let x = h + a + 0.01; x <= currentScale; x += step) {
+                            const term = Math.pow((x - h)/a, 2) - 1;
+                            if (term >= 0) {
+                                const y1 = k + b * Math.sqrt(term);
+                                const y2 = k - b * Math.sqrt(term);
+                                
+                                if (Math.abs(y1) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y1 });
+                                }
+                                if (Math.abs(y2) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y2 });
+                                }
+                            }
+                        }
+                        
+                        for (let x = -currentScale; x <= h - a - 0.01; x += step) {
+                            const term = Math.pow((x - h)/a, 2) - 1;
+                            if (term >= 0) {
+                                const y1 = k + b * Math.sqrt(term);
+                                const y2 = k - b * Math.sqrt(term);
+                                
+                                if (Math.abs(y1) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y1 });
+                                }
+                                if (Math.abs(y2) <= currentScale) {
+                                    dataPoints.push({ x: x, y: y2 });
+                                }
+                            }
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Hipérbola',
+                        data: dataPoints,
+                        borderColor: '#ba68c8',
+                        backgroundColor: '#ba68c8',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'sin') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.a * Math.sin(currentGraphingParams.b * x + currentGraphingParams.c);
+                        } else {
+                            y = currentGraphingParams.a * Math.sin(currentGraphingParams.b * (x - currentGraphingParams.h)) + currentGraphingParams.k;
+                        }
+                        
+                        if (Math.abs(y) <= currentScale) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Seno',
+                        data: dataPoints,
+                        borderColor: '#4db6ac',
+                        backgroundColor: '#4db6ac',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'cos') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.a * Math.cos(currentGraphingParams.b * x + currentGraphingParams.c);
+                        } else {
+                            y = currentGraphingParams.a * Math.cos(currentGraphingParams.b * (x - currentGraphingParams.h)) + currentGraphingParams.k;
+                        }
+                        
+                        if (Math.abs(y) <= currentScale) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Coseno',
+                        data: dataPoints,
+                        borderColor: '#aed581',
+                        backgroundColor: '#aed581',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'tan') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.a * Math.tan(currentGraphingParams.b * x + currentGraphingParams.c);
+                        } else {
+                            y = currentGraphingParams.a * Math.tan(currentGraphingParams.b * (x - currentGraphingParams.h)) + currentGraphingParams.k;
+                        }
+                        
+                        if (Math.abs(y) <= currentScale && Math.abs(y) < currentScale * 10) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Tangente',
+                        data: dataPoints,
+                        borderColor: '#ff8a65',
+                        backgroundColor: '#ff8a65',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                }
+                
+                graphingChart.data.datasets = datasets;
+                graphingChart.update();
+                updateGraphingEquationDisplay();
+            }
+            
+            function resetGraphingParams() {
+                currentGraphingParams = JSON.parse(JSON.stringify(graphingParams[currentGraphingFunction]));
+                updateGraphingParamControls();
+                updateGraphingEquationDisplay();
+                updateGraphingChart();
+            }
+
             function updateVolumeDisplay() {
                 const percentage = Math.round(effectsVolume * 100) + '%';
                 if(volumeIndicatorSetup) volumeIndicatorSetup.textContent = percentage;
                 if(volumeIndicatorQuiz) volumeIndicatorQuiz.textContent = percentage;
             }
 
-            // Inicializar volúmenes de efectos
             function initializeVolumes() {
                 correctSound.volume = effectsVolume;
                 incorrectSound.volume = effectsVolume;
@@ -1383,7 +1986,6 @@
                 updateVolumeDisplay();
             }
             
-            // Configurar eventos para nuevos controles de volumen
             document.querySelectorAll('.volume-btn-new').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const action = btn.dataset.action;
@@ -1393,9 +1995,8 @@
                         effectsVolume = Math.min(1, effectsVolume + 0.1);
                     }
                     effectsVolume = parseFloat(effectsVolume.toFixed(2));
-                    initializeVolumes(); // Aplicar el nuevo volumen
+                    initializeVolumes();
                     
-                    // Feedback visual
                     const icon = btn.closest('div').querySelector('i');
                     if(icon) icon.classList.add('text-blue-400');
                     setTimeout(() => {
@@ -1404,20 +2005,17 @@
                 });
             });
 
-            // Función para reproducir sonido de botón
             function playButtonSound() {
                 buttonSound.currentTime = 0;
                 buttonSound.play().catch(e => console.error("Error al reproducir sonido de botón:", e));
             }
             
-            // Añadir event listeners para sonidos de botón
-            document.querySelectorAll('.btn, .option-btn, .calculator-btn, .tag, .video-toggle, .control-btn, .color-picker-wrapper, #clear-button, .volume-btn-new').forEach(el => {
+            document.querySelectorAll('.btn, .option-btn, .calculator-btn, .tag, .video-toggle, .control-btn, .color-picker-wrapper, #clear-button, .volume-btn-new, .graphing-func-btn, .graphing-form-toggle-btn, .graphing-btn').forEach(el => {
                 el.addEventListener('click', (e) => {
                     playButtonSound();
                 });
             });
 
-            // MODIFICACIÓN 1: Toggle para el contenedor de video de bienvenida
             if(welcomeVideoToggle) {
                 welcomeVideoToggle.addEventListener('click', () => {
                     welcomeVideoContent.classList.toggle('hidden');
@@ -1430,7 +2028,6 @@
                 });
             }
             
-            // Toggle para el contenedor de video
             videoToggle.addEventListener('click', () => {
                 videoContent.classList.toggle('hidden');
                 const icon = videoToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
@@ -1441,7 +2038,6 @@
                 }
             });
 
-            // Toggle para el contenedor de imagen
             imageToggle.addEventListener('click', () => {
                 imageContent.classList.toggle('hidden');
                 const icon = imageToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
@@ -1452,7 +2048,6 @@
                 }
             });
 
-            // Toggle para el contenedor de texto
             textToggle.addEventListener('click', () => {
                 textContent.classList.toggle('hidden');
                 const icon = textToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
@@ -1595,7 +2190,6 @@
                 screens.login.classList.add('hidden');
                 screens.setup.classList.remove('hidden');
                 welcomeName.textContent = 'Invitado';
-                numQuestionsInput.disabled = true;
                 answeredIdsInput.disabled = true;
                 loadData().then(() => {
                     uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
@@ -1615,7 +2209,6 @@
             noAccessBtn.addEventListener('click', (e) => {
                 if (isGuest) {
                     e.preventDefault();
-                    // Usar showTemporaryMessage o un modal simple en lugar de alert
                     showTemporaryMessage('Ya estás en modo invitado. Si necesitas acceso completo, por favor contacta al administrador.');
                 }
             });
@@ -1661,14 +2254,13 @@
             const loadData = async () => {
                 try {
                     const response = await fetch(QUIZ_JSON_URL);
-                    if (!response.ok) throw new Error(`Error de red: ${response.statusText}`);
+                    if (!response.ok) throw new Error(`Error de net: ${response.statusText}`);
                     let rawQuestions = await response.json();
                 
                     if (!Array.isArray(rawQuestions) || rawQuestions.length === 0) {
                         throw new Error('El JSON no es un array válido o está vacío.');
                     }
                 
-                    // --- INICIO MODIFICACIÓN: Unificar el formato de todas las preguntas ---
                     allQuestions = rawQuestions.map(q => ({
                         id: q.id || null,
                         question: q.question || 'No hay texto de pregunta',
@@ -1677,19 +2269,15 @@
                         level_tag: q.level_tag || [],
                         hint: q.hint || null,
                         explanation: q.explanation || null,
-                        // Asegura que las claves de material de apoyo siempre existan, con valor por defecto null
                         image: q.image !== undefined ? q.image : null,
                         explanative_video: q.explanative_video !== undefined ? q.explanative_video : null,
                         collapsible_text: q.collapsible_text !== undefined ? q.collapsible_text : null,
                     }));
                 
-                    // Añadir texto de prueba a la primera pregunta como se solicitó
                     if (allQuestions.length > 0) {
                         allQuestions[0].collapsible_text = "Este es un texto de prueba";
                     }
-                    // --- FIN MODIFICACIÓN ---
                 
-                    // Filtrar duplicados por ID
                     const uniqueQuestions = [];
                     const seenIds = new Set();
                     for (const q of allQuestions) {
@@ -1770,15 +2358,9 @@
             continuousModeToggle.addEventListener('change', () => {
                 isContinuousMode = continuousModeToggle.checked;
                 if (isContinuousMode) {
-                    numQuestionsInput.disabled = true;
-                    numQuestionsInput.value = ''; // Clear value
-                    numQuestionsInput.closest('div').style.opacity = '0.5';
                     gameModeToggle.checked = false;
                     gameModeToggle.disabled = true;
                 } else {
-                    numQuestionsInput.disabled = false;
-                    numQuestionsInput.value = '10'; // Reset to default
-                    numQuestionsInput.closest('div').style.opacity = '1';
                     gameModeToggle.disabled = false;
                 }
             });
@@ -1788,12 +2370,8 @@
                     continuousModeToggle.checked = false;
                     continuousModeToggle.disabled = true;
                     isContinuousMode = false;
-                    numQuestionsInput.disabled = true;
-                    numQuestionsInput.closest('div').style.opacity = '0.5';
                 } else {
                     continuousModeToggle.disabled = false;
-                    numQuestionsInput.disabled = isContinuousMode;
-                      numQuestionsInput.closest('div').style.opacity = isContinuousMode ? '0.5' : '1';
                 }
             });
             
@@ -1810,11 +2388,7 @@
                 } else if (isGuest) {
                     num = 10;
                 } else {
-                    num = parseInt(numQuestionsInput.value);
-                    if (isNaN(num) || num < 5 || num > 30) {
-                        errorMessage.textContent = 'Por favor, introduce un número de ejercicios entre 5 y 30.';
-                        return;
-                    }
+                    num = 10;
                 }
 
                 const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
@@ -1831,7 +2405,20 @@
                 });
 
                 if (isGuest) {
-                    availableQuestions = availableQuestions.filter(q => !q.image);
+                    availableQuestions = availableQuestions.filter(q => {
+                        if (q.id && q.id.length >= 4) {
+                            const secondDigit = q.id.charAt(3);
+                            if (!['1', '2', '3'].includes(secondDigit)) {
+                                return false;
+                            }
+                        }
+                        
+                        if (q.image && q.image.includes('imgur.com')) {
+                            return false;
+                        }
+                        
+                        return true;
+                    });
                 }
 
                 let finalQuestionPool;
@@ -1881,9 +2468,9 @@
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 
-                finishBtn.classList.toggle('hidden', !isContinuousMode);
-                earlyEvalBtn.classList.add('hidden'); // MODIFICACIÓN 4: Ocultar al inicio
-                timerContainer.style.display = 'flex'; // Ensure timer is visible
+                updateEvaluationButton();
+                
+                timerContainer.style.display = 'flex';
 
                 if (isGameMode) {
                     document.getElementById('live-score').style.display = 'none';
@@ -1894,7 +2481,7 @@
                 } else {
                     document.getElementById('live-score').style.display = 'flex';
                     gameModeRules.classList.add('hidden');
-                    clearInterval(timer); // Clear previous timer
+                    clearInterval(timer);
                     timer = setInterval(() => { 
                         seconds++; 
                         timerDisplay.textContent = `${seconds}s`;
@@ -1904,6 +2491,11 @@
                 questionStartTime = Date.now();
                 displayQuestion();
                 updateLiveScore();
+                
+                if (graphingChart) {
+                    graphingChart.destroy();
+                }
+                initializeGraphingTool();
             }
 
             function evaluateCurrentAnswer() {
@@ -1953,6 +2545,7 @@
                 }
                 
                 updateLiveScore();
+                updateEvaluationButton();
                 showFeedback();
                 updateButtonStates();
             }
@@ -1972,12 +2565,9 @@
                 questionText.innerHTML = questionHTML;
                 questionStartTime = Date.now();
                 
-                // CORRECCIÓN: Restaurar la forma original de cargar videos de YouTube
-                // Manejar el video explicativo
                 if (question.explanative_video) {
                     const videoId = getYouTubeID(question.explanative_video);
                     if (videoId) {
-                        // CORRECCIÓN: Volver a la URL simple sin parámetros adicionales
                         videoIframe.src = `https://www.youtube.com/embed/${videoId}`;
                         videoContainer.style.display = 'block';
                         videoContent.classList.add('hidden');
@@ -1989,34 +2579,34 @@
                     videoContainer.style.display = 'none';
                 }
                 
-                // Manejar la imagen desplegable
-                if (question.image && !isGuest) {
-                    imageSectionContainer.classList.remove('hidden');
-                    imageContent.classList.remove('hidden'); // Visible por defecto
-                    imageToggle.querySelector('.fa-chevron-down, .fa-chevron-up').classList.replace('fa-chevron-down', 'fa-chevron-up');
-                    imageContainer.style.backgroundImage = `url(${question.image})`;
-                    
-                    if (question.image.includes('imgur.com')) {
-                        const watermarkText = `${currentUser.name} ${currentUser.email} ${currentUser.whatsapp} &nbsp; `.repeat(150);
-                        watermarkOverlay.innerHTML = watermarkText;
+                if (question.image) {
+                    if (isGuest && question.image.includes('imgur.com')) {
+                        imageSectionContainer.classList.add('hidden');
                     } else {
-                        watermarkOverlay.innerHTML = '';
+                        imageSectionContainer.classList.remove('hidden');
+                        imageContent.classList.remove('hidden');
+                        imageToggle.querySelector('.fa-chevron-down, .fa-chevron-up').classList.replace('fa-chevron-down', 'fa-chevron-up');
+                        imageContainer.style.backgroundImage = `url(${question.image})`;
+                        
+                        if (question.image.includes('imgur.com')) {
+                            const watermarkText = `${currentUser.name} ${currentUser.email} ${currentUser.whatsapp} &nbsp; `.repeat(150);
+                            watermarkOverlay.innerHTML = watermarkText;
+                        } else {
+                            watermarkOverlay.innerHTML = '';
+                        }
                     }
                 } else {
                     imageSectionContainer.classList.add('hidden');
                 }
                 
-                // --- INICIO MODIFICACIÓN: Manejar el texto desplegable ---
                 if (question.collapsible_text) {
                     textSectionContainer.classList.remove('hidden');
                     textContent.innerHTML = question.collapsible_text;
-                    // Asegurarse de que esté colapsado por defecto al cargar una nueva pregunta
                     textContent.classList.add('hidden');
                     textToggle.querySelector('.fa-chevron-down, .fa-chevron-up').classList.replace('fa-chevron-up', 'fa-chevron-down');
                 } else {
                     textSectionContainer.classList.add('hidden');
                 }
-                // --- FIN MODIFICACIÓN ---
 
                 optionsContainer.innerHTML = '';
                 let options = [...question.options];
@@ -2089,10 +2679,8 @@
             function getYouTubeID(url) {
                 if (!url) return null;
                 url = url.trim(); 
-                // Regex mejorada para detectar IDs de 11 caracteres incluso en URLs cortas, móviles o con parámetros extraños.
                 const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
                 const match = url.match(regExp);
-                // Si la regex compleja falla, intentamos extraer cualquier cadena de 11 caracteres válida que parezca un ID
                 if (!match) {
                      const fallbackMatch = url.match(/([a-zA-Z0-9_-]{11})/);
                      return fallbackMatch ? fallbackMatch[1] : null;
@@ -2110,29 +2698,13 @@
                 if (isAnswered) {
                     nextBtn.textContent = isLastQuestion && !isContinuousMode ? 'Ver Resultados' : 'Siguiente →';
                     nextBtn.classList.remove('hidden');
-                    nextBtn.disabled = isLastQuestion && isContinuousMode; // Disable next on last question in continuous mode
+                    nextBtn.disabled = isLastQuestion && isContinuousMode;
                 } else {
                     nextBtn.classList.add('hidden');
                 }
-
-                // MODIFICACIÓN 4: Lógica para mostrar/ocultar el botón de evaluar avance
-                const answeredCount = userAnswers.filter(a => a.status !== 'unanswered').length;
-                if (answeredCount >= 5 && !isLastQuestion) {
-                    earlyEvalBtn.classList.remove('hidden');
-                } else {
-                    earlyEvalBtn.classList.add('hidden');
-                }
             }
-            
-            // MODIFICACIÓN 4: Listener para el botón de evaluar avance
-            earlyEvalBtn.addEventListener('click', () => {
-                if(confirm("¿Estás seguro de que deseas terminar y evaluar tu avance hasta ahora?")) {
-                    endQuiz();
-                }
-            });
 
             function showFeedback() {
-                // Remove confirm button as soon as feedback is shown
                 const existingConfirmBtn = optionsContainer.querySelector('.confirm-btn');
                 if (existingConfirmBtn) {
                     clearInterval(existingConfirmBtn.dataset.intervalId);
@@ -2188,6 +2760,7 @@
                 userAnswers[currentQuestionIndex].timeSpent = timeSpent;
                 userAnswers[currentQuestionIndex].status = 'omitted';
                 updateLiveScore();
+                updateEvaluationButton();
                 
                 if (currentQuestionIndex < quizQuestions.length - 1) {
                     currentQuestionIndex++;
@@ -2231,7 +2804,6 @@
                     modalElement.remove();
                 });
 
-                // MODIFICACIÓN 3: Asegurar que MathJax renderice la pista
                 MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
             });
             
@@ -2271,7 +2843,6 @@
                 screens.results.classList.remove('hidden');
                 
                 let answersToEvaluate = userAnswers;
-                // Si usamos el botón de evaluación temprana o modo continuo, filtramos solo las respondidas
                 if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
                     answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
                     if (answersToEvaluate.length === 0) {
@@ -2292,7 +2863,6 @@
                 const totalEvaluated = stats.correct + stats.incorrect + stats.unidentified;
                 const finalScoreValue = totalEvaluated > 0 ? (stats.correct / totalEvaluated) * 10 : 0;
                 
-                // Recalcular el tiempo total solo de las preguntas evaluadas
                 const totalTimeEvaluated = answersToEvaluate.reduce((acc, curr) => acc + curr.timeSpent, 0);
                 const averageTime = answersToEvaluate.length > 0 ? (totalTimeEvaluated / answersToEvaluate.length).toFixed(2) : 0;
                 
@@ -2320,7 +2890,6 @@
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
                 if (isGameMode) {
-                    // Reemplazar el textarea de IDs por un mensaje para Modo Simulacro
                     const idsOutputParent = answeredIdsOutput.closest('.mt-8.space-y-2');
                     if (idsOutputParent) {
                         idsOutputParent.style.display = 'none';
@@ -2336,7 +2905,6 @@
                         if (restartBtnParent && restartBtnParent.nextElementSibling) {
                             restartBtnParent.nextElementSibling.before(returnBtn);
                         } else {
-                             // Si no se encuentra el lugar exacto, añadirlo al final de results-screen
                              document.getElementById('results-screen').appendChild(returnBtn);
                         }
                     }
@@ -2415,8 +2983,6 @@
                 setTimeout(() => { copyIdsBtn.textContent = 'Copiar'; }, 2000);
             });
             
-            // MODIFICACIÓN 2: Eliminado listener de sendEmailBtn
-            
             function drawResultsChart(stats) {
                 if (resultsChart) resultsChart.destroy();
                 resultsChart = new Chart(resultsChartCanvas, {
@@ -2443,10 +3009,7 @@
             restartQuizBtn.addEventListener('click', () => {
                 screens.results.classList.add('hidden');
                 screens.setup.classList.remove('hidden');
-                
-                // Resetear el modo simulacro para la siguiente partida
                 if(gameModeToggle) gameModeToggle.checked = false;
-
                 copyIdsBtn.disabled = false;
                 copyIdsBtn.classList.remove('btn-disabled');
             });
@@ -2481,7 +3044,6 @@
                 MathJax.typesetPromise([lookupResultContainer]);
             });
             
-            // Inicializar volúmenes al cargar
             initializeVolumes();
         });
     </script>
