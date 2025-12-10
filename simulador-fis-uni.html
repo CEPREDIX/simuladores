@@ -26,7 +26,7 @@
           startup: {
             pageReady: () => {
                 return MathJax.startup.defaultPageReady().then(() => {
-                    console.log('MathJax 3 configurado para ciencias');
+                    console.log('MathJax 3 configurado');
                 });
             }
           }
@@ -141,7 +141,7 @@
         .calculator-container {
             display: none; background: rgba(30, 30, 40, 0.9); border-radius: 15px;
             padding: 15px; margin: 20px auto 0; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            max-width: 280px;
+            max-width: 280px; height: 340px; 
         }
         .calculator-toggle {
             margin: 15px auto; display: block; background: linear-gradient(45deg, #9c27b0, #673ab7);
@@ -152,7 +152,12 @@
             border: 2px solid #7e57c2; border-radius: 8px; margin-bottom: 12px;
             text-align: right; color: white; height: 60px; overflow: hidden;
         }
-        .calculator-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .calculator-buttons { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 6px; 
+            height: 220px; 
+        }
         .calculator-btn {
             padding: 12px; font-size: 1.1rem; border: none; border-radius: 8px;
             background: rgba(100, 100, 200, 0.3); color: white; cursor: pointer; transition: all 0.2s ease;
@@ -369,7 +374,6 @@
         .zoom-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .scale-indicator { font-size: 0.9rem; color: #bdbdbd; min-width: 80px; text-align: center; }
         
-        /* Nuevos estilos para la búsqueda mejorada */
         .lookup-question-container {
             background: rgba(30, 30, 40, 0.9); border-radius: 15px; padding: 20px;
             margin: 15px 0; border-left: 5px solid #4fc3f7;
@@ -377,10 +381,10 @@
         .lookup-option {
             padding: 12px 12px 12px 40px; background: rgba(50, 50, 70, 0.8);
             border-radius: 10px; margin-bottom: 10px; position: relative;
-            border-left: 4px solid #4CAF50; /* Verde para correcta */
+            border-left: 4px solid #4CAF50; 
         }
         .lookup-option.incorrect {
-            border-left-color: #f44336; /* Rojo para incorrecta */
+            border-left-color: #f44336; 
         }
         .lookup-option-label {
             position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
@@ -401,7 +405,6 @@
             color: #4fc3f7; margin-bottom: 8px; font-size: 1.1rem;
         }
         
-        /* Estilos para el botón fijo EVALUAR */
         #evaluate-btn {
             position: relative;
             overflow: hidden;
@@ -578,7 +581,7 @@
                         <span><strong id="stats-total">0</strong> | Respondidas: <strong id="stats-answered-total" class="text-blue-400">0</strong> | Restantes: <strong id="stats-remaining-total" class="text-green-400">0</strong></span>
                     </div>
                     <div id="question-stats-filtered" class="flex justify-between font-semibold">
-                        <span>Total con Filtros (por Proceso):</span>
+                        <span>Total con Filtros (Proceso y Nivel):</span>
                         <span><strong id="stats-total-filtered">0</strong> | Respondidas: <strong id="stats-answered-filtered" class="text-blue-400">0</strong> | Restantes: <strong id="stats-remaining-filtered" class="text-green-400">0</strong></span>
                     </div>
                 </div>
@@ -677,26 +680,32 @@
                 </div>
 
             </div>
-            <!-- BOTONES REORGANIZADOS SEGÚN ESPECIFICACIONES -->
+            
             <div id="action-buttons" class="mt-6 space-y-3">
-                <!-- Primera fila: 💡 Pista y EVALUAR -->
+                
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="hint-btn" class="btn btn-hint w-full">💡 Pista</button>
+                    <button id="hint-btn" class="btn btn-hint w-full">💡 PISTA</button>
                     <button id="evaluate-btn" class="btn btn-primary w-full" disabled>
                         <span class="evaluate-emoji">🤨</span> EVALUAR
                     </button>
                 </div>
                 
-                <!-- Segunda fila: ← Anterior y Siguiente → -->
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="prev-btn" class="btn btn-secondary w-full">← Anterior</button>
-                    <button id="next-btn" class="btn btn-secondary w-full" disabled>Siguiente →</button>
+                    <button id="prev-btn" class="btn btn-secondary w-full">← ANTERIOR</button>
+                    <button id="next-btn" class="btn btn-secondary w-full" disabled>SIGUIENTE →</button>
                 </div>
                 
-                <!-- Tercera fila: OMITIR REACTIVO y EVALUAR AVANCE -->
                 <div class="grid grid-cols-2 gap-3">
                     <button id="skip-btn" class="btn btn-secondary w-full">OMITIR REACTIVO</button>
-                    <button id="finish-btn" class="btn btn-secondary w-full hidden btn-disabled" disabled>Evaluar avance (0/10)</button>
+                    <button id="finish-btn" class="btn btn-secondary w-full hidden btn-disabled" disabled>EVALUAR AVANCE (0/10)</button>
+                </div>
+            </div>
+            
+            <div id="all-questions-completed-message" class="mt-6 space-y-3 hidden">
+                <div class="p-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg text-center">
+                    <div class="text-2xl mb-2">🎉FELICIDADES🎉</div>
+                    <div class="text-lg mb-3">Has concluido todas las preguntas con estos filtros. Evalúa tu avance 😉. ¡MUCHO ÉXITO! 😎</div>
+                    <button id="force-evaluate-btn" class="btn btn-primary w-full">EVALUAR AVANCE</button>
                 </div>
             </div>
             
@@ -749,7 +758,6 @@
                             <div id="color-preview" class="color-preview" style="background-color: #ff0000;"></div>
                             <input type="color" id="color-picker" value="#ff0000">
                         </div>
-                        <!-- CAMBIO: Tamaño de pincel de 1 a 10 -->
                         <div class="flex items-center gap-1">
                             <span class="text-xs font-medium text-gray-300">Grosor:</span>
                             <input type="range" id="brush-size" min="1" max="10" value="5" class="w-24 cursor-pointer">
@@ -819,7 +827,6 @@
                 </div>
             </div>
 
-            <!-- Botones finales -->
             <div class="mt-4 grid grid-cols-2 gap-3">
                  <button id="cancel-btn" class="btn btn-secondary w-full text-sm">VOLVER AL MENÚ</button>
                  <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">REPORTAR ERROR</a>
@@ -984,8 +991,10 @@
             const videoContent = document.getElementById('video-content');
             const videoIframe = document.getElementById('video-iframe');
             
-            // NUEVO: Botón de evaluar fijo
             const evaluateBtn = document.getElementById('evaluate-btn');
+            
+            const allQuestionsCompletedMessage = document.getElementById('all-questions-completed-message');
+            const forceEvaluateBtn = document.getElementById('force-evaluate-btn');
             
             const welcomeVideoToggle = document.getElementById('welcome-video-toggle');
             const welcomeVideoContent = document.getElementById('welcome-video-content');
@@ -1036,8 +1045,10 @@
             let calculatorPreviousValue = '0';
             let effectsVolume = 0.5;
             
-            // Variable para animación del botón EVALUAR
             let evaluateEmojiInterval;
+            
+            let answeredIdsInContinuousMode = new Set();
+            let availableQuestionsInContinuousMode = [];
             
             let graphingChart = null;
             let currentGraphingFunction = 'linear';
@@ -1309,15 +1320,12 @@
                 saveState();
             }
 
-            // ========== FUNCIÓN MEJORADA DE BÚSQUEDA POR ID ==========
             function showQuestionLookup(question) {
                 lookupResultContainer.innerHTML = '';
                 
-                // Crear contenedor principal de la pregunta
                 const questionContainer = document.createElement('div');
                 questionContainer.className = 'lookup-question-container';
                 
-                // Mostrar ID y etiquetas
                 const idTagsDiv = document.createElement('div');
                 idTagsDiv.className = 'mb-4 flex flex-wrap gap-2 items-center';
                 idTagsDiv.innerHTML = `
@@ -1327,13 +1335,11 @@
                 `;
                 questionContainer.appendChild(idTagsDiv);
                 
-                // Mostrar pregunta
                 const questionTextDiv = document.createElement('div');
                 questionTextDiv.className = 'text-lg font-semibold mb-4';
                 questionTextDiv.innerHTML = question.question;
                 questionContainer.appendChild(questionTextDiv);
                 
-                // Mostrar imagen si existe - CON MARCA DE AGUA SI ES DE IMGUR
                 if (question.image && question.image !== null) {
                     const imageSection = document.createElement('div');
                     imageSection.className = 'lookup-section mb-4';
@@ -1347,7 +1353,6 @@
                     `;
                     questionContainer.appendChild(imageSection);
                     
-                    // Agregar marca de agua si la imagen es de imgur
                     if (question.image.includes('imgur.com')) {
                         const lookupWatermarkOverlay = document.getElementById('lookup-watermark-overlay');
                         const watermarkText = `VERIFICACIÓN CEPREDIX &nbsp; `.repeat(150);
@@ -1357,16 +1362,13 @@
                     }
                 }
                 
-                // Mostrar opciones (correcta primero)
                 const optionsSection = document.createElement('div');
                 optionsSection.className = 'lookup-section mb-4';
                 optionsSection.innerHTML = '<div class="lookup-section-title">Opciones de Respuesta</div>';
                 
-                // Encontrar la opción correcta
                 const correctOption = question.options.find(opt => opt.correct);
                 const incorrectOptions = question.options.filter(opt => !opt.correct);
                 
-                // Mostrar opción correcta primero
                 if (correctOption) {
                     const correctOptionDiv = document.createElement('div');
                     correctOptionDiv.className = 'lookup-option';
@@ -1378,7 +1380,6 @@
                     optionsSection.appendChild(correctOptionDiv);
                 }
                 
-                // Mostrar opciones incorrectas
                 incorrectOptions.forEach((option, index) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'lookup-option incorrect';
@@ -1391,7 +1392,6 @@
                 
                 questionContainer.appendChild(optionsSection);
                 
-                // Mostrar pista si existe
                 if (question.hint && question.hint !== null) {
                     const hintSection = document.createElement('div');
                     hintSection.className = 'lookup-section mb-4';
@@ -1402,7 +1402,6 @@
                     questionContainer.appendChild(hintSection);
                 }
                 
-                // Mostrar justificación si existe
                 if (question.explanation && question.explanation !== null) {
                     const explanationSection = document.createElement('div');
                     explanationSection.className = 'lookup-section mb-4';
@@ -1413,7 +1412,6 @@
                     questionContainer.appendChild(explanationSection);
                 }
                 
-                // Mostrar video explicativo si existe
                 if (question.explanative_video && question.explanative_video !== null) {
                     const videoSection = document.createElement('div');
                     videoSection.className = 'lookup-section mb-4';
@@ -1428,7 +1426,6 @@
                     questionContainer.appendChild(videoSection);
                 }
                 
-                // Mostrar texto desplegable si existe
                 if (question.collapsible_text && question.collapsible_text !== null) {
                     const textSection = document.createElement('div');
                     textSection.className = 'lookup-section';
@@ -1442,7 +1439,6 @@
                 lookupResultContainer.appendChild(questionContainer);
                 lookupResultContainer.classList.remove('hidden');
                 
-                // Procesar MathJax en el contenido
                 MathJax.typesetPromise([lookupResultContainer]);
             }
             
@@ -1456,15 +1452,14 @@
                 finishBtn.classList.toggle('btn-disabled', answeredCount < minQuestionsRequired);
                 
                 if (answeredCount < minQuestionsRequired) {
-                    finishBtn.innerHTML = `Evaluar avance (${answeredCount}/${minQuestionsRequired})`;
+                    finishBtn.innerHTML = `EVALUAR AVANCE (${answeredCount}/${minQuestionsRequired})`;
                 } else {
-                    finishBtn.innerHTML = 'Evaluar avance ✓';
+                    finishBtn.innerHTML = 'EVALUAR AVANCE ✓';
                 }
                 
                 finishBtn.classList.toggle('hidden', !isContinuousMode);
             }
 
-            // Función para animar el emoji en el botón EVALUAR
             function startEvaluateEmojiAnimation() {
                 const emojis = ['🤨', '🙂', '😮', '😫', '😎'];
                 let index = 0;
@@ -1482,7 +1477,6 @@
                 }, 200);
             }
             
-            // Función para detener la animación del emoji
             function stopEvaluateEmojiAnimation() {
                 if (evaluateEmojiInterval) {
                     clearInterval(evaluateEmojiInterval);
@@ -1492,6 +1486,44 @@
                         emojiSpan.textContent = '✅';
                     }
                 }
+            }
+            
+            function checkIfAllQuestionsCompleted() {
+                if (!isContinuousMode) return false;
+                
+                const allAnsweredIds = new Set([...pastedAnsweredIds, ...answeredIdsInContinuousMode]);
+                const remainingQuestions = availableQuestionsInContinuousMode.filter(q => 
+                    !allAnsweredIds.has(q.id)
+                );
+                
+                if (remainingQuestions.length === 0 && availableQuestionsInContinuousMode.length > 0) {
+                    document.getElementById('action-buttons').classList.add('hidden');
+                    allQuestionsCompletedMessage.classList.remove('hidden');
+                    finishBtn.disabled = false;
+                    finishBtn.classList.remove('btn-disabled');
+                    finishBtn.innerHTML = 'EVALUAR AVANCE ✓';
+                    return true;
+                } else {
+                    allQuestionsCompletedMessage.classList.add('hidden');
+                    document.getElementById('action-buttons').classList.remove('hidden');
+                    return false;
+                }
+            }
+            
+            function getNextQuestionInContinuousMode() {
+                const allAnsweredIds = new Set([...pastedAnsweredIds, ...answeredIdsInContinuousMode]);
+                
+                const remainingQuestions = availableQuestionsInContinuousMode.filter(q => 
+                    !allAnsweredIds.has(q.id)
+                );
+                
+                if (remainingQuestions.length === 0) {
+                    checkIfAllQuestionsCompleted();
+                    return null;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+                return remainingQuestions[randomIndex];
             }
 
             function initializeGraphingTool() {
@@ -2296,7 +2328,6 @@
                 }
             });
             
-            // DESHABILITAR BÚSQUEDA POR ID PARA INVITADOS
             function setupLookupForGuest() {
                 if (isGuest) {
                     lookupIdInput.disabled = true;
@@ -2304,7 +2335,6 @@
                     lookupBtn.classList.add('btn-disabled');
                     lookupIdInput.placeholder = "Función no disponible para invitados";
                     
-                    // Ocultar la sección completa de búsqueda
                     const lookupSection = document.querySelector('.space-y-2.border-t.border-gray-600.pt-4.mt-4');
                     if (lookupSection) {
                         lookupSection.style.display = 'none';
@@ -2446,11 +2476,9 @@
                 welcomeName.textContent = 'Invitado';
                 answeredIdsInput.disabled = true;
                 
-                // Configurar búsqueda por ID para invitados
                 setupLookupForGuest();
                 
                 loadData().then(() => {
-                    // Para invitados, forzar que al menos GENERAL y BÁSICO estén seleccionados
                     uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
                         if (tagEl.textContent === 'GENERAL') {
                             tagEl.classList.add('selected');
@@ -2514,12 +2542,10 @@
                 }
             });
             
-            // ========== FUNCIÓN MEJORADA PARA CARGAR DATOS ==========
             const loadData = async () => {
                 try {
                     console.log('🔍 Cargando preguntas...');
                     
-                    // 1. CARGAR DESDE GITHUB
                     const response = await fetch(QUIZ_JSON_URL);
                     
                     if (!response.ok) {
@@ -2529,25 +2555,19 @@
                     let jsonText = await response.text();
                     console.log('📄 JSON recibido');
                     
-                    // 2. CORREGIR ERRORES COMUNES (HACERLO SIMPLE)
-                    // Reemplazar todos los \\\\ por \\
                     jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
                     
-                    // Reemplazar caracteres raros
                     jsonText = jsonText.replace(/\\u00a0/g, ' ');
                     
-                    // Eliminar comas finales
                     jsonText = jsonText.replace(/,\s*}/g, '}');
                     jsonText = jsonText.replace(/,\s*\]/g, ']');
                     
-                    // 3. INTENTAR PARSEAR
                     try {
                         allQuestions = JSON.parse(jsonText);
                         console.log(`✅ Cargadas ${allQuestions.length} preguntas`);
                     } catch (parseError) {
                         console.error('❌ Error al parsear JSON:', parseError.message);
                         
-                        // USAR JSON DE EMERGENCIA
                         console.log('🔄 Usando preguntas de emergencia...');
                         allQuestions = [
                             {
@@ -2587,7 +2607,6 @@
                         ];
                     }
                     
-                    // 4. MOSTRAR ESTADÍSTICAS
                     statsTotal.textContent = allQuestions.length;
                     populateTagFilters();
                     updateQuestionStats();
@@ -2608,13 +2627,27 @@
                 pastedAnsweredIds = new Set(pastedIds.filter(id => allValidIds.has(id)));
                 statsAnsweredTotal.textContent = pastedAnsweredIds.size;
                 statsRemainingTotal.textContent = allQuestions.length - pastedAnsweredIds.size;
+                
                 const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                
                 let filteredQuestions = allQuestions;
-                if (selectedUniTags.length > 0) {
+                if (selectedUniTags.length > 0 && selectedLevelTags.length > 0) {
+                    filteredQuestions = allQuestions.filter(q => {
+                        const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
+                        const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
+                        return hasUniTag && hasLevelTag;
+                    });
+                } else if (selectedUniTags.length > 0) {
                     filteredQuestions = allQuestions.filter(q =>
                         q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag))
                     );
+                } else if (selectedLevelTags.length > 0) {
+                    filteredQuestions = allQuestions.filter(q =>
+                        q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag))
+                    );
                 }
+                
                 const answeredInFilter = filteredQuestions.filter(q => pastedAnsweredIds.has(q.id)).length;
                 statsTotalFiltered.textContent = filteredQuestions.length;
                 statsAnsweredFiltered.textContent = answeredInFilter;
@@ -2632,7 +2665,6 @@
                     const tagEl = document.createElement('span');
                     tagEl.textContent = tag;
                     tagEl.className = 'tag';
-                    // Seleccionar automáticamente GENERAL
                     if (tag.toUpperCase() === 'GENERAL') {
                         tagEl.classList.add('selected');
                     }
@@ -2647,7 +2679,6 @@
                     const tagEl = document.createElement('span');
                     tagEl.textContent = tag;
                     tagEl.className = 'tag';
-                    // Seleccionar automáticamente BÁSICO
                     if (tag.toUpperCase() === 'BÁSICO') {
                         tagEl.classList.add('selected');
                     }
@@ -2690,7 +2721,6 @@
                 if (isGameMode) {
                     num = 20;
                 } else if (isContinuousMode) {
-                    // No specific number needed yet
                 } else if (isGuest) {
                     num = 10;
                 } else {
@@ -2700,7 +2730,6 @@
                 const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                 const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                 
-                // Validación: al menos un filtro en cada categoría
                 if (selectedUniTags.length === 0) {
                     errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
                     return;
@@ -2749,7 +2778,15 @@
                 }
                 
                 if (isContinuousMode) {
-                    quizQuestions = finalQuestionPool;
+                    availableQuestionsInContinuousMode = finalQuestionPool;
+                    quizQuestions = [];
+                    const firstQuestion = getNextQuestionInContinuousMode();
+                    if (firstQuestion) {
+                        quizQuestions = [firstQuestion];
+                    } else {
+                        errorMessage.textContent = 'Ya has respondido todas las preguntas con estos filtros. Por favor, selecciona otros filtros.';
+                        return;
+                    }
                 } else {
                     const finalQuestionCount = Math.min(num, availableCount);
                     if (!isGameMode && finalQuestionCount < 5) {
@@ -2771,10 +2808,17 @@
                 seconds = 0;
                 totalQuestionTime = 0;
                 consecutiveCorrect = 0;
+                answeredIdsInContinuousMode.clear();
                 
-                userAnswers = quizQuestions.map(q => ({
-                    question: q, status: 'unanswered', selected: null, timeSpent: 0
-                }));
+                if (isContinuousMode) {
+                    userAnswers = quizQuestions.map(q => ({
+                        question: q, status: 'unanswered', selected: null, timeSpent: 0
+                    }));
+                } else {
+                    userAnswers = quizQuestions.map(q => ({
+                        question: q, status: 'unanswered', selected: null, timeSpent: 0
+                    }));
+                }
                 
                 screens.setup.classList.add('hidden');
                 screens.results.classList.add('hidden');
@@ -2809,8 +2853,11 @@
                 }
                 initializeGraphingTool();
                 
-                // Iniciar animación del botón EVALUAR
                 startEvaluateEmojiAnimation();
+                
+                // RESET: Show buttons, hide message
+                document.getElementById('action-buttons').classList.remove('hidden');
+                allQuestionsCompletedMessage.classList.add('hidden');
             }
 
             function evaluateCurrentAnswer() {
@@ -2826,6 +2873,10 @@
                 
                 currentAnswer.selected = selectedText;
                 currentAnswer.timeSpent = timeSpent;
+                
+                if (isContinuousMode && question.id) {
+                    answeredIdsInContinuousMode.add(question.id);
+                }
                 
                 if (selectedText.includes('No puedo identificar')) {
                     currentAnswer.status = 'unidentified';
@@ -2864,18 +2915,43 @@
                 showFeedback();
                 updateButtonStates();
                 
-                // Detener animación del emoji y mostrar check
                 stopEvaluateEmojiAnimation();
+                
+                if (isContinuousMode) {
+                    checkIfAllQuestionsCompleted();
+                }
             }
             
             function displayQuestion() {
+                if (isContinuousMode && currentQuestionIndex >= userAnswers.length) {
+                    const nextQuestion = getNextQuestionInContinuousMode();
+                    if (nextQuestion) {
+                        userAnswers.push({
+                            question: nextQuestion, 
+                            status: 'unanswered', 
+                            selected: null, 
+                            timeSpent: 0
+                        });
+                    } else {
+                        checkIfAllQuestionsCompleted();
+                        return;
+                    }
+                }
+                
                 const currentAnswer = userAnswers[currentQuestionIndex];
                 const { question } = currentAnswer;
                 justificationBox.classList.add('hidden');
                 justificationText.innerHTML = '';
-                progressBar.style.width = `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
+                
+                if (isContinuousMode) {
+                    progressBar.style.width = '100%'; 
+                    totalQuestionsNum.textContent = '∞';
+                } else {
+                    progressBar.style.width = `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
+                    totalQuestionsNum.textContent = quizQuestions.length;
+                }
+                
                 currentQuestionNum.textContent = currentQuestionIndex + 1;
-                totalQuestionsNum.textContent = isContinuousMode ? '∞' : quizQuestions.length;
                 questionIdDisplay.textContent = question.id || 'N/A';
                 uniTagsDisplay.innerHTML = (question.uni_tags || []).map(t => `<span class="uni-tag-display">${t}</span>`).join(' ');
                 levelTagDisplay.innerHTML = (question.level_tag || []).map(t => `<span class="level-tag-display">${t}</span>`).join(' ');
@@ -2955,13 +3031,10 @@
                     
                     button.addEventListener('click', () => {
                         if (currentAnswer.status === 'unanswered') {
-                            // Remover selección anterior
                             document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
                             
-                            // Marcar como seleccionada
                             button.classList.add('selected');
                             
-                            // Habilitar botón EVALUAR
                             evaluateBtn.disabled = false;
                         }
                     });
@@ -2969,7 +3042,6 @@
                     optionsContainer.appendChild(button);
                 });
                 
-                // Procesar MathJax después de renderizar
                 setTimeout(() => {
                     MathJax.typesetPromise();
                 }, 100);
@@ -2978,11 +3050,9 @@
                 if (currentAnswer.status !== 'unanswered') {
                     showFeedback();
                 } else {
-                    // Reiniciar animación del botón EVALUAR
                     startEvaluateEmojiAnimation();
                 }
                 
-                // Deshabilitar botón EVALUAR al cargar nueva pregunta
                 evaluateBtn.disabled = true;
             }
 
@@ -3002,30 +3072,23 @@
                 const isAnswered = userAnswers[currentQuestionIndex].status !== 'unanswered';
                 const isLastQuestion = currentQuestionIndex === userAnswers.length - 1;
 
-                // Los botones siempre están visibles, no se ocultan
                 prevBtn.disabled = currentQuestionIndex === 0;
                 
                 if (isAnswered) {
                     nextBtn.disabled = false;
                     evaluateBtn.disabled = true;
                     
-                    // Detener animación del emoji
                     stopEvaluateEmojiAnimation();
                     
-                    // Cambiar texto del botón siguiente si es la última pregunta
                     if (isLastQuestion && !isContinuousMode) {
-                        nextBtn.textContent = 'Ver Resultados';
+                        nextBtn.textContent = 'VER RESULTADOS';
                     } else {
-                        nextBtn.textContent = 'Siguiente →';
+                        nextBtn.textContent = 'SIGUIENTE →';
                     }
                 } else {
                     nextBtn.disabled = true;
-                    
-                    // El botón EVALUAR se habilita solo cuando hay una opción seleccionada
-                    // Esto se maneja en el evento click de las opciones
                 }
                 
-                // Mostrar botón de evaluación si es modo continuo
                 finishBtn.classList.toggle('hidden', !isContinuousMode);
             }
 
@@ -3055,16 +3118,34 @@
                 }
             }
             
-            // Event listener para el botón EVALUAR
             if (evaluateBtn) {
                 evaluateBtn.addEventListener('click', evaluateCurrentAnswer);
             }
             
+            if (forceEvaluateBtn) {
+                forceEvaluateBtn.addEventListener('click', endQuiz);
+            }
+            
             nextBtn.addEventListener('click', () => {
-                if (currentQuestionIndex < quizQuestions.length - 1) {
+                if (currentQuestionIndex < userAnswers.length - 1) {
                     currentQuestionIndex++;
                     questionStartTime = Date.now();
                     displayQuestion();
+                } else if (isContinuousMode) {
+                    const nextQuestion = getNextQuestionInContinuousMode();
+                    if (nextQuestion) {
+                        userAnswers.push({
+                            question: nextQuestion, 
+                            status: 'unanswered', 
+                            selected: null, 
+                            timeSpent: 0
+                        });
+                        currentQuestionIndex = userAnswers.length - 1;
+                        questionStartTime = Date.now();
+                        displayQuestion();
+                    } else {
+                        checkIfAllQuestionsCompleted();
+                    }
                 } else if (!isContinuousMode) {
                     endQuiz();
                 }
@@ -3086,10 +3167,27 @@
                 updateLiveScore();
                 updateEvaluationButton();
                 
-                if (currentQuestionIndex < quizQuestions.length - 1) {
+                if (currentQuestionIndex < userAnswers.length - 1) {
                     currentQuestionIndex++;
                     questionStartTime = Date.now();
                     displayQuestion();
+                } else if (isContinuousMode) {
+                    const nextQuestion = getNextQuestionInContinuousMode();
+                    if (nextQuestion) {
+                        userAnswers.push({
+                            question: nextQuestion, 
+                            status: 'unanswered', 
+                            selected: null, 
+                            timeSpent: 0
+                        });
+                        currentQuestionIndex = userAnswers.length - 1;
+                        questionStartTime = Date.now();
+                        displayQuestion();
+                    } else {
+                        checkIfAllQuestionsCompleted();
+                        showFeedback();
+                        updateButtonStates();
+                    }
                 } else if (!isContinuousMode) {
                     endQuiz();
                 } else {
@@ -3142,7 +3240,7 @@
                 if (isGuest) return;
                 
                 const formData = new FormData();
-                formData.append('EvaluationName', "🚀 FÍSICA 🍎 (Simulador global)");
+                formData.append('EvaluationName', "CIENCIAS DE LA SALUD Y BIOLOGÍA");
                 formData.append('Name', currentUser.name);
                 formData.append('Email', currentUser.email);
                 formData.append('WhatsApp', currentUser.whatsapp);
@@ -3294,6 +3392,9 @@
                     .map(a => a.question.id);
 
                 const combinedIds = new Set([...pastedAnsweredIds, ...answeredInThisSession]);
+                if (isContinuousMode) {
+                    answeredIdsInContinuousMode.forEach(id => combinedIds.add(id));
+                }
                 const sortedIds = [...combinedIds].sort();
                 const idsString = sortedIds.join(', ');
                 answeredIdsOutput.value = idsString;
@@ -3346,9 +3447,7 @@
                 return array;
             }
             
-            // ========== BÚSQUEDA MEJORADA POR ID ==========
             lookupBtn.addEventListener('click', () => {
-                // Si es invitado, no permitir búsqueda
                 if (isGuest) {
                     showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
                     return;
@@ -3378,7 +3477,6 @@
                 }
             });
             
-            // Permitir buscar con Enter
             lookupIdInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     lookupBtn.click();
