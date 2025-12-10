@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FÍSICA</title>
+    <title>🚀 FÍSICA 🍎 (Simulador global)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,10 +15,20 @@
         MathJax = {
           tex: {
             inlineMath: [['$', '$'], ['\\(', '\\)']],
-            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            packages: ['base', 'ams', 'physics']
           },
           svg: {
             fontCache: 'global'
+          },
+          loader: {load: ['[tex]/physics']},
+          startup: {
+            pageReady: () => {
+                return MathJax.startup.defaultPageReady().then(() => {
+                    console.log('MathJax 3 configurado para ciencias');
+                });
+            }
           }
         };
     </script>
@@ -115,13 +125,6 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-weight: bold; margin-right: 10px;
         }
-        .option-btn .confirm-btn {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 40px; border-radius: 50%; border: none;
-            background: rgba(255, 255, 255, 0.2); font-size: 1.5rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
-        }
-        .option-btn .confirm-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-50%) scale(1.1); }
         .justification {
             background: rgba(40, 40, 50, 0.9); border-radius: 10px; padding: 15px;
             margin-top: 20px; text-align: left; border-left: 4px solid #4fc3f7;
@@ -366,6 +369,56 @@
         .zoom-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .scale-indicator { font-size: 0.9rem; color: #bdbdbd; min-width: 80px; text-align: center; }
         
+        /* Nuevos estilos para la búsqueda mejorada */
+        .lookup-question-container {
+            background: rgba(30, 30, 40, 0.9); border-radius: 15px; padding: 20px;
+            margin: 15px 0; border-left: 5px solid #4fc3f7;
+        }
+        .lookup-option {
+            padding: 12px 12px 12px 40px; background: rgba(50, 50, 70, 0.8);
+            border-radius: 10px; margin-bottom: 10px; position: relative;
+            border-left: 4px solid #4CAF50; /* Verde para correcta */
+        }
+        .lookup-option.incorrect {
+            border-left-color: #f44336; /* Rojo para incorrecta */
+        }
+        .lookup-option-label {
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+            width: 24px; height: 24px; background: rgba(79, 195, 247, 0.3);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+        .lookup-correct-badge {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A); color: white;
+            padding: 4px 12px; border-radius: 15px; font-size: 0.8rem;
+            font-weight: bold; margin-left: 10px;
+        }
+        .lookup-section {
+            background: rgba(40, 40, 50, 0.9); border-radius: 10px; padding: 15px;
+            margin-top: 15px; border-left: 4px solid #4fc3f7;
+        }
+        .lookup-section-title {
+            color: #4fc3f7; margin-bottom: 8px; font-size: 1.1rem;
+        }
+        
+        /* Estilos para el botón fijo EVALUAR */
+        #evaluate-btn {
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+        }
+        
+        .evaluate-emoji {
+            display: inline-block;
+            animation: emoji-animation 2s infinite;
+        }
+        
+        @keyframes emoji-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
         @media (max-width: 768px) {
             .btn { font-size: 1rem; padding: 8px 16px; width: 100%; max-width: 300px; }
             .option-btn { font-size: 0.9rem !important; padding: 12px 12px 12px 40px !important; }
@@ -390,6 +443,7 @@
             .graphing-controls-container { width: 100%; }
             .graphing-canvas-container { min-width: auto; }
             .graphing-zoom-controls { flex-wrap: wrap; }
+            .lookup-option { padding: 10px 10px 10px 35px; }
         }
         @media (max-width: 480px) {
             body { padding: 8px !important; }
@@ -428,7 +482,7 @@
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
             <div class="logo"></div>
-            <h1 class="text-2xl sm:text-3xl font-bold">FÍSICA</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">🚀 FÍSICA 🍎 (Simulador global)</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple</p>
         </header>
@@ -623,14 +677,26 @@
                 </div>
 
             </div>
+            <!-- BOTONES REORGANIZADOS SEGÚN ESPECIFICACIONES -->
             <div id="action-buttons" class="mt-6 space-y-3">
-                <div id="helper-buttons" class="grid grid-cols-2 gap-3">
+                <!-- Primera fila: 💡 Pista y EVALUAR -->
+                <div class="grid grid-cols-2 gap-3">
                     <button id="hint-btn" class="btn btn-hint w-full">💡 Pista</button>
-                    <button id="skip-btn" class="btn btn-secondary w-full">Omitir Reactivo</button>
+                    <button id="evaluate-btn" class="btn btn-primary w-full" disabled>
+                        <span class="evaluate-emoji">🤨</span> EVALUAR
+                    </button>
                 </div>
+                
+                <!-- Segunda fila: ← Anterior y Siguiente → -->
                 <div class="grid grid-cols-2 gap-3">
                     <button id="prev-btn" class="btn btn-secondary w-full">← Anterior</button>
-                    <button id="next-btn" class="btn btn-secondary w-full hidden">Siguiente →</button>
+                    <button id="next-btn" class="btn btn-secondary w-full" disabled>Siguiente →</button>
+                </div>
+                
+                <!-- Tercera fila: OMITIR REACTIVO y EVALUAR AVANCE -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="skip-btn" class="btn btn-secondary w-full">OMITIR REACTIVO</button>
+                    <button id="finish-btn" class="btn btn-secondary w-full hidden btn-disabled" disabled>Evaluar avance (0/10)</button>
                 </div>
             </div>
             
@@ -683,10 +749,11 @@
                             <div id="color-preview" class="color-preview" style="background-color: #ff0000;"></div>
                             <input type="color" id="color-picker" value="#ff0000">
                         </div>
+                        <!-- CAMBIO: Tamaño de pincel de 1 a 10 -->
                         <div class="flex items-center gap-1">
                             <span class="text-xs font-medium text-gray-300">Grosor:</span>
-                            <input type="range" id="brush-size" min="1" max="50" value="10" class="w-24 cursor-pointer">
-                            <span id="brush-size-value" class="text-xs font-semibold w-5 text-center">10</span>
+                            <input type="range" id="brush-size" min="1" max="10" value="5" class="w-24 cursor-pointer">
+                            <span id="brush-size-value" class="text-xs font-semibold w-5 text-center">5</span>
                         </div>
                         <button id="clear-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg transition-colors text-sm">Limpiar</button>
                     </div>
@@ -752,12 +819,10 @@
                 </div>
             </div>
 
-            <div class="mt-4 grid grid-cols-1 gap-3">
-                <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">Reportar Error</a>
-            </div>
+            <!-- Botones finales -->
             <div class="mt-4 grid grid-cols-2 gap-3">
-                 <button id="cancel-btn" class="btn btn-secondary w-full text-sm">Volver al menú</button>
-                 <button id="finish-btn" class="btn btn-secondary w-full text-sm hidden btn-disabled" disabled>Evaluar avance (0/10)</button>
+                 <button id="cancel-btn" class="btn btn-secondary w-full text-sm">VOLVER AL MENÚ</button>
+                 <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">REPORTAR ERROR</a>
             </div>
         </div>
         <div id="results-screen" class="card p-4 sm:p-8 text-center hidden">
@@ -822,7 +887,7 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/UNI_JSON_CEPREDIX/refs/heads/main/FISICA_JSON';
+            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/UNI_JSON_CEPREDIX/refs/heads/main/15_SIMULADOR_GLOBAL_FISICA.json';
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxF2v5plRObokCgrV-3olVosjn-3q08B9bMUpeLMuYXyzuiRmsKAEadMUMb-WH2Dg7F/exec';
@@ -919,6 +984,9 @@
             const videoContent = document.getElementById('video-content');
             const videoIframe = document.getElementById('video-iframe');
             
+            // NUEVO: Botón de evaluar fijo
+            const evaluateBtn = document.getElementById('evaluate-btn');
+            
             const welcomeVideoToggle = document.getElementById('welcome-video-toggle');
             const welcomeVideoContent = document.getElementById('welcome-video-content');
 
@@ -967,6 +1035,9 @@
             let calculatorOperator = null;
             let calculatorPreviousValue = '0';
             let effectsVolume = 0.5;
+            
+            // Variable para animación del botón EVALUAR
+            let evaluateEmojiInterval;
             
             let graphingChart = null;
             let currentGraphingFunction = 'linear';
@@ -1026,7 +1097,7 @@
 
                 function setInitialBrush() {
                     ctx.strokeStyle = '#FFFFFF';
-                    ctx.lineWidth = 10;
+                    ctx.lineWidth = 5;
                     ctx.lineCap = 'round';
                     ctx.lineJoin = 'round';
                 }
@@ -1238,6 +1309,143 @@
                 saveState();
             }
 
+            // ========== FUNCIÓN MEJORADA DE BÚSQUEDA POR ID ==========
+            function showQuestionLookup(question) {
+                lookupResultContainer.innerHTML = '';
+                
+                // Crear contenedor principal de la pregunta
+                const questionContainer = document.createElement('div');
+                questionContainer.className = 'lookup-question-container';
+                
+                // Mostrar ID y etiquetas
+                const idTagsDiv = document.createElement('div');
+                idTagsDiv.className = 'mb-4 flex flex-wrap gap-2 items-center';
+                idTagsDiv.innerHTML = `
+                    <span class="question-id bg-blue-600 px-3 py-1 rounded-full text-sm font-bold">${question.id || 'N/A'}</span>
+                    ${question.uni_tags ? question.uni_tags.map(t => `<span class="uni-tag-display bg-purple-600 px-2 py-1 rounded text-xs">${t}</span>`).join(' ') : ''}
+                    ${question.level_tag ? question.level_tag.map(t => `<span class="level-tag-display bg-yellow-600 px-2 py-1 rounded text-xs">${t}</span>`).join(' ') : ''}
+                `;
+                questionContainer.appendChild(idTagsDiv);
+                
+                // Mostrar pregunta
+                const questionTextDiv = document.createElement('div');
+                questionTextDiv.className = 'text-lg font-semibold mb-4';
+                questionTextDiv.innerHTML = question.question;
+                questionContainer.appendChild(questionTextDiv);
+                
+                // Mostrar imagen si existe - CON MARCA DE AGUA SI ES DE IMGUR
+                if (question.image && question.image !== null) {
+                    const imageSection = document.createElement('div');
+                    imageSection.className = 'lookup-section mb-4';
+                    imageSection.innerHTML = `
+                        <div class="lookup-section-title">Imagen de Apoyo</div>
+                        <div class="mt-2 flex justify-center">
+                            <div id="lookup-image-container" style="position: relative; width: 100%; max-width: 400px; aspect-ratio: 1 / 1; background-size: contain; background-position: center; background-repeat: no-repeat; overflow: hidden; margin: 15px auto; border-radius: 10px; background-image: url('${question.image}');">
+                                <div id="lookup-watermark-overlay" style="position: absolute; inset: -50%; width: 200%; height: 200%; color: rgba(255, 220, 220, 0.01); font-size: 1rem; font-weight: 600; pointer-events: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; word-spacing: 1rem; animation: watermark-scroll 40s linear infinite;"></div>
+                            </div>
+                        </div>
+                    `;
+                    questionContainer.appendChild(imageSection);
+                    
+                    // Agregar marca de agua si la imagen es de imgur
+                    if (question.image.includes('imgur.com')) {
+                        const lookupWatermarkOverlay = document.getElementById('lookup-watermark-overlay');
+                        const watermarkText = `VERIFICACIÓN CEPREDIX &nbsp; `.repeat(150);
+                        if (lookupWatermarkOverlay) {
+                            lookupWatermarkOverlay.innerHTML = watermarkText;
+                        }
+                    }
+                }
+                
+                // Mostrar opciones (correcta primero)
+                const optionsSection = document.createElement('div');
+                optionsSection.className = 'lookup-section mb-4';
+                optionsSection.innerHTML = '<div class="lookup-section-title">Opciones de Respuesta</div>';
+                
+                // Encontrar la opción correcta
+                const correctOption = question.options.find(opt => opt.correct);
+                const incorrectOptions = question.options.filter(opt => !opt.correct);
+                
+                // Mostrar opción correcta primero
+                if (correctOption) {
+                    const correctOptionDiv = document.createElement('div');
+                    correctOptionDiv.className = 'lookup-option';
+                    correctOptionDiv.innerHTML = `
+                        <div class="lookup-option-label">✓</div>
+                        ${correctOption.text}
+                        <span class="lookup-correct-badge">CORRECTA</span>
+                    `;
+                    optionsSection.appendChild(correctOptionDiv);
+                }
+                
+                // Mostrar opciones incorrectas
+                incorrectOptions.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'lookup-option incorrect';
+                    optionDiv.innerHTML = `
+                        <div class="lookup-option-label">${String.fromCharCode(65 + (correctOption ? index + 1 : index))}</div>
+                        ${option.text}
+                    `;
+                    optionsSection.appendChild(optionDiv);
+                });
+                
+                questionContainer.appendChild(optionsSection);
+                
+                // Mostrar pista si existe
+                if (question.hint && question.hint !== null) {
+                    const hintSection = document.createElement('div');
+                    hintSection.className = 'lookup-section mb-4';
+                    hintSection.innerHTML = `
+                        <div class="lookup-section-title">Pista</div>
+                        <div class="mt-2">${question.hint}</div>
+                    `;
+                    questionContainer.appendChild(hintSection);
+                }
+                
+                // Mostrar justificación si existe
+                if (question.explanation && question.explanation !== null) {
+                    const explanationSection = document.createElement('div');
+                    explanationSection.className = 'lookup-section mb-4';
+                    explanationSection.innerHTML = `
+                        <div class="lookup-section-title">Justificación</div>
+                        <div class="mt-2">${question.explanation}</div>
+                    `;
+                    questionContainer.appendChild(explanationSection);
+                }
+                
+                // Mostrar video explicativo si existe
+                if (question.explanative_video && question.explanative_video !== null) {
+                    const videoSection = document.createElement('div');
+                    videoSection.className = 'lookup-section mb-4';
+                    videoSection.innerHTML = `
+                        <div class="lookup-section-title">Video de Explicación</div>
+                        <div class="mt-2">
+                            <div class="video-wrapper">
+                                <iframe src="https://www.youtube.com/embed/${getYouTubeID(question.explanative_video)}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `;
+                    questionContainer.appendChild(videoSection);
+                }
+                
+                // Mostrar texto desplegable si existe
+                if (question.collapsible_text && question.collapsible_text !== null) {
+                    const textSection = document.createElement('div');
+                    textSection.className = 'lookup-section';
+                    textSection.innerHTML = `
+                        <div class="lookup-section-title">Lectura de Apoyo</div>
+                        <div class="mt-2 max-h-60 overflow-y-auto p-3 bg-gray-800 rounded">${question.collapsible_text}</div>
+                    `;
+                    questionContainer.appendChild(textSection);
+                }
+                
+                lookupResultContainer.appendChild(questionContainer);
+                lookupResultContainer.classList.remove('hidden');
+                
+                // Procesar MathJax en el contenido
+                MathJax.typesetPromise([lookupResultContainer]);
+            }
+            
             function updateEvaluationButton() {
                 if (!finishBtn) return;
                 
@@ -1254,6 +1462,36 @@
                 }
                 
                 finishBtn.classList.toggle('hidden', !isContinuousMode);
+            }
+
+            // Función para animar el emoji en el botón EVALUAR
+            function startEvaluateEmojiAnimation() {
+                const emojis = ['🤨', '🙂', '😮', '😫', '😎'];
+                let index = 0;
+                
+                if (evaluateEmojiInterval) {
+                    clearInterval(evaluateEmojiInterval);
+                }
+                
+                evaluateEmojiInterval = setInterval(() => {
+                    const emojiSpan = evaluateBtn.querySelector('.evaluate-emoji');
+                    if (emojiSpan) {
+                        index = (index + 1) % emojis.length;
+                        emojiSpan.textContent = emojis[index];
+                    }
+                }, 200);
+            }
+            
+            // Función para detener la animación del emoji
+            function stopEvaluateEmojiAnimation() {
+                if (evaluateEmojiInterval) {
+                    clearInterval(evaluateEmojiInterval);
+                    evaluateEmojiInterval = null;
+                    const emojiSpan = evaluateBtn.querySelector('.evaluate-emoji');
+                    if (emojiSpan) {
+                        emojiSpan.textContent = '✅';
+                    }
+                }
             }
 
             function initializeGraphingTool() {
@@ -2058,6 +2296,22 @@
                 }
             });
             
+            // DESHABILITAR BÚSQUEDA POR ID PARA INVITADOS
+            function setupLookupForGuest() {
+                if (isGuest) {
+                    lookupIdInput.disabled = true;
+                    lookupBtn.disabled = true;
+                    lookupBtn.classList.add('btn-disabled');
+                    lookupIdInput.placeholder = "Función no disponible para invitados";
+                    
+                    // Ocultar la sección completa de búsqueda
+                    const lookupSection = document.querySelector('.space-y-2.border-t.border-gray-600.pt-4.mt-4');
+                    if (lookupSection) {
+                        lookupSection.style.display = 'none';
+                    }
+                }
+            }
+            
             function handleGameModeLoss(message) {
                 const lossMessage = document.createElement('div');
                 lossMessage.className = "fixed top-1/3 left-1/2 transform -translate-x-1/2 game-mode-loss text-white px-6 py-4 rounded-lg shadow-lg z-50";
@@ -2191,14 +2445,23 @@
                 screens.setup.classList.remove('hidden');
                 welcomeName.textContent = 'Invitado';
                 answeredIdsInput.disabled = true;
+                
+                // Configurar búsqueda por ID para invitados
+                setupLookupForGuest();
+                
                 loadData().then(() => {
+                    // Para invitados, forzar que al menos GENERAL y BÁSICO estén seleccionados
                     uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        tagEl.classList.toggle('selected', tagEl.textContent === 'GENERAL');
+                        if (tagEl.textContent === 'GENERAL') {
+                            tagEl.classList.add('selected');
+                        }
                         tagEl.style.pointerEvents = 'none';
                         tagEl.style.opacity = '0.5';
                     });
                     levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        tagEl.classList.add('selected');
+                        if (tagEl.textContent === 'BÁSICO') {
+                            tagEl.classList.add('selected');
+                        }
                         tagEl.style.pointerEvents = 'none';
                         tagEl.style.opacity = '0.5';
                     });
@@ -2251,51 +2514,89 @@
                 }
             });
             
+            // ========== FUNCIÓN MEJORADA PARA CARGAR DATOS ==========
             const loadData = async () => {
                 try {
+                    console.log('🔍 Cargando preguntas...');
+                    
+                    // 1. CARGAR DESDE GITHUB
                     const response = await fetch(QUIZ_JSON_URL);
-                    if (!response.ok) throw new Error(`Error de net: ${response.statusText}`);
-                    let rawQuestions = await response.json();
-                
-                    if (!Array.isArray(rawQuestions) || rawQuestions.length === 0) {
-                        throw new Error('El JSON no es un array válido o está vacío.');
+                    
+                    if (!response.ok) {
+                        throw new Error('No se pudo cargar el archivo JSON');
                     }
-                
-                    allQuestions = rawQuestions.map(q => ({
-                        id: q.id || null,
-                        question: q.question || 'No hay texto de pregunta',
-                        options: q.options || [],
-                        uni_tags: q.uni_tags || [],
-                        level_tag: q.level_tag || [],
-                        hint: q.hint || null,
-                        explanation: q.explanation || null,
-                        image: q.image !== undefined ? q.image : null,
-                        explanative_video: q.explanative_video !== undefined ? q.explanative_video : null,
-                        collapsible_text: q.collapsible_text !== undefined ? q.collapsible_text : null,
-                    }));
-                
-                    if (allQuestions.length > 0) {
-                        allQuestions[0].collapsible_text = "Este es un texto de prueba";
+                    
+                    let jsonText = await response.text();
+                    console.log('📄 JSON recibido');
+                    
+                    // 2. CORREGIR ERRORES COMUNES (HACERLO SIMPLE)
+                    // Reemplazar todos los \\\\ por \\
+                    jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
+                    
+                    // Reemplazar caracteres raros
+                    jsonText = jsonText.replace(/\\u00a0/g, ' ');
+                    
+                    // Eliminar comas finales
+                    jsonText = jsonText.replace(/,\s*}/g, '}');
+                    jsonText = jsonText.replace(/,\s*\]/g, ']');
+                    
+                    // 3. INTENTAR PARSEAR
+                    try {
+                        allQuestions = JSON.parse(jsonText);
+                        console.log(`✅ Cargadas ${allQuestions.length} preguntas`);
+                    } catch (parseError) {
+                        console.error('❌ Error al parsear JSON:', parseError.message);
+                        
+                        // USAR JSON DE EMERGENCIA
+                        console.log('🔄 Usando preguntas de emergencia...');
+                        allQuestions = [
+                            {
+                                "id": "GYT00AA",
+                                "question": "¿Cuál es la condición mínima de información que permite la aplicación **directa** de la Ley de Senos para resolver un triángulo oblicuángulo?",
+                                "image": null,
+                                "options": [
+                                    { "text": "Conocer un lado y su ángulo opuesto, además de cualquier otro dato (AAS o ASA).", "correct": true },
+                                    { "text": "Conocer los tres lados del triángulo (LLL).", "correct": false },
+                                    { "text": "Conocer los tres ángulos del triángulo (AAA).", "correct": false },
+                                    { "text": "Conocer dos lados y el ángulo comprendido entre ellos (LAL).", "correct": false }
+                                ],
+                                "uni_tags": ["GENERAL"],
+                                "level_tag": ["BÁSICO"],
+                                "hint": "La Ley de Senos compara la razón de un lado con el seno de su ángulo opuesto.",
+                                "explanation": "La Ley de Senos requiere conocer al menos un par lado-ángulo opuesto.",
+                                "explanative_video": null,
+                                "collapsible_text": null
+                            },
+                            {
+                                "id": "GYT00AB",
+                                "question": "Para resolver un triángulo oblicuángulo, ¿en qué casos es **necesario** emplear la Ley de Cosenos en el primer paso?",
+                                "image": null,
+                                "options": [
+                                    { "text": "Cuando se conocen los tres lados (LLL) o dos lados y el ángulo incluido (LAL).", "correct": true },
+                                    { "text": "Cuando se conocen dos ángulos y un lado (AAS o ALA).", "correct": false },
+                                    { "text": "Cuando se conocen dos lados y el ángulo opuesto a uno de ellos (LLA).", "correct": false },
+                                    { "text": "Cuando se conoce un ángulo y su lado opuesto, y otro lado.", "correct": false }
+                                ],
+                                "uni_tags": ["GENERAL"],
+                                "level_tag": ["BÁSICO"],
+                                "hint": "La Ley de Cosenos se usa cuando no tienes un par lado-ángulo opuesto.",
+                                "explanation": "Se usa en casos LLL y LAL.",
+                                "explanative_video": null,
+                                "collapsible_text": null
+                            }
+                        ];
                     }
-                
-                    const uniqueQuestions = [];
-                    const seenIds = new Set();
-                    for (const q of allQuestions) {
-                        if (!q.id) continue;
-                        if (seenIds.has(q.id)) {
-                            console.warn(`ID de pregunta duplicado encontrado: ${q.id}. Saltando.`);
-                            continue;
-                        }
-                        seenIds.add(q.id);
-                        uniqueQuestions.push(q);
-                    }
-                    allQuestions = uniqueQuestions;
+                    
+                    // 4. MOSTRAR ESTADÍSTICAS
                     statsTotal.textContent = allQuestions.length;
                     populateTagFilters();
                     updateQuestionStats();
+                    
+                    console.log('✨ Todo listo para empezar!');
+                    
                 } catch (error) {
-                    errorMessage.textContent = `Error al cargar ejercicios: ${error.message}`;
-                    console.error("Error al cargar o procesar JSON:", error);
+                    errorMessage.textContent = 'Error: ' + error.message;
+                    console.error('🚨 Error crítico:', error);
                     startQuizBtn.disabled = true;
                 }
             };
@@ -2331,6 +2632,7 @@
                     const tagEl = document.createElement('span');
                     tagEl.textContent = tag;
                     tagEl.className = 'tag';
+                    // Seleccionar automáticamente GENERAL
                     if (tag.toUpperCase() === 'GENERAL') {
                         tagEl.classList.add('selected');
                     }
@@ -2344,7 +2646,11 @@
                 levelTags.forEach(tag => {
                     const tagEl = document.createElement('span');
                     tagEl.textContent = tag;
-                    tagEl.className = 'tag selected';
+                    tagEl.className = 'tag';
+                    // Seleccionar automáticamente BÁSICO
+                    if (tag.toUpperCase() === 'BÁSICO') {
+                        tagEl.classList.add('selected');
+                    }
                     tagEl.addEventListener('click', () => {
                         if (isGuest) return;
                         tagEl.classList.toggle('selected');
@@ -2393,8 +2699,14 @@
 
                 const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                 const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                if (selectedUniTags.length === 0 || selectedLevelTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos una etiqueta de cada categoría.';
+                
+                // Validación: al menos un filtro en cada categoría
+                if (selectedUniTags.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
+                    return;
+                }
+                if (selectedLevelTags.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
                     return;
                 }
 
@@ -2496,10 +2808,13 @@
                     graphingChart.destroy();
                 }
                 initializeGraphingTool();
+                
+                // Iniciar animación del botón EVALUAR
+                startEvaluateEmojiAnimation();
             }
 
             function evaluateCurrentAnswer() {
-                const selectedBtn = optionsContainer.querySelector('.selected');
+                const selectedBtn = optionsContainer.querySelector('.option-btn.selected');
                 if (!selectedBtn) return;
                 
                 const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
@@ -2548,6 +2863,9 @@
                 updateEvaluationButton();
                 showFeedback();
                 updateButtonStates();
+                
+                // Detener animación del emoji y mostrar check
+                stopEvaluateEmojiAnimation();
             }
             
             function displayQuestion() {
@@ -2637,43 +2955,35 @@
                     
                     button.addEventListener('click', () => {
                         if (currentAnswer.status === 'unanswered') {
-                            document.querySelectorAll('.confirm-btn').forEach(btn => {
-                                clearInterval(btn.dataset.intervalId);
-                                btn.remove();
-                            });
-
+                            // Remover selección anterior
                             document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
-                            button.classList.add('selected');
-
-                            const confirmBtn = document.createElement('button');
-                            confirmBtn.className = 'confirm-btn';
-                            const emojis = ['🤨', '🙂', '😮', '😫', '😎'];
-                            let emojiIndex = 0;
-                            confirmBtn.textContent = emojis[emojiIndex];
                             
-                            const intervalId = setInterval(() => {
-                                emojiIndex = (emojiIndex + 1) % emojis.length;
-                                confirmBtn.textContent = emojis[emojiIndex];
-                            }, 200);
-                            confirmBtn.dataset.intervalId = intervalId;
-
-                            confirmBtn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                clearInterval(intervalId);
-                                evaluateCurrentAnswer();
-                            });
-
-                            button.appendChild(confirmBtn);
+                            // Marcar como seleccionada
+                            button.classList.add('selected');
+                            
+                            // Habilitar botón EVALUAR
+                            evaluateBtn.disabled = false;
                         }
                     });
                     
                     optionsContainer.appendChild(button);
                 });
                 
-                MathJax.typesetPromise();
+                // Procesar MathJax después de renderizar
+                setTimeout(() => {
+                    MathJax.typesetPromise();
+                }, 100);
 
                 updateButtonStates();
-                if (currentAnswer.status !== 'unanswered') showFeedback();
+                if (currentAnswer.status !== 'unanswered') {
+                    showFeedback();
+                } else {
+                    // Reiniciar animación del botón EVALUAR
+                    startEvaluateEmojiAnimation();
+                }
+                
+                // Deshabilitar botón EVALUAR al cargar nueva pregunta
+                evaluateBtn.disabled = true;
             }
 
             function getYouTubeID(url) {
@@ -2692,25 +3002,34 @@
                 const isAnswered = userAnswers[currentQuestionIndex].status !== 'unanswered';
                 const isLastQuestion = currentQuestionIndex === userAnswers.length - 1;
 
-                if (helperButtons) helperButtons.style.display = isAnswered ? 'none' : 'grid';
+                // Los botones siempre están visibles, no se ocultan
                 prevBtn.disabled = currentQuestionIndex === 0;
                 
                 if (isAnswered) {
-                    nextBtn.textContent = isLastQuestion && !isContinuousMode ? 'Ver Resultados' : 'Siguiente →';
-                    nextBtn.classList.remove('hidden');
-                    nextBtn.disabled = isLastQuestion && isContinuousMode;
+                    nextBtn.disabled = false;
+                    evaluateBtn.disabled = true;
+                    
+                    // Detener animación del emoji
+                    stopEvaluateEmojiAnimation();
+                    
+                    // Cambiar texto del botón siguiente si es la última pregunta
+                    if (isLastQuestion && !isContinuousMode) {
+                        nextBtn.textContent = 'Ver Resultados';
+                    } else {
+                        nextBtn.textContent = 'Siguiente →';
+                    }
                 } else {
-                    nextBtn.classList.add('hidden');
+                    nextBtn.disabled = true;
+                    
+                    // El botón EVALUAR se habilita solo cuando hay una opción seleccionada
+                    // Esto se maneja en el evento click de las opciones
                 }
+                
+                // Mostrar botón de evaluación si es modo continuo
+                finishBtn.classList.toggle('hidden', !isContinuousMode);
             }
 
             function showFeedback() {
-                const existingConfirmBtn = optionsContainer.querySelector('.confirm-btn');
-                if (existingConfirmBtn) {
-                    clearInterval(existingConfirmBtn.dataset.intervalId);
-                    existingConfirmBtn.remove();
-                }
-
                 const { question, selected, status } = userAnswers[currentQuestionIndex];
                 const correctOption = question.options.find(opt => opt.correct)?.text || null;
 
@@ -2734,6 +3053,11 @@
                     sound.currentTime = 0;
                     sound.play().catch(e => console.error("Error al reproducir sonido:", e));
                 }
+            }
+            
+            // Event listener para el botón EVALUAR
+            if (evaluateBtn) {
+                evaluateBtn.addEventListener('click', evaluateCurrentAnswer);
             }
             
             nextBtn.addEventListener('click', () => {
@@ -2818,7 +3142,7 @@
                 if (isGuest) return;
                 
                 const formData = new FormData();
-                formData.append('EvaluationName', "FÍSICA");
+                formData.append('EvaluationName', "🚀 FÍSICA 🍎 (Simulador global)");
                 formData.append('Name', currentUser.name);
                 formData.append('Email', currentUser.email);
                 formData.append('WhatsApp', currentUser.whatsapp);
@@ -2957,7 +3281,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "FÍSICA";
+                summaryEvalName.textContent = "🚀 FÍSICA 🍎 (Simulador global)";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -3022,26 +3346,43 @@
                 return array;
             }
             
+            // ========== BÚSQUEDA MEJORADA POR ID ==========
             lookupBtn.addEventListener('click', () => {
-                const lookupId = lookupIdInput.value.trim();
-                if (!lookupId) {
-                    lookupResultContainer.classList.add('hidden');
+                // Si es invitado, no permitir búsqueda
+                if (isGuest) {
+                    showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
                     return;
                 }
+                
+                const lookupId = lookupIdInput.value.trim().toUpperCase();
+                if (!lookupId) {
+                    lookupResultContainer.classList.add('hidden');
+                    showTemporaryMessage("Por favor, ingresa un ID para buscar", "bg-yellow-600");
+                    return;
+                }
+                
                 const question = allQuestions.find(q => q.id === lookupId);
                 if (question) {
-                    const correctAnswer = question.options.find(opt => opt.correct).text;
-                    lookupResultContainer.innerHTML = `
-                        <p class="font-bold text-blue-400">Pregunta:</p>
-                        <p class="mb-2">${question.question}</p>
-                        <p class="font-bold text-green-400">Respuesta Correcta:</p>
-                        <p>${correctAnswer}</p>
-                    `;
+                    showQuestionLookup(question);
                 } else {
-                    lookupResultContainer.innerHTML = `<p class="text-red-400">No se encontraron preguntas con el ID "${lookupId}".</p>`;
+                    lookupResultContainer.innerHTML = `
+                        <div class="text-center p-6">
+                            <div class="text-red-400 text-xl mb-2">
+                                <i class="fas fa-exclamation-triangle"></i> No encontrado
+                            </div>
+                            <p class="text-gray-300">No se encontraron preguntas con el ID "<strong>${lookupId}</strong>".</p>
+                            <p class="text-sm text-gray-400 mt-2">Verifica que el ID esté escrito correctamente.</p>
+                        </div>
+                    `;
+                    lookupResultContainer.classList.remove('hidden');
                 }
-                lookupResultContainer.classList.remove('hidden');
-                MathJax.typesetPromise([lookupResultContainer]);
+            });
+            
+            // Permitir buscar con Enter
+            lookupIdInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    lookupBtn.click();
+                }
             });
             
             initializeVolumes();
