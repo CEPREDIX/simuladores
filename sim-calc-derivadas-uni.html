@@ -138,18 +138,23 @@
         .timer-green { color: #4CAF50; }
         .timer-orange { color: #FF9800; }
         .timer-red { color: #f44336; }
+        
+        /* CALCULADORA CUADRADA (1:1) */
         .calculator-container {
             display: none; background: rgba(30, 30, 40, 0.9); border-radius: 15px;
             padding: 15px; margin: 20px auto 0; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            max-width: 280px; height: 340px; 
+            width: 300px; height: 300px; /* Relación 1:1 */
         }
+        /* BOTÓN CALCULADORA NARANJA */
         .calculator-toggle {
-            margin: 15px auto; display: block; background: linear-gradient(45deg, #9c27b0, #673ab7);
+            margin: 15px auto; display: block; 
+            background: linear-gradient(45deg, #ff9800, #ff5722); /* Naranja */
             width: 100%; max-width: 280px;
         }
         .calculator-display {
             width: 100%; padding: 12px; font-size: 1.5rem; background: rgba(0,0,0,0.3);
-            border: 2px solid #7e57c2; border-radius: 8px; margin-bottom: 12px;
+            border: 2px solid #ff9800; /* Naranja */
+            border-radius: 8px; margin-bottom: 12px;
             text-align: right; color: white; height: 60px; overflow: hidden;
         }
         .calculator-buttons { 
@@ -422,6 +427,107 @@
             100% { transform: scale(1); }
         }
         
+        /* ESTILOS PARA CHATBOT VERDE */
+        #chatbot-section { width: 100%; margin: 20px 0; }
+        #chatbot-toggle {
+            background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; color: white;
+            padding: 10px 15px; border-radius: 8px; cursor: pointer; display: flex;
+            align-items: center; justify-content: space-between; transition: all 0.3s ease;
+        }
+        #chatbot-toggle:hover { background: rgba(76, 175, 80, 0.4); }
+        #chatbot-content {
+            margin-top: 10px; background: rgba(0, 0, 0, 0.5); border-radius: 8px;
+            padding: 15px; overflow: hidden;
+        }
+        .chatbot-container {
+            background: rgba(30, 30, 40, 0.9); border-radius: 8px;
+            padding: 20px; margin-bottom: 15px;
+        }
+        .chatbot-title { color: #4CAF50; font-size: 1.3rem; margin-bottom: 15px; text-align: center; }
+        #chatbot-chat {
+            background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 15px;
+            height: 200px; overflow-y: auto; margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .chatbot-user { color: #4fc3f7; }
+        .chatbot-bot { color: #4CAF50; }
+        .chatbot-system {
+            color: #bdbdbd; font-style: italic; font-size: 13px;
+        }
+        #chatbot-input {
+            width: 70%; padding: 8px 12px; background: rgba(50, 50, 70, 0.8);
+            border: 1px solid rgba(76, 175, 80, 0.3); border-radius: 4px;
+            font-size: 0.9rem; color: white;
+        }
+        #chatbot-send {
+            padding: 8px 16px; background: linear-gradient(45deg, #4CAF50, #388E3C);
+            color: white; border: none; border-radius: 4px; cursor: pointer;
+            font-weight: 500; transition: all 0.2s; font-size: 0.9rem;
+        }
+        #chatbot-send:hover { background: linear-gradient(45deg, #388E3C, #2E7D32); }
+        
+        /* ESTILOS PARA PUBLICIDAD EN MODO INVITADO */
+        #advertisement-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 9999;
+            /* CAMBIO: Se cambió display: flex por display: none para evitar que aparezca al inicio */
+            display: none; 
+            flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        #advertisement-image {
+            max-width: 90%; max-height: 70%;
+            border-radius: 15px; box-shadow: 0 0 50px rgba(255, 152, 0, 0.5);
+            animation: pulse-ad 1s infinite alternate;
+        }
+        @keyframes pulse-ad {
+            from { transform: scale(0.95); box-shadow: 0 0 50px rgba(255, 152, 0, 0.5); }
+            to { transform: scale(1); box-shadow: 0 0 100px rgba(255, 152, 0, 0.8); }
+        }
+        #advertisement-countdown {
+            margin-top: 20px; color: #ff9800; font-size: 1.5rem; font-weight: bold;
+        }
+        #advertisement-skip {
+            margin-top: 20px; background: rgba(255, 152, 0, 0.3); 
+            border: 1px solid #ff9800; color: white; padding: 10px 20px;
+            border-radius: 8px; cursor: not-allowed; opacity: 0.5;
+        }
+        
+        /* ESTILOS PARA MODO SIMULACRO (ADVERTENCIA) */
+        .game-mode-warning {
+            animation: pulse-warning 1.5s infinite alternate;
+            background: linear-gradient(45deg, #ff9800, #ff5722, #ff9800);
+            background-size: 200% 200%;
+            border: 2px solid #ffcc00;
+            color: black;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+        @keyframes pulse-warning {
+            0% { 
+                box-shadow: 0 0 20px rgba(255, 152, 0, 0.7);
+                background-position: 0% 50%;
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(255, 87, 34, 0.9);
+                background-position: 100% 50%;
+            }
+        }
+        
+        /* PANTALLA DE FIN DE SIMULACRO */
+        #simulacro-end-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 9998;
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        #simulacro-end-image {
+            max-width: 90%; max-height: 60%; border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        #simulacro-end-timer {
+            color: #ff9800; font-size: 1.2rem; margin-bottom: 20px;
+        }
+        
         @media (max-width: 768px) {
             .btn { font-size: 1rem; padding: 8px 16px; width: 100%; max-width: 300px; }
             .option-btn { font-size: 0.9rem !important; padding: 12px 12px 12px 40px !important; }
@@ -447,6 +553,7 @@
             .graphing-canvas-container { min-width: auto; }
             .graphing-zoom-controls { flex-wrap: wrap; }
             .lookup-option { padding: 10px 10px 10px 35px; }
+            .calculator-container { width: 280px; height: 280px; }
         }
         @media (max-width: 480px) {
             body { padding: 8px !important; }
@@ -460,6 +567,7 @@
             #image-container { max-width: 100%; }
             .graphing-function-buttons { grid-template-columns: repeat(2, 1fr); }
             .justification h4 { font-size: 1rem !important; }
+            .calculator-container { width: 260px; height: 260px; }
         }
         #game-mode-rules {
             background: rgba(0, 0, 0, 0.7); border: 1px solid #4fc3f7; animation: pulse 2s infinite;
@@ -481,6 +589,21 @@
     <audio id="correct-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Correct_sound.mp3" preload="auto"></audio>
     <audio id="incorrect-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Incorrect_sound.mp3" preload="auto"></audio>
     <audio id="button-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Clic_sound.mp3" preload="auto"></audio>
+    <audio id="sad-violin-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
+    
+    <!-- MODAL DE PUBLICIDAD -->
+    <div id="advertisement-modal" class="hidden">
+        <img id="advertisement-image" src="" alt="Publicidad">
+        <div id="advertisement-countdown">5</div>
+        <button id="advertisement-skip" disabled>Espera 5 segundos...</button>
+    </div>
+    
+    <!-- PANTALLA DE FIN DE SIMULACRO -->
+    <div id="simulacro-end-screen">
+        <img id="simulacro-end-image" src="" alt="Fin del simulacro">
+        <div id="simulacro-end-timer">Volviendo al menú en 10 segundos...</div>
+        <button id="simulacro-return-btn" class="btn" style="background: linear-gradient(45deg, #ff9800, #ff5722);">VOLVER AL MENÚ</button>
+    </div>
     
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
@@ -709,8 +832,9 @@
                 </div>
             </div>
             
+            <!-- BOTÓN CALCULADORA NARANJA -->
             <button id="calculator-toggle" class="btn calculator-toggle !mt-6">
-                <i class="fas fa-calculator"></i> Mostrar/Ocultar Calculadora
+                <i class="fas fa-calculator"></i> Calculadora 🧮
             </button>
             <div id="calculator-container" class="calculator-container">
                 <div class="calculator-display" id="calc-display">0</div>
@@ -733,6 +857,29 @@
                     <button class="calculator-btn equals" data-value="=">=</button>
                     <button class="calculator-btn zero" data-value="0">0</button>
                     <button class="calculator-btn" data-value=".">.</button>
+                </div>
+            </div>
+            
+            <!-- CHATBOT VERDE -->
+            <div id="chatbot-section" class="w-full">
+                <div id="chatbot-toggle">
+                    <span><i class="fas fa-robot mr-2"></i> Chatbot de Ayuda</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div id="chatbot-content" class="hidden">
+                    <div class="chatbot-container">
+                        <h2 class="chatbot-title">Túul – Asistente de IA 🤖</h2>
+                        <p class="graphing-subtitle">Escribe solo la palabra de la que deseas conocer su significado, por ejemplo: <b>MITOCONDRIA</b></p>
+                        
+                        <div id="chatbot-chat">
+                            <p class="chatbot-system">Hola 🖐 soy Túul, tu asistente de IA para resolver dudas. Escribe una palabra para conocer su significado.</p>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <input type="text" id="chatbot-input" placeholder="Ej. mitocondria">
+                            <button id="chatbot-send">Enviar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -776,7 +923,7 @@
                 <div id="graphing-tool-content" class="hidden">
                     <div class="graphing-container">
                         <h2 class="graphing-title">Visualizador de Ecuaciones en el Plano Cartesiano</h2>
-                        <p class="graphing-subtitle">Explora funciones lineales, cuadráticas, trigonométricas, cónicas y más</p>
+                        <p class="graphing-subtitle">Explora funciones lineales, cuadráticas, cúbicas, trigonométricas, cónicas y más</p>
                         
                         <div class="graphing-main-content">
                             <div class="graphing-canvas-container">
@@ -821,7 +968,7 @@
                             <p>2. Ingresa los valores de los parámetros manualmente.</p>
                             <p>3. Alterna entre forma canónica y general usando los botones.</p>
                             <p>4. Haz clic en "Actualizar Gráfica" para ver los cambios.</p>
-                            <p>5. Usa los botones +/- para ajustar el zoom del gráfico.</p>
+                            <p>5. Usa los botones +/- para ajustar el zoom del gráfico (±5, ±10, ±15, ±20, ±25, ±30, ±35, ±40, ±45, ±50).</p>
                         </div>
                     </div>
                 </div>
@@ -906,6 +1053,16 @@
                 between9_5_10: 'https://i.imgur.com/89lj6aD.png',
                 perfect10: 'https://i.imgur.com/HGyyYIC.png'
             };
+            
+            // URLs DE PUBLICIDAD
+            const ADVERTISEMENT_IMAGES = [
+                'https://i.pinimg.com/originals/d2/02/66/d20266ca29ab62084ebf257193a77ad9.gif',
+                'https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUycGJ1eDFyamh3eHhtc3EwanVianpqNG1xOWs1d2pjMzlibGhrZXp4ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/j4qNF3xHuUZdtU4ILg/giphy.gif',
+                'https://www.anahuac.mx/queretaro/sites/default/files/gbb-uploads/gif/online-learning.gif',
+                'https://cdn-icons-gif.flaticon.com/11255/11255935.gif',
+                'https://cdn-icons-gif.flaticon.com/11255/11255978.gif'
+            ];
+            
             const screens = {
                 login: document.getElementById('login-screen'),
                 setup: document.getElementById('setup-screen'),
@@ -1026,6 +1183,26 @@
             const correctSound = document.getElementById('correct-sound');
             const incorrectSound = document.getElementById('incorrect-sound');
             const buttonSound = document.getElementById('button-sound');
+            const sadViolinSound = document.getElementById('sad-violin-sound');
+            
+            // ELEMENTOS DEL CHATBOT
+            const chatbotToggle = document.getElementById('chatbot-toggle');
+            const chatbotContent = document.getElementById('chatbot-content');
+            const chatbotChat = document.getElementById('chatbot-chat');
+            const chatbotInput = document.getElementById('chatbot-input');
+            const chatbotSend = document.getElementById('chatbot-send');
+            
+            // ELEMENTOS DE PUBLICIDAD
+            const advertisementModal = document.getElementById('advertisement-modal');
+            const advertisementImage = document.getElementById('advertisement-image');
+            const advertisementCountdown = document.getElementById('advertisement-countdown');
+            const advertisementSkip = document.getElementById('advertisement-skip');
+            
+            // ELEMENTOS DE FIN DE SIMULACRO
+            const simulacroEndScreen = document.getElementById('simulacro-end-screen');
+            const simulacroEndImage = document.getElementById('simulacro-end-image');
+            const simulacroEndTimer = document.getElementById('simulacro-end-timer');
+            const simulacroReturnBtn = document.getElementById('simulacro-return-btn');
             
             let allQuestions = [], quizQuestions = [], userAnswers = [], pastedAnsweredIds = new Set();
             let currentQuestionIndex = 0, timer, seconds = 0, resultsChart;
@@ -1055,12 +1232,35 @@
             let isGraphingCanonical = true;
             
             let currentScale = 10;
-            const MIN_SCALE = 10;
+            const MIN_SCALE = 5;
             const MAX_SCALE = 50;
+            const SCALE_STEPS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+            
+            // VARIABLES PARA CONTROL DE PUBLICIDAD EN MODO INVITADO
+            let questionCountInGuestMode = 0;
+            let advertisementShown = false;
+            let advertisementTimer = null;
+            
+            // DICCIONARIO LOCAL PARA EL CHATBOT
+            const chatbotDictionary = {
+                "fotosintesis": "La fotosíntesis es el proceso por el que las plantas producen su alimento usando la luz del sol.",
+                "celula": "La célula es la unidad más pequeña que forma a los seres vivos.",
+                "biologia": "La biología es la ciencia que estudia a los seres vivos.",
+                "historia": "La historia estudia los hechos del pasado de la humanidad.",
+                "quimica": "La química estudia la composición y los cambios de la materia.",
+                "energia": "La energía es la capacidad de producir movimiento o cambios.",
+                "mitocondria": "La mitocondria es una parte de la célula que produce la energía que necesita para funcionar.",
+                "derivada": "La derivada de una función mide la rapidez con que cambia el valor de dicha función en un punto dado.",
+                "integral": "La integral es el concepto matemático que representa la acumulación de cantidades infinitamente pequeñas.",
+                "funcion": "Una función es una relación entre un conjunto de entrada y un conjunto de salida donde cada entrada corresponde a una salida única.",
+                "limite": "El límite de una función es el valor al que tiende la función cuando la variable independiente tiende a un valor determinado.",
+                "trigonometria": "La trigonometría es la rama de las matemáticas que estudia las relaciones entre los ángulos y los lados de los triángulos."
+            };
             
             const graphingFunctionTypes = [
                 { id: 'linear', name: 'Lineal', canonical: 'y = m x + b', general: 'A x + B y + C = 0' },
                 { id: 'quadratic', name: 'Cuadrática', canonical: 'y = a x² + b x + c', general: 'y = a (x - h)² + k' },
+                { id: 'cubic', name: 'Cúbica', canonical: 'y = a x³ + b x² + c x + d', general: 'y = a (x - h)³ + k' }, // NUEVA FUNCIÓN CÚBICA
                 { id: 'circle', name: 'Circunferencia', canonical: '(x - h)² + (y - k)² = r²', general: 'x² + y² + D x + E y + F = 0' },
                 { id: 'ellipse', name: 'Elipse', canonical: '(x - h)² / a² + (y - k)² / b² = 1', general: 'A x² + C y² + D x + E y + F = 0' },
                 { id: 'parabola', name: 'Parábola', canonical: 'y = a (x - h)² + k', general: 'y² = 4 p x  o  x² = 4 p y' },
@@ -1072,6 +1272,7 @@
             let graphingParams = {
                 linear: { m: 1, b: 0, A: 1, B: -1, C: 0 },
                 quadratic: { a: 1, b: 0, c: 0, h: 0, k: 0 },
+                cubic: { a: 1, b: 0, c: 0, d: 0, h: 0, k: 0 }, // PARÁMETROS PARA FUNCIÓN CÚBICA
                 circle: { h: 0, k: 0, r: 3, D: 0, E: 0, F: -9 },
                 ellipse: { h: 0, k: 0, a: 3, b: 2, A: 1, C: 1.5, D: 0, E: 0, F: -9 },
                 parabola: { a: 1, h: 0, k: 0, p: 0.25, type: 'vertical' },
@@ -1082,6 +1283,7 @@
             };
             let currentGraphingParams = JSON.parse(JSON.stringify(graphingParams.linear));
 
+            // INICIALIZACIÓN DE PIZARRA (CÓDIGO EXISTENTE)
             const chalkboardToggle = document.getElementById('chalkboard-toggle');
             const chalkboardContent = document.getElementById('chalkboard-content');
             const canvas = document.getElementById('chalkboard');
@@ -1320,128 +1522,200 @@
                 saveState();
             }
 
-            function showQuestionLookup(question) {
-                lookupResultContainer.innerHTML = '';
-                
-                const questionContainer = document.createElement('div');
-                questionContainer.className = 'lookup-question-container';
-                
-                const idTagsDiv = document.createElement('div');
-                idTagsDiv.className = 'mb-4 flex flex-wrap gap-2 items-center';
-                idTagsDiv.innerHTML = `
-                    <span class="question-id bg-blue-600 px-3 py-1 rounded-full text-sm font-bold">${question.id || 'N/A'}</span>
-                    ${question.uni_tags ? question.uni_tags.map(t => `<span class="uni-tag-display bg-purple-600 px-2 py-1 rounded text-xs">${t}</span>`).join(' ') : ''}
-                    ${question.level_tag ? question.level_tag.map(t => `<span class="level-tag-display bg-yellow-600 px-2 py-1 rounded text-xs">${t}</span>`).join(' ') : ''}
-                `;
-                questionContainer.appendChild(idTagsDiv);
-                
-                const questionTextDiv = document.createElement('div');
-                questionTextDiv.className = 'text-lg font-semibold mb-4';
-                questionTextDiv.innerHTML = question.question;
-                questionContainer.appendChild(questionTextDiv);
-                
-                if (question.image && question.image !== null) {
-                    const imageSection = document.createElement('div');
-                    imageSection.className = 'lookup-section mb-4';
-                    imageSection.innerHTML = `
-                        <div class="lookup-section-title">Imagen de Apoyo</div>
-                        <div class="mt-2 flex justify-center">
-                            <div id="lookup-image-container" style="position: relative; width: 100%; max-width: 400px; aspect-ratio: 1 / 1; background-size: contain; background-position: center; background-repeat: no-repeat; overflow: hidden; margin: 15px auto; border-radius: 10px; background-image: url('${question.image}');">
-                                <div id="lookup-watermark-overlay" style="position: absolute; inset: -50%; width: 200%; height: 200%; color: rgba(255, 220, 220, 0.01); font-size: 1rem; font-weight: 600; pointer-events: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; word-spacing: 1rem; animation: watermark-scroll 40s linear infinite;"></div>
-                            </div>
-                        </div>
-                    `;
-                    questionContainer.appendChild(imageSection);
-                    
-                    if (question.image.includes('imgur.com')) {
-                        const lookupWatermarkOverlay = document.getElementById('lookup-watermark-overlay');
-                        const watermarkText = `VERIFICACIÓN CEPREDIX &nbsp; `.repeat(150);
-                        if (lookupWatermarkOverlay) {
-                            lookupWatermarkOverlay.innerHTML = watermarkText;
-                        }
+            // FUNCIONES PARA EL CHATBOT
+            function initializeChatbot() {
+                chatbotToggle.addEventListener('click', () => {
+                    const isHidden = chatbotContent.classList.toggle('hidden');
+                    const icon = chatbotToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
+                    if (isHidden) {
+                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                    } else {
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
                     }
-                }
-                
-                const optionsSection = document.createElement('div');
-                optionsSection.className = 'lookup-section mb-4';
-                optionsSection.innerHTML = '<div class="lookup-section-title">Opciones de Respuesta</div>';
-                
-                const correctOption = question.options.find(opt => opt.correct);
-                const incorrectOptions = question.options.filter(opt => !opt.correct);
-                
-                if (correctOption) {
-                    const correctOptionDiv = document.createElement('div');
-                    correctOptionDiv.className = 'lookup-option';
-                    correctOptionDiv.innerHTML = `
-                        <div class="lookup-option-label">✓</div>
-                        ${correctOption.text}
-                        <span class="lookup-correct-badge">CORRECTA</span>
-                    `;
-                    optionsSection.appendChild(correctOptionDiv);
-                }
-                
-                incorrectOptions.forEach((option, index) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'lookup-option incorrect';
-                    optionDiv.innerHTML = `
-                        <div class="lookup-option-label">${String.fromCharCode(65 + (correctOption ? index + 1 : index))}</div>
-                        ${option.text}
-                    `;
-                    optionsSection.appendChild(optionDiv);
                 });
                 
-                questionContainer.appendChild(optionsSection);
-                
-                if (question.hint && question.hint !== null) {
-                    const hintSection = document.createElement('div');
-                    hintSection.className = 'lookup-section mb-4';
-                    hintSection.innerHTML = `
-                        <div class="lookup-section-title">Pista</div>
-                        <div class="mt-2">${question.hint}</div>
-                    `;
-                    questionContainer.appendChild(hintSection);
-                }
-                
-                if (question.explanation && question.explanation !== null) {
-                    const explanationSection = document.createElement('div');
-                    explanationSection.className = 'lookup-section mb-4';
-                    explanationSection.innerHTML = `
-                        <div class="lookup-section-title">Justificación</div>
-                        <div class="mt-2">${question.explanation}</div>
-                    `;
-                    questionContainer.appendChild(explanationSection);
-                }
-                
-                if (question.explanative_video && question.explanative_video !== null) {
-                    const videoSection = document.createElement('div');
-                    videoSection.className = 'lookup-section mb-4';
-                    videoSection.innerHTML = `
-                        <div class="lookup-section-title">Video de Explicación</div>
-                        <div class="mt-2">
-                            <div class="video-wrapper">
-                                <iframe src="https://www.youtube.com/embed/${getYouTubeID(question.explanative_video)}" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    `;
-                    questionContainer.appendChild(videoSection);
-                }
-                
-                if (question.collapsible_text && question.collapsible_text !== null) {
-                    const textSection = document.createElement('div');
-                    textSection.className = 'lookup-section';
-                    textSection.innerHTML = `
-                        <div class="lookup-section-title">Lectura de Apoyo</div>
-                        <div class="mt-2 max-h-60 overflow-y-auto p-3 bg-gray-800 rounded">${question.collapsible_text}</div>
-                    `;
-                    questionContainer.appendChild(textSection);
-                }
-                
-                lookupResultContainer.appendChild(questionContainer);
-                lookupResultContainer.classList.remove('hidden');
-                
-                MathJax.typesetPromise([lookupResultContainer]);
+                chatbotSend.addEventListener('click', sendChatbotMessage);
+                chatbotInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendChatbotMessage();
+                    }
+                });
             }
             
+            async function sendChatbotMessage() {
+                const termino = chatbotInput.value.trim();
+                if (!termino) return;
+                
+                // Agregar mensaje del usuario
+                chatbotChat.innerHTML += `<p class="chatbot-user"><b>Tú:</b> ${termino}</p>`;
+                chatbotInput.value = "";
+                
+                const terminoLower = termino.toLowerCase();
+                
+                // 1️⃣ Intento con Wikipedia
+                try {
+                    const url = `https://es.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(terminoLower)}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    
+                    if (data.extract) {
+                        const resumen = simplificarResumen(data.extract);
+                        chatbotChat.innerHTML += `<p class="chatbot-bot"><b>Túul:</b> ${resumen}</p>`;
+                    } else {
+                        usarFallbackChatbot(terminoLower);
+                    }
+                } catch {
+                    usarFallbackChatbot(terminoLower);
+                }
+                
+                // Desplazar hacia abajo
+                chatbotChat.scrollTop = chatbotChat.scrollHeight;
+            }
+            
+            function simplificarResumen(texto) {
+                let oraciones = texto.split(". ");
+                let breve = oraciones.slice(0, 2).join(". ");
+                
+                if (breve.length > 280) {
+                    breve = breve.slice(0, 280) + "...";
+                }
+                return breve;
+            }
+            
+            function usarFallbackChatbot(termino) {
+                const clave = termino.replace(/\s+/g, "");
+                if (chatbotDictionary[clave]) {
+                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>Túul:</b> ${chatbotDictionary[clave]}</p>`;
+                } else {
+                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>Túul:</b> No encontré una definición sencilla para ese término. Intenta con otra palabra.</p>`;
+                }
+            }
+            
+            // FUNCIONES PARA PUBLICIDAD EN MODO INVITADO
+            function showAdvertisement() {
+                if (!isGuest || advertisementShown) return;
+                
+                // Seleccionar una imagen aleatoria
+                const randomImage = ADVERTISEMENT_IMAGES[Math.floor(Math.random() * ADVERTISEMENT_IMAGES.length)];
+                advertisementImage.src = randomImage;
+                
+                // Mostrar modal (CORRECCIÓN: Forzar display flex)
+                advertisementModal.style.display = 'flex';
+                advertisementModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                let countdown = 5;
+                advertisementCountdown.textContent = countdown;
+                
+                // Habilitar botón de cerrar al finalizar
+                advertisementSkip.disabled = true;
+                advertisementSkip.style.opacity = "0.5";
+                advertisementSkip.style.cursor = "not-allowed";
+                advertisementSkip.textContent = `Espera ${countdown} segundos...`;
+
+                advertisementTimer = setInterval(() => {
+                    countdown--;
+                    advertisementCountdown.textContent = countdown;
+                    advertisementSkip.textContent = `Espera ${countdown} segundos...`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(advertisementTimer);
+                        // Habilitar botón
+                        advertisementSkip.disabled = false;
+                        advertisementSkip.style.opacity = "1";
+                        advertisementSkip.style.cursor = "pointer";
+                        advertisementSkip.textContent = "CERRAR PUBLICIDAD";
+                        
+                        // Añadir evento para cerrar
+                        advertisementSkip.onclick = closeAdvertisement;
+                        
+                        // Opcional: Cerrar automáticamente también
+                        setTimeout(closeAdvertisement, 1000); 
+                    }
+                }, 1000);
+                
+                advertisementShown = true;
+            }
+            
+            function closeAdvertisement() {
+                // CORRECCIÓN: Forzar display none
+                advertisementModal.style.display = 'none';
+                advertisementModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                clearInterval(advertisementTimer);
+                advertisementSkip.onclick = null; // Limpiar evento
+            }
+            
+            // FUNCIONES PARA FIN DE SIMULACRO
+            function showSimulacroEndScreen() {
+                simulacroEndImage.src = 'https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Final_simulacro.png';
+                simulacroEndScreen.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Reproducir sonido de violín triste
+                sadViolinSound.currentTime = 0;
+                sadViolinSound.volume = effectsVolume;
+                sadViolinSound.play().catch(e => console.error("Error al reproducir sonido:", e));
+                
+                let countdown = 10;
+                simulacroEndTimer.textContent = `Volviendo al menú en ${countdown} segundos...`;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    simulacroEndTimer.textContent = `Volviendo al menú en ${countdown} segundos...`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        returnToMenuFromSimulacro();
+                    }
+                }, 1000);
+                
+                // Configurar botón de retorno
+                simulacroReturnBtn.onclick = returnToMenuFromSimulacro;
+            }
+            
+            function returnToMenuFromSimulacro() {
+                simulacroEndScreen.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                screens.quiz.classList.add('hidden');
+                screens.setup.classList.remove('hidden');
+                clearInterval(gameModeTimer);
+            }
+            
+            // FUNCIÓN MEJORADA DE VALIDACIÓN DE ACCESOS
+            async function validateUserAccess(name, email, whatsapp) {
+                try {
+                    const response = await fetch(CORS_PROXY_URL + '&t=' + new Date().getTime()); // Agregar timestamp para evitar cache
+                    if (!response.ok) throw new Error('Error de red al cargar los datos de validación.');
+                    
+                    const csvData = await response.text();
+                    const rows = csvData.split('\n');
+                    
+                    // Buscar coincidencia exacta (ignorando espacios en blanco y mayúsculas)
+                    const isValid = rows.some(row => {
+                        const columns = row.split(',');
+                        if (columns.length < 3) return false;
+                        
+                        // Normalizar datos: trim y lowercase
+                        const sheetName = columns[0] ? columns[0].trim().toLowerCase() : '';
+                        const sheetEmail = columns[1] ? columns[1].trim().toLowerCase() : '';
+                        const sheetWhatsapp = columns[2] ? columns[2].trim() : '';
+                        
+                        const inputName = name.trim().toLowerCase();
+                        const inputEmail = email.trim().toLowerCase();
+                        const inputWhatsapp = whatsapp.trim();
+                        
+                        // Verificar coincidencia de email y whatsapp (el nombre puede variar)
+                        return sheetEmail === inputEmail && sheetWhatsapp === inputWhatsapp;
+                    });
+                    
+                    return isValid;
+                } catch (error) {
+                    console.error('Error en validación:', error);
+                    return false;
+                }
+            }
+
             function updateEvaluationButton() {
                 if (!finishBtn) return;
                 
@@ -1580,9 +1854,9 @@
             }
             
             function zoomIn() {
-                if (currentScale > MIN_SCALE) {
-                    currentScale -= 5;
-                    if (currentScale < MIN_SCALE) currentScale = MIN_SCALE;
+                const currentIndex = SCALE_STEPS.indexOf(currentScale);
+                if (currentIndex > 0) {
+                    currentScale = SCALE_STEPS[currentIndex - 1];
                     updateGraphingChart();
                     updateScaleIndicator();
                     updateZoomButtons();
@@ -1590,9 +1864,9 @@
             }
             
             function zoomOut() {
-                if (currentScale < MAX_SCALE) {
-                    currentScale += 5;
-                    if (currentScale > MAX_SCALE) currentScale = MAX_SCALE;
+                const currentIndex = SCALE_STEPS.indexOf(currentScale);
+                if (currentIndex < SCALE_STEPS.length - 1) {
+                    currentScale = SCALE_STEPS[currentIndex + 1];
                     updateGraphingChart();
                     updateScaleIndicator();
                     updateZoomButtons();
@@ -1607,10 +1881,10 @@
             
             function updateZoomButtons() {
                 if (zoomInBtn) {
-                    zoomInBtn.disabled = currentScale <= MIN_SCALE;
+                    zoomInBtn.disabled = currentScale <= SCALE_STEPS[0];
                 }
                 if (zoomOutBtn) {
-                    zoomOutBtn.disabled = currentScale >= MAX_SCALE;
+                    zoomOutBtn.disabled = currentScale >= SCALE_STEPS[SCALE_STEPS.length - 1];
                 }
             }
             
@@ -1738,6 +2012,17 @@
                         configs.push({ param: 'a', label: 'Coeficiente a' });
                         configs.push({ param: 'b', label: 'Coeficiente b' });
                         configs.push({ param: 'c', label: 'Constante c' });
+                    } else {
+                        configs.push({ param: 'a', label: 'Coeficiente a' });
+                        configs.push({ param: 'h', label: 'Desplazamiento X' });
+                        configs.push({ param: 'k', label: 'Desplazamiento Y' });
+                    }
+                } else if (currentGraphingFunction === 'cubic') {
+                    if (isGraphingCanonical) {
+                        configs.push({ param: 'a', label: 'Coeficiente a' });
+                        configs.push({ param: 'b', label: 'Coeficiente b' });
+                        configs.push({ param: 'c', label: 'Coeficiente c' });
+                        configs.push({ param: 'd', label: 'Constante d' });
                     } else {
                         configs.push({ param: 'a', label: 'Coeficiente a' });
                         configs.push({ param: 'h', label: 'Desplazamiento X' });
@@ -1975,6 +2260,30 @@
                         data: dataPoints,
                         borderColor: '#4fc3f7',
                         backgroundColor: '#4fc3f7',
+                        pointRadius: 0,
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    });
+                } else if (currentGraphingFunction === 'cubic') {
+                    for (let x = -currentScale; x <= currentScale; x += step) {
+                        let y;
+                        if (isGraphingCanonical) {
+                            y = currentGraphingParams.a * x * x * x + currentGraphingParams.b * x * x + currentGraphingParams.c * x + currentGraphingParams.d;
+                        } else {
+                            y = currentGraphingParams.a * Math.pow(x - currentGraphingParams.h, 3) + currentGraphingParams.k;
+                        }
+                        
+                        if (Math.abs(y) <= currentScale) {
+                            dataPoints.push({ x: x, y: y });
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: 'Función Cúbica',
+                        data: dataPoints,
+                        borderColor: '#ff9800',
+                        backgroundColor: '#ff9800',
                         pointRadius: 0,
                         borderWidth: 2,
                         showLine: true,
@@ -2253,6 +2562,7 @@
                 correctSound.volume = effectsVolume;
                 incorrectSound.volume = effectsVolume;
                 buttonSound.volume = effectsVolume;
+                sadViolinSound.volume = effectsVolume;
                 updateVolumeDisplay();
             }
             
@@ -2343,21 +2653,8 @@
             }
             
             function handleGameModeLoss(message) {
-                const lossMessage = document.createElement('div');
-                lossMessage.className = "fixed top-1/3 left-1/2 transform -translate-x-1/2 game-mode-loss text-white px-6 py-4 rounded-lg shadow-lg z-50";
-                lossMessage.style.maxWidth = "80%";
-                lossMessage.textContent = message;
-                document.body.appendChild(lossMessage);
-                
-                setTimeout(() => {
-                    if (document.body.contains(lossMessage)) {
-                        document.body.removeChild(lossMessage);
-                    }
-                    clearInterval(timer);
-                    clearInterval(gameModeTimer);
-                    screens.quiz.classList.add('hidden');
-                    screens.setup.classList.remove('hidden');
-                }, 3000);
+                // Mostrar pantalla de fin de simulacro
+                showSimulacroEndScreen();
             }
             
             function showTemporaryMessage(message, bgColor = "bg-blue-600") {
@@ -2495,6 +2792,12 @@
                     });
                     updateQuestionStats();
                 });
+                
+                // Deshabilitar modo simulacro para invitados
+                gameModeToggle.disabled = true;
+                gameModeToggle.checked = false;
+                gameModeToggle.parentElement.style.opacity = '0.5';
+                gameModeToggle.parentElement.style.pointerEvents = 'none';
             });
             
             noAccessBtn.addEventListener('click', (e) => {
@@ -2513,16 +2816,10 @@
                 loginBtnText.classList.add('hidden');
                 loginBtnSpinner.classList.remove('hidden');
                 loginBtn.disabled = true;
+                
                 try {
-                    const response = await fetch(CORS_PROXY_URL);
-                    if (!response.ok) throw new Error('Error de red al cargar los datos de validación.');
-                    const csvData = await response.text();
-                    const rows = csvData.split('\n');
-                    const isValid = rows.some(row => {
-                        const columns = row.split(',');
-                        if (columns.length < 3) return false;
-                        return columns[1].trim() === emailToValidate && columns[2].trim() === whatsappToValidate;
-                    });
+                    const isValid = await validateUserAccess(name, emailToValidate, whatsappToValidate);
+                    
                     if (isValid) {
                         isGuest = false;
                         currentUser = { name, email: emailToValidate, whatsapp: whatsappToValidate };
@@ -2530,6 +2827,11 @@
                         screens.setup.classList.remove('hidden');
                         welcomeName.textContent = name;
                         await loadData();
+                        
+                        // Habilitar modo simulacro para usuarios registrados
+                        gameModeToggle.disabled = false;
+                        gameModeToggle.parentElement.style.opacity = '1';
+                        gameModeToggle.parentElement.style.pointerEvents = 'auto';
                     } else {
                         loginErrorMessage.textContent = 'Los datos no coinciden. Por favor, verifica tu información.';
                     }
@@ -2556,9 +2858,7 @@
                     console.log('📄 JSON recibido');
                     
                     jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
-                    
                     jsonText = jsonText.replace(/\\u00a0/g, ' ');
-                    
                     jsonText = jsonText.replace(/,\s*}/g, '}');
                     jsonText = jsonText.replace(/,\s*\]/g, ']');
                     
@@ -2567,44 +2867,7 @@
                         console.log(`✅ Cargadas ${allQuestions.length} preguntas`);
                     } catch (parseError) {
                         console.error('❌ Error al parsear JSON:', parseError.message);
-                        
-                        console.log('🔄 Usando preguntas de emergencia...');
-                        allQuestions = [
-                            {
-                                "id": "GYT00AA",
-                                "question": "¿Cuál es la condición mínima de información que permite la aplicación **directa** de la Ley de Senos para resolver un triángulo oblicuángulo?",
-                                "image": null,
-                                "options": [
-                                    { "text": "Conocer un lado y su ángulo opuesto, además de cualquier otro dato (AAS o ASA).", "correct": true },
-                                    { "text": "Conocer los tres lados del triángulo (LLL).", "correct": false },
-                                    { "text": "Conocer los tres ángulos del triángulo (AAA).", "correct": false },
-                                    { "text": "Conocer dos lados y el ángulo comprendido entre ellos (LAL).", "correct": false }
-                                ],
-                                "uni_tags": ["GENERAL"],
-                                "level_tag": ["BÁSICO"],
-                                "hint": "La Ley de Senos compara la razón de un lado con el seno de su ángulo opuesto.",
-                                "explanation": "La Ley de Senos requiere conocer al menos un par lado-ángulo opuesto.",
-                                "explanative_video": null,
-                                "collapsible_text": null
-                            },
-                            {
-                                "id": "GYT00AB",
-                                "question": "Para resolver un triángulo oblicuángulo, ¿en qué casos es **necesario** emplear la Ley de Cosenos en el primer paso?",
-                                "image": null,
-                                "options": [
-                                    { "text": "Cuando se conocen los tres lados (LLL) o dos lados y el ángulo incluido (LAL).", "correct": true },
-                                    { "text": "Cuando se conocen dos ángulos y un lado (AAS o ALA).", "correct": false },
-                                    { "text": "Cuando se conocen dos lados y el ángulo opuesto a uno de ellos (LLA).", "correct": false },
-                                    { "text": "Cuando se conoce un ángulo y su lado opuesto, y otro lado.", "correct": false }
-                                ],
-                                "uni_tags": ["GENERAL"],
-                                "level_tag": ["BÁSICO"],
-                                "hint": "La Ley de Cosenos se usa cuando no tienes un par lado-ángulo opuesto.",
-                                "explanation": "Se usa en casos LLL y LAL.",
-                                "explanative_video": null,
-                                "collapsible_text": null
-                            }
-                        ];
+                        allQuestions = [];
                     }
                     
                     statsTotal.textContent = allQuestions.length;
@@ -2721,6 +2984,7 @@
                 if (isGameMode) {
                     num = 20;
                 } else if (isContinuousMode) {
+                    // No hay límite en modo continuo
                 } else if (isGuest) {
                     num = 10;
                 } else {
@@ -2739,27 +3003,56 @@
                     return;
                 }
 
+                // RESET CONTADOR DE PUBLICIDAD
+                if (isGuest) {
+                    questionCountInGuestMode = 0;
+                    advertisementShown = false;
+                }
+
                 let availableQuestions = allQuestions.filter(q => {
                     const hasUniTag = q.uni_tags && Array.isArray(q.uni_tags) && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                     const hasLevelTag = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.some(tag => selectedLevelTags.includes(tag));
                     return hasUniTag && hasLevelTag;
                 });
 
+                // FILTROS ESPECIALES PARA INVITADOS
                 if (isGuest) {
                     availableQuestions = availableQuestions.filter(q => {
-                        if (q.id && q.id.length >= 4) {
-                            const secondDigit = q.id.charAt(3);
-                            if (!['1', '2', '3'].includes(secondDigit)) {
+                        // Verificar ID para nivel BÁSICO
+                        const isBasicLevel = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.includes('BÁSICO');
+                        const isIntermediateLevel = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.includes('INTERMEDIO');
+                        
+                        if (isBasicLevel) {
+                            // Solo IDs que terminen en A, B, C, D, E, F, G, H, I, J
+                            const lastChar = q.id ? q.id.slice(-1) : '';
+                            const validBasicEndings = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+                            if (!validBasicEndings.includes(lastChar)) {
                                 return false;
                             }
                         }
                         
+                        if (isIntermediateLevel) {
+                            // Solo IDs que terminen en A, B, C, D, E
+                            const lastChar = q.id ? q.id.slice(-1) : '';
+                            const validIntermediateEndings = ['A', 'B', 'C', 'D', 'E'];
+                            if (!validIntermediateEndings.includes(lastChar)) {
+                                return false;
+                            }
+                        }
+                        
+                        // No permitir imágenes de Imgur
                         if (q.image && q.image.includes('imgur.com')) {
                             return false;
                         }
                         
                         return true;
                     });
+                    
+                    // Deshabilitar modo simulacro para invitados
+                    if (isGameMode) {
+                        errorMessage.textContent = 'El modo simulacro no está disponible para invitados.';
+                        return;
+                    }
                 }
 
                 let finalQuestionPool;
@@ -2831,6 +3124,8 @@
                 if (isGameMode) {
                     document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.remove('hidden');
+                    // Aplicar estilo de advertencia al modo simulacro
+                    gameModeRules.classList.add('game-mode-warning');
                     gameModeLives = 3;
                     updateGameModeLivesDisplay();
                     startGameModeTimer();
@@ -2852,6 +3147,9 @@
                     graphingChart.destroy();
                 }
                 initializeGraphingTool();
+                
+                // Inicializar chatbot
+                initializeChatbot();
                 
                 startEvaluateEmojiAnimation();
                 
@@ -2876,6 +3174,16 @@
                 
                 if (isContinuousMode && question.id) {
                     answeredIdsInContinuousMode.add(question.id);
+                }
+                
+                // INCREMENTAR CONTADOR PARA PUBLICIDAD EN MODO INVITADO
+                if (isGuest) {
+                    questionCountInGuestMode++;
+                    
+                    // Mostrar publicidad cada 5 preguntas
+                    if (questionCountInGuestMode % 5 === 0) {
+                        setTimeout(showAdvertisement, 500);
+                    }
                 }
                 
                 if (selectedText.includes('No puedo identificar')) {
@@ -3166,6 +3474,15 @@
                 userAnswers[currentQuestionIndex].status = 'omitted';
                 updateLiveScore();
                 updateEvaluationButton();
+                
+                // INCREMENTAR CONTADOR PARA PUBLICIDAD EN MODO INVITADO (también al omitir)
+                if (isGuest) {
+                    questionCountInGuestMode++;
+                    
+                    if (questionCountInGuestMode % 5 === 0) {
+                        setTimeout(showAdvertisement, 500);
+                    }
+                }
                 
                 if (currentQuestionIndex < userAnswers.length - 1) {
                     currentQuestionIndex++;
@@ -3483,6 +3800,8 @@
                 }
             });
             
+            // CARGAR DATOS INICIALES
+            loadData();
             initializeVolumes();
         });
     </script>
