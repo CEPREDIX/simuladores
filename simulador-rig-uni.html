@@ -570,6 +570,35 @@
             .justification h4 { font-size: 1rem !important; }
             .calculator-container { width: 260px; height: 320px; }
         }
+		#chatbot-input {
+            flex: 1;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        #chatbot-input::placeholder {
+            color: #aaaaaa;
+        }
+
+        #chatbot-send {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #chatbot-send:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
