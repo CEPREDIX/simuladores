@@ -978,8 +978,22 @@
                 padding: 5px 0;
             }
             #footer-links {
-                flex-direction: column;
-                gap: 5px;
+                flex-direction: row;       /* Alineación horizontal */
+                flex-wrap: wrap;           /* Permite que bajen si no caben */
+                justify-content: center;   /* Centrado */
+                gap: 12px;                 /* Espacio entre enlaces */
+                row-gap: 5px;              /* Espacio vertical si se hace una 2da línea */
+            }
+            /* Ocultamos las barras separadoras (|) en móviles para ahorrar espacio */
+            #footer-links span.text-gray-500 {
+                display: none;
+            }
+            /* Hacemos la letra un poco más pequeña en móviles */
+            .footer-link, .social-link {
+                font-size: 0.75rem; 
+                padding: 4px 6px;
+                background: rgba(0,0,0,0.2); /* Fondo muy sutil para delimitar el área táctil */
+                border-radius: 4px;
             }
             .privacy-modal-content {
                 padding: 20px;
