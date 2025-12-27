@@ -1308,26 +1308,27 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-row flex-wrap justify-center sm:justify-between items-center mb-2 gap-x-6 gap-y-2">
-                <div class="text-base sm:text-lg font-bold order-1">
+            <div class="flex flex-row flex-wrap justify-between items-center mb-2 gap-y-1 gap-x-2 w-full">
+                
+                <div class="text-xs sm:text-lg font-bold text-gray-200 order-1">
                     Pregunta <span id="current-question-num"></span>/<span id="total-questions-num"></span>
                 </div>
-                
-                <div class="flex items-center space-x-1 text-lg font-bold order-3 sm:order-2 w-full sm:w-auto justify-center" id="timer-container">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span id="timer" class="timer-green">30:00</span>
-                </div>
 
-                <div id="live-score" class="flex gap-3 text-lg order-2 sm:order-3">
+                <div id="live-score" class="flex gap-2 text-xs sm:text-lg order-2">
                     <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
                     <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
                 </div>
 
-                <div id="quiz-volume-control" class="flex items-center gap-2 order-4 w-full sm:w-auto justify-center">
-                    <button class="volume-btn-new w-6 h-6 text-sm" data-action="down">-</button>
-                    <i class="fas fa-volume-high text-gray-300 text-sm"></i>
-                    <span id="volume-indicator-quiz" class="text-xs font-semibold w-8 text-center">50%</span>
-                    <button class="volume-btn-new w-6 h-6 text-sm" data-action="up">+</button>
+                <div class="flex items-center space-x-1 text-xs sm:text-lg font-bold order-3" id="timer-container">
+                    <svg class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span id="timer" class="timer-green">30:00</span>
+                </div>
+
+                <div id="quiz-volume-control" class="flex items-center gap-1 order-4">
+                    <button class="volume-btn-new w-5 h-5 sm:w-7 sm:h-7 text-xs sm:text-base flex items-center justify-center" data-action="down">-</button>
+                    <i class="fas fa-volume-high text-gray-300 text-xs sm:text-lg"></i>
+                    <span id="volume-indicator-quiz" class="text-xs sm:text-sm font-semibold w-6 sm:w-10 text-center">50%</span>
+                    <button class="volume-btn-new w-5 h-5 sm:w-7 sm:h-7 text-xs sm:text-base flex items-center justify-center" data-action="up">+</button>
                 </div>
             </div>
             
