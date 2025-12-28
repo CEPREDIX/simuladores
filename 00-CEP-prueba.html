@@ -390,10 +390,16 @@
             justify-content: center; 
         }
         .graphing-canvas-container {
-            flex: 1; min-width: 300px; background: rgba(0, 0, 0, 0.3); border-radius: 8px;
-            padding: 15px; display: flex; flex-direction: column;
-            margin: 0 auto; 
-            max-width: 500px; 
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px; /* Reducido de 15px para ganar espacio */
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            width: 100%; /* Asegura ancho total */
+            max-width: 600px; /* Aumentado un poco para escritorio */
         }
         .graphing-controls-container {
             width: 350px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 15px;
@@ -466,8 +472,7 @@
             width: 100%;
             /* Esto fuerza una relación de aspecto cuadrada perfecta 1:1 */
             aspect-ratio: 1 / 1;
-            margin-top: 10px;
-            /* Eliminamos alturas fijas para evitar distorsión */
+            margin-top: 5px;
         }
         .graphing-zoom-controls {
             display: flex; justify-content: center; align-items: center; gap: 15px;
@@ -644,6 +649,14 @@
             height: auto; /* La altura depende del ancho */
             object-fit: contain; /* Muestra la imagen completa sin cortar */
             display: block;
+        }
+		/* AJUSTE ESPECÍFICO PARA MÓVILES (Agregar al final de tu CSS) */
+        @media (max-width: 480px) {
+            .graphing-container { padding: 10px; } /* Menos relleno en el contenedor principal */
+            .graphing-canvas-container { 
+                padding: 5px; /* Casi sin borde interno en móvil */
+                min-width: 100%; 
+            }
         }
         
         /* ================= PUBLICIDAD ================= */
@@ -3183,7 +3196,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: true,
-                        aspectRatio: 1,
+                        aspectRatio: 1, // Fuerza el cuadrado 1:1
                         scales: {
                             x: {
                                 type: 'linear',
@@ -3191,7 +3204,9 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
+                                    // Lógica para pintar el eje X (valor 0) más brillante y grueso
+                                    color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
+                                    lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
                                 ticks: {
                                     stepSize: currentScale / 10,
@@ -3210,7 +3225,9 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
+                                    // Lógica para pintar el eje Y (valor 0) más brillante y grueso
+                                    color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
+                                    lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
                                 ticks: {
                                     stepSize: currentScale / 10,
@@ -3229,7 +3246,11 @@
                                 display: true,
                                 position: 'top',
                                 labels: {
-                                    color: '#ffffff'
+                                    color: '#ffffff',
+                                    // FILTRO: Esto oculta la etiqueta 'Origen' de la leyenda superior
+                                    filter: function(item, chart) {
+                                        return item.text !== 'Origen';
+                                    }
                                 }
                             },
                             tooltip: {
@@ -3387,7 +3408,7 @@
 
                 // Construcción de Datasets
                 const datasets = [{
-                    label: isGraphingCanonical ? 'Función (Canónica)' : 'Función (General)',
+                    label: 'Función', // CAMBIO: Ahora siempre dice solo "Función"
                     data: dataPoints,
                     borderColor: '#9c27b0',
                     backgroundColor: '#9c27b0',
