@@ -25,7 +25,7 @@
             startup: {
                 pageReady: () => {
                     return MathJax.startup.defaultPageReady().then(() => {
-                        console.log('MathJax est芍 listo');
+                        console.log('MathJax está listo');
                     });
                 }
             }
@@ -68,7 +68,7 @@
             width: 100px; height: 100px; margin: 0 auto 10px;
             background: url('https://i.imgur.com/I1unSiu.png') center/contain no-repeat;
         }
-		/* Estilos del bot車n Cerrar Sesi車n */
+		/* Estilos del botón Cerrar Sesión */
         .logout-btn {
             position: absolute;
             top: 15px;
@@ -79,7 +79,7 @@
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
-            display: none; /* Oculto por defecto hasta iniciar sesi車n */
+            display: none; /* Oculto por defecto hasta iniciar sesión */
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -230,13 +230,13 @@
         
         .question-id-tags {
             position: relative; /* Ya no flota sobre el borde */
-            margin: 10px auto; /* Separaci車n vertical y centrado horizontal */
+            margin: 10px auto; /* Separación vertical y centrado horizontal */
             background: rgba(0, 0, 0, 0.7);
             padding: 4px 12px;
-            border-radius: 20px; /* Bordes m芍s redondeados para est谷tica */
+            border-radius: 20px; /* Bordes más redondeados para estética */
             font-size: 0.75rem;
             font-weight: bold;
-            display: inline-flex; /* Se ajusta al tama?o del contenido */
+            display: inline-flex; /* Se ajusta al tamaño del contenido */
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
@@ -244,7 +244,7 @@
         }
         .question-id { color: #4fc3f7; }
         .uni-tag-display { color: #81c784; }
-		/* --- NUEVOS ESTILOS PARA OPCIONES CON IM芍GENES --- */
+		/* --- NUEVOS ESTILOS PARA OPCIONES CON IMÁGENES --- */
         .options-grid-mode {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -275,13 +275,13 @@
             border-radius: 5px;
         }
         .option-btn.full-width {
-            grid-column: span 2; /* Hace que el bot車n de "No puedo identificar" ocupe todo el ancho */
+            grid-column: span 2; /* Hace que el botón de "No puedo identificar" ocupe todo el ancho */
             height: auto !important;
             padding: 15px 15px 15px 50px !important;
         }
         .option-watermark {
             position: absolute;
-            inset: -50%; /* Hacemos la caja m芍s grande que el bot車n para que pueda moverse */
+            inset: -50%; /* Hacemos la caja más grande que el botón para que pueda moverse */
             width: 200%;
             height: 200%;
             display: flex;
@@ -297,10 +297,10 @@
             text-align: center;
             line-height: 2;
             z-index: 5;
-            animation: watermark-scroll 40s linear infinite; /* A?adimos la animaci車n de movimiento */
+            animation: watermark-scroll 40s linear infinite; /* Añadimos la animación de movimiento */
         }
         @media (max-width: 480px) {
-            .option-btn.is-image { height: 150px; } /* Altura menor en m車viles */
+            .option-btn.is-image { height: 150px; } /* Altura menor en móviles */
         }
         .level-tag-display { color: #ffd54f; }
         .video-link {
@@ -470,7 +470,7 @@
         .canvas-container {
             position: relative;
             width: 100%;
-            /* Esto fuerza una relaci車n de aspecto cuadrada perfecta 1:1 */
+            /* Esto fuerza una relación de aspecto cuadrada perfecta 1:1 */
             aspect-ratio: 1 / 1;
             margin-top: 5px;
         }
@@ -633,9 +633,9 @@
         #banner-container {
             width: 100%;
             max-width: 720px;
-            /* Altura autom芍tica para adaptarse a la imagen */
+            /* Altura automática para adaptarse a la imagen */
             height: auto; 
-            min-height: 50px; /* M赤nimo para que no desaparezca si no carga */
+            min-height: 50px; /* Mínimo para que no desaparezca si no carga */
             margin: 10px auto;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
@@ -650,11 +650,11 @@
             object-fit: contain; /* Muestra la imagen completa sin cortar */
             display: block;
         }
-		/* AJUSTE ESPEC赤FICO PARA M車VILES (Agregar al final de tu CSS) */
+		/* AJUSTE ESPECÍFICO PARA MÓVILES (Agregar al final de tu CSS) */
         @media (max-width: 480px) {
             .graphing-container { padding: 10px; } /* Menos relleno en el contenedor principal */
             .graphing-canvas-container { 
-                padding: 5px; /* Casi sin borde interno en m車vil */
+                padding: 5px; /* Casi sin borde interno en móvil */
                 min-width: 100%; 
             }
         }
@@ -741,13 +741,13 @@
         
         /* Footer y Aviso de Privacidad */
         #footer {
-            position: relative; /* Esto hace que se coloque al final natural de la p芍gina */
+            position: relative; /* Esto hace que se coloque al final natural de la página */
             width: 100%;
-            margin-top: 50px;   /* A?ade espacio para que no se pegue al 迆ltimo elemento */
+            margin-top: 50px;   /* Añade espacio para que no se pegue al último elemento */
             background: rgba(25, 25, 35, 0.95);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 20px 0;    /* Un poco m芍s de espacio interno para que se vea mejor */
+            padding: 20px 0;    /* Un poco más de espacio interno para que se vea mejor */
             text-align: center;
             font-size: 12px;
             z-index: 100;
@@ -991,21 +991,21 @@
                 padding: 5px 0;
             }
             #footer-links {
-                flex-direction: row;       /* Alineaci車n horizontal */
+                flex-direction: row;       /* Alineación horizontal */
                 flex-wrap: wrap;           /* Permite que bajen si no caben */
                 justify-content: center;   /* Centrado */
                 gap: 12px;                 /* Espacio entre enlaces */
-                row-gap: 5px;              /* Espacio vertical si se hace una 2da l赤nea */
+                row-gap: 5px;              /* Espacio vertical si se hace una 2da línea */
             }
-            /* Ocultamos las barras separadoras (|) en m車viles para ahorrar espacio */
+            /* Ocultamos las barras separadoras (|) en móviles para ahorrar espacio */
             #footer-links span.text-gray-500 {
                 display: none;
             }
-            /* Hacemos la letra un poco m芍s peque?a en m車viles */
+            /* Hacemos la letra un poco más pequeña en móviles */
             .footer-link, .social-link {
                 font-size: 0.75rem; 
                 padding: 4px 6px;
-                background: rgba(0,0,0,0.2); /* Fondo muy sutil para delimitar el 芍rea t芍ctil */
+                background: rgba(0,0,0,0.2); /* Fondo muy sutil para delimitar el área táctil */
                 border-radius: 4px;
             }
             .privacy-modal-content {
@@ -1032,7 +1032,7 @@
             #image-container { max-width: 100%; }
             .graphing-function-buttons { grid-template-columns: repeat(2, 1fr); }
             .justification h4 { font-size: 1rem !important; }
-            /* Aqu赤 est芍 el cambio: altura autom芍tica para que no invada al chatbot */
+            /* Aquí está el cambio: altura automática para que no invada al chatbot */
             .calculator-container { width: 95%; max-width: 300px; height: auto; padding-bottom: 20px; }
         }
     </style>
@@ -1069,73 +1069,73 @@
             <div class="privacy-content">
                 <div class="privacy-section">
                     <h3>CEPREDIX</h3>
-                    <p>En cumplimiento con lo dispuesto por la Ley Federal de Protecci車n de Datos Personales en Posesi車n de los Particulares y su Reglamento, CEPREDIX, como responsable del tratamiento de datos personales, pone a disposici車n de estudiantes, tutores, usuarios y clientes el presente Aviso de Privacidad.</p>
+                    <p>En cumplimiento con lo dispuesto por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares y su Reglamento, CEPREDIX, como responsable del tratamiento de datos personales, pone a disposición de estudiantes, tutores, usuarios y clientes el presente Aviso de Privacidad.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>1. Identidad del responsable</h3>
-                    <p>CEPREDIX es un servicio educativo que brinda cursos, plataformas educativas, simulacros, bancos de preguntas y otros servicios relacionados con la formaci車n acad谷mica.</p>
-                    <p>CEPREDIX es responsable del uso, protecci車n y tratamiento de los datos personales que recaba de sus usuarios y estudiantes.</p>
+                    <p>CEPREDIX es un servicio educativo que brinda cursos, plataformas educativas, simulacros, bancos de preguntas y otros servicios relacionados con la formación académica.</p>
+                    <p>CEPREDIX es responsable del uso, protección y tratamiento de los datos personales que recaba de sus usuarios y estudiantes.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>2. Datos personales que se recaban</h3>
-                    <p>Para la prestaci車n de nuestros servicios educativos, CEPREDIX podr芍 recabar los siguientes datos personales:</p>
+                    <p>Para la prestación de nuestros servicios educativos, CEPREDIX podrá recabar los siguientes datos personales:</p>
                     <ul style="margin-left: 20px; margin-bottom: 10px;">
                         <li>Nombre del estudiante</li>
                         <li>Nombre del tutor (en caso de menores de edad)</li>
-                        <li>Correo electr車nico de contacto</li>
-                        <li>N迆mero telef車nico con acceso a WhatsApp</li>
+                        <li>Correo electrónico de contacto</li>
+                        <li>Número telefónico con acceso a WhatsApp</li>
                     </ul>
                     <p>CEPREDIX no recaba datos personales sensibles.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>3. Finalidades del tratamiento de los datos personales</h3>
-                    <p>Los datos personales recabados ser芍n utilizados exclusivamente para fines internos, relacionados con:</p>
+                    <p>Los datos personales recabados serán utilizados exclusivamente para fines internos, relacionados con:</p>
                     <ul style="margin-left: 20px; margin-bottom: 10px;">
-                        <li>Registro y administraci車n de estudiantes y usuarios</li>
+                        <li>Registro y administración de estudiantes y usuarios</li>
                         <li>Acceso y uso de plataformas educativas</li>
-                        <li>Comunicaci車n acad谷mica, administrativa y operativa</li>
-                        <li>Env赤o de informaci車n relacionada con cursos, servicios o soporte</li>
+                        <li>Comunicación académica, administrativa y operativa</li>
+                        <li>Envío de información relacionada con cursos, servicios o soporte</li>
                         <li>Seguimiento del servicio contratado</li>
                     </ul>
-                    <p>En ning迆n caso los datos ser芍n utilizados para fines distintos a los aqu赤 se?alados.</p>
+                    <p>En ningún caso los datos serán utilizados para fines distintos a los aquí señalados.</p>
                 </div>
                 
                 <div class="privacy-section">
-                    <h3>4. Conservaci車n de los datos</h3>
-                    <p>Los datos personales se conservar芍n 迆nicamente durante el tiempo en que el usuario o estudiante mantenga una relaci車n activa con CEPREDIX.</p>
-                    <p>Una vez concluida la contrataci車n de los servicios, los datos personales ser芍n eliminados de nuestra base de datos en un plazo m芍ximo de 30 d赤as naturales, salvo aquellos que deban conservarse por disposici車n legal aplicable.</p>
+                    <h3>4. Conservación de los datos</h3>
+                    <p>Los datos personales se conservarán únicamente durante el tiempo en que el usuario o estudiante mantenga una relación activa con CEPREDIX.</p>
+                    <p>Una vez concluida la contratación de los servicios, los datos personales serán eliminados de nuestra base de datos en un plazo máximo de 30 días naturales, salvo aquellos que deban conservarse por disposición legal aplicable.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>5. Transferencia de datos personales</h3>
                     <p>CEPREDIX no comparte, vende, cede ni transfiere datos personales a terceros, ya sea nacionales o extranjeros.</p>
-                    <p>Toda la informaci車n recabada es utilizada exclusivamente para fines internos del servicio educativo.</p>
+                    <p>Toda la información recabada es utilizada exclusivamente para fines internos del servicio educativo.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>6. Medidas de seguridad</h3>
-                    <p>CEPREDIX implementa medidas administrativas, t谷cnicas y organizativas razonables para proteger los datos personales contra da?o, p谷rdida, alteraci車n, destrucci車n o uso, acceso o tratamiento no autorizado.</p>
+                    <p>CEPREDIX implementa medidas administrativas, técnicas y organizativas razonables para proteger los datos personales contra daño, pérdida, alteración, destrucción o uso, acceso o tratamiento no autorizado.</p>
                 </div>
                 
                 <div class="privacy-section">
-                    <h3>7. Derechos ARCO (Acceso, Rectificaci車n, Cancelaci車n y Oposici車n)</h3>
+                    <h3>7. Derechos ARCO (Acceso, Rectificación, Cancelación y Oposición)</h3>
                     <p>Los titulares de los datos personales tienen derecho a:</p>
                     <ul style="margin-left: 20px; margin-bottom: 10px;">
                         <li>Acceder a sus datos personales</li>
                         <li>Rectificar datos incorrectos o incompletos</li>
-                        <li>Cancelar sus datos cuando consideren que no se requieren para los fines se?alados</li>
+                        <li>Cancelar sus datos cuando consideren que no se requieren para los fines señalados</li>
                         <li>Oponerse al tratamiento de sus datos</li>
                     </ul>
-                    <p>Para ejercer estos derechos, el titular podr芍 enviar una solicitud a trav谷s de los medios de contacto oficiales de CEPREDIX, indicando claramente el derecho que desea ejercer.</p>
+                    <p>Para ejercer estos derechos, el titular podrá enviar una solicitud a través de los medios de contacto oficiales de CEPREDIX, indicando claramente el derecho que desea ejercer.</p>
                 </div>
                 
                 <div class="privacy-section">
                     <h3>8. Cambios al aviso de privacidad</h3>
                     <p>CEPREDIX se reserva el derecho de realizar modificaciones o actualizaciones al presente Aviso de Privacidad en cualquier momento.
-                    Las modificaciones estar芍n disponibles a trav谷s de los medios oficiales del servicio.</p>
+                    Las modificaciones estarán disponibles a través de los medios oficiales del servicio.</p>
                 </div>
                 
                 <div class="privacy-section">
@@ -1149,28 +1149,28 @@
     <!-- Modal para datos de invitado -->
     <div id="guest-info-modal" style="display: none;">
         <div class="guest-info-content">
-            <h2 class="guest-info-title">?? Completa tus datos para ver los resultados</h2>
+            <h2 class="guest-info-title">📧 Completa tus datos para ver los resultados</h2>
             <p class="guest-info-text">
                 Como usuario invitado, necesitamos tu correo y WhatsApp para mostrarte tus resultados 
-                y enviarte un resumen de tu desempe?o.
+                y enviarte un resumen de tu desempeño.
             </p>
             <form id="guest-info-form" class="guest-info-form">
                 <div>
                     <input type="email" id="guest-email-input" 
-                           placeholder="Correo electr車nico (ejemplo@dominio.com)" 
+                           placeholder="Correo electrónico (ejemplo@dominio.com)" 
                            required>
                     <div id="guest-email-error" class="guest-error-message">
-                        ? Debe ser un correo v芍lido con @
+                        ❌ Debe ser un correo válido con @
                     </div>
                 </div>
                 <div>
                     <input type="tel" id="guest-whatsapp-input" 
-                           placeholder="WhatsApp (10 d赤gitos sin espacios)"
+                           placeholder="WhatsApp (10 dígitos sin espacios)"
                            maxlength="10"
                            inputmode="numeric"
                            required>
                     <div id="guest-whatsapp-error" class="guest-error-message">
-                        ? Debe tener 10 d赤gitos
+                        ❌ Debe tener 10 dígitos
                     </div>
                 </div>
                 <div class="guest-info-buttons">
@@ -1183,26 +1183,26 @@
                 </div>
             </form>
             <p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 20px;">
-                Tu nombre se registrar芍 autom芍ticamente como "Invitado"
+                Tu nombre se registrará automáticamente como "Invitado"
             </p>
         </div>
     </div>
     
     <div id="simulacro-end-screen" style="display: none;">
         <img id="simulacro-end-image" src="" alt="Fin del simulacro">
-        <div id="simulacro-end-timer">Volviendo al men迆 en 10 segundos...</div>
-        <button id="simulacro-return-btn" class="btn" style="background: linear-gradient(45deg, #ff9800, #ff5722);">VOLVER AL MEN迆</button>
+        <div id="simulacro-end-timer">Volviendo al menú en 10 segundos...</div>
+        <button id="simulacro-return-btn" class="btn" style="background: linear-gradient(45deg, #ff9800, #ff5722);">VOLVER AL MENÚ</button>
     </div>
     
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
-            <button id="logout-btn" class="logout-btn" title="Cerrar sesi車n">
+            <button id="logout-btn" class="logout-btn" title="Cerrar sesión">
                 <i class="fas fa-power-off"></i>
             </button>
             <div class="logo"></div>
             <h1 class="text-2xl sm:text-3xl font-bold">FACTORIZACIÓN</h1>
-            <h2 class="text-xl sm:text-2xl">Dise?ado con pasi車n ?? por el CEPREDIX</h2>
-            <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opci車n m迆ltiple ??</p>
+            <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
+            <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
 		<div id="banner-container" style="display: none;">
             <a id="banner-link" href="#" target="_blank">
@@ -1212,7 +1212,7 @@
         </div>
         <div id="login-screen" class="card p-6 sm:p-8 space-y-6">
             <div class="text-center">
-                <h2 class="text-2xl sm:text-3xl font-bold">HOLA ?? TE DAMOS LA BIENVENIDA ??</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold">HOLA 🖐 TE DAMOS LA BIENVENIDA 😉</h2>
                 <p class="text-gray-300 mt-2">Por favor, valida tus datos para comenzar</p>
             </div>
             <form id="login-form" class="space-y-4">
@@ -1221,12 +1221,12 @@
                     <input type="text" id="name-input" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="Tu nombre o nombre completo" required>
                 </div>
                 <div>
-                    <label for="email-input" class="font-medium">Correo Electr車nico</label>
+                    <label for="email-input" class="font-medium">Correo Electrónico</label>
                     <input type="email" id="email-input" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="tu.correo@ejemplo.com" required>
                 </div>
                 <div>
-                    <label for="whatsapp-input" class="font-medium">WhatsApp (10 d赤gitos sin espacios)</label>
-                    <input type="password" id="whatsapp-input" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="??????????" maxlength="10" inputmode="numeric" required>
+                    <label for="whatsapp-input" class="font-medium">WhatsApp (10 dígitos sin espacios)</label>
+                    <input type="password" id="whatsapp-input" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="••••••••••" maxlength="10" inputmode="numeric" required>
                 </div>
                 <button id="login-btn" type="submit" class="btn btn-primary w-full text-lg">
                     <span id="login-btn-text">Verificar y Entrar</span>
@@ -1235,9 +1235,9 @@
             </form>
             <div class="space-y-2">
                 <button id="guest-login-btn" class="btn btn-secondary w-full">ACCEDER COMO INVITADO</button>
-                <p class="text-xs text-center text-gray-300">Recuerda que al acceder como invitado NO se generan registros de tu avance, tampoco tendr芍s control de los filtros y algunos ejercicios no estar芍n disponibles para ti. Contacta al administrador en el link de abajo (NO TENGO ACCESO ??) para m芍s informaci車n.</p>
+                <p class="text-xs text-center text-gray-300">Recuerda que al acceder como invitado NO se generan registros de tu avance, tampoco tendrás control de los filtros y algunos ejercicios no estarán disponibles para ti. Contacta al administrador en el link de abajo (NO TENGO ACCESO 😥) para más información.</p>
             </div>
-            <a href="https://wa.link/i5rp89" target="_blank" class="btn btn-secondary w-full !mt-2">NO TENGO ACCESO ??</a>
+            <a href="https://wa.link/i5rp89" target="_blank" class="btn btn-secondary w-full !mt-2">NO TENGO ACCESO 😥</a>
             <p id="login-error-message" class="text-red-400 text-center text-sm h-4"></p>
         </div>
         <div id="setup-screen" class="card p-6 sm:p-8 space-y-6 hidden">
@@ -1261,21 +1261,21 @@
             </div>
             <div class="text-center">
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
-                <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si est芍s como INVITADO tendr芍s funciones limitadas</p>
+                <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
 
             <div class="space-y-4">
                 <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
                     <label class="font-medium flex items-center">
                         <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5">
-                        MODO AVANCE CONTINUO ?? (Sin l赤mite de preguntas)
+                        MODO AVANCE CONTINUO 🚀 (Sin límite de preguntas)
                     </label>
                     <p class="text-xs text-gray-400">Responde preguntas del banco de forma aleatoria sin fin. Termina la ronda cuando quieras con "Evaluar avance".</p>
                 </div>
                 <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
                     <label class="font-medium flex items-center">
                         <input type="checkbox" id="game-mode-toggle" class="mr-2 h-5 w-5">
-                        MODO SIMULACRO MORTAL ? (Desaf赤o)
+                        MODO SIMULACRO MORTAL ☠ (Desafío)
                     </label>
                     <p class="text-xs text-gray-400">Temporizador fijo de 30 minutos, 20 ejercicios aleatorios y 3 vidas</p>
                 </div>
@@ -1283,8 +1283,8 @@
 
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <p class="font-medium">Proceso de Admisi車n</p>
-                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisi車n, recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisi車n.</p>
+                    <p class="font-medium">Proceso de Admisión</p>
+                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisión, recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
                     <div id="uni-tags-container" class="flex flex-wrap gap-2"></div>
                 </div>
                 <div class="space-y-2">
@@ -1325,9 +1325,9 @@
             <div id="game-mode-rules" class="card p-3 mb-4 hidden">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
                     <div class="flex items-center space-x-4">
-                        <div class="text-yellow-400 font-bold text-xl" style="color: #FFD700;">? MODO SIMULACRO MORTAL ? ACTIVADO</div>
+                        <div class="text-yellow-400 font-bold text-xl" style="color: #FFD700;">⭐ MODO SIMULACRO MORTAL ☠ ACTIVADO</div>
                         <div class="flex space-x-2 ml-4">
-                             <span id="game-mode-lives" class="bg-gray-700 px-4 py-1 rounded-full">?? ?? ??</span>
+                             <span id="game-mode-lives" class="bg-gray-700 px-4 py-1 rounded-full">❤️ ❤️ ❤️</span>
                         </div>
                     </div>
                     <div id="game-mode-rules-text" class="text-sm text-yellow-300 text-center sm:text-right" style="color: #FFD700;">
@@ -1342,8 +1342,8 @@
                 </div>
 
                 <div id="live-score" class="flex gap-2 text-xs sm:text-lg order-2">
-                    <span class="font-bold text-green-400">? <span id="live-correct">0</span></span>
-                    <span class="font-bold text-red-400">? <span id="live-incorrect">0</span></span>
+                    <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
+                    <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
                 </div>
 
                 <div class="flex items-center space-x-1 text-xs sm:text-lg font-bold order-3" id="timer-container">
@@ -1408,7 +1408,7 @@
                 <div id="options-container" class="w-full space-y-3"></div>
                 
                 <div id="justification-box" class="justification w-full hidden">
-                    <h4>Justificaci車n:</h4>
+                    <h4>Justificación:</h4>
                     <p id="justification-text"></p>
                 </div>
 
@@ -1417,15 +1417,15 @@
             <div id="action-buttons" class="mt-6 space-y-3">
                 
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="hint-btn" class="btn btn-hint w-full">?? PISTA</button>
+                    <button id="hint-btn" class="btn btn-hint w-full">💡 PISTA</button>
                     <button id="evaluate-btn" class="btn btn-primary w-full" disabled>
-                        <span class="evaluate-emoji">??</span> EVALUAR
+                        <span class="evaluate-emoji">🤨</span> EVALUAR
                     </button>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="prev-btn" class="btn btn-secondary w-full">↘ ANTERIOR</button>
-                    <button id="next-btn" class="btn btn-secondary w-full" disabled>SIGUIENTE ↙</button>
+                    <button id="prev-btn" class="btn btn-secondary w-full">← ANTERIOR</button>
+                    <button id="next-btn" class="btn btn-secondary w-full" disabled>SIGUIENTE →</button>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
@@ -1436,8 +1436,8 @@
             
             <div id="all-questions-completed-message" class="mt-6 space-y-3 hidden">
                 <div class="p-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg text-center">
-                    <div class="text-2xl mb-2">??FELICIDADES??</div>
-                    <div class="text-lg mb-3">Has concluido todas las preguntas con estos filtros. Eval迆a tu avance ??. ?MUCHO 谷XITO! ??</div>
+                    <div class="text-2xl mb-2">🎉FELICIDADES🎉</div>
+                    <div class="text-lg mb-3">Has concluido todas las preguntas con estos filtros. Evalúa tu avance 😉. ¡MUCHO ÉXITO! 😎</div>
                     <button id="force-evaluate-btn" class="btn btn-primary w-full">EVALUAR AVANCE</button>
                 </div>
             </div>
@@ -1453,9 +1453,9 @@
                         <div class="calculator-display" id="calc-display">0</div>
                         <div class="calculator-buttons">
                             <button class="calculator-btn clear" data-value="C">C</button>
-                            <button class="calculator-btn special" data-value="﹟">﹟</button>
-                            <button class="calculator-btn operator" data-value="/">¯</button>
-                            <button class="calculator-btn operator" data-value="*">℅</button>
+                            <button class="calculator-btn special" data-value="√">√</button>
+                            <button class="calculator-btn operator" data-value="/">÷</button>
+                            <button class="calculator-btn operator" data-value="*">×</button>
                             <button class="calculator-btn" data-value="7">7</button>
                             <button class="calculator-btn" data-value="8">8</button>
                             <button class="calculator-btn" data-value="9">9</button>
@@ -1482,11 +1482,11 @@
                 </div>
                 <div id="chatbot-content" class="hidden">
                     <div class="chatbot-container">
-                        <h2 class="chatbot-title">T迆ul 每 Asistente de IA ??</h2>
+                        <h2 class="chatbot-title">Túul – Asistente de IA 🤖</h2>
                         <p class="graphing-subtitle">Escribe solo un concepto para conocer su significado, por ejemplo: <b>MITOCONDRIA</b></p>
                         
                         <div id="chatbot-chat">
-                            <p class="chatbot-system">Hola ?? soy T迆ul, tu asistente de IA para resolver dudas. Escribe un concepto para conocer su significado.</p>
+                            <p class="chatbot-system">Hola 🖐 soy Túul, tu asistente de IA para resolver dudas. Escribe un concepto para conocer su significado.</p>
                         </div>
                         
                         <div class="flex gap-2">
@@ -1537,23 +1537,23 @@
                 <div id="graphing-tool-content" class="hidden">
                     <div class="graphing-container">
                         <h2 class="graphing-title">Visualizador de Ecuaciones en el Plano Cartesiano</h2>
-                        <p class="graphing-subtitle">Explora funciones lineales, cuadr芍ticas, c迆bicas, trigonom谷tricas, c車nicas y m芍s</p>
+                        <p class="graphing-subtitle">Explora funciones lineales, cuadráticas, cúbicas, trigonométricas, cónicas y más</p>
                         
                         <div class="graphing-main-content">
                             <div class="graphing-canvas-container">
-                                <h3 class="graphing-section-title">Gr芍fica de la Ecuaci車n</h3>
+                                <h3 class="graphing-section-title">Gráfica de la Ecuación</h3>
                                 <div class="canvas-container">
                                     <canvas id="equationChart" style="width: 100%; height: 100%;"></canvas>
                                 </div>
                                 <div class="graphing-zoom-controls">
                                     <button class="zoom-btn" id="zoom-out-btn" title="Alejar (Zoom Out)">-</button>
-                                    <span class="scale-indicator" id="scale-indicator">Escala: ㊣10</span>
+                                    <span class="scale-indicator" id="scale-indicator">Escala: ±10</span>
                                     <button class="zoom-btn" id="zoom-in-btn" title="Acercar (Zoom In)">+</button>
                                 </div>
                             </div>
                             
                             <div class="graphing-controls-container">
-                                <h3 class="graphing-section-title">Controles de la Funci車n</h3>
+                                <h3 class="graphing-section-title">Controles de la Función</h3>
                                 
                                 <div class="graphing-function-buttons" id="graphingFunctionButtons">
                                 </div>
@@ -1562,7 +1562,7 @@
                                 </div>
                                 
                                 <div class="graphing-equation-display">
-                                    <h3>Ecuaci車n Actual</h3>
+                                    <h3>Ecuación Actual</h3>
                                     <div class="graphing-equation" id="graphingCurrentEquation">y = x</div>
                                 </div>
                                 
@@ -1604,13 +1604,13 @@
                                     <button class="graphing-btn graphing-btn-primary" id="project-line-btn" disabled>Unir y proyectar</button>
                                 </div>
 
-                                <div class="graphing-section-title" style="margin-top: 20px;">Graficar Expresi車n Algebraica</div>
+                                <div class="graphing-section-title" style="margin-top: 20px;">Graficar Expresión Algebraica</div>
                                 <div class="graphing-param-group">
-                                    <label for="algebraic-expression">Expresi車n (en t谷rminos de x, ej: x^2 + 3*x - 5)</label>
+                                    <label for="algebraic-expression">Expresión (en términos de x, ej: x^2 + 3*x - 5)</label>
                                     <input type="text" id="algebraic-expression" class="graphing-param-input" placeholder="x^2 + sin(x)">
                                 </div>
                                 <div style="margin-top: 10px; display: flex; gap: 10px;">
-                                    <button class="graphing-btn graphing-btn-primary" id="plot-expression-btn" style="flex: 1;">Graficar Expresi車n</button>
+                                    <button class="graphing-btn graphing-btn-primary" id="plot-expression-btn" style="flex: 1;">Graficar Expresión</button>
                                     <button class="graphing-btn graphing-btn-secondary" id="clear-expression-btn" style="background: #f44336; border-color: #d32f2f;">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -1618,38 +1618,38 @@
                                 
                                 <div class="graphing-controls-footer">
                                     <button class="graphing-btn graphing-btn-secondary" id="graphingResetBtn">Restablecer</button>
-                                    <button class="graphing-btn graphing-btn-primary" id="graphingUpdateBtn">Actualizar Gr芍fica</button>
+                                    <button class="graphing-btn graphing-btn-primary" id="graphingUpdateBtn">Actualizar Gráfica</button>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="graphing-info-box">
                             <h4>Instrucciones:</h4>
-                            <p>1. Selecciona el tipo de funci車n que deseas visualizar.</p>
-                            <p>2. Ingresa los valores de los par芍metros manualmente.</p>
-                            <p>3. Alterna entre forma can車nica y general usando los botones.</p>
-                            <p>4. Haz clic en "Actualizar Gr芍fica" para ver los cambios.</p>
-                            <p>5. Usa los botones +/- para ajustar el zoom del gr芍fico (㊣5, ㊣10, ㊣15, ㊣20, ㊣25, ㊣30, ㊣35, ㊣40, ㊣45, ㊣50).</p>
-                            <p>6. <strong>Para graficar expresiones algebraicas:</strong> escribe una expresi車n en t谷rminos de x (ej: x^2 + 3*x - 5) y haz clic en "Graficar Expresi車n".</p>
+                            <p>1. Selecciona el tipo de función que deseas visualizar.</p>
+                            <p>2. Ingresa los valores de los parámetros manualmente.</p>
+                            <p>3. Alterna entre forma canónica y general usando los botones.</p>
+                            <p>4. Haz clic en "Actualizar Gráfica" para ver los cambios.</p>
+                            <p>5. Usa los botones +/- para ajustar el zoom del gráfico (±5, ±10, ±15, ±20, ±25, ±30, ±35, ±40, ±45, ±50).</p>
+                            <p>6. <strong>Para graficar expresiones algebraicas:</strong> escribe una expresión en términos de x (ej: x^2 + 3*x - 5) y haz clic en "Graficar Expresión".</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="mt-4 grid grid-cols-2 gap-3">
-                 <button id="cancel-btn" class="btn btn-secondary w-full text-sm">VOLVER AL MEN迆</button>
+                 <button id="cancel-btn" class="btn btn-secondary w-full text-sm">VOLVER AL MENÚ</button>
                  <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">REPORTAR ERROR</a>
             </div>
         </div>
         <div id="results-screen" class="card p-4 sm:p-8 text-center hidden">
-            <h1 class="text-2xl sm:text-3xl font-bold">?Resultados Finales!</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">¡Resultados Finales!</h1>
             <div id="result-image-container">
                 <img id="result-image" src="" alt="Imagen de resultado">
             </div>
             <div class="flex flex-col lg:flex-row justify-around items-center gap-6 my-6">
                 <div class="w-full lg:w-1/2"><canvas id="results-chart"></canvas></div>
                 <div class="text-left space-y-2">
-                    <p class="text-xl font-medium">Calificaci車n: <span id="final-score" class="font-bold text-blue-400"></span></p>
+                    <p class="text-xl font-medium">Calificación: <span id="final-score" class="font-bold text-blue-400"></span></p>
                     <p>Tiempo total: <span id="total-time" class="font-semibold"></span></p>
                     <p>Tiempo promedio: <span id="avg-time" class="font-semibold"></span></p>
                     <p class="text-green-400">Correctas: <span id="correct-count" class="font-semibold"></span></p>
@@ -1675,14 +1675,14 @@
             </div>
             <div id="summary-box" class="card p-6 mt-8 text-left bg-gray-700">
                 <div class="flex justify-between items-start">
-                    <h3 class="text-xl font-bold mb-4">Resumen de la Evaluaci車n</h3>
+                    <h3 class="text-xl font-bold mb-4">Resumen de la Evaluación</h3>
                 </div>
                 <div class="space-y-2">
                     <p><strong>Nombre del Cuestionario:</strong> <span id="summary-eval-name"></span></p>
-                    <p><strong>Fecha de Realizaci車n:</strong> <span id="summary-date"></span></p>
+                    <p><strong>Fecha de Realización:</strong> <span id="summary-date"></span></p>
                     <p><strong>Resultado:</strong> <span id="summary-score" class="font-bold"></span></p>
                     <div>
-                        <p><strong>IDs de esta Evaluaci車n:</strong></p>
+                        <p><strong>IDs de esta Evaluación:</strong></p>
                         <p id="summary-ids" class="text-xs text-gray-400 break-words"></p>
                     </div>
                     <div>
@@ -1692,7 +1692,7 @@
                 </div>
             </div>
             <div class="mt-8 space-y-2">
-                <label for="answered-ids-output" class="font-medium">Estos son los id∩s solo de los ejercicios correctamente respondidos en esta evaluaci車n, c車pialos si deseas que no aparezcan estos ejercicios en la siguiente evaluaci車n que realices:</label>
+                <label for="answered-ids-output" class="font-medium">Estos son los id´s solo de los ejercicios correctamente respondidos en esta evaluación, cópialos si deseas que no aparezcan estos ejercicios en la siguiente evaluación que realices:</label>
                 <div class="flex gap-2">
                     <textarea id="answered-ids-output" rows="4" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white" readonly></textarea>
                     <button id="copy-ids-btn" class="btn btn-secondary">Copiar</button>
@@ -1937,17 +1937,17 @@
             let lineProjectionDataset = null;
             let algebraicDataset = null;
             
-			// --- L車GICA DE CERRAR SESI車N ---
+			// --- LÓGICA DE CERRAR SESIÓN ---
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', () => {
-                    if(confirm("?Est芍s seguro de que deseas cerrar sesi車n?")) {
+                    if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
                         localStorage.removeItem('sessionToken');
                         localStorage.removeItem('userEmail');
-                        location.reload(); // Recarga la p芍gina para volver al inicio
+                        location.reload(); // Recarga la página para volver al inicio
                     }
                 });
             }
-            // --- NUEVA L車GICA DE PUBLICIDAD ---
+            // --- NUEVA LÓGICA DE PUBLICIDAD ---
             let guestAds = [];      // Para intersticiales (PUB-INVITADO)
             let mainBanner = null;  // Para BANNER-PRINCIPAL
             let pubBanners = [];    // Para BANNER-PUB
@@ -1958,8 +1958,8 @@
                 .then(csv => {
                     const rows = csv.split("\n").slice(1);
                     rows.forEach(row => {
-                        // Separar columnas considerando que puede haber comas vac赤as
-                        // Estructura: Imagen, Audio, Infolink, Descripci車n, TIPO
+                        // Separar columnas considerando que puede haber comas vacías
+                        // Estructura: Imagen, Audio, Infolink, Descripción, TIPO
                         const cols = row.split(",");
                         if (cols.length >= 5) {
                             const item = {
@@ -1985,7 +1985,7 @@
                     console.error("Error al cargar publicidad:", err);
                 });
 
-            // Funci車n para gestionar el ciclo del Banner Horizontal
+            // Función para gestionar el ciclo del Banner Horizontal
             function initBannerCycle() {
                 const bannerContainer = document.getElementById('banner-container');
                 
@@ -2047,7 +2047,7 @@
                 // Manejo de Audio (Opcional en banners)
                 if (audioEl && item.Audio && item.Audio.length > 5) {
                     audioEl.src = item.Audio;
-                    // Nota: Los navegadores suelen bloquear audios autom芍ticos sin interacci車n previa
+                    // Nota: Los navegadores suelen bloquear audios automáticos sin interacción previa
                     audioEl.play().catch(e => console.log("Audio banner silenciado por navegador")); 
                 }
             }
@@ -2301,7 +2301,7 @@
                 }
             });
 
-            // Funci車n para mostrar publicidad INTERSTICIAL (Solo invitados)
+            // Función para mostrar publicidad INTERSTICIAL (Solo invitados)
             function showAd() {
                 if (!isGuest || !(isContinuousMode || isGameMode)) return;
                 
@@ -2314,7 +2314,7 @@
                 
                 // Intentar reproducir audio
                 adAudio.play().catch(e => {
-                    console.log("Audio no se pudo reproducir autom芍ticamente:", e);
+                    console.log("Audio no se pudo reproducir automáticamente:", e);
                 });
 
                 infoBtn.href = ad.Infolink;
@@ -2345,7 +2345,7 @@
                 const concepto = chatbotInput.value.trim();
                 if (!concepto) return;
                 
-                chatbotChat.innerHTML += `<p class="chatbot-user"><b>T迆:</b> ${concepto}</p>`;
+                chatbotChat.innerHTML += `<p class="chatbot-user"><b>Tú:</b> ${concepto}</p>`;
                 chatbotInput.value = "";
                 chatbotChat.scrollTop = chatbotChat.scrollHeight;
 
@@ -2371,9 +2371,9 @@
                         chatMessages[chatMessages.length - 1].remove();
                     }
                     
-                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>T迆ul:</b> ${data.respuesta}</p>`;
+                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>Túul:</b> ${data.respuesta}</p>`;
                 } catch (error) {
-                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>T迆ul:</b> Error al conectar con el chatbot.</p>`;
+                    chatbotChat.innerHTML += `<p class="chatbot-bot"><b>Túul:</b> Error al conectar con el chatbot.</p>`;
                 }
                 chatbotChat.scrollTop = chatbotChat.scrollHeight;
             });
@@ -2416,10 +2416,10 @@
                     randomFailSound.play().catch(e => console.error("Error al reproducir sonido de fallo:", e));
                 }
                 let countdown = 10;
-                simulacroEndTimer.textContent = `Volviendo al men迆 en ${countdown} segundos...`;
+                simulacroEndTimer.textContent = `Volviendo al menú en ${countdown} segundos...`;
                 const countdownInterval = setInterval(() => {
                     countdown--;
-                    simulacroEndTimer.textContent = `Volviendo al men迆 en ${countdown} segundos...`;
+                    simulacroEndTimer.textContent = `Volviendo al menú en ${countdown} segundos...`;
                     if (countdown <= 0) {
                         clearInterval(countdownInterval);
                         returnToMenuFromSimulacro();
@@ -2455,15 +2455,15 @@
                     formData.append('email', email);
                     formData.append('whatsapp', whatsapp);
 
-                    // Enviamos la petici車n
-                    // Importante: redirect 'follow' permite seguir la redirecci車n de Google
+                    // Enviamos la petición
+                    // Importante: redirect 'follow' permite seguir la redirección de Google
                     const response = await fetch(RESULTS_SCRIPT_URL, {
                         method: 'POST',
                         body: formData,
                         redirect: 'follow' 
                     });
                     
-                    // Leemos la respuesta como TEXTO primero (m芍s seguro)
+                    // Leemos la respuesta como TEXTO primero (más seguro)
                     const textResponse = await response.text();
                     
                     // Intentamos convertir ese texto a JSON
@@ -2472,7 +2472,7 @@
                         data = JSON.parse(textResponse);
                     } catch (e) {
                         console.error("Error al leer respuesta del servidor:", textResponse);
-                        alert("Error t谷cnico: El servidor respondi車 algo que no es JSON. Revisa la consola.");
+                        alert("Error técnico: El servidor respondió algo que no es JSON. Revisa la consola.");
                         return false;
                     }
                     
@@ -2485,21 +2485,21 @@
                         startSessionCheck();
                         return true;
                     } else {
-                        // Si el servidor dice expl赤citamente que fall車
+                        // Si el servidor dice explícitamente que falló
                         if(loginErrorMessage) loginErrorMessage.textContent = data.message;
                         return false;
                     }
                 } catch (error) {
-                    console.error('Error de red o conexi車n:', error);
-                    // Esto nos dir芍 si el problema es que no llega al servidor
-                    alert("Error de conexi車n: " + error.message); 
+                    console.error('Error de red o conexión:', error);
+                    // Esto nos dirá si el problema es que no llega al servidor
+                    alert("Error de conexión: " + error.message); 
                     return false;
                 }
             }
 			let sessionInterval;
 
             function startSessionCheck() {
-                if (isGuest) return; // Los invitados no tienen control de sesi車n
+                if (isGuest) return; // Los invitados no tienen control de sesión
                 
                 // Limpiar intervalo anterior si existe
                 if (sessionInterval) clearInterval(sessionInterval);
@@ -2524,14 +2524,14 @@
                         
                         const data = await response.json();
                         
-                        // Si la validaci車n es falsa, significa que alguien m芍s entr車
+                        // Si la validación es falsa, significa que alguien más entró
                         if (data.valid === false) {
                             clearInterval(sessionInterval);
-                            alert("?? SE HA DETECTADO UNA NUEVA SESI車N.\n\nTu cuenta ha sido abierta en otro dispositivo o navegador.\nEsta sesi車n se cerrar芍 autom芍ticamente.");
-                            window.location.reload(); // Recargar p芍gina para sacar al usuario
+                            alert("⚠️ SE HA DETECTADO UNA NUEVA SESIÓN.\n\nTu cuenta ha sido abierta en otro dispositivo o navegador.\nEsta sesión se cerrará automáticamente.");
+                            window.location.reload(); // Recargar página para sacar al usuario
                         }
                     } catch (e) {
-                        console.log("Error verificando sesi車n (puede ser red inestable), reintentando luego...");
+                        console.log("Error verificando sesión (puede ser red inestable), reintentando luego...");
                     }
                 }, 20000); // 20000 ms = 20 segundos
             }
@@ -2545,13 +2545,13 @@
                 if (answeredCount < minQuestionsRequired) {
                     finishBtn.innerHTML = `EVALUAR AVANCE (${answeredCount}/${minQuestionsRequired})`;
                 } else {
-                    finishBtn.innerHTML = 'EVALUAR AVANCE ?';
+                    finishBtn.innerHTML = 'EVALUAR AVANCE ✓';
                 }
                 finishBtn.classList.toggle('hidden', !isContinuousMode);
             }
 
             function startEvaluateEmojiAnimation() {
-                const emojis = ['??', '??', '??', '??', '??'];
+                const emojis = ['🤨', '🙂', '😮', '😫', '😎'];
                 let index = 0;
                 if (evaluateEmojiInterval) {
                     clearInterval(evaluateEmojiInterval);
@@ -2571,7 +2571,7 @@
                     evaluateEmojiInterval = null;
                     const emojiSpan = evaluateBtn.querySelector('.evaluate-emoji');
                     if (emojiSpan) {
-                        emojiSpan.textContent = '?';
+                        emojiSpan.textContent = '✅';
                     }
                 }
             }
@@ -2589,13 +2589,13 @@
                 }
                 
                 if (!selectedOption) {
-                    selectedOption = "No puedo identificar la respuesta ??";
+                    selectedOption = "No puedo identificar la respuesta 😥";
                 }
                 
                 const correctOption = question.options.find(opt => opt.correct);
                 const isCorrect = correctOption && correctOption.text === selectedOption;
                 
-                if (selectedOption === "No puedo identificar la respuesta ??") {
+                if (selectedOption === "No puedo identificar la respuesta 😥") {
                     currentAnswer.status = 'unidentified';
                     if (effectsVolume > 0) {
                         incorrectSound.currentTime = 0;
@@ -2615,7 +2615,7 @@
                             gameModeLives = Math.min(3, gameModeLives + 1);
                             consecutiveCorrect = 0;
                             updateGameModeLivesDisplay();
-                            showTemporaryMessage("?3 respuestas correctas seguidas! Has recuperado una vida.", "bg-green-600");
+                            showTemporaryMessage("¡3 respuestas correctas seguidas! Has recuperado una vida.", "bg-green-600");
                         }
                     }
                 } else {
@@ -2630,7 +2630,7 @@
                         consecutiveCorrect = 0;
                         updateGameModeLivesDisplay();
                         if (gameModeLives <= 0) {
-                            handleGameModeLoss("?Te has quedado sin vidas!");
+                            handleGameModeLoss("¡Te has quedado sin vidas!");
                             return;
                         }
                     }
@@ -2678,7 +2678,7 @@
                     allQuestionsCompletedMessage.classList.remove('hidden');
                     finishBtn.disabled = false;
                     finishBtn.classList.remove('btn-disabled');
-                    finishBtn.innerHTML = 'EVALUAR AVANCE ?';
+                    finishBtn.innerHTML = 'EVALUAR AVANCE ✓';
                     return true;
                 } else {
                     allQuestionsCompletedMessage.classList.add('hidden');
@@ -2700,19 +2700,19 @@
                 return remainingQuestions[randomIndex];
             }
 
-                // Definici車n de las 12 funciones y sus tipos
+                // Definición de las 12 funciones y sus tipos
                 const graphingFunctionTypes = [
                     { id: 'linear', name: '1. Lineal', canonical: 'y = mx + b', general: 'Ax + By + C = 0' },
-                    { id: 'quadratic', name: '2. Cuadr芍tica', canonical: 'y = a(x - h)2 + k', general: 'Ax2 + Bx + C = 0' },
-                    { id: 'cubic', name: '3. C迆bica', canonical: 'y = a(x - h)3 + k', general: 'Ax3 + Bx2 + Cx + D = 0' },
-                    { id: 'circle', name: '4. Circunferencia', canonical: '(x - h)2 + (y - k)2 = r2', general: 'x2 + y2 + Dx + Ey + F = 0', isConic: true },
-                    { id: 'ellipse', name: '5. Elipse', canonical: '(x-h)2/a2 + (y-k)2/b2 = 1', general: 'Ax2 + Cy2 + Dx + Ey + F = 0', isConic: true },
-                    { id: 'parabola', name: '6. Par芍bola', canonical: 'V: y=a(x-h)2+k | H: x=a(y-k)2+h', general: 'General', isConic: true, hasOrientation: true },
-                    { id: 'hyperbola', name: '7. Hip谷rbola', canonical: '(x-h)2/a2 - (y-k)2/b2 = 1', general: 'Ax2 - Cy2 + Dx + Ey + F = 0', isConic: true },
+                    { id: 'quadratic', name: '2. Cuadrática', canonical: 'y = a(x - h)² + k', general: 'Ax² + Bx + C = 0' },
+                    { id: 'cubic', name: '3. Cúbica', canonical: 'y = a(x - h)³ + k', general: 'Ax³ + Bx² + Cx + D = 0' },
+                    { id: 'circle', name: '4. Circunferencia', canonical: '(x - h)² + (y - k)² = r²', general: 'x² + y² + Dx + Ey + F = 0', isConic: true },
+                    { id: 'ellipse', name: '5. Elipse', canonical: '(x-h)²/a² + (y-k)²/b² = 1', general: 'Ax² + Cy² + Dx + Ey + F = 0', isConic: true },
+                    { id: 'parabola', name: '6. Parábola', canonical: 'V: y=a(x-h)²+k | H: x=a(y-k)²+h', general: 'General', isConic: true, hasOrientation: true },
+                    { id: 'hyperbola', name: '7. Hipérbola', canonical: '(x-h)²/a² - (y-k)²/b² = 1', general: 'Ax² - Cy² + Dx + Ey + F = 0', isConic: true },
                     { id: 'sin', name: '8. Seno', canonical: 'y = a sin(b(x - h)) + k', general: '' },
                     { id: 'cos', name: '9. Coseno', canonical: 'y = a cos(b(x - h)) + k', general: '' },
                     { id: 'tan', name: '10. Tangente', canonical: 'y = a tan(b(x - h)) + k', general: '' },
-                    { id: 'log', name: '11. Logar赤tmica', canonical: 'y = a log_b(x - h) + k', general: '' },
+                    { id: 'log', name: '11. Logarítmica', canonical: 'y = a log_b(x - h) + k', general: '' },
                     { id: 'exp', name: '12. Exponencial', canonical: 'y = a b^(x - h) + k', general: '' }
                 ];
 
@@ -2728,7 +2728,7 @@
                         button.classList.add('active');
                         currentGraphingFunction = func.id;
                         isGraphingCanonical = true;
-                        // Resetear orientaci車n a Vertical por defecto al cambiar
+                        // Resetear orientación a Vertical por defecto al cambiar
                         currentOrientation = 'vertical'; 
                         
                         updateGraphingFormToggle();
@@ -2739,7 +2739,7 @@
                     graphingFunctionButtons.appendChild(button);
                 });
 
-                // Crear bot車n de Restablecer Par芍metros aqu赤
+                // Crear botón de Restablecer Parámetros aquí
                 const resetDiv = document.createElement('div');
                 resetDiv.style.width = '100%';
                 resetDiv.style.textAlign = 'center';
@@ -2748,7 +2748,7 @@
                 
                 const resetBtn = document.createElement('button');
                 resetBtn.className = 'graphing-btn graphing-btn-secondary';
-                resetBtn.innerHTML = '<i class="fas fa-undo"></i> Restablecer par芍metros';
+                resetBtn.innerHTML = '<i class="fas fa-undo"></i> Restablecer parámetros';
                 resetBtn.style.width = '100%';
                 resetBtn.addEventListener('click', resetGraphingParams);
                 
@@ -2760,8 +2760,8 @@
                 initializeGraphingChart();
                 
                 // Botones existentes
-                graphingResetBtn.style.display = 'none'; // Ocultamos el viejo bot車n de reset del footer si existe
-                graphingUpdateBtn.style.display = 'none'; // Ocultamos el bot車n de actualizar manual (ser芍 autom芍tico)
+                graphingResetBtn.style.display = 'none'; // Ocultamos el viejo botón de reset del footer si existe
+                graphingUpdateBtn.style.display = 'none'; // Ocultamos el botón de actualizar manual (será automático)
 
                 if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
                 if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
@@ -2783,14 +2783,14 @@
                 clearCoordsBtn.addEventListener('click', clearCoordinates);
                 if(projectLineBtn) projectLineBtn.addEventListener('click', projectLine);
                 plotExpressionBtn.addEventListener('click', plotAlgebraicExpression);
-                // L車gica para el nuevo bot車n de borrar expresi車n
+                // Lógica para el nuevo botón de borrar expresión
             const clearExpressionBtn = document.getElementById('clear-expression-btn');
             if (clearExpressionBtn) {
                 clearExpressionBtn.addEventListener('click', () => {
                     if (algebraicExpression) algebraicExpression.value = ''; // Borra el texto del input
                     algebraicDataset = null; // Borra los datos de la memoria
-                    updateGraphingChart(); // Actualiza el gr芍fico
-                    showTemporaryMessage('Gr芍fica de expresi車n borrada', 'bg-blue-600');
+                    updateGraphingChart(); // Actualiza el gráfico
+                    showTemporaryMessage('Gráfica de expresión borrada', 'bg-blue-600');
                 });
             }
 			
@@ -2863,7 +2863,7 @@
                     }
                 }
                 lineProjectionDataset = {
-                    label: 'L赤nea Proyectada',
+                    label: 'Línea Proyectada',
                     data: dataPoints,
                     borderColor: '#00FF00',
                     backgroundColor: '#00FF00',
@@ -2878,7 +2878,7 @@
             function plotAlgebraicExpression() {
                 const expr = algebraicExpression.value.trim();
                 if (!expr) {
-                    showTemporaryMessage('Por favor, ingresa una expresi車n algebraica.', 'bg-red-600');
+                    showTemporaryMessage('Por favor, ingresa una expresión algebraica.', 'bg-red-600');
                     return;
                 }
                 try {
@@ -2891,17 +2891,17 @@
                                 dataPoints.push({ x: x, y: y });
                             }
                         } catch (e) {
-                            // Ignorar puntos no v芍lidos
+                            // Ignorar puntos no válidos
                         }
                     }
                     
                     if (dataPoints.length === 0) {
-                        showTemporaryMessage('No se pudieron calcular puntos para la expresi車n. Verifica que sea v芍lida.', 'bg-red-600');
+                        showTemporaryMessage('No se pudieron calcular puntos para la expresión. Verifica que sea válida.', 'bg-red-600');
                         return;
                     }
                     
                     algebraicDataset = {
-                        label: 'Expresi車n: ' + expr,
+                        label: 'Expresión: ' + expr,
                         data: dataPoints,
                         borderColor: '#FFA500',
                         backgroundColor: '#FFA500',
@@ -2912,7 +2912,7 @@
                     };
                     updateGraphingChart();
                 } catch (error) {
-                    showTemporaryMessage('Error al evaluar la expresi車n: ' + error.message, 'bg-red-600');
+                    showTemporaryMessage('Error al evaluar la expresión: ' + error.message, 'bg-red-600');
                     console.error('Error en plotAlgebraicExpression:', error);
                 }
             }
@@ -2938,13 +2938,13 @@
                 safeExpr = safeExpr.replace(/x/g, `(${xValue})`);
                 
                 if (!/^[0-9\+\-\*\/\^\.\(\)\sMath\.sinMath\.cosMath\.tanMath\.logMath\.log10Math\.sqrtMath\.expMath\.PIMath\.E]*$/.test(safeExpr.replace(/ /g, ''))) {
-                    throw new Error('Expresi車n contiene caracteres no permitidos');
+                    throw new Error('Expresión contiene caracteres no permitidos');
                 }
                 
                 try {
                     return Function('"use strict"; return ' + safeExpr)();
                 } catch (e) {
-                    throw new Error('No se pudo evaluar la expresi車n: ' + e.message);
+                    throw new Error('No se pudo evaluar la expresión: ' + e.message);
                 }
             }
             
@@ -2970,7 +2970,7 @@
             
             function updateScaleIndicator() {
                 if (scaleIndicator) {
-                    scaleIndicator.textContent = `Escala: ㊣${currentScale}`;
+                    scaleIndicator.textContent = `Escala: ±${currentScale}`;
                 }
             }
             
@@ -2987,7 +2987,7 @@
                 graphingFormToggle.innerHTML = '';
                 const canonicalBtn = document.createElement('button');
                 canonicalBtn.className = `graphing-form-toggle-btn ${isGraphingCanonical ? 'active' : ''}`;
-                canonicalBtn.textContent = 'Forma Can車nica';
+                canonicalBtn.textContent = 'Forma Canónica';
                 canonicalBtn.dataset.form = 'canonical';
                 const generalBtn = document.createElement('button');
                 generalBtn.className = `graphing-form-toggle-btn ${!isGraphingCanonical ? 'active' : ''}`;
@@ -3014,7 +3014,7 @@
             function updateGraphingParamControls() {
                 graphingParamControls.innerHTML = '';
                 
-                // Selector de Orientaci車n para C車nicas (Par芍bola, Elipse, Hip谷rbola)
+                // Selector de Orientación para Cónicas (Parábola, Elipse, Hipérbola)
                 if (['parabola', 'ellipse', 'hyperbola'].includes(currentGraphingFunction)) {
                     const orientDiv = document.createElement('div');
                     orientDiv.className = 'graphing-form-toggle';
@@ -3054,7 +3054,7 @@
                     input.className = 'graphing-param-input';
                     input.dataset.param = config.param;
                     
-                    // ACTUALIZACI車N AUTOM芍TICA AL ESCRIBIR
+                    // ACTUALIZACIÓN AUTOMÁTICA AL ESCRIBIR
                     input.addEventListener('input', function() {
                         updateGraphingEquationDisplay();
                         updateGraphingChart();
@@ -3086,8 +3086,8 @@
                 } else if (currentGraphingFunction === 'quadratic') {
                     if (isGraphingCanonical) {
                         configs.push({ param: 'a', label: 'Apertura (a)', def: 1 });
-                        configs.push({ param: 'h', label: 'V谷rtice X (h)', def: 0 });
-                        configs.push({ param: 'k', label: 'V谷rtice Y (k)', def: 0 });
+                        configs.push({ param: 'h', label: 'Vértice X (h)', def: 0 });
+                        configs.push({ param: 'k', label: 'Vértice Y (k)', def: 0 });
                     } else {
                         configs.push({ param: 'A', label: 'A', def: 1 });
                         configs.push({ param: 'B', label: 'B', def: 0 });
@@ -3128,13 +3128,13 @@
                         configs.push({ param: 'F', label: 'F', def: -36 });
                     }
                 } else if (currentGraphingFunction === 'parabola') {
-                    // Par芍bola C車nica (Vertical u Horizontal)
+                    // Parábola Cónica (Vertical u Horizontal)
                     if (isGraphingCanonical) {
                         configs.push({ param: 'a', label: 'Coeficiente (a)', def: 1 });
-                        configs.push({ param: 'h', label: 'V谷rtice X (h)', def: 0 });
-                        configs.push({ param: 'k', label: 'V谷rtice Y (k)', def: 0 });
+                        configs.push({ param: 'h', label: 'Vértice X (h)', def: 0 });
+                        configs.push({ param: 'k', label: 'Vértice Y (k)', def: 0 });
                     } else {
-                        // General Par芍bola
+                        // General Parábola
                         if (currentOrientation === 'vertical') {
                             configs.push({ param: 'D', label: 'D', def: 0 });
                             configs.push({ param: 'E', label: 'E', def: -1 }); // y
@@ -3166,13 +3166,13 @@
                 } else if (currentGraphingFunction === 'log') {
                     configs.push({ param: 'a', label: 'Escala (a)', def: 1 });
                     configs.push({ param: 'b', label: 'Base (b)', def: 10 });
-                    configs.push({ param: 'h', label: 'As赤ntota X (h)', def: 0 });
+                    configs.push({ param: 'h', label: 'Asíntota X (h)', def: 0 });
                     configs.push({ param: 'k', label: 'Desp. Y (k)', def: 0 });
                 } else if (currentGraphingFunction === 'exp') {
                     configs.push({ param: 'a', label: 'Escala (a)', def: 1 });
                     configs.push({ param: 'b', label: 'Base (b)', def: 2 });
                     configs.push({ param: 'h', label: 'Desp. X (h)', def: 0 });
-                    configs.push({ param: 'k', label: 'As赤ntota Y (k)', def: 0 });
+                    configs.push({ param: 'k', label: 'Asíntota Y (k)', def: 0 });
                 }
                 return configs;
             }
@@ -3204,7 +3204,7 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    // L車gica para pintar el eje X (valor 0) m芍s brillante y grueso
+                                    // Lógica para pintar el eje X (valor 0) más brillante y grueso
                                     color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
                                     lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
@@ -3213,8 +3213,8 @@
                                     color: '#bdbdbd',
                                     callback: function(value) {
                                         if (value === 0) return '0';
-                                        if (value === Math.PI) return '羽';
-                                        if (value === -Math.PI) return '-羽';
+                                        if (value === Math.PI) return 'π';
+                                        if (value === -Math.PI) return '-π';
                                         return value;
                                     }
                                 }
@@ -3225,7 +3225,7 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    // L車gica para pintar el eje Y (valor 0) m芍s brillante y grueso
+                                    // Lógica para pintar el eje Y (valor 0) más brillante y grueso
                                     color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
                                     lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
@@ -3234,8 +3234,8 @@
                                     color: '#bdbdbd',
                                     callback: function(value) {
                                         if (value === 0) return '0';
-                                        if (value === Math.PI) return '羽';
-                                        if (value === -Math.PI) return '-羽';
+                                        if (value === Math.PI) return 'π';
+                                        if (value === -Math.PI) return '-π';
                                         return value;
                                     }
                                 }
@@ -3279,11 +3279,11 @@
                 graphingChart.options.scales.y.ticks.stepSize = currentScale / 5;
 
                 const dataPoints = [];
-                const step = currentScale / 100; // Resoluci車n
+                const step = currentScale / 100; // Resolución
                 
-                // L車gica de Graficado por Tipo
+                // Lógica de Graficado por Tipo
                 if (['linear', 'quadratic', 'cubic', 'sin', 'cos', 'tan', 'log', 'exp'].includes(currentGraphingFunction)) {
-                    // Funciones expl赤citas y = f(x)
+                    // Funciones explícitas y = f(x)
                     for (let x = -currentScale; x <= currentScale; x += step) {
                         let y = null;
                         
@@ -3293,7 +3293,7 @@
                         } 
                         else if (currentGraphingFunction === 'quadratic') {
                             if (isGraphingCanonical) y = params.a * Math.pow(x - params.h, 2) + params.k;
-                            else y = params.A * x * x + params.B * x + params.C; // Simplificaci車n general y=...
+                            else y = params.A * x * x + params.B * x + params.C; // Simplificación general y=...
                         }
                         else if (currentGraphingFunction === 'cubic') {
                             if (isGraphingCanonical) y = params.a * Math.pow(x - params.h, 3) + params.k;
@@ -3303,7 +3303,7 @@
                         else if (currentGraphingFunction === 'cos') y = params.a * Math.cos(params.b * (x - params.h)) + params.k;
                         else if (currentGraphingFunction === 'tan') {
                             y = params.a * Math.tan(params.b * (x - params.h)) + params.k;
-                            // Evitar as赤ntotas verticales visuales
+                            // Evitar asíntotas verticales visuales
                             if (Math.abs(y) > currentScale) y = null;
                         }
                         else if (currentGraphingFunction === 'log') {
@@ -3322,7 +3322,7 @@
                     }
                 } 
                 else {
-                    // C車nicas (Param谷tricas para mejor dibujo)
+                    // Cónicas (Paramétricas para mejor dibujo)
                     // Paso angular 0 a 2PI
                     const tStep = 0.05; 
                     
@@ -3340,7 +3340,7 @@
                     }
                     else if (currentGraphingFunction === 'ellipse') {
                         let h = params.h, k = params.k, a = params.a, b = params.b;
-                        // Simplificaci車n para General Elipse (Ajuste aproximado para visualizaci車n)
+                        // Simplificación para General Elipse (Ajuste aproximado para visualización)
                         if (!isGraphingCanonical) {
                             h = -params.D / (2*params.A);
                             k = -params.E / (2*params.C);
@@ -3349,9 +3349,9 @@
                             b = Math.sqrt(Math.abs((params.F - params.A*h*h - params.C*k*k)/params.C));
                         }
                         
-                        // Intercambiar ejes si es horizontal/vertical seg迆n orientaci車n deseada
+                        // Intercambiar ejes si es horizontal/vertical según orientación deseada
                         if (currentOrientation === 'vertical' && isGraphingCanonical) {
-                            // En can車nica, a suele ser eje mayor. Si es vertical, b > a visualmente o rotamos
+                            // En canónica, a suele ser eje mayor. Si es vertical, b > a visualmente o rotamos
                             // Usaremos a como eje X y b como eje Y directo de los inputs
                         }
 
@@ -3360,8 +3360,8 @@
                         }
                     }
                     else if (currentGraphingFunction === 'parabola') {
-                        // V: y = a(x-h)^2 + k  -> Param谷trica: x=t, y=a(t-h)^2+k
-                        // H: x = a(y-k)^2 + h  -> Param谷trica: y=t, x=a(t-k)^2+h
+                        // V: y = a(x-h)^2 + k  -> Paramétrica: x=t, y=a(t-h)^2+k
+                        // H: x = a(y-k)^2 + h  -> Paramétrica: y=t, x=a(t-k)^2+h
                         for (let t = -currentScale; t <= currentScale; t += step) {
                             let px, py;
                             if (currentOrientation === 'vertical') {
@@ -3382,7 +3382,7 @@
                         // x = h + a sec(t), y = k + b tan(t)
                         const h = params.h, k = params.k, a = params.a, b = params.b;
                         
-                        // Dibujar en dos partes para evitar l赤neas cruzadas
+                        // Dibujar en dos partes para evitar líneas cruzadas
                         for (let section = 0; section < 2; section++) { // 0: -PI/2 a PI/2, 1: PI/2 a 3PI/2
                              for(let t = -1.3; t <= 1.3; t+=0.05) { // Limitar t para evitar infinito tan(t)
                                  let px, py;
@@ -3400,15 +3400,15 @@
                                  if(Math.abs(px) <= currentScale && Math.abs(py) <= currentScale)
                                     dataPoints.push({x: px, y: py});
                              }
-                             // A?adir corte null para separar ramas
+                             // Añadir corte null para separar ramas
                              dataPoints.push({x: null, y: null});
                         }
                     }
                 }
 
-                // Construcci車n de Datasets
+                // Construcción de Datasets
                 const datasets = [{
-                    label: 'Funci車n', // CAMBIO: Ahora siempre dice solo "Funci車n"
+                    label: 'Función', // CAMBIO: Ahora siempre dice solo "Función"
                     data: dataPoints,
                     borderColor: '#9c27b0',
                     backgroundColor: '#9c27b0',
@@ -3434,15 +3434,15 @@
                         backgroundColor: 'red',    // Relleno rojo intenso
                         borderColor: 'white',      // Borde blanco para que resalte sobre el fondo oscuro
                         borderWidth: 2,            // Grosor del borde
-                        pointRadius: 8,            // Tama?o del punto aumentado para visibilidad
+                        pointRadius: 8,            // Tamaño del punto aumentado para visibilidad
                         pointHoverRadius: 10,      // Efecto al pasar el mouse
-                        pointStyle: 'circle'       // Cambiado a c赤rculo s車lido (es m芍s visible que la X)
+                        pointStyle: 'circle'       // Cambiado a círculo sólido (es más visible que la X)
                     });
                 }
                 
-                // L赤nea proyectada
+                // Línea proyectada
                 if (lineProjectionDataset) datasets.push(lineProjectionDataset);
-                // Expresi車n algebraica manual
+                // Expresión algebraica manual
                 if (algebraicDataset) datasets.push(algebraicDataset);
 
                 graphingChart.data.datasets = datasets;
@@ -3497,7 +3497,7 @@
 
             function playButtonSound() {
                 buttonSound.currentTime = 0;
-                buttonSound.play().catch(e => console.error("Error al reproducir sonido de bot車n:", e));
+                buttonSound.play().catch(e => console.error("Error al reproducir sonido de botón:", e));
             }
             
             document.querySelectorAll('.btn, .option-btn, .calculator-btn, .tag, .video-toggle, .control-btn, .color-picker-wrapper, #clear-button, .volume-btn-new, .graphing-func-btn, .graphing-form-toggle-btn, .graphing-btn').forEach(el => {
@@ -3553,7 +3553,7 @@
                     lookupIdInput.disabled = true;
                     lookupBtn.disabled = true;
                     lookupBtn.classList.add('btn-disabled');
-                    lookupIdInput.placeholder = "Funci車n no disponible para invitados";
+                    lookupIdInput.placeholder = "Función no disponible para invitados";
                     const lookupSection = document.querySelector('.space-y-2.border-t.border-gray-600.pt-4.mt-4');
                     if (lookupSection) {
                         lookupSection.style.display = 'none';
@@ -3597,7 +3597,7 @@
             }
             
             function updateGameModeLivesDisplay() {
-                const livesDisplay = '?? '.repeat(gameModeLives).trim();
+                const livesDisplay = '❤️ '.repeat(gameModeLives).trim();
                 gameModeLivesDisplay.textContent = livesDisplay;
             }
             
@@ -3610,7 +3610,7 @@
                     updateGameModeTimerDisplay();
                     if (gameModeSeconds <= 0) {
                         clearInterval(gameModeTimer);
-                        handleGameModeLoss("?Tiempo agotado! Has perdido el desaf赤o.");
+                        handleGameModeLoss("¡Tiempo agotado! Has perdido el desafío.");
                     }
                 }, 1000);
             }
@@ -3640,7 +3640,7 @@
                     calculatorWaitingForOperand = false;
                     calculatorOperator = null;
                     calculatorPreviousValue = '0';
-                } else if (value === '﹟') {
+                } else if (value === '√') {
                     try {
                         const num = parseFloat(calculatorValue);
                         if (num >= 0) {
@@ -3703,7 +3703,7 @@
                 currentUser = { name: 'Invitado', email: 'invitado@example.com', whatsapp: '0000000000' };
                 screens.login.classList.add('hidden');
                 screens.setup.classList.remove('hidden');
-                if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOT車N
+                if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOTÓN
                 welcomeName.textContent = 'Invitado';
                 answeredIdsInput.disabled = true;
                 setupLookupForGuest();
@@ -3716,7 +3716,7 @@
                         tagEl.style.opacity = '0.5';
                     });
                     levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        if (tagEl.textContent === 'B芍SICO') {
+                        if (tagEl.textContent === 'BÁSICO') {
                             tagEl.classList.add('selected');
                         }
                         tagEl.style.pointerEvents = 'none';
@@ -3734,7 +3734,7 @@
             noAccessBtn.addEventListener('click', (e) => {
                 if (isGuest) {
                     e.preventDefault();
-                    showTemporaryMessage('Ya est芍s en modo invitado. Si necesitas acceso completo, por favor contacta al administrador.');
+                    showTemporaryMessage('Ya estás en modo invitado. Si necesitas acceso completo, por favor contacta al administrador.');
                 }
             });
             
@@ -3751,7 +3751,7 @@
                     const isValid = await validateUserAccess(name, emailToValidate, whatsappToValidate);
                     if (isValid) {
                         isGuest = false;
-                        // Nota: currentUser ya podr赤a haberse actualizado en validateUserAccess con el nombre real
+                        // Nota: currentUser ya podría haberse actualizado en validateUserAccess con el nombre real
                         if (!currentUser.name || currentUser.name === 'Invitado') {
                              currentUser = { name, email: emailToValidate, whatsapp: whatsappToValidate };
                         } else {
@@ -3763,7 +3763,7 @@
                         screens.login.classList.add('hidden');
                         screens.setup.classList.remove('hidden');
                         welcomeName.textContent = currentUser.name; // Usar el nombre actual
-                        if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOT車N
+                        if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOTÓN
                         
                         await loadData();
                         gameModeToggle.disabled = false;
@@ -3771,7 +3771,7 @@
                         gameModeToggle.parentElement.style.pointerEvents = 'auto';
                         continuousModeToggle.disabled = false;
                     } else {
-                        loginErrorMessage.textContent = 'Los datos no coinciden. Por favor, verifica tu informaci車n.';
+                        loginErrorMessage.textContent = 'Los datos no coinciden. Por favor, verifica tu información.';
                     }
                 } catch (error) {
                     loginErrorMessage.textContent = 'Error al conectar con la base de datos. Intenta de nuevo.';
@@ -3804,7 +3804,7 @@
                     updateQuestionStats();
                 } catch (error) {
                     errorMessage.textContent = 'Error: ' + error.message;
-                    console.error('Error cr赤tico:', error);
+                    console.error('Error crítico:', error);
                     startQuizBtn.disabled = true;
                 }
             };
@@ -3865,7 +3865,7 @@
                     const tagEl = document.createElement('span');
                     tagEl.textContent = tag;
                     tagEl.className = 'tag';
-                    if (tag.toUpperCase() === 'B芍SICO') {
+                    if (tag.toUpperCase() === 'BÁSICO') {
                         tagEl.classList.add('selected');
                     }
                     tagEl.addEventListener('click', () => {
@@ -3909,7 +3909,7 @@
                 const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                 
                 if (selectedUniTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisi車n".';
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
                     return;
                 }
                 if (selectedLevelTags.length === 0) {
@@ -3928,7 +3928,7 @@
                     const safeQuestions = allQuestions.filter(q => !q.image || !q.image.includes('imgur.com'));
                     availableQuestions = safeQuestions.slice(0, 20);
                 } else {
-                    // L車gica normal con filtros
+                    // Lógica normal con filtros
                     availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && Array.isArray(q.uni_tags) && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.some(tag => selectedLevelTags.includes(tag));
@@ -3958,7 +3958,7 @@
                 
                 const availableCount = finalQuestionPool.length;
                 if (availableCount === 0) {
-                    errorMessage.textContent = 'No se encontraron ejercicios con los filtros aplicados. Intenta con otra combinaci車n.';
+                    errorMessage.textContent = 'No se encontraron ejercicios con los filtros aplicados. Intenta con otra combinación.';
                     return;
                 }
                 
@@ -3985,7 +3985,7 @@
                     } else {
                         finalQuestionCount = Math.min(isGuest ? 10 : 10, availableCount);
                         if (!isGameMode && finalQuestionCount < 5) {
-                            errorMessage.textContent = `Solo se encontraron ${finalQuestionCount} ejercicios disponibles. Se necesita un m赤nimo de 5 para empezar. Por favor, ajusta los filtros.`;
+                            errorMessage.textContent = `Solo se encontraron ${finalQuestionCount} ejercicios disponibles. Se necesita un mínimo de 5 para empezar. Por favor, ajusta los filtros.`;
                             return;
                         }
                     }
@@ -4069,7 +4069,7 @@
                         const progressPercentage = (totalAnswered / totalWithFilters) * 100;
                         progressBar.style.width = `${progressPercentage}%`;
                     }
-                    totalQuestionsNum.textContent = '﹢';
+                    totalQuestionsNum.textContent = '∞';
                     currentQuestionNum.textContent = currentQuestionIndex + 1;
                 } else {
                     const answeredCount = userAnswers.filter(a => a.status !== 'unanswered').length;
@@ -4133,13 +4133,13 @@
                 }
                 optionsContainer.innerHTML = '';
                 let options = [...question.options];
-                options.push({ text: "No puedo identificar la respuesta ??", correct: false });
+                options.push({ text: "No puedo identificar la respuesta 😥", correct: false });
                 
                 let shuffledOptions = shuffleArray(options.filter(opt => !opt.text.includes('No puedo identificar')));
                 const noIdOption = options.find(opt => opt.text.includes('No puedo identificar'));
                 if(noIdOption) shuffledOptions.push(noIdOption);
 
-                // Verificar si hay im芍genes en las opciones (excluyendo la opci車n de "No puedo identificar")
+                // Verificar si hay imágenes en las opciones (excluyendo la opción de "No puedo identificar")
                 const hasImages = shuffledOptions.some(opt => isImageOption(opt.text));
 
                 // Configurar el contenedor para Grid o Lista normal
@@ -4164,7 +4164,7 @@
                         button.classList.add('is-image');
                     }
 
-                    // Si es la opci車n "No puedo identificar" y estamos en modo im芍genes, ocupa todo el ancho
+                    // Si es la opción "No puedo identificar" y estamos en modo imágenes, ocupa todo el ancho
                     if (isNoId && hasImages) {
                         button.classList.add('full-width');
                     }
@@ -4179,19 +4179,19 @@
 
                     button.appendChild(letterElement);
 
-                    // Contenido del bot車n (Imagen o Texto)
+                    // Contenido del botón (Imagen o Texto)
                     if (isImg) {
                         const img = document.createElement('img');
                         img.src = option.text;
                         img.className = 'option-image-content';
-                        img.alt = `Opci車n ${String.fromCharCode(65 + index)}`;
+                        img.alt = `Opción ${String.fromCharCode(65 + index)}`;
                         button.appendChild(img);
 
-                        // L車gica de Marca de Agua para IMGUR en opciones
+                        // Lógica de Marca de Agua para IMGUR en opciones
                         if (option.text.includes('imgur.com')) {
                             const watermark = document.createElement('div');
                             watermark.className = 'option-watermark';
-                            // Repetir texto para crear patr車n de fondo
+                            // Repetir texto para crear patrón de fondo
                             watermark.textContent = (currentUser.name + ' CEPREDIX ').repeat(50); 
                             button.appendChild(watermark);
                         }
@@ -4255,7 +4255,7 @@
                     if (isLastQuestion && !isContinuousMode) {
                         nextBtn.textContent = 'VER RESULTADOS';
                     } else {
-                        nextBtn.textContent = 'SIGUIENTE ↙';
+                        nextBtn.textContent = 'SIGUIENTE →';
                     }
                 } else {
                     nextBtn.disabled = true;
@@ -4420,7 +4420,7 @@
             }
             
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
-                // Ahora tambi谷n enviar para invitados
+                // Ahora también enviar para invitados
                 
                 const formData = new FormData();
                 formData.append('EvaluationName', "FACTORIZACIÓN");
@@ -4451,7 +4451,7 @@
                     if (effectsVolume > 0) {
                         randomSuccessSound.currentTime = 0;
                         randomSuccessSound.volume = 0.3;
-                        randomSuccessSound.play().catch(e => console.error("Error al reproducir sonido de 谷xito:", e));
+                        randomSuccessSound.play().catch(e => console.error("Error al reproducir sonido de éxito:", e));
                     }
                 }
                 
@@ -4461,17 +4461,17 @@
                 // Si es invitado, mostrar modal de datos antes de mostrar resultados
                 if (isGuest) {
                     showGuestInfoModal();
-                    return; // Salir aqu赤, mostrar芍 resultados despu谷s de llenar datos
+                    return; // Salir aquí, mostrará resultados después de llenar datos
                 }
                 
-                // Resto del c車digo para usuarios registrados...
+                // Resto del código para usuarios registrados...
                 screens.quiz.classList.add('hidden');
                 screens.results.classList.remove('hidden');
                 let answersToEvaluate = userAnswers;
                 if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
                     answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
                     if (answersToEvaluate.length === 0) {
-                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al men迆.");
+                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al menú.");
                         screens.results.classList.add('hidden');
                         screens.setup.classList.remove('hidden');
                         return;
@@ -4502,7 +4502,7 @@
                 else if (finalScoreValue >= 7) resultImage.src = RESULT_IMAGES.between7_8;
                 else resultImage.src = RESULT_IMAGES.less7;
                 
-                // Solo enviar resultados si NO es invitado (pero ahora s赤 se env赤a)
+                // Solo enviar resultados si NO es invitado (pero ahora sí se envía)
                 submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
                 
                 populateResultsTable(answersToEvaluate);
@@ -4510,7 +4510,7 @@
                 const allAnsweredIds = generateAnsweredIdsList();
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
-                // Ocultar secci車n de copiar IDs para invitados
+                // Ocultar sección de copiar IDs para invitados
                 if (isGuest) {
                     const idsOutputSection = document.querySelector('.mt-8.space-y-2');
                     if (idsOutputSection) {
@@ -4527,14 +4527,14 @@
                     copyIdsBtn.classList.remove('btn-disabled');
                 }
                 
-                // Para modo simulacro, mostrar bot車n de volver al men迆
+                // Para modo simulacro, mostrar botón de volver al menú
                 if (isGameMode) {
                     let returnBtn = document.getElementById('return-to-menu-btn');
                     if (!returnBtn) {
                         returnBtn = document.createElement('button');
                         returnBtn.id = 'return-to-menu-btn';
                         returnBtn.className = 'btn btn-primary w-full mt-4';
-                        returnBtn.textContent = 'VOLVER AL MEN迆 PRINCIPAL';
+                        returnBtn.textContent = 'VOLVER AL MENÚ PRINCIPAL';
                         returnBtn.addEventListener('click', () => {
                             screens.results.classList.add('hidden');
                             screens.setup.classList.remove('hidden');
@@ -4552,7 +4552,7 @@
                 }
             }
             
-            // Funci車n para mostrar el modal de datos de invitado
+            // Función para mostrar el modal de datos de invitado
             function showGuestInfoModal() {
                 // Mostrar modal
                 guestInfoModal.style.display = 'flex';
@@ -4564,7 +4564,7 @@
                 guestEmailError.style.display = 'none';
                 guestWhatsappError.style.display = 'none';
                 
-                // Validaci車n en tiempo real
+                // Validación en tiempo real
                 guestEmailInput.addEventListener('input', function() {
                     if (this.value.includes('@')) {
                         guestEmailError.style.display = 'none';
@@ -4586,7 +4586,7 @@
                 guestCancelBtn.onclick = function() {
                     guestInfoModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
-                    // Volver al men迆 principal
+                    // Volver al menú principal
                     screens.quiz.classList.add('hidden');
                     screens.setup.classList.remove('hidden');
                 };
@@ -4630,7 +4630,7 @@
                 };
             }
             
-            // Funci車n para mostrar resultados despu谷s de capturar datos del invitado
+            // Función para mostrar resultados después de capturar datos del invitado
             function proceedWithGuestResults() {
                 // Mostrar pantalla de resultados
                 screens.quiz.classList.add('hidden');
@@ -4641,7 +4641,7 @@
                 if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
                     answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
                     if (answersToEvaluate.length === 0) {
-                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al men迆.");
+                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al menú.");
                         screens.results.classList.add('hidden');
                         screens.setup.classList.remove('hidden');
                         return;
@@ -4681,13 +4681,13 @@
                 // Enviar resultados (ahora con datos completos del invitado)
                 submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
                 
-                // Llenar tabla y gr芍fico
+                // Llenar tabla y gráfico
                 populateResultsTable(answersToEvaluate);
                 drawResultsChart(stats);
                 const allAnsweredIds = generateAnsweredIdsList();
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
-                // Ocultar secci車n de copiar IDs para invitados
+                // Ocultar sección de copiar IDs para invitados
                 const idsOutputSection = document.querySelector('.mt-8.space-y-2');
                 if (idsOutputSection) {
                     idsOutputSection.style.display = 'none';
@@ -4695,14 +4695,14 @@
                 copyIdsBtn.disabled = true;
                 copyIdsBtn.classList.add('btn-disabled');
                 
-                // Para modo simulacro, mostrar bot車n de volver al men迆
+                // Para modo simulacro, mostrar botón de volver al menú
                 if (isGameMode) {
                     let returnBtn = document.getElementById('return-to-menu-btn');
                     if (!returnBtn) {
                         returnBtn = document.createElement('button');
                         returnBtn.id = 'return-to-menu-btn';
                         returnBtn.className = 'btn btn-primary w-full mt-4';
-                        returnBtn.textContent = 'VOLVER AL MEN迆 PRINCIPAL';
+                        returnBtn.textContent = 'VOLVER AL MENÚ PRINCIPAL';
                         returnBtn.addEventListener('click', () => {
                             screens.results.classList.add('hidden');
                             screens.setup.classList.remove('hidden');
@@ -4769,7 +4769,7 @@
             copyIdsBtn.addEventListener('click', () => {
                 answeredIdsOutput.select();
                 document.execCommand('copy');
-                copyIdsBtn.textContent = '?Copiado!';
+                copyIdsBtn.textContent = '¡Copiado!';
                 setTimeout(() => { copyIdsBtn.textContent = 'Copiar'; }, 2000);
             });
             
@@ -4814,7 +4814,7 @@
             
             lookupBtn.addEventListener('click', () => {
                 if (isGuest) {
-                    showTemporaryMessage("Esta funci車n no est芍 disponible para invitados", "bg-yellow-600");
+                    showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
                     return;
                 }
                 const lookupId = lookupIdInput.value.trim().toUpperCase();
@@ -4833,7 +4833,7 @@
                                 <i class="fas fa-exclamation-triangle"></i> No encontrado
                             </div>
                             <p class="text-gray-300">No se encontraron preguntas con el ID "<strong>${lookupId}</strong>".</p>
-                            <p class="text-sm text-gray-400 mt-2">Verifica que el ID est谷 escrito correctamente.</p>
+                            <p class="text-sm text-gray-400 mt-2">Verifica que el ID esté escrito correctamente.</p>
                         </div>
                     `;
                     lookupResultContainer.classList.remove('hidden');
@@ -4855,7 +4855,7 @@
                 const isCorrect = option.correct;
                 const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
 
-                // Verificar si la opci車n es imagen
+                // Verificar si la opción es imagen
                 const isImgOpt = isImageOption(option.text);
                 let contentHtml = '';
 
@@ -4899,7 +4899,7 @@
                     </div>
                     ${question.explanation ? `
                     <div class="lookup-section">
-                        <h4 class="lookup-section-title">Explicaci車n</h4>
+                        <h4 class="lookup-section-title">Explicación</h4>
                         <div>${question.explanation}</div>
                     </div>
                     ` : ''}
@@ -4912,14 +4912,14 @@
                 </div>
             `;
             lookupResultContainer.classList.remove('hidden');
-            // Renderizar f車rmulas matem芍ticas si las hay
+            // Renderizar fórmulas matemáticas si las hay
             MathJax.typesetPromise([lookupResultContainer]);
         }
             
             loadData();
             initializeVolumes();
             
-            // Inicializar herramientas una sola vez al cargar la p芍gina
+            // Inicializar herramientas una sola vez al cargar la página
         });
     </script>
 </body>
