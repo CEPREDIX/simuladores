@@ -299,9 +299,25 @@
         .bg-red-600 { background: linear-gradient(90deg, #f44336, #ff5722); box-shadow: 0 0 10px rgba(244, 67, 54, 0.4); }
 
         @media (max-width: 480px) {
-            #dt-bar { gap: 8px; padding: 8px; }
-            .dt-controls-area { width: 100%; justify-content: center; margin-top: 5px; }
-            .dt-progress-area { width: 100%; }
+            #dt-bar { 
+                gap: 5px; 
+                padding: 5px; 
+                flex-wrap: nowrap; /* Fuerza una sola fila */
+            }
+            .dt-controls-area { 
+                width: auto; 
+                justify-content: flex-end; 
+                margin-top: 0; 
+                flex-shrink: 0; /* No permite que los botones se aplasten */
+            }
+            .dt-progress-area { 
+                width: auto; 
+                flex: 1; /* Ocupa el espacio restante */
+                min-width: 0; /* Permite encogerse si es necesario */
+            }
+            /* Hacemos los elementos un poco más pequeños en celular para que quepan */
+            #dt-display { font-size: 1rem; padding: 4px 6px; min-width: 55px; }
+            .dt-ctrl-btn { width: 30px; height: 30px; font-size: 0.9rem; }
         }
         
         #calculator-section { width: 100%; margin: 20px 0; }
@@ -1688,7 +1704,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-1.342-1.342L16.5 8.803l-1.14-1.14a1 1 0 0 0-1.415 0l-1.14 1.14-2.28 2.28a1 1 0 0 0 0 1.414l2.28 2.28 1.14 1.14a1 1 0 0 0 1.415 0l1.14-1.14 3.332-3.332z"/><path d="m7 21-4-4"/><path d="M21 3v4h-4"/></svg>
                         </button>
                         <button id="white-brush" class="p-1 rounded-md bg-white" title="Pincel Blanco"><div class="w-5 h-5"></div></button>
-                        <button id="yellow-brush" class="p-1 rounded-md bg-yellow-400" title="Pincel Amarillo"><div class="w-5 h-5"></div></button>
+                        <button id="green-brush" class="p-1 rounded-md bg-green-500" title="Pincel Verde"><div class="w-5 h-5"></div></button>
                         <div class="color-picker-wrapper" title="Color Personalizado">
                             <div id="color-preview" class="color-preview" style="background-color: #ff0000;"></div>
                             <input type="color" id="color-picker" value="#ff0000">
@@ -2240,7 +2256,7 @@
                 let isShapeAssistActive = false;
                 let canvasStateBeforeStroke = null;
                 const whiteBrushBtn = document.getElementById('white-brush');
-                const yellowBrushBtn = document.getElementById('yellow-brush');
+                const greenBrushBtn = document.getElementById('green-brush'); // CAMBIO AQUÍ
                 const colorPicker = document.getElementById('color-picker');
                 const colorPreview = document.getElementById('color-preview');
                 const brushSizeSlider = document.getElementById('brush-size');
@@ -2434,11 +2450,15 @@
                 canvas.addEventListener('touchend', stopDrawing);
                 canvas.addEventListener('touchcancel', stopDrawing);
                 whiteBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#FFFFFF'; });
-                yellowBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#FBBF24'; });
-                colorPicker.addEventListener('input', (e) => {
+                greenBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#22c55e'; }); // VERDE
+                
+                // Corrección para móviles: Usamos 'change' además de 'input' para asegurar compatibilidad
+                const updateColor = (e) => {
                     ctx.strokeStyle = e.target.value;
                     colorPreview.style.backgroundColor = e.target.value;
-                });
+                };
+                colorPicker.addEventListener('input', updateColor);
+                colorPicker.addEventListener('change', updateColor);
                 brushSizeSlider.addEventListener('input', (e) => {
                     ctx.lineWidth = e.target.value;
                     brushSizeValue.textContent = e.target.value;
