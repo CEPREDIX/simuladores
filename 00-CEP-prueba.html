@@ -1915,7 +1915,7 @@
 				</a>
             </div>
             <div id="copyright">
-                &copy; CEPREDIX 2025 - Todos los derechos reservados
+                &copy; CEPREDIX 2025 - Todos los derechos reservados. Versión CEP-1.1225
             </div>
         </div>
     </div>
@@ -2137,10 +2137,15 @@
                     }
                 });
             }
-            // --- NUEVA LÓGICA DE PUBLICIDAD ---
+            // --- NUEVA LÓGICA DE PUBLICIDAD Y CONTROL DE TIEMPOS ---
             let guestAds = [];      // Para intersticiales (PUB-INVITADO)
             let mainBanner = null;  // Para BANNER-PRINCIPAL
             let pubBanners = [];    // Para BANNER-PUB
+            
+            // Variables de control (Memoria y Temporizadores)
+            let lastShownAdUrl = null; // Evita repetir el anuncio anterior
+            let adTimeoutId = null;    // Identificador del temporizador de seguridad (25s)
+            let adIntervalId = null;   // Identificador del conteo regresivo (5s)
 
             // Cargar y clasificar publicidad
             fetch(ADS_CSV_URL)
@@ -2496,13 +2501,38 @@
             });
 
             // Función para mostrar publicidad INTERSTICIAL (Solo invitados)
+            // Función para mostrar publicidad INTERSTICIAL (Solo invitados)
             function showAd() {
                 if (!isGuest || !(isContinuousMode || isGameMode)) return;
                 
-                // CAMBIO IMPORTANTE: Usamos 'guestAds' en lugar de 'ads'
-                if (!guestAds.length) return; 
+                // Si no hay anuncios cargados, no hacemos nada
+                if (!guestAds || guestAds.length === 0) return; 
 
-                const ad = guestAds[Math.floor(Math.random() * guestAds.length)];
+                // --- 1. LIMPIEZA PREVENTIVA ---
+                // Si había algún temporizador corriendo de una publicidad anterior, lo matamos
+                if (adTimeoutId) clearTimeout(adTimeoutId);
+                if (adIntervalId) clearInterval(adIntervalId);
+
+                // --- 2. LÓGICA ANTI-REPETICIÓN ---
+                let candidateAds = guestAds;
+                // Si hay más de un anuncio y recordamos el último, lo filtramos
+                if (guestAds.length > 1 && lastShownAdUrl) {
+                    candidateAds = guestAds.filter(ad => ad.Imagen !== lastShownAdUrl);
+                }
+
+                // Elegir aleatoriamente de la lista filtrada
+                const ad = candidateAds[Math.floor(Math.random() * candidateAds.length)];
+                
+                // Guardar en memoria para la próxima vez
+                lastShownAdUrl = ad.Imagen;
+
+                // --- 3. MOSTRAR EL ANUNCIO ---
+                const adImage = document.getElementById('adImage');
+                const adAudio = document.getElementById('adAudio');
+                const infoBtn = document.getElementById('infoBtn');
+                const skipBtnAd = document.getElementById('skipBtn');
+                const adOverlay = document.getElementById('adOverlay');
+
                 adImage.src = ad.Imagen;
                 adAudio.src = ad.Audio;
                 
@@ -2511,27 +2541,71 @@
                     console.log("Audio no se pudo reproducir automáticamente:", e);
                 });
 
-                infoBtn.href = ad.Infolink;
+                // Configurar enlace "Me interesa"
+                if (ad.Infolink && ad.Infolink.length > 5) {
+                    infoBtn.href = ad.Infolink;
+                    infoBtn.style.pointerEvents = "auto";
+                    infoBtn.style.opacity = "1";
+                } else {
+                    infoBtn.removeAttribute('href');
+                    infoBtn.style.pointerEvents = "none";
+                    infoBtn.style.opacity = "0.5";
+                }
                 
+                // Configurar botón de saltar
                 skipBtnAd.disabled = true;
-                infoBtn.style.pointerEvents = "none";
+                skipBtnAd.style.opacity = "0.5";
+                skipBtnAd.textContent = "Espera 5s...";
                 
                 adOverlay.style.display = "flex";
                 
-                setTimeout(() => {
-                    skipBtnAd.disabled = false;
-                    infoBtn.style.pointerEvents = "auto";
-                }, 5000);
+                // --- 4. GESTIÓN DE TIEMPOS ---
+                let countdown = 5;
                 
-                setTimeout(hideAd, 15000);
+                // Guardamos el ID del intervalo en la variable global adIntervalId
+                adIntervalId = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        skipBtnAd.textContent = `Espera ${countdown}s...`;
+                    } else {
+                        // Limpiamos este intervalo específico
+                        clearInterval(adIntervalId);
+                        adIntervalId = null;
+                        
+                        skipBtnAd.disabled = false;
+                        skipBtnAd.style.opacity = "1";
+                        skipBtnAd.textContent = "Saltar Publicidad";
+                    }
+                }, 1000);
+                
+                // Guardamos el ID del timeout de seguridad en adTimeoutId
+                // Esto es crucial: si el usuario salta antes, hideAd() cancelará esto.
+                adTimeoutId = setTimeout(hideAd, 25000);
                 
                 skipBtnAd.onclick = hideAd;
             }
             
             function hideAd() {
-                adAudio.pause();
-                adAudio.currentTime = 0;
-                adOverlay.style.display = "none";
+                // 1. Limpieza CRÍTICA de temporizadores "fantasma"
+                if (adTimeoutId) {
+                    clearTimeout(adTimeoutId);
+                    adTimeoutId = null;
+                }
+                if (adIntervalId) {
+                    clearInterval(adIntervalId);
+                    adIntervalId = null;
+                }
+
+                // 2. Detener audio y cerrar modal
+                const adAudio = document.getElementById('adAudio'); // Aseguramos referencia
+                if(adAudio) {
+                    adAudio.pause();
+                    adAudio.currentTime = 0;
+                }
+                const adOverlay = document.getElementById('adOverlay');
+                if(adOverlay) {
+                    adOverlay.style.display = "none";
+                }
             }
 
             // Chatbot actualizado
@@ -2578,15 +2652,19 @@
                 }
             });
 
-                chatbotToggle.addEventListener('click', () => {
-                    const isHidden = chatbotContent.classList.toggle('hidden');
-                    const icon = chatbotToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
-                    if (isHidden) {
-                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                    } else {
-                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                    }
-                });
+            chatbotToggle.addEventListener('click', () => {
+                // RESTRICCIÓN INVITADO: No permite abrir el chatbot
+                if (isGuest) {
+                    return; 
+                }
+                const isHidden = chatbotContent.classList.toggle('hidden');
+                const icon = chatbotToggle.querySelector('.fa-chevron-down, .fa-chevron-up');
+                if (isHidden) {
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
             
             function showSimulacroEndScreen() {
                 simulacroEndImage.src = 'https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Final_simulacro.png';
@@ -3965,6 +4043,13 @@
                 gameModeToggle.parentElement.style.opacity = '1';
                 gameModeToggle.parentElement.style.pointerEvents = 'auto';
                 continuousModeToggle.disabled = false;
+                
+                // RESTRICCIÓN VISUAL CHATBOT
+                if(chatbotToggle) {
+                    chatbotToggle.style.opacity = '0.5';
+                    chatbotToggle.style.cursor = 'not-allowed';
+                    chatbotToggle.title = "No disponible para invitados";
+                }
             });
             
             noAccessBtn.addEventListener('click', (e) => {
@@ -4141,60 +4226,109 @@
                 isGameMode = gameModeToggle.checked;
                 isContinuousMode = continuousModeToggle.checked;
                 
-                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                
-                if (selectedUniTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
-                    return;
-                }
-                if (selectedLevelTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
-                    return;
-                }
-                
+                // Reiniciar contador de preguntas para publicidad de invitados
                 if (isGuest) {
                     questionCountInGuestMode = 0;
                 }
-                
-                let availableQuestions;
-                if (isGuest && isGameMode) {
-                    // PARA INVITADO EN SIMULACRO: tomar preguntas pero FILTRANDO las de IMGUR
-                    // Primero filtramos las que NO son de imgur
-                    const safeQuestions = allQuestions.filter(q => !q.image || !q.image.includes('imgur.com'));
-                    availableQuestions = safeQuestions.slice(0, 20);
+
+                let finalQuestionPool = [];
+
+                if (isGuest) {
+                    // --- LÓGICA PARA INVITADOS ---
+                    
+                    // 1. FILTRO DE SEGURIDAD (Punto 7): Eliminar cualquier pregunta con Imgur (en planteamiento u opciones)
+                    let safeQuestions = allQuestions.filter(q => {
+                        const hasImgurMain = q.image && q.image.includes('imgur.com');
+                        const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
+                        return !hasImgurMain && !hasImgurOption;
+                    });
+
+                    if (isGameMode) {
+                        // 2. MODO SIMULACRO (Punto 2): Solo las primeras 20 preguntas del JSON (limpio)
+                        // Tomamos las primeras 20 disponibles
+                        let first20 = safeQuestions.slice(0, 20);
+                        
+                        if (first20.length < 20) {
+                            errorMessage.textContent = `Error: El banco no tiene suficientes preguntas seguras (sin Imgur) para el simulacro de invitado.`;
+                            return;
+                        }
+                        // Las barajamos para que no salgan siempre en el mismo orden visual, pero son las mismas 20
+                        finalQuestionPool = shuffleArray(first20);
+
+                    } else if (isContinuousMode) {
+                        // 3. MODO AVANCE CONTINUO (Punto 1): Solo IDs terminados en A, B, C, D, E
+                        const allowedEndings = ['A', 'B', 'C', 'D', 'E'];
+                        
+                        finalQuestionPool = safeQuestions.filter(q => {
+                            if (!q.id) return false;
+                            const lastChar = q.id.trim().toUpperCase().slice(-1);
+                            return allowedEndings.includes(lastChar);
+                        });
+                        
+                        // Barajar todo el pool disponible
+                        finalQuestionPool = shuffleArray(finalQuestionPool);
+
+                    } else {
+                        // Si por error selecciona modo normal, aplicamos la misma restricción de IDs A-E por seguridad
+                        const allowedEndings = ['A', 'B', 'C', 'D', 'E'];
+                        let filtered = safeQuestions.filter(q => {
+                            if (!q.id) return false;
+                            const lastChar = q.id.trim().toUpperCase().slice(-1);
+                            return allowedEndings.includes(lastChar);
+                        });
+                        // Solo tomamos 10 al azar
+                        finalQuestionPool = shuffleArray(filtered).slice(0, 10);
+                    }
+
                 } else {
-                    // Lógica normal con filtros
-                    availableQuestions = allQuestions.filter(q => {
+                    // --- LÓGICA PARA USUARIOS REGISTRADOS (Original) ---
+                    const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                    const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                    
+                    if (selectedUniTags.length === 0) {
+                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
+                        return;
+                    }
+                    if (selectedLevelTags.length === 0) {
+                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
+                        return;
+                    }
+
+                    // Filtrar por tags
+                    let availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && Array.isArray(q.uni_tags) && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.some(tag => selectedLevelTags.includes(tag));
-
-                        // FILTRO DE SEGURIDAD PARA INVITADOS:
-                        // Si es invitado Y la pregunta tiene imagen Y la imagen es de imgur, la descartamos (return false)
-                        if (isGuest && q.image && q.image.includes('imgur.com')) {
-                            return false;
-                        }
-
                         return hasUniTag && hasLevelTag;
                     });
+
+                    // Filtrar preguntas ya respondidas (pegadas en el input)
+                    let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
+
+                    if (isGameMode) {
+                        if (availableQuestions.length < 20) {
+                            errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
+                            return;
+                        }
+                        // En simulacro registrado, se usan preguntas al azar de todo el filtro
+                        finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
+                    } else if (isContinuousMode) {
+                        finalQuestionPool = shuffleArray(newQuestions);
+                    } else {
+                        if (newQuestions.length < 5) {
+                            errorMessage.textContent = `Solo se encontraron ${newQuestions.length} ejercicios disponibles. Se necesita un mínimo de 5.`;
+                            return;
+                        }
+                        finalQuestionPool = shuffleArray(newQuestions).slice(0, 10);
+                    }
                 }
                 
-                
-                let finalQuestionPool;
-                if (isGameMode) {
-                    finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
-                } else if (isContinuousMode) {
-                    let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
-                    finalQuestionPool = shuffleArray(newQuestions);
-                } else {
-                    let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
-                    const num = isGuest ? 10 : 10;
-                    finalQuestionPool = shuffleArray(newQuestions).slice(0, num);
-                }
-                
+                // --- VALIDACIÓN FINAL COMÚN ---
                 const availableCount = finalQuestionPool.length;
+                
                 if (availableCount === 0) {
-                    errorMessage.textContent = 'No se encontraron ejercicios con los filtros aplicados. Intenta con otra combinación.';
+                    errorMessage.textContent = isGuest 
+                        ? 'No hay preguntas disponibles para invitados con las restricciones actuales (IDs A-E).' 
+                        : 'No se encontraron ejercicios con los filtros aplicados.';
                     return;
                 }
                 
@@ -4203,30 +4337,20 @@
                 if (isContinuousMode) {
                     availableQuestionsInContinuousMode = finalQuestionPool;
                     quizQuestions = [];
+                    // IMPORTANTE: Limpiamos los IDs respondidos en sesión anterior al iniciar nuevo quiz continuo
+                    // O mantenemos si queremos continuidad. Aquí reiniciamos la vista del quiz.
                     const firstQuestion = getNextQuestionInContinuousMode();
+                    
                     if (firstQuestion) {
                         quizQuestions = [firstQuestion];
                     } else {
-                        errorMessage.textContent = 'Ya has respondido todas las preguntas con estos filtros. Por favor, selecciona otros filtros.';
+                        errorMessage.textContent = 'Ya has respondido todas las preguntas disponibles en esta modalidad.';
                         return;
                     }
                 } else {
-                    let finalQuestionCount;
-                    if (isGameMode) {
-                        finalQuestionCount = Math.min(20, availableCount);
-                        if (availableCount < 20) {
-                            errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableCount}) para el Modo Simulacro. Se necesitan 20. Por favor, ajusta los filtros.`;
-                            return;
-                        }
-                    } else {
-                        finalQuestionCount = Math.min(isGuest ? 10 : 10, availableCount);
-                        if (!isGameMode && finalQuestionCount < 5) {
-                            errorMessage.textContent = `Solo se encontraron ${finalQuestionCount} ejercicios disponibles. Se necesita un mínimo de 5 para empezar. Por favor, ajusta los filtros.`;
-                            return;
-                        }
-                    }
-                    quizQuestions = finalQuestionPool.slice(0, finalQuestionCount);
+                    quizQuestions = finalQuestionPool;
                 }
+                
                 startQuiz();
             });
             
@@ -4275,6 +4399,21 @@
             }
 
             function displayQuestion() {
+                // --- INICIO CÓDIGO NUEVO: RESETEAR TEMPORIZADOR ---
+                // Detener el intervalo si está corriendo
+                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                dtIsRunning = false; 
+                dtSeconds = 90; // Restablecer a 90 segundos
+                dtTotalSeconds = 90;
+                
+                // Actualizar la visualización (Barra y Números)
+                if (typeof updateDtVisuals === 'function') updateDtVisuals();
+                
+                // Cambiar el icono de Pausa a Play
+                const dtIconReset = document.querySelector('#dt-play-btn i');
+                if (dtIconReset) dtIconReset.classList.replace('fa-pause', 'fa-play');
+                // --- FIN CÓDIGO NUEVO ---
+
                 if (isContinuousMode && (currentQuestionIndex >= userAnswers.length || userAnswers.length === 0)) {
                     const nextQuestion = getNextQuestionInContinuousMode();
                     if (nextQuestion) {
@@ -4611,8 +4750,13 @@
             cancelBtn.addEventListener('click', () => {
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
+                
+                // --- CORRECCIÓN: Detener también el temporizador discreto ---
+                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                dtIsRunning = false;
+                // ------------------------------------------------------------
+
                 screens.quiz.classList.add('hidden');
-                screens.setup.classList.remove('hidden');
                 
                 correctSound.pause();
                 incorrectSound.pause();
