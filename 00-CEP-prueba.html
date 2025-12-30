@@ -829,21 +829,32 @@
             z-index: 9999;
         }
 
-        #adBox {
+#adBox {
             background: #1a1a2e;
             max-width: 480px;
             width: 90%;
+            /* AJUSTES NUEVOS PARA MÓVIL */
+            max-height: 90vh; /* Nunca más alto que el 90% de la pantalla */
+            overflow-y: auto; /* Si es muy alto, permite bajar con el dedo dentro de la caja */
             padding: 20px;
             border-radius: 8px;
             text-align: center;
             border: 2px solid #4fc3f7;
             box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+            position: relative; /* Para asegurar estabilidad */
         }
 
         #adBox img {
             max-width: 100%;
+            /* AJUSTES NUEVOS PARA IMAGEN */
+            height: auto; 
+            max-height: 40vh; /* La imagen no ocupará más del 40% de la altura de la pantalla */
+            object-fit: contain; /* Asegura que la imagen se vea completa */
             border-radius: 6px;
             margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #adButtons {
@@ -2500,8 +2511,7 @@
                 }
             });
 
-            // Función para mostrar publicidad INTERSTICIAL (Solo invitados)
-            // Función para mostrar publicidad INTERSTICIAL (Solo invitados)
+            /// Función para mostrar publicidad INTERSTICIAL (Solo invitados)
             function showAd() {
                 if (!isGuest || !(isContinuousMode || isGameMode)) return;
                 
@@ -2509,21 +2519,17 @@
                 if (!guestAds || guestAds.length === 0) return; 
 
                 // --- 1. LIMPIEZA PREVENTIVA ---
-                // Si había algún temporizador corriendo de una publicidad anterior, lo matamos
                 if (adTimeoutId) clearTimeout(adTimeoutId);
                 if (adIntervalId) clearInterval(adIntervalId);
 
                 // --- 2. LÓGICA ANTI-REPETICIÓN ---
                 let candidateAds = guestAds;
-                // Si hay más de un anuncio y recordamos el último, lo filtramos
                 if (guestAds.length > 1 && lastShownAdUrl) {
                     candidateAds = guestAds.filter(ad => ad.Imagen !== lastShownAdUrl);
                 }
 
-                // Elegir aleatoriamente de la lista filtrada
+                // Elegir aleatoriamente
                 const ad = candidateAds[Math.floor(Math.random() * candidateAds.length)];
-                
-                // Guardar en memoria para la próxima vez
                 lastShownAdUrl = ad.Imagen;
 
                 // --- 3. MOSTRAR EL ANUNCIO ---
@@ -2533,60 +2539,67 @@
                 const skipBtnAd = document.getElementById('skipBtn');
                 const adOverlay = document.getElementById('adOverlay');
 
-                adImage.src = ad.Imagen;
-                adAudio.src = ad.Audio;
+                if(adImage) adImage.src = ad.Imagen;
+                if(adAudio) adAudio.src = ad.Audio;
                 
                 // Intentar reproducir audio
-                adAudio.play().catch(e => {
-                    console.log("Audio no se pudo reproducir automáticamente:", e);
-                });
+                if(adAudio) {
+                    adAudio.play().catch(e => {
+                        console.log("Audio no se pudo reproducir automáticamente:", e);
+                    });
+                }
 
                 // Configurar enlace "Me interesa"
-                if (ad.Infolink && ad.Infolink.length > 5) {
-                    infoBtn.href = ad.Infolink;
-                    infoBtn.style.pointerEvents = "auto";
-                    infoBtn.style.opacity = "1";
-                } else {
-                    infoBtn.removeAttribute('href');
-                    infoBtn.style.pointerEvents = "none";
-                    infoBtn.style.opacity = "0.5";
+                if (infoBtn) {
+                    if (ad.Infolink && ad.Infolink.length > 5) {
+                        infoBtn.href = ad.Infolink;
+                        infoBtn.style.pointerEvents = "auto";
+                        infoBtn.style.opacity = "1";
+                    } else {
+                        infoBtn.removeAttribute('href');
+                        infoBtn.style.pointerEvents = "none";
+                        infoBtn.style.opacity = "0.5";
+                    }
                 }
                 
                 // Configurar botón de saltar
-                skipBtnAd.disabled = true;
-                skipBtnAd.style.opacity = "0.5";
-                skipBtnAd.textContent = "Espera 5s...";
+                if (skipBtnAd) {
+                    skipBtnAd.disabled = true;
+                    skipBtnAd.style.opacity = "0.5";
+                    skipBtnAd.textContent = "Espera 5s...";
+                    skipBtnAd.onclick = hideAd; // Asegurar que el click funcione
+                }
                 
-                adOverlay.style.display = "flex";
+                if (adOverlay) {
+                    adOverlay.style.display = "flex";
+                    // IMPORTANTE: Congelar el fondo para evitar desajustes visuales
+                    document.body.style.overflow = 'hidden';
+                }
                 
                 // --- 4. GESTIÓN DE TIEMPOS ---
                 let countdown = 5;
                 
-                // Guardamos el ID del intervalo en la variable global adIntervalId
                 adIntervalId = setInterval(() => {
                     countdown--;
-                    if (countdown > 0) {
-                        skipBtnAd.textContent = `Espera ${countdown}s...`;
-                    } else {
-                        // Limpiamos este intervalo específico
-                        clearInterval(adIntervalId);
-                        adIntervalId = null;
-                        
-                        skipBtnAd.disabled = false;
-                        skipBtnAd.style.opacity = "1";
-                        skipBtnAd.textContent = "Saltar Publicidad";
+                    if (skipBtnAd) {
+                        if (countdown > 0) {
+                            skipBtnAd.textContent = `Espera ${countdown}s...`;
+                        } else {
+                            clearInterval(adIntervalId);
+                            adIntervalId = null;
+                            skipBtnAd.disabled = false;
+                            skipBtnAd.style.opacity = "1";
+                            skipBtnAd.textContent = "Saltar Publicidad";
+                        }
                     }
                 }, 1000);
                 
-                // Guardamos el ID del timeout de seguridad en adTimeoutId
-                // Esto es crucial: si el usuario salta antes, hideAd() cancelará esto.
+                // Timeout de seguridad (25s)
                 adTimeoutId = setTimeout(hideAd, 25000);
-                
-                skipBtnAd.onclick = hideAd;
             }
             
             function hideAd() {
-                // 1. Limpieza CRÍTICA de temporizadores "fantasma"
+                // 1. Limpieza de temporizadores
                 if (adTimeoutId) {
                     clearTimeout(adTimeoutId);
                     adTimeoutId = null;
@@ -2596,16 +2609,21 @@
                     adIntervalId = null;
                 }
 
-                // 2. Detener audio y cerrar modal
-                const adAudio = document.getElementById('adAudio'); // Aseguramos referencia
+                // 2. Detener audio
+                const adAudio = document.getElementById('adAudio');
                 if(adAudio) {
                     adAudio.pause();
                     adAudio.currentTime = 0;
                 }
+
+                // 3. Cerrar modal y devolver el control al usuario
                 const adOverlay = document.getElementById('adOverlay');
                 if(adOverlay) {
                     adOverlay.style.display = "none";
                 }
+                
+                // IMPORTANTE: Descongelar el fondo para que la app se ajuste
+                document.body.style.overflow = 'auto'; 
             }
 
             // Chatbot actualizado
