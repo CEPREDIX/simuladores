@@ -160,6 +160,149 @@
         .timer-green { color: #4CAF50; }
         .timer-orange { color: #FF9800; }
         .timer-red { color: #f44336; }
+		
+	        	/* ================= TEMPORIZADOR MEJORADO (DISEÑO FLEXIBLE) ================= */
+        #discrete-timer-wrapper {
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 30;
+        }
+
+        /* Pestaña superior */
+        #dt-tab {
+            width: 50px;
+            height: 20px;
+            background: rgba(30, 30, 40, 0.9);
+            margin: 0 auto;
+            border-radius: 10px 10px 0 0;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-bottom: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #dt-tab:hover { background: rgba(50, 50, 70, 1); }
+
+        /* Contenedor Principal (Barra + Controles) */
+        #dt-bar {
+            display: flex;
+            flex-wrap: wrap; /* Permite que baje en pantallas muy pequeñas */
+            align-items: center;
+            gap: 10px;
+            background: rgba(20, 20, 30, 0.95);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            max-height: 500px;
+            opacity: 1;
+            overflow: hidden;
+        }
+
+        #dt-bar.hidden {
+            max-height: 0;
+            opacity: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        /* Área de la barra de progreso (Izquierda) */
+        .dt-progress-area {
+            flex: 1; /* Ocupa todo el espacio disponible */
+            min-width: 150px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #dt-progress-fill {
+            height: 100%;
+            transition: width 0.5s linear, background-color 0.5s ease;
+        }
+
+        /* Zonas de click transparentes con iconos */
+        .dt-click-zone {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .dt-click-zone:hover { background: rgba(255, 255, 255, 0.05); }
+        .dt-click-zone:active { background: rgba(255, 255, 255, 0.1); }
+        
+        #dt-zone-minus { left: 0; padding-left: 10px; justify-content: flex-start; }
+        #dt-zone-plus { right: 0; padding-right: 10px; justify-content: flex-end; }
+
+        .dt-icon-overlay {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* Área de Controles (Derecha) */
+        .dt-controls-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0; /* No se encoge */
+        }
+
+        #dt-display {
+            background: #000;
+            color: #4fc3f7; /* Azul neón */
+            font-family: monospace;
+            font-size: 1.2rem;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            min-width: 70px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .dt-ctrl-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: white;
+            font-size: 1rem;
+        }
+
+        #dt-play-btn { background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; color: #4CAF50; }
+        #dt-play-btn:hover { background: rgba(76, 175, 80, 0.4); transform: scale(1.05); }
+        
+        #dt-reset-btn { background: rgba(255, 152, 0, 0.2); border: 1px solid #ff9800; color: #ff9800; }
+        #dt-reset-btn:hover { background: rgba(255, 152, 0, 0.4); transform: scale(1.05); }
+
+        /* Colores dinámicos */
+        .bg-green-500 { background: linear-gradient(90deg, #4CAF50, #8BC34A); box-shadow: 0 0 10px rgba(76, 175, 80, 0.4); }
+        .bg-yellow-500 { background: linear-gradient(90deg, #FF9800, #FFC107); box-shadow: 0 0 10px rgba(255, 152, 0, 0.4); }
+        .bg-red-600 { background: linear-gradient(90deg, #f44336, #ff5722); box-shadow: 0 0 10px rgba(244, 67, 54, 0.4); }
+
+        @media (max-width: 480px) {
+            #dt-bar { gap: 8px; padding: 8px; }
+            .dt-controls-area { width: 100%; justify-content: center; margin-top: 5px; }
+            .dt-progress-area { width: 100%; }
+        }
         
         #calculator-section { width: 100%; margin: 20px 0; }
         #calculator-toggle {
@@ -1361,8 +1504,39 @@
             
             <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6">
                 <div id="progress-bar" class="bg-blue-400 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                           <div id="discrete-timer-wrapper">
+                <div id="dt-tab" title="Mostrar/Ocultar Temporizador">
+                    <i id="dt-icon" class="fas fa-chevron-down text-xs text-blue-300"></i>
+                </div>
+                
+                <div id="dt-bar">
+                    <div class="dt-progress-area">
+                        <div id="dt-progress-fill" class="bg-green-500" style="width: 100%;"></div>
+                        
+                        <div id="dt-zone-minus" class="dt-click-zone" title="Restar 30s">
+                            <i class="fas fa-minus dt-icon-overlay"></i>
+                        </div>
+                        
+                        <div id="dt-zone-plus" class="dt-click-zone" title="Sumar 30s">
+                            <i class="fas fa-plus dt-icon-overlay"></i>
+                        </div>
+                    </div>
+
+                    <div class="dt-controls-area">
+                        <div id="dt-display">01:30</div>
+                        
+                        <button id="dt-play-btn" class="dt-ctrl-btn" title="Iniciar/Pausar">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        
+                        <button id="dt-reset-btn" class="dt-ctrl-btn" title="Reiniciar">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-            
+			
             <div id="question-container" class="space-y-4 flex flex-col items-center">
                 <h2 id="question-text" class="text-xl sm:text-2xl font-semibold text-center w-full"></h2>
                 
@@ -2449,30 +2623,71 @@
                 if (isGuest) return true;
                 
                 try {
-                    // Preparamos los datos
+                    // --- PASO 1: VERIFICACIÓN DE ESTATUS (CON LIMPIEZA DE CACHÉ) ---
+                    // Generamos un "timestamp" (la hora actual en milisegundos)
+                    const timestamp = new Date().getTime();
+                    
+                    // Se lo agregamos a la URL de Google Sheet para obligar a descargar una copia nueva
+                    const freshSheetUrl = GOOGLE_SHEET_URL + '&v=' + timestamp;
+                    
+                    // Codificamos esa URL nueva para pasarla por el proxy
+                    const freshProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(freshSheetUrl);
+                    
+                    const responseCsv = await fetch(freshProxyUrl);
+                    const csvText = await responseCsv.text();
+                    
+                    // Convertimos el CSV en filas leíbles
+                    const rows = csvText.split('\n').map(row => row.split(',').map(c => c.trim()));
+
+                    const cleanEmail = email.trim().toLowerCase();
+                    const cleanWhatsapp = whatsapp.trim().replace(/\D/g, '');
+                    
+                    // Buscamos al usuario en la lista
+                    for (let i = 1; i < rows.length; i++) {
+                        const cols = rows[i];
+                        if (cols.length < 3) continue; // Saltar filas vacías
+
+                        // Según tu tabla: Columna 1 es Correo, Columna 2 es WhatsApp
+                        const rowEmail = cols[1] ? cols[1].toLowerCase() : "";
+                        const rowWhatsapp = cols[2] ? cols[2].replace(/\D/g, '') : "";
+                        
+                        if (rowEmail === cleanEmail && rowWhatsapp === cleanWhatsapp) {
+                            // Encontramos al usuario, ahora miramos la Columna 6 (ESTATUS)
+                            const status = cols[6] ? cols[6].toUpperCase().replace(/[^A-Z]/g, '') : 'ACTIVO';
+                            
+                            // Si dice INACTIVO, bloqueamos
+                            if (status === 'INACTIVO') {
+                                if(loginErrorMessage) {
+                                    loginErrorMessage.style.color = "#ff5722"; // Color naranja alerta
+                                    loginErrorMessage.textContent = "En estos momentos no tienes acceso al banco de preguntas y simulacros, por favor contacta al administrador del curso 😥";
+                                }
+                                return false; // Detiene el acceso
+                            }
+                            break; // Usuario encontrado y activo, seguimos
+                        }
+                    }
+                    // --- FIN DE LA NUEVA VERIFICACIÓN ---
+
+                    // --- PASO 2: LOGUEO NORMAL EN EL SISTEMA ---
                     const formData = new FormData();
                     formData.append('action', 'login');
                     formData.append('email', email);
                     formData.append('whatsapp', whatsapp);
 
-                    // Enviamos la petición
-                    // Importante: redirect 'follow' permite seguir la redirección de Google
                     const response = await fetch(RESULTS_SCRIPT_URL, {
                         method: 'POST',
                         body: formData,
                         redirect: 'follow' 
                     });
                     
-                    // Leemos la respuesta como TEXTO primero (más seguro)
                     const textResponse = await response.text();
                     
-                    // Intentamos convertir ese texto a JSON
                     let data;
                     try {
                         data = JSON.parse(textResponse);
                     } catch (e) {
-                        console.error("Error al leer respuesta del servidor:", textResponse);
-                        alert("Error técnico: El servidor respondió algo que no es JSON. Revisa la consola.");
+                        console.error("Error respuesta servidor:", textResponse);
+                        alert("Error técnico al procesar respuesta del servidor.");
                         return false;
                     }
                     
@@ -2485,13 +2700,14 @@
                         startSessionCheck();
                         return true;
                     } else {
-                        // Si el servidor dice explícitamente que falló
-                        if(loginErrorMessage) loginErrorMessage.textContent = data.message;
+                        if(loginErrorMessage) {
+                            loginErrorMessage.style.color = "#f87171"; // Rojo error normal
+                            loginErrorMessage.textContent = data.message;
+                        }
                         return false;
                     }
                 } catch (error) {
                     console.error('Error de red o conexión:', error);
-                    // Esto nos dirá si el problema es que no llega al servidor
                     alert("Error de conexión: " + error.message); 
                     return false;
                 }
@@ -4919,6 +5135,151 @@
             loadData();
             initializeVolumes();
             
+			// --- LÓGICA DEL TEMPORIZADOR DISCRETO CORREGIDA ---
+            let dtInterval = null;
+            let dtSeconds = 90; // Tiempo actual
+            let dtTotalSeconds = 90; // Referencia para la barra de progreso
+            let dtIsRunning = false;
+
+            const dtDisplay = document.getElementById('dt-display');
+            const dtPlayBtn = document.getElementById('dt-play-btn');
+            const dtResetBtn = document.getElementById('dt-reset-btn');
+            const dtProgressFill = document.getElementById('dt-progress-fill');
+            const dtTab = document.getElementById('dt-tab');
+            const dtBar = document.getElementById('dt-bar');
+            const dtIcon = document.getElementById('dt-icon');
+			
+			// Función para inicializar el temporizador en estado colapsado en móviles
+            function initTimerResponsive() {
+                const isMobile = window.innerWidth <= 768;
+                const dtBar = document.getElementById('dt-bar');
+                const dtIcon = document.getElementById('dt-icon');
+    
+                if (isMobile && dtBar && dtIcon) {
+                    // Colapsar por defecto en móviles
+                    dtBar.classList.add('hidden');
+                    dtIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            }
+
+            // Ejecutar al cargar y al cambiar tamaño de ventana
+            initTimerResponsive(); // Llamar inmediatamente
+            window.addEventListener('resize', initTimerResponsive);
+
+            // FUNCIÓN CORREGIDA: Actualiza SOLO el temporizador discreto
+            function updateDtVisuals() {
+                // 1. Actualizar display digital del temporizador discreto
+                const m = Math.floor(dtSeconds / 60).toString().padStart(2, '0');
+                const s = (dtSeconds % 60).toString().padStart(2, '0');
+                if(dtDisplay) dtDisplay.textContent = `${m}:${s}`;
+
+                // 2. Calcular porcentaje de la barra
+                if(dtProgressFill) {
+                    // Si el tiempo actual supera la referencia inicial, ajustamos la escala
+                    if (dtSeconds > dtTotalSeconds) dtTotalSeconds = dtSeconds;
+
+                    const percent = dtTotalSeconds > 0 ? 
+                        Math.min(100, (dtSeconds / dtTotalSeconds) * 100) : 0;
+                    dtProgressFill.style.width = `${percent}%`;
+
+                    // 3. Colores dinámicos
+                    dtProgressFill.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-600');
+
+                    if (dtSeconds > 30) {
+                        dtProgressFill.classList.add('bg-green-500');
+                    } else if (dtSeconds > 10) {
+                        dtProgressFill.classList.add('bg-yellow-500');
+                    } else {
+                        dtProgressFill.classList.add('bg-red-600');
+                    }
+
+                    // 4. Efecto parpadeo final
+                    if (dtSeconds <= 10 && dtIsRunning) {
+                        dtProgressFill.classList.add('opacity-80');
+                        setTimeout(() => {
+                            if(dtProgressFill) dtProgressFill.classList.remove('opacity-80');
+                        }, 500);
+                    }
+                }
+            }
+
+            function toggleDtTimer() {
+                const icon = dtPlayBtn.querySelector('i');
+                if (dtIsRunning) {
+                    // Pausar
+                    clearInterval(dtInterval);
+                    dtIsRunning = false;
+                    icon.classList.replace('fa-pause', 'fa-play');
+                } else {
+                    // Iniciar
+                    if (dtSeconds <= 0) return;
+                    dtIsRunning = true;
+                    icon.classList.replace('fa-play', 'fa-pause');
+                    
+                    dtInterval = setInterval(() => {
+                        if (dtSeconds > 0) {
+                            dtSeconds--;
+                            updateDtVisuals();
+                        } else {
+                            clearInterval(dtInterval);
+                            dtIsRunning = false;
+                            icon.classList.replace('fa-pause', 'fa-play');
+                            if(typeof buttonSound !== 'undefined') {
+                                // Sonido discreto o vibración si lo deseas
+                                // navigator.vibrate(200); 
+                            }
+                        }
+                    }, 1000);
+                }
+            }
+
+            // Inicialización de Listeners si existen los elementos
+            if (dtPlayBtn && dtTab) {
+                // Pestaña
+                dtTab.addEventListener('click', () => {
+                    dtBar.classList.toggle('hidden');
+                    if (dtBar.classList.contains('hidden')) {
+                        dtIcon.classList.replace('fa-caret-up', 'fa-caret-down');
+                    } else {
+                        dtIcon.classList.replace('fa-caret-down', 'fa-caret-up');
+                    }
+                });
+
+                // Play/Pause
+                dtPlayBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleDtTimer();
+                });
+
+                // Reset (1:30)
+                dtResetBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    clearInterval(dtInterval);
+                    dtIsRunning = false;
+                    dtSeconds = 90;
+                    dtTotalSeconds = 90; // Reiniciar referencia
+                    dtPlayBtn.querySelector('i').classList.replace('fa-pause', 'fa-play');
+                    updateDtVisuals();
+                });
+
+                // Zona Menos (-30s)
+                document.getElementById('dt-zone-minus').addEventListener('click', () => {
+                    dtSeconds = Math.max(0, dtSeconds - 30);
+                    updateDtVisuals();
+                });
+
+                // Zona Mas (+30s)
+                document.getElementById('dt-zone-plus').addEventListener('click', () => {
+                    dtSeconds += 30;
+                    // Actualizamos el total si el tiempo actual supera la referencia, para que la barra no se quede pegada en 100%
+                    if(dtSeconds > dtTotalSeconds) dtTotalSeconds = dtSeconds;
+                    updateDtVisuals();
+                });
+
+                // Iniciar visuales
+                updateDtVisuals();
+            }
+			
             // Inicializar herramientas una sola vez al cargar la página
         });
     </script>
