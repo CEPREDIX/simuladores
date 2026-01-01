@@ -21,14 +21,7 @@
             svg: {
                 fontCache: 'global'
             },
-            loader: {load: ['[tex]/physics']},
-            startup: {
-                pageReady: () => {
-                    return MathJax.startup.defaultPageReady().then(() => {
-                        console.log('MathJax está listo');
-                    });
-                }
-            }
+            loader: {load: ['[tex]/physics']}
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -68,7 +61,6 @@
             width: 100px; height: 100px; margin: 0 auto 10px;
             background: url('https://i.imgur.com/I1unSiu.png') center/contain no-repeat;
         }
-		/* Estilos del botón Cerrar Sesión */
         .logout-btn {
             position: absolute;
             top: 15px;
@@ -79,7 +71,7 @@
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
-            display: none; /* Oculto por defecto hasta iniciar sesión */
+            display: none;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -88,7 +80,7 @@
             font-size: 1rem;
         }
         .logout-btn:hover {
-            background: rgba(244, 67, 54, 0.8); /* Rojo al pasar el mouse */
+            background: rgba(244, 67, 54, 0.8);
             border-color: #f44336;
             transform: scale(1.1);
         }
@@ -160,16 +152,12 @@
         .timer-green { color: #4CAF50; }
         .timer-orange { color: #FF9800; }
         .timer-red { color: #f44336; }
-		
-	        	/* ================= TEMPORIZADOR MEJORADO (DISEÑO FLEXIBLE) ================= */
         #discrete-timer-wrapper {
             margin-top: -0.5rem;
             margin-bottom: 1.5rem;
             position: relative;
             z-index: 30;
         }
-
-        /* Pestaña superior */
         #dt-tab {
             width: 50px;
             height: 20px;
@@ -185,11 +173,9 @@
             transition: background 0.3s;
         }
         #dt-tab:hover { background: rgba(50, 50, 70, 1); }
-
-        /* Contenedor Principal (Barra + Controles) */
         #dt-bar {
             display: flex;
-            flex-wrap: wrap; /* Permite que baje en pantallas muy pequeñas */
+            flex-wrap: wrap;
             align-items: center;
             gap: 10px;
             background: rgba(20, 20, 30, 0.95);
@@ -202,7 +188,6 @@
             opacity: 1;
             overflow: hidden;
         }
-
         #dt-bar.hidden {
             max-height: 0;
             opacity: 0;
@@ -210,10 +195,8 @@
             margin: 0;
             border: none;
         }
-
-        /* Área de la barra de progreso (Izquierda) */
         .dt-progress-area {
-            flex: 1; /* Ocupa todo el espacio disponible */
+            flex: 1;
             min-width: 150px;
             height: 36px;
             background: rgba(0, 0, 0, 0.4);
@@ -222,13 +205,10 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         #dt-progress-fill {
             height: 100%;
             transition: width 0.5s linear, background-color 0.5s ease;
         }
-
-        /* Zonas de click transparentes con iconos */
         .dt-click-zone {
             position: absolute;
             top: 0;
@@ -242,27 +222,22 @@
         }
         .dt-click-zone:hover { background: rgba(255, 255, 255, 0.05); }
         .dt-click-zone:active { background: rgba(255, 255, 255, 0.1); }
-        
         #dt-zone-minus { left: 0; padding-left: 10px; justify-content: flex-start; }
         #dt-zone-plus { right: 0; padding-right: 10px; justify-content: flex-end; }
-
         .dt-icon-overlay {
             color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
             pointer-events: none;
         }
-
-        /* Área de Controles (Derecha) */
         .dt-controls-area {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-shrink: 0; /* No se encoge */
+            flex-shrink: 0;
         }
-
         #dt-display {
             background: #000;
-            color: #4fc3f7; /* Azul neón */
+            color: #4fc3f7;
             font-family: monospace;
             font-size: 1.2rem;
             padding: 5px 12px;
@@ -272,7 +247,6 @@
             text-align: center;
             font-weight: bold;
         }
-
         .dt-ctrl-btn {
             width: 36px;
             height: 36px;
@@ -286,40 +260,33 @@
             color: white;
             font-size: 1rem;
         }
-
         #dt-play-btn { background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; color: #4CAF50; }
         #dt-play-btn:hover { background: rgba(76, 175, 80, 0.4); transform: scale(1.05); }
-        
         #dt-reset-btn { background: rgba(255, 152, 0, 0.2); border: 1px solid #ff9800; color: #ff9800; }
         #dt-reset-btn:hover { background: rgba(255, 152, 0, 0.4); transform: scale(1.05); }
-
-        /* Colores dinámicos */
         .bg-green-500 { background: linear-gradient(90deg, #4CAF50, #8BC34A); box-shadow: 0 0 10px rgba(76, 175, 80, 0.4); }
         .bg-yellow-500 { background: linear-gradient(90deg, #FF9800, #FFC107); box-shadow: 0 0 10px rgba(255, 152, 0, 0.4); }
         .bg-red-600 { background: linear-gradient(90deg, #f44336, #ff5722); box-shadow: 0 0 10px rgba(244, 67, 54, 0.4); }
-
         @media (max-width: 480px) {
             #dt-bar { 
                 gap: 5px; 
                 padding: 5px; 
-                flex-wrap: nowrap; /* Fuerza una sola fila */
+                flex-wrap: nowrap;
             }
             .dt-controls-area { 
                 width: auto; 
                 justify-content: flex-end; 
                 margin-top: 0; 
-                flex-shrink: 0; /* No permite que los botones se aplasten */
+                flex-shrink: 0;
             }
             .dt-progress-area { 
                 width: auto; 
-                flex: 1; /* Ocupa el espacio restante */
-                min-width: 0; /* Permite encogerse si es necesario */
+                flex: 1;
+                min-width: 0;
             }
-            /* Hacemos los elementos un poco más pequeños en celular para que quepan */
             #dt-display { font-size: 1rem; padding: 4px 6px; min-width: 55px; }
             .dt-ctrl-btn { width: 30px; height: 30px; font-size: 0.9rem; }
         }
-        
         #calculator-section { width: 100%; margin: 20px 0; }
         #calculator-toggle {
             background: rgba(255, 152, 0, 0.2); border: 1px solid #ff9800; color: white;
@@ -357,7 +324,6 @@
         .calculator-btn.equals:hover { background: #388e3c; }
         .calculator-btn.clear { background: #f44336; }
         .calculator-btn.clear:hover { background: #d32f2f; }
-        
         .results-container { background: rgba(30, 30, 40, 0.8); border-radius: 15px; padding: 20px; margin: 15px 0; }
         .result-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
         .stat-box { background: rgba(50, 50, 70, 0.8); border-radius: 10px; padding: 15px; min-width: 160px; flex: 1; }
@@ -386,24 +352,22 @@
             from { transform: rotate(-30deg) translate(0, 0); }
             to { transform: rotate(-30deg) translate(-25%, -25%); }
         }
-        
         .question-id-tags {
-            position: relative; /* Ya no flota sobre el borde */
-            margin: 10px auto; /* Separación vertical y centrado horizontal */
+            position: relative;
+            margin: 10px auto;
             background: rgba(0, 0, 0, 0.7);
             padding: 4px 12px;
-            border-radius: 20px; /* Bordes más redondeados para estética */
+            border-radius: 20px;
             font-size: 0.75rem;
             font-weight: bold;
-            display: inline-flex; /* Se ajusta al tamaño del contenido */
+            display: inline-flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            width: fit-content; /* Asegura que no se estire a todo el ancho */
+            width: fit-content;
         }
         .question-id { color: #4fc3f7; }
         .uni-tag-display { color: #81c784; }
-		/* --- NUEVOS ESTILOS PARA OPCIONES CON IMÁGENES --- */
         .options-grid-mode {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -411,7 +375,7 @@
         }
         .option-btn.is-image {
             padding: 5px !important;
-            height: 200px; /* Altura fija para las cajas de imagen */
+            height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -430,17 +394,17 @@
         .option-image-content {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ajusta la imagen sin recortarla */
+            object-fit: contain;
             border-radius: 5px;
         }
         .option-btn.full-width {
-            grid-column: span 2; /* Hace que el botón de "No puedo identificar" ocupe todo el ancho */
+            grid-column: span 2;
             height: auto !important;
             padding: 15px 15px 15px 50px !important;
         }
         .option-watermark {
             position: absolute;
-            inset: -50%; /* Hacemos la caja más grande que el botón para que pueda moverse */
+            inset: -50%;
             width: 200%;
             height: 200%;
             display: flex;
@@ -456,10 +420,10 @@
             text-align: center;
             line-height: 2;
             z-index: 5;
-            animation: watermark-scroll 40s linear infinite; /* Añadimos la animación de movimiento */
+            animation: watermark-scroll 40s linear infinite;
         }
         @media (max-width: 480px) {
-            .option-btn.is-image { height: 150px; } /* Altura menor en móviles */
+            .option-btn.is-image { height: 150px; }
         }
         .level-tag-display { color: #ffd54f; }
         .video-link {
@@ -491,7 +455,6 @@
         }
         .volume-btn-new:hover { background: rgba(70, 70, 90, 0.9); }
         .volume-btn-new:active { transform: scale(0.95); }
-
         #chalkboard-section { width: 100%; margin: 20px 0; }
         #chalkboard-toggle {
             background: rgba(100, 181, 246, 0.2); border: 1px solid #64b5f6; color: white;
@@ -523,7 +486,6 @@
             width: 100%; height: 100%; border-radius: 0.375rem;
             border: 2px solid white; pointer-events: none;
         }
-        
         #graphing-tool-section { width: 100%; margin: 20px 0; }
         #graphing-tool-toggle {
             background: rgba(156, 39, 176, 0.2); border: 1px solid #9c27b0; color: white;
@@ -553,12 +515,12 @@
             min-width: 300px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
-            padding: 10px; /* Reducido de 15px para ganar espacio */
+            padding: 10px;
             display: flex;
             flex-direction: column;
             margin: 0 auto;
-            width: 100%; /* Asegura ancho total */
-            max-width: 600px; /* Aumentado un poco para escritorio */
+            width: 100%;
+            max-width: 600px;
         }
         .graphing-controls-container {
             width: 350px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 15px;
@@ -629,7 +591,6 @@
         .canvas-container {
             position: relative;
             width: 100%;
-            /* Esto fuerza una relación de aspecto cuadrada perfecta 1:1 */
             aspect-ratio: 1 / 1;
             margin-top: 5px;
         }
@@ -645,7 +606,6 @@
         .zoom-btn:hover:not(:disabled) { background: rgba(79, 195, 247, 0.5); transform: scale(1.1); }
         .zoom-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .scale-indicator { font-size: 0.9rem; color: #bdbdbd; min-width: 80px; text-align: center; }
-        
         .lookup-question-container {
             background: rgba(30, 30, 40, 0.9); border-radius: 15px; padding: 20px;
             margin: 15px 0; border-left: 5px solid #4fc3f7;
@@ -676,18 +636,15 @@
         .lookup-section-title {
             color: #4fc3f7; margin-bottom: 8px; font-size: 1.1rem;
         }
-        
         .evaluate-emoji {
             display: inline-block;
             animation: emoji-animation 2s infinite;
         }
-        
         @keyframes emoji-animation {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        
         #chatbot-section { width: 100%; margin: 20px 0; }
         #chatbot-toggle {
             background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; color: white;
@@ -714,7 +671,6 @@
         .chatbot-system {
             color: #bdbdbd; font-style: italic; font-size: 13px;
         }
-        
         #advertisement-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.9); z-index: 9999;
@@ -738,7 +694,6 @@
             border: 1px solid #ff9800; color: white; padding: 10px 20px;
             border-radius: 8px; cursor: not-allowed; opacity: 0.5;
         }
-        
         #simulacro-end-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 9998;
@@ -752,7 +707,6 @@
         #simulacro-end-timer {
             color: #ff9800; font-size: 1.2rem; margin-bottom: 20px;
         }
-        
         #game-mode-rules {
             background: #000; border: 2px solid #FFD700; animation: pulse 2s infinite;
             padding: 10px; margin-bottom: 15px; border-radius: 10px;
@@ -788,13 +742,11 @@
         .game-mode-win {
             background: rgba(76, 175, 80, 0.9); border: 2px solid #4CAF50;
         }
-		/* Estilos para el Banner Publicitario Horizontal */
         #banner-container {
             width: 100%;
             max-width: 720px;
-            /* Altura automática para adaptarse a la imagen */
-            height: auto; 
-            min-height: 50px; /* Mínimo para que no desaparezca si no carga */
+            height: auto;
+            min-height: 50px;
             margin: 10px auto;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
@@ -805,20 +757,17 @@
         }
         #banner-img {
             width: 100%;
-            height: auto; /* La altura depende del ancho */
-            object-fit: contain; /* Muestra la imagen completa sin cortar */
+            height: auto;
+            object-fit: contain;
             display: block;
         }
-		/* AJUSTE ESPECÍFICO PARA MÓVILES (Agregar al final de tu CSS) */
         @media (max-width: 480px) {
-            .graphing-container { padding: 10px; } /* Menos relleno en el contenedor principal */
+            .graphing-container { padding: 10px; }
             .graphing-canvas-container { 
-                padding: 5px; /* Casi sin borde interno en móvil */
+                padding: 5px;
                 min-width: 100%; 
             }
         }
-        
-        /* ================= PUBLICIDAD ================= */
         #adOverlay {
             position: fixed;
             inset: 0;
@@ -828,39 +777,33 @@
             align-items: center;
             z-index: 9999;
         }
-
-#adBox {
+        #adBox {
             background: #1a1a2e;
             max-width: 480px;
             width: 90%;
-            /* AJUSTES NUEVOS PARA MÓVIL */
-            max-height: 90vh; /* Nunca más alto que el 90% de la pantalla */
-            overflow-y: auto; /* Si es muy alto, permite bajar con el dedo dentro de la caja */
+            max-height: 90vh;
+            overflow-y: auto;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
             border: 2px solid #4fc3f7;
             box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
-            position: relative; /* Para asegurar estabilidad */
+            position: relative;
         }
-
         #adBox img {
             max-width: 100%;
-            /* AJUSTES NUEVOS PARA IMAGEN */
-            height: auto; 
-            max-height: 40vh; /* La imagen no ocupará más del 40% de la altura de la pantalla */
-            object-fit: contain; /* Asegura que la imagen se vea completa */
+            height: auto;
+            max-height: 40vh;
+            object-fit: contain;
             border-radius: 6px;
             margin-bottom: 15px;
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
-
         #adButtons {
             margin-top: 15px;
         }
-
         #adButtons button,
         #adButtons a {
             margin: 5px;
@@ -873,12 +816,10 @@
             cursor: pointer;
             font-weight: bold;
         }
-
         #adButtons button:disabled {
             background: #999;
             cursor: not-allowed;
         }
-        
         #chatbot-input {
             flex: 1;
             padding: 12px;
@@ -889,11 +830,9 @@
             outline: none;
             font-size: 1rem;
         }
-        
         #chatbot-input::placeholder {
             color: #aaaaaa;
         }
-
         #chatbot-send {
             padding: 10px 20px;
             background: linear-gradient(45deg, #4CAF50, #8BC34A);
@@ -904,26 +843,22 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
         #chatbot-send:hover {
             transform: scale(1.05);
         }
-        
-        /* Footer y Aviso de Privacidad */
         #footer {
-            position: relative; /* Esto hace que se coloque al final natural de la página */
+            position: relative;
             width: 100%;
-            margin-top: 50px;   /* Añade espacio para que no se pegue al último elemento */
+            margin-top: 50px;
             background: rgba(25, 25, 35, 0.95);
             backdrop-filter: blur(10px);
             color: white;
-            padding: 20px 0;    /* Un poco más de espacio interno para que se vea mejor */
+            padding: 20px 0;
             text-align: center;
             font-size: 12px;
             z-index: 100;
             border-top: 1px solid rgba(79, 195, 247, 0.3);
         }
-        
         #footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -933,7 +868,6 @@
             align-items: center;
             gap: 5px;
         }
-        
         #footer-links {
             display: flex;
             flex-wrap: wrap;
@@ -941,19 +875,16 @@
             gap: 15px;
             margin-bottom: 3px;
         }
-        
         .footer-link {
             color: #4fc3f7;
             text-decoration: none;
             transition: color 0.3s ease;
             cursor: pointer;
         }
-        
         .footer-link:hover {
             color: #21CBF3;
             text-decoration: underline;
         }
-        
         .social-link {
             color: #4fc3f7;
             text-decoration: none;
@@ -963,17 +894,13 @@
             align-items: center;
             gap: 5px;
         }
-        
         .social-link:hover {
             color: #21CBF3;
         }
-        
         #copyright {
             color: #aaaaaa;
             font-size: 11px;
         }
-        
-        /* Modal Aviso de Privacidad */
         #privacy-modal {
             position: fixed;
             top: 0;
@@ -987,7 +914,6 @@
             justify-content: center;
             padding: 20px;
         }
-        
         .privacy-modal-content {
             background: rgba(25, 25, 35, 0.95);
             backdrop-filter: blur(10px);
@@ -1000,7 +926,6 @@
             box-shadow: 0 0 30px rgba(79, 195, 247, 0.3);
             position: relative;
         }
-        
         .privacy-modal-close {
             position: absolute;
             top: 15px;
@@ -1018,11 +943,9 @@
             border-radius: 50%;
             transition: background 0.3s ease;
         }
-        
         .privacy-modal-close:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-        
         .privacy-title {
             color: #4fc3f7;
             font-size: 24px;
@@ -1030,29 +953,23 @@
             text-align: center;
             font-weight: bold;
         }
-        
         .privacy-content {
             color: #fff;
             font-size: 14px;
             line-height: 1.6;
         }
-        
         .privacy-section {
             margin-bottom: 20px;
         }
-        
         .privacy-section h3 {
             color: #4fc3f7;
             font-size: 16px;
             margin-bottom: 10px;
             font-weight: bold;
         }
-        
         .privacy-section p {
             margin-bottom: 10px;
         }
-        
-        /* Modal para datos de invitado */
         #guest-info-modal {
             position: fixed;
             top: 0;
@@ -1066,7 +983,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .guest-info-content {
             background: rgba(25, 25, 35, 0.95);
             border-radius: 15px;
@@ -1076,27 +992,23 @@
             border: 2px solid #4fc3f7;
             box-shadow: 0 0 30px rgba(79, 195, 247, 0.3);
         }
-
         .guest-info-title {
             color: #4fc3f7;
             font-size: 24px;
             margin-bottom: 20px;
             text-align: center;
         }
-
         .guest-info-text {
             color: #fff;
             margin-bottom: 25px;
             text-align: center;
             line-height: 1.5;
         }
-
         .guest-info-form {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
         .guest-info-form input {
             padding: 15px;
             background: rgba(50, 50, 70, 0.8);
@@ -1105,32 +1017,27 @@
             color: white;
             font-size: 16px;
         }
-
         .guest-info-form input:focus {
             outline: none;
             border-color: #4fc3f7;
             box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
         }
-
         .guest-error-message {
             color: #f44336;
             font-size: 14px;
             margin-top: 5px;
             display: none;
         }
-
         .guest-info-buttons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
-
         .guest-info-buttons button {
             flex: 1;
             padding: 12px;
             font-weight: 600;
         }
-
         @media (max-width: 768px) {
             .btn { font-size: 1rem; padding: 8px 16px; width: 100%; max-width: 300px; }
             .option-btn { font-size: 0.9rem !important; padding: 12px 12px 12px 40px !important; }
@@ -1161,21 +1068,19 @@
                 padding: 5px 0;
             }
             #footer-links {
-                flex-direction: row;       /* Alineación horizontal */
-                flex-wrap: wrap;           /* Permite que bajen si no caben */
-                justify-content: center;   /* Centrado */
-                gap: 12px;                 /* Espacio entre enlaces */
-                row-gap: 5px;              /* Espacio vertical si se hace una 2da línea */
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                row-gap: 5px;
             }
-            /* Ocultamos las barras separadoras (|) en móviles para ahorrar espacio */
             #footer-links span.text-gray-500 {
                 display: none;
             }
-            /* Hacemos la letra un poco más pequeña en móviles */
             .footer-link, .social-link {
                 font-size: 0.75rem; 
                 padding: 4px 6px;
-                background: rgba(0,0,0,0.2); /* Fondo muy sutil para delimitar el área táctil */
+                background: rgba(0,0,0,0.2);
                 border-radius: 4px;
             }
             .privacy-modal-content {
@@ -1185,7 +1090,6 @@
             .guest-info-content {
                 padding: 20px;
             }
-            
             .guest-info-buttons {
                 flex-direction: column;
             }
@@ -1202,7 +1106,6 @@
             #image-container { max-width: 100%; }
             .graphing-function-buttons { grid-template-columns: repeat(2, 1fr); }
             .justification h4 { font-size: 1rem !important; }
-            /* Aquí está el cambio: altura automática para que no invada al chatbot */
             .calculator-container { width: 95%; max-width: 300px; height: auto; padding-bottom: 20px; }
         }
     </style>
@@ -1216,8 +1119,6 @@
     <audio id="simulacro-fail-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
     <audio id="simulacro-success-1" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_1.mp3" preload="auto"></audio>
     <audio id="simulacro-success-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_2.mp3" preload="auto"></audio>
-    
-    <!-- Modal de Publicidad (Modificado) -->
     <div id="adOverlay" style="display: none;">
         <div id="adBox">
             <img id="adImage" src="" alt="Publicidad">
@@ -1230,8 +1131,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Modal Aviso de Privacidad -->
     <div id="privacy-modal" style="display: none;">
         <div class="privacy-modal-content">
             <button class="privacy-modal-close">&times;</button>
@@ -1241,13 +1140,11 @@
                     <h3>CEPREDIX</h3>
                     <p>En cumplimiento con lo dispuesto por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares y su Reglamento, CEPREDIX, como responsable del tratamiento de datos personales, pone a disposición de estudiantes, tutores, usuarios y clientes el presente Aviso de Privacidad.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>1. Identidad del responsable</h3>
                     <p>CEPREDIX es un servicio educativo que brinda cursos, plataformas educativas, simulacros, bancos de preguntas y otros servicios relacionados con la formación académica.</p>
                     <p>CEPREDIX es responsable del uso, protección y tratamiento de los datos personales que recaba de sus usuarios y estudiantes.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>2. Datos personales que se recaban</h3>
                     <p>Para la prestación de nuestros servicios educativos, CEPREDIX podrá recabar los siguientes datos personales:</p>
@@ -1259,7 +1156,6 @@
                     </ul>
                     <p>CEPREDIX no recaba datos personales sensibles.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>3. Finalidades del tratamiento de los datos personales</h3>
                     <p>Los datos personales recabados serán utilizados exclusivamente para fines internos, relacionados con:</p>
@@ -1272,24 +1168,20 @@
                     </ul>
                     <p>En ningún caso los datos serán utilizados para fines distintos a los aquí señalados.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>4. Conservación de los datos</h3>
                     <p>Los datos personales se conservarán únicamente durante el tiempo en que el usuario o estudiante mantenga una relación activa con CEPREDIX.</p>
                     <p>Una vez concluida la contratación de los servicios, los datos personales serán eliminados de nuestra base de datos en un plazo máximo de 30 días naturales, salvo aquellos que deban conservarse por disposición legal aplicable.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>5. Transferencia de datos personales</h3>
                     <p>CEPREDIX no comparte, vende, cede ni transfiere datos personales a terceros, ya sea nacionales o extranjeros.</p>
                     <p>Toda la información recabada es utilizada exclusivamente para fines internos del servicio educativo.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>6. Medidas de seguridad</h3>
                     <p>CEPREDIX implementa medidas administrativas, técnicas y organizativas razonables para proteger los datos personales contra daño, pérdida, alteración, destrucción o uso, acceso o tratamiento no autorizado.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>7. Derechos ARCO (Acceso, Rectificación, Cancelación y Oposición)</h3>
                     <p>Los titulares de los datos personales tienen derecho a:</p>
@@ -1301,13 +1193,11 @@
                     </ul>
                     <p>Para ejercer estos derechos, el titular podrá enviar una solicitud a través de los medios de contacto oficiales de CEPREDIX, indicando claramente el derecho que desea ejercer.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>8. Cambios al aviso de privacidad</h3>
                     <p>CEPREDIX se reserva el derecho de realizar modificaciones o actualizaciones al presente Aviso de Privacidad en cualquier momento.
                     Las modificaciones estarán disponibles a través de los medios oficiales del servicio.</p>
                 </div>
-                
                 <div class="privacy-section">
                     <h3>9. Consentimiento</h3>
                     <p>Al utilizar los servicios educativos de CEPREDIX, el usuario y/o tutor manifiesta su consentimiento para el tratamiento de sus datos personales conforme a lo establecido en el presente Aviso de Privacidad.</p>
@@ -1315,8 +1205,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Modal para datos de invitado -->
     <div id="guest-info-modal" style="display: none;">
         <div class="guest-info-content">
             <h2 class="guest-info-title">📧 Completa tus datos para ver los resultados</h2>
@@ -1357,13 +1245,11 @@
             </p>
         </div>
     </div>
-    
     <div id="simulacro-end-screen" style="display: none;">
         <img id="simulacro-end-image" src="" alt="Fin del simulacro">
         <div id="simulacro-end-timer">Volviendo al menú en 10 segundos...</div>
         <button id="simulacro-return-btn" class="btn" style="background: linear-gradient(45deg, #ff9800, #ff5722);">VOLVER AL MENÚ</button>
     </div>
-    
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
             <button id="logout-btn" class="logout-btn" title="Cerrar sesión">
@@ -1374,7 +1260,7 @@
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
-		<div id="banner-container" style="display: none;">
+        <div id="banner-container" style="display: none;">
             <a id="banner-link" href="#" target="_blank">
                 <img id="banner-img" src="" alt="Aviso">
             </a>
@@ -1422,7 +1308,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="setup-volume-control" class="absolute top-4 right-4 flex items-center gap-2">
                 <button class="volume-btn-new" data-action="down">-</button>
                 <i class="fas fa-volume-high text-gray-300 text-lg"></i>
@@ -1433,7 +1318,6 @@
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
                 <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
-
             <div class="space-y-4">
                 <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
                     <label class="font-medium flex items-center">
@@ -1450,7 +1334,6 @@
                     <p class="text-xs text-gray-400">Temporizador fijo de 30 minutos, 20 ejercicios aleatorios y 3 vidas</p>
                 </div>
             </div>
-
             <div class="space-y-4">
                 <div class="space-y-2">
                     <p class="font-medium">Proceso de Admisión</p>
@@ -1477,9 +1360,7 @@
                     </div>
                 </div>
             </div>
-            
             <button id="start-quiz-btn" class="btn btn-primary w-full text-lg">Empezar Cuestionario</button>
-            
             <p id="error-message" class="text-red-400 text-center text-sm h-4"></p>
             <div class="space-y-2 border-t border-gray-600 pt-4 mt-4">
                 <p class="font-medium">Verificar Pregunta por ID</p>
@@ -1506,21 +1387,17 @@
                 </div>
             </div>
             <div class="flex flex-row flex-wrap justify-between items-center mb-2 gap-y-1 gap-x-2 w-full">
-                
                 <div class="text-xs sm:text-lg font-bold text-gray-200 order-1">
                     Pregunta <span id="current-question-num"></span>/<span id="total-questions-num"></span>
                 </div>
-
                 <div id="live-score" class="flex gap-2 text-xs sm:text-lg order-2">
                     <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
                     <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
                 </div>
-
                 <div class="flex items-center space-x-1 text-xs sm:text-lg font-bold order-3" id="timer-container">
                     <svg class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span id="timer" class="timer-green">30:00</span>
                 </div>
-
                 <div id="quiz-volume-control" class="flex items-center gap-1 order-4">
                     <button class="volume-btn-new w-5 h-5 sm:w-7 sm:h-7 text-xs sm:text-base flex items-center justify-center" data-action="down">-</button>
                     <i class="fas fa-volume-high text-gray-300 text-xs sm:text-lg"></i>
@@ -1528,45 +1405,36 @@
                     <button class="volume-btn-new w-5 h-5 sm:w-7 sm:h-7 text-xs sm:text-base flex items-center justify-center" data-action="up">+</button>
                 </div>
             </div>
-            
             <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6">
                 <div id="progress-bar" class="bg-blue-400 h-2.5 rounded-full" style="width: 0%"></div>
-                            </div>
-                           <div id="discrete-timer-wrapper">
+            </div>
+            <div id="discrete-timer-wrapper">
                 <div id="dt-tab" title="Mostrar/Ocultar Temporizador">
                     <i id="dt-icon" class="fas fa-chevron-down text-xs text-blue-300"></i>
                 </div>
-                
                 <div id="dt-bar">
                     <div class="dt-progress-area">
                         <div id="dt-progress-fill" class="bg-green-500" style="width: 100%;"></div>
-                        
                         <div id="dt-zone-minus" class="dt-click-zone" title="Restar 30s">
                             <i class="fas fa-minus dt-icon-overlay"></i>
                         </div>
-                        
                         <div id="dt-zone-plus" class="dt-click-zone" title="Sumar 30s">
                             <i class="fas fa-plus dt-icon-overlay"></i>
                         </div>
                     </div>
-
                     <div class="dt-controls-area">
                         <div id="dt-display">01:30</div>
-                        
                         <button id="dt-play-btn" class="dt-ctrl-btn" title="Iniciar/Pausar">
                             <i class="fas fa-play"></i>
                         </button>
-                        
                         <button id="dt-reset-btn" class="dt-ctrl-btn" title="Reiniciar">
                             <i class="fas fa-redo"></i>
                         </button>
                     </div>
                 </div>
             </div>
-			
             <div id="question-container" class="space-y-4 flex flex-col items-center">
                 <h2 id="question-text" class="text-xl sm:text-2xl font-semibold text-center w-full"></h2>
-                
                 <div id="video-container" class="video-container w-full">
                     <div class="video-toggle" id="video-toggle">
                         <span><i class="fas fa-video mr-2"></i> Mostrar/Ocultar Video de Apoyo</span>
@@ -1578,7 +1446,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="image-section-container" class="w-full hidden">
                     <div class="video-toggle" id="image-toggle">
                         <span><i class="fas fa-image mr-2"></i> Mostrar/Ocultar Imagen de Apoyo</span>
@@ -1590,7 +1457,6 @@
                             </div>
                     </div>
                 </div>
-
                 <div id="text-section-container" class="video-container w-full hidden">
                     <div class="video-toggle" id="text-toggle">
                         <span><i class="fas fa-file-alt mr-2"></i> Mostrar/Ocultar Lectura de Apoyo</span>
@@ -1599,42 +1465,33 @@
                     <div class="video-content hidden" id="text-content">
                         </div>
                 </div>
-				
-				<div id="question-id-tags" class="question-id-tags">
+                <div id="question-id-tags" class="question-id-tags">
                     <span id="question-id-display" class="question-id"></span>
                     <span id="uni-tags-display"></span>
                     <span id="level-tag-display"></span>
                 </div>
-				
                 <div id="options-container" class="w-full space-y-3"></div>
-                
                 <div id="justification-box" class="justification w-full hidden">
                     <h4>Justificación:</h4>
                     <p id="justification-text"></p>
                 </div>
-
             </div>
-            
             <div id="action-buttons" class="mt-6 space-y-3">
-                
                 <div class="grid grid-cols-2 gap-3">
                     <button id="hint-btn" class="btn btn-hint w-full">💡 PISTA</button>
                     <button id="evaluate-btn" class="btn btn-primary w-full" disabled>
                         <span class="evaluate-emoji">🤨</span> EVALUAR
                     </button>
                 </div>
-                
                 <div class="grid grid-cols-2 gap-3">
                     <button id="prev-btn" class="btn btn-secondary w-full">← ANTERIOR</button>
                     <button id="next-btn" class="btn btn-secondary w-full" disabled>SIGUIENTE →</button>
                 </div>
-                
                 <div class="grid grid-cols-2 gap-3">
                     <button id="skip-btn" class="btn btn-secondary w-full">OMITIR REACTIVO</button>
                     <button id="finish-btn" class="btn btn-secondary w-full hidden btn-disabled" disabled>EVALUAR AVANCE (0/10)</button>
                 </div>
             </div>
-            
             <div id="all-questions-completed-message" class="mt-6 space-y-3 hidden">
                 <div class="p-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg text-center">
                     <div class="text-2xl mb-2">🎉FELICIDADES🎉</div>
@@ -1642,8 +1499,6 @@
                     <button id="force-evaluate-btn" class="btn btn-primary w-full">EVALUAR AVANCE</button>
                 </div>
             </div>
-            
-            <!-- CALCULADORA NUEVA Y SIMPLIFICADA -->
             <div id="calculator-section" class="w-full">
                 <div id="calculator-toggle">
                     <span><i class="fas fa-calculator mr-2"></i> Calculadora</span>
@@ -1675,7 +1530,6 @@
                     </div>
                 </div>
             </div>
-            
             <div id="chatbot-section" class="w-full">
                 <div id="chatbot-toggle">
                     <span><i class="fas fa-robot mr-2"></i> Chatbot de Ayuda</span>
@@ -1685,11 +1539,9 @@
                     <div class="chatbot-container">
                         <h2 class="chatbot-title">Túul – Asistente de IA 🤖</h2>
                         <p class="graphing-subtitle">Escribe solo un concepto para conocer su significado, por ejemplo: <b>MITOCONDRIA</b></p>
-                        
                         <div id="chatbot-chat">
                             <p class="chatbot-system">Hola 🖐 soy Túul, tu asistente de IA para resolver dudas. Escribe un concepto para conocer su significado.</p>
                         </div>
-                        
                         <div class="flex gap-2">
                             <input type="text" id="chatbot-input" placeholder="Ej. mitocondria">
                             <button id="chatbot-send">Consultar</button>
@@ -1697,7 +1549,6 @@
                     </div>
                 </div>
             </div>
-            
             <div id="chalkboard-section" class="w-full">
                 <div id="chalkboard-toggle">
                     <span><i class="fas fa-chalkboard mr-2"></i> Pizarra de Apuntes</span>
@@ -1729,7 +1580,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="graphing-tool-section" class="w-full">
                 <div id="graphing-tool-toggle">
                     <span><i class="fas fa-chart-line mr-2"></i> Visualizador de Ecuaciones</span>
@@ -1739,7 +1589,6 @@
                     <div class="graphing-container">
                         <h2 class="graphing-title">Visualizador de Ecuaciones en el Plano Cartesiano</h2>
                         <p class="graphing-subtitle">Explora funciones lineales, cuadráticas, cúbicas, trigonométricas, cónicas y más</p>
-                        
                         <div class="graphing-main-content">
                             <div class="graphing-canvas-container">
                                 <h3 class="graphing-section-title">Gráfica de la Ecuación</h3>
@@ -1752,24 +1601,18 @@
                                     <button class="zoom-btn" id="zoom-in-btn" title="Acercar (Zoom In)">+</button>
                                 </div>
                             </div>
-                            
                             <div class="graphing-controls-container">
                                 <h3 class="graphing-section-title">Controles de la Función</h3>
-                                
                                 <div class="graphing-function-buttons" id="graphingFunctionButtons">
                                 </div>
-                                
                                 <div class="graphing-form-toggle" id="graphingFormToggle">
                                 </div>
-                                
                                 <div class="graphing-equation-display">
                                     <h3>Ecuación Actual</h3>
                                     <div class="graphing-equation" id="graphingCurrentEquation">y = x</div>
                                 </div>
-                                
                                 <div class="graphing-param-controls" id="graphingParamControls">
                                 </div>
-                                
                                 <div class="graphing-section-title" style="margin-top: 20px;">Marcar Coordenadas</div>
                                 <div class="graphing-param-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                     <div>
@@ -1804,7 +1647,6 @@
                                 <div style="margin-top: 10px;">
                                     <button class="graphing-btn graphing-btn-primary" id="project-line-btn" disabled>Unir y proyectar</button>
                                 </div>
-
                                 <div class="graphing-section-title" style="margin-top: 20px;">Graficar Expresión Algebraica</div>
                                 <div class="graphing-param-group">
                                     <label for="algebraic-expression">Expresión (en términos de x, ej: x^2 + 3*x - 5)</label>
@@ -1816,14 +1658,12 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
-                                
                                 <div class="graphing-controls-footer">
                                     <button class="graphing-btn graphing-btn-secondary" id="graphingResetBtn">Restablecer</button>
                                     <button class="graphing-btn graphing-btn-primary" id="graphingUpdateBtn">Actualizar Gráfica</button>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="graphing-info-box">
                             <h4>Instrucciones:</h4>
                             <p>1. Selecciona el tipo de función que deseas visualizar.</p>
@@ -1836,7 +1676,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="mt-4 grid grid-cols-2 gap-3">
                  <button id="cancel-btn" class="btn btn-secondary w-full text-sm">VOLVER AL MENÚ</button>
                  <a href="https://wa.link/kz8tbd" target="_blank" id="report-btn" class="btn btn-secondary w-full text-sm">REPORTAR ERROR</a>
@@ -1902,8 +1741,6 @@
             <button id="restart-quiz-btn" class="btn btn-primary w-full sm:w-auto mt-8">Hacer otro cuestionario</button>
         </div>
     </div>
-    
-    <!-- Footer con Aviso de Privacidad y Redes Sociales -->
     <div id="footer">
         <div id="footer-content">
             <div id="footer-links">
@@ -1920,23 +1757,23 @@
                 <a href="https://www.tiktok.com/@cepredix" target="_blank" class="footer-link social-link">
                     <i class="fab fa-tiktok"></i> TikTok
                 </a>
-				<span class="text-gray-500">|</span>
-				<a href="https://www.youtube.com/@Cepredix" target="_blank" class="footer-link social-link">
-				    <i class="fab fa-youtube"></i> YouTube
-				</a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.youtube.com/@Cepredix" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
             </div>
             <div id="copyright">
                 &copy; CEPREDIX 2025 - Todos los derechos reservados. Versión CEP-1.1225
             </div>
         </div>
     </div>
-    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/JSON_PRUEBA_011225.json';
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYESY3dBy0h5QrY5EyJ_jfHwlEwnhByFcPTywwK4jJhGa3rvrnIzR9OXleZUZ7zVqUqw/exec';
+            const SUBMISSION_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxF2v5plRObokCgrV-3olVosjn-3q08B9bMUpeLMuYXyzuiRmsKAEadMUMb-WH2Dg7F/exec';
             const RESULT_IMAGES = {
                 less7: 'https://i.imgur.com/pyBFfO9.png',
                 between7_8: 'https://i.imgur.com/eMPH60B.png',
@@ -2090,8 +1927,6 @@
             const adAudio = document.getElementById('adAudio');
             const skipBtnAd = document.getElementById('skipBtn');
             const infoBtn = document.getElementById('infoBtn');
-            
-            // Elementos del modal de invitado
             const guestInfoModal = document.getElementById('guest-info-modal');
             const guestInfoForm = document.getElementById('guest-info-form');
             const guestEmailInput = document.getElementById('guest-email-input');
@@ -2100,7 +1935,7 @@
             const guestWhatsappError = document.getElementById('guest-whatsapp-error');
             const guestSubmitBtn = document.getElementById('guest-submit-btn');
             const guestCancelBtn = document.getElementById('guest-cancel-btn');
-			const logoutBtn = document.getElementById('logout-btn');
+            const logoutBtn = document.getElementById('logout-btn');
             
             let allQuestions = [], quizQuestions = [], userAnswers = [], pastedAnsweredIds = new Set();
             let currentQuestionIndex = 0, timer, seconds = 0, resultsChart;
@@ -2125,7 +1960,6 @@
             let questionCountInGuestMode = 0;
             let ads = [];
             let totalAvailableQuestions = 0;
-            
             let graphingChart = null;
             let currentGraphingFunction = 'linear';
             let isGraphingCanonical = true;
@@ -2133,46 +1967,38 @@
             const MIN_SCALE = 5;
             const MAX_SCALE = 50;
             const SCALE_STEPS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-            
             let markedCoordinates = [];
             let lineProjectionDataset = null;
             let algebraicDataset = null;
+            let guestAds = [];
+            let mainBanner = null;
+            let pubBanners = [];
+            let lastShownAdUrl = null;
+            let adTimeoutId = null;
+            let adIntervalId = null;
             
-			// --- LÓGICA DE CERRAR SESIÓN ---
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', () => {
                     if(confirm("¿Estás seguro de que deseas cerrar sesión?")) {
                         localStorage.removeItem('sessionToken');
                         localStorage.removeItem('userEmail');
-                        location.reload(); // Recarga la página para volver al inicio
+                        location.reload();
                     }
                 });
             }
-            // --- NUEVA LÓGICA DE PUBLICIDAD Y CONTROL DE TIEMPOS ---
-            let guestAds = [];      // Para intersticiales (PUB-INVITADO)
-            let mainBanner = null;  // Para BANNER-PRINCIPAL
-            let pubBanners = [];    // Para BANNER-PUB
             
-            // Variables de control (Memoria y Temporizadores)
-            let lastShownAdUrl = null; // Evita repetir el anuncio anterior
-            let adTimeoutId = null;    // Identificador del temporizador de seguridad (25s)
-            let adIntervalId = null;   // Identificador del conteo regresivo (5s)
-
-            // Cargar y clasificar publicidad
             fetch(ADS_CSV_URL)
                 .then(r => r.text())
                 .then(csv => {
                     const rows = csv.split("\n").slice(1);
                     rows.forEach(row => {
-                        // Separar columnas considerando que puede haber comas vacías
-                        // Estructura: Imagen, Audio, Infolink, Descripción, TIPO
                         const cols = row.split(",");
                         if (cols.length >= 5) {
                             const item = {
                                 Imagen: cols[0].trim(),
                                 Audio: cols[1].trim(),
                                 Infolink: cols[2].trim(),
-                                Tipo: cols[4].trim().replace(/\r/g, "") // Limpiar caracteres invisibles
+                                Tipo: cols[4].trim().replace(/\r/g, "")
                             };
 
                             if (item.Tipo === "PUB-INVITADO") {
@@ -2185,48 +2011,41 @@
                         }
                     });
                     
-                    // Una vez cargados los datos, iniciar el ciclo del banner
                     initBannerCycle();
                 }).catch(err => {
                     console.error("Error al cargar publicidad:", err);
                 });
 
-            // Función para gestionar el ciclo del Banner Horizontal
             function initBannerCycle() {
                 const bannerContainer = document.getElementById('banner-container');
                 
-                // Si no hay banner principal, ocultar contenedor y salir
                 if (!mainBanner) { 
                     bannerContainer.style.display = 'none'; 
                     return; 
                 }
 
                 bannerContainer.style.display = 'block';
-                runMainBanner(); // Iniciar ciclo
+                runMainBanner();
             }
 
             function runMainBanner() {
                 if (!mainBanner) return;
                 setBannerContent(mainBanner);
 
-                // Mostrar Banner Principal por 50 segundos, luego cambiar a Pub
                 setTimeout(() => {
                     runPubBanner();
                 }, 50000); 
             }
 
             function runPubBanner() {
-                // Si hay banners de publicidad, elegir uno al azar
                 if (pubBanners.length > 0) {
                     const randomPub = pubBanners[Math.floor(Math.random() * pubBanners.length)];
                     setBannerContent(randomPub);
                     
-                    // Mostrar Banner Pub por 10 segundos, luego volver al Principal
                     setTimeout(() => {
                         runMainBanner();
                     }, 10000);
                 } else {
-                    // Si no hay banners pub, reiniciar inmediatamente el principal
                     runMainBanner();
                 }
             }
@@ -2250,10 +2069,8 @@
                     }
                 }
 
-                // Manejo de Audio (Opcional en banners)
                 if (audioEl && item.Audio && item.Audio.length > 5) {
                     audioEl.src = item.Audio;
-                    // Nota: Los navegadores suelen bloquear audios automáticos sin interacción previa
                     audioEl.play().catch(e => console.log("Audio banner silenciado por navegador")); 
                 }
             }
@@ -2272,7 +2089,7 @@
                 let isShapeAssistActive = false;
                 let canvasStateBeforeStroke = null;
                 const whiteBrushBtn = document.getElementById('white-brush');
-                const greenBrushBtn = document.getElementById('green-brush'); // CAMBIO AQUÍ
+                const greenBrushBtn = document.getElementById('green-brush');
                 const colorPicker = document.getElementById('color-picker');
                 const colorPreview = document.getElementById('color-preview');
                 const brushSizeSlider = document.getElementById('brush-size');
@@ -2466,9 +2283,7 @@
                 canvas.addEventListener('touchend', stopDrawing);
                 canvas.addEventListener('touchcancel', stopDrawing);
                 whiteBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#FFFFFF'; });
-                greenBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#22c55e'; }); // VERDE
-                
-                // Corrección para móviles: Usamos 'change' además de 'input' para asegurar compatibilidad
+                greenBrushBtn.addEventListener('click', () => { ctx.strokeStyle = '#22c55e'; });
                 const updateColor = (e) => {
                     ctx.strokeStyle = e.target.value;
                     colorPreview.style.backgroundColor = e.target.value;
@@ -2494,7 +2309,6 @@
                 saveState();
             }
 
-            // Modal Aviso de Privacidad
             privacyLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 privacyModal.style.display = 'flex';
@@ -2504,35 +2318,28 @@
                 privacyModal.style.display = 'none';
             });
             
-            // Cerrar modal al hacer clic fuera
             privacyModal.addEventListener('click', (e) => {
                 if (e.target === privacyModal) {
                     privacyModal.style.display = 'none';
                 }
             });
 
-            /// Función para mostrar publicidad INTERSTICIAL (Solo invitados)
             function showAd() {
                 if (!isGuest || !(isContinuousMode || isGameMode)) return;
                 
-                // Si no hay anuncios cargados, no hacemos nada
                 if (!guestAds || guestAds.length === 0) return; 
 
-                // --- 1. LIMPIEZA PREVENTIVA ---
                 if (adTimeoutId) clearTimeout(adTimeoutId);
                 if (adIntervalId) clearInterval(adIntervalId);
 
-                // --- 2. LÓGICA ANTI-REPETICIÓN ---
                 let candidateAds = guestAds;
                 if (guestAds.length > 1 && lastShownAdUrl) {
                     candidateAds = guestAds.filter(ad => ad.Imagen !== lastShownAdUrl);
                 }
 
-                // Elegir aleatoriamente
                 const ad = candidateAds[Math.floor(Math.random() * candidateAds.length)];
                 lastShownAdUrl = ad.Imagen;
 
-                // --- 3. MOSTRAR EL ANUNCIO ---
                 const adImage = document.getElementById('adImage');
                 const adAudio = document.getElementById('adAudio');
                 const infoBtn = document.getElementById('infoBtn');
@@ -2542,14 +2349,12 @@
                 if(adImage) adImage.src = ad.Imagen;
                 if(adAudio) adAudio.src = ad.Audio;
                 
-                // Intentar reproducir audio
                 if(adAudio) {
                     adAudio.play().catch(e => {
                         console.log("Audio no se pudo reproducir automáticamente:", e);
                     });
                 }
 
-                // Configurar enlace "Me interesa"
                 if (infoBtn) {
                     if (ad.Infolink && ad.Infolink.length > 5) {
                         infoBtn.href = ad.Infolink;
@@ -2562,21 +2367,18 @@
                     }
                 }
                 
-                // Configurar botón de saltar
                 if (skipBtnAd) {
                     skipBtnAd.disabled = true;
                     skipBtnAd.style.opacity = "0.5";
                     skipBtnAd.textContent = "Espera 5s...";
-                    skipBtnAd.onclick = hideAd; // Asegurar que el click funcione
+                    skipBtnAd.onclick = hideAd;
                 }
                 
                 if (adOverlay) {
                     adOverlay.style.display = "flex";
-                    // IMPORTANTE: Congelar el fondo para evitar desajustes visuales
                     document.body.style.overflow = 'hidden';
                 }
                 
-                // --- 4. GESTIÓN DE TIEMPOS ---
                 let countdown = 5;
                 
                 adIntervalId = setInterval(() => {
@@ -2594,12 +2396,10 @@
                     }
                 }, 1000);
                 
-                // Timeout de seguridad (25s)
                 adTimeoutId = setTimeout(hideAd, 25000);
             }
             
             function hideAd() {
-                // 1. Limpieza de temporizadores
                 if (adTimeoutId) {
                     clearTimeout(adTimeoutId);
                     adTimeoutId = null;
@@ -2609,24 +2409,20 @@
                     adIntervalId = null;
                 }
 
-                // 2. Detener audio
                 const adAudio = document.getElementById('adAudio');
                 if(adAudio) {
                     adAudio.pause();
                     adAudio.currentTime = 0;
                 }
 
-                // 3. Cerrar modal y devolver el control al usuario
                 const adOverlay = document.getElementById('adOverlay');
                 if(adOverlay) {
                     adOverlay.style.display = "none";
                 }
                 
-                // IMPORTANTE: Descongelar el fondo para que la app se ajuste
                 document.body.style.overflow = 'auto'; 
             }
 
-            // Chatbot actualizado
             chatbotSend.addEventListener('click', async function() {
                 const concepto = chatbotInput.value.trim();
                 if (!concepto) return;
@@ -2651,7 +2447,6 @@
                     
                     const data = await response.json();
                     
-                    // Remover mensaje de "Consultando..."
                     const chatMessages = chatbotChat.querySelectorAll('p');
                     if (chatMessages.length > 0 && chatMessages[chatMessages.length - 1].textContent.includes('Consultando...')) {
                         chatMessages[chatMessages.length - 1].remove();
@@ -2671,7 +2466,6 @@
             });
 
             chatbotToggle.addEventListener('click', () => {
-                // RESTRICCIÓN INVITADO: No permite abrir el chatbot
                 if (isGuest) {
                     return; 
                 }
@@ -2739,52 +2533,39 @@
                 if (isGuest) return true;
                 
                 try {
-                    // --- PASO 1: VERIFICACIÓN DE ESTATUS (CON LIMPIEZA DE CACHÉ) ---
-                    // Generamos un "timestamp" (la hora actual en milisegundos)
                     const timestamp = new Date().getTime();
-                    
-                    // Se lo agregamos a la URL de Google Sheet para obligar a descargar una copia nueva
                     const freshSheetUrl = GOOGLE_SHEET_URL + '&v=' + timestamp;
-                    
-                    // Codificamos esa URL nueva para pasarla por el proxy
                     const freshProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(freshSheetUrl);
                     
                     const responseCsv = await fetch(freshProxyUrl);
                     const csvText = await responseCsv.text();
                     
-                    // Convertimos el CSV en filas leíbles
                     const rows = csvText.split('\n').map(row => row.split(',').map(c => c.trim()));
 
                     const cleanEmail = email.trim().toLowerCase();
                     const cleanWhatsapp = whatsapp.trim().replace(/\D/g, '');
                     
-                    // Buscamos al usuario en la lista
                     for (let i = 1; i < rows.length; i++) {
                         const cols = rows[i];
-                        if (cols.length < 3) continue; // Saltar filas vacías
+                        if (cols.length < 3) continue;
 
-                        // Según tu tabla: Columna 1 es Correo, Columna 2 es WhatsApp
                         const rowEmail = cols[1] ? cols[1].toLowerCase() : "";
                         const rowWhatsapp = cols[2] ? cols[2].replace(/\D/g, '') : "";
                         
                         if (rowEmail === cleanEmail && rowWhatsapp === cleanWhatsapp) {
-                            // Encontramos al usuario, ahora miramos la Columna 6 (ESTATUS)
                             const status = cols[6] ? cols[6].toUpperCase().replace(/[^A-Z]/g, '') : 'ACTIVO';
                             
-                            // Si dice INACTIVO, bloqueamos
                             if (status === 'INACTIVO') {
                                 if(loginErrorMessage) {
-                                    loginErrorMessage.style.color = "#ff5722"; // Color naranja alerta
+                                    loginErrorMessage.style.color = "#ff5722";
                                     loginErrorMessage.textContent = "En estos momentos no tienes acceso al banco de preguntas y simulacros, por favor contacta al administrador del curso 😥";
                                 }
-                                return false; // Detiene el acceso
+                                return false;
                             }
-                            break; // Usuario encontrado y activo, seguimos
+                            break;
                         }
                     }
-                    // --- FIN DE LA NUEVA VERIFICACIÓN ---
 
-                    // --- PASO 2: LOGUEO NORMAL EN EL SISTEMA ---
                     const formData = new FormData();
                     formData.append('action', 'login');
                     formData.append('email', email);
@@ -2817,7 +2598,7 @@
                         return true;
                     } else {
                         if(loginErrorMessage) {
-                            loginErrorMessage.style.color = "#f87171"; // Rojo error normal
+                            loginErrorMessage.style.color = "#f87171";
                             loginErrorMessage.textContent = data.message;
                         }
                         return false;
@@ -2831,12 +2612,10 @@
 			let sessionInterval;
 
             function startSessionCheck() {
-                if (isGuest) return; // Los invitados no tienen control de sesión
+                if (isGuest) return;
                 
-                // Limpiar intervalo anterior si existe
                 if (sessionInterval) clearInterval(sessionInterval);
 
-                // Revisar cada 20 segundos
                 sessionInterval = setInterval(async () => {
                     const token = localStorage.getItem('sessionToken');
                     const email = localStorage.getItem('userEmail');
@@ -2856,16 +2635,15 @@
                         
                         const data = await response.json();
                         
-                        // Si la validación es falsa, significa que alguien más entró
                         if (data.valid === false) {
                             clearInterval(sessionInterval);
                             alert("⚠️ SE HA DETECTADO UNA NUEVA SESIÓN.\n\nTu cuenta ha sido abierta en otro dispositivo o navegador.\nEsta sesión se cerrará automáticamente.");
-                            window.location.reload(); // Recargar página para sacar al usuario
+                            window.location.reload();
                         }
                     } catch (e) {
                         console.log("Error verificando sesión (puede ser red inestable), reintentando luego...");
                     }
-                }, 20000); // 20000 ms = 20 segundos
+                }, 20000);
             }
 
             function updateEvaluationButton() {
@@ -2980,7 +2758,6 @@
                 showFeedback();
                 updateButtonStates();
                 
-                // Mostrar publicidad cada 5 respuestas para invitados
                 if (isGuest && (isContinuousMode || isGameMode)) {
                     questionCountInGuestMode++;
                     if (questionCountInGuestMode % 5 === 0) {
@@ -3032,7 +2809,6 @@
                 return remainingQuestions[randomIndex];
             }
 
-                // Definición de las 12 funciones y sus tipos
                 const graphingFunctionTypes = [
                     { id: 'linear', name: '1. Lineal', canonical: 'y = mx + b', general: 'Ax + By + C = 0' },
                     { id: 'quadratic', name: '2. Cuadrática', canonical: 'y = a(x - h)² + k', general: 'Ax² + Bx + C = 0' },
@@ -3048,7 +2824,7 @@
                     { id: 'exp', name: '12. Exponencial', canonical: 'y = a b^(x - h) + k', general: '' }
                 ];
 
-                graphingFunctionButtons.innerHTML = ''; // Limpiar botones anteriores
+                graphingFunctionButtons.innerHTML = '';
 
                 graphingFunctionTypes.forEach(func => {
                     const button = document.createElement('button');
@@ -3060,7 +2836,6 @@
                         button.classList.add('active');
                         currentGraphingFunction = func.id;
                         isGraphingCanonical = true;
-                        // Resetear orientación a Vertical por defecto al cambiar
                         currentOrientation = 'vertical'; 
                         
                         updateGraphingFormToggle();
@@ -3071,7 +2846,6 @@
                     graphingFunctionButtons.appendChild(button);
                 });
 
-                // Crear botón de Restablecer Parámetros aquí
                 const resetDiv = document.createElement('div');
                 resetDiv.style.width = '100%';
                 resetDiv.style.textAlign = 'center';
@@ -3091,9 +2865,8 @@
                 updateGraphingParamControls();
                 initializeGraphingChart();
                 
-                // Botones existentes
-                graphingResetBtn.style.display = 'none'; // Ocultamos el viejo botón de reset del footer si existe
-                graphingUpdateBtn.style.display = 'none'; // Ocultamos el botón de actualizar manual (será automático)
+                graphingResetBtn.style.display = 'none';
+                graphingUpdateBtn.style.display = 'none';
 
                 if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
                 if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
@@ -3115,13 +2888,12 @@
                 clearCoordsBtn.addEventListener('click', clearCoordinates);
                 if(projectLineBtn) projectLineBtn.addEventListener('click', projectLine);
                 plotExpressionBtn.addEventListener('click', plotAlgebraicExpression);
-                // Lógica para el nuevo botón de borrar expresión
             const clearExpressionBtn = document.getElementById('clear-expression-btn');
             if (clearExpressionBtn) {
                 clearExpressionBtn.addEventListener('click', () => {
-                    if (algebraicExpression) algebraicExpression.value = ''; // Borra el texto del input
-                    algebraicDataset = null; // Borra los datos de la memoria
-                    updateGraphingChart(); // Actualiza el gráfico
+                    if (algebraicExpression) algebraicExpression.value = '';
+                    algebraicDataset = null;
+                    updateGraphingChart();
                     showTemporaryMessage('Gráfica de expresión borrada', 'bg-blue-600');
                 });
             }
@@ -3223,7 +2995,6 @@
                                 dataPoints.push({ x: x, y: y });
                             }
                         } catch (e) {
-                            // Ignorar puntos no válidos
                         }
                     }
                     
@@ -3346,7 +3117,6 @@
             function updateGraphingParamControls() {
                 graphingParamControls.innerHTML = '';
                 
-                // Selector de Orientación para Cónicas (Parábola, Elipse, Hipérbola)
                 if (['parabola', 'ellipse', 'hyperbola'].includes(currentGraphingFunction)) {
                     const orientDiv = document.createElement('div');
                     orientDiv.className = 'graphing-form-toggle';
@@ -3380,13 +3150,11 @@
                     const input = document.createElement('input');
                     input.type = 'number';
                     input.step = 'any';
-                    // Si ya existe valor guardado lo usa, si no, usa el default
                     input.value = config.def; 
                     input.id = `graphing-param-${config.param}`;
                     input.className = 'graphing-param-input';
                     input.dataset.param = config.param;
                     
-                    // ACTUALIZACIÓN AUTOMÁTICA AL ESCRIBIR
                     input.addEventListener('input', function() {
                         updateGraphingEquationDisplay();
                         updateGraphingChart();
@@ -3398,12 +3166,11 @@
                 });
                 
                 updateGraphingEquationDisplay();
-                updateGraphingChart(); // Graficar inmediatamente al cargar controles
+                updateGraphingChart();
             }
             
             function getGraphingParamConfigs() {
                 const configs = [];
-                // Variables globales simuladas para el estado
                 if (typeof currentOrientation === 'undefined') window.currentOrientation = 'vertical';
 
                 if (currentGraphingFunction === 'linear') {
@@ -3460,19 +3227,17 @@
                         configs.push({ param: 'F', label: 'F', def: -36 });
                     }
                 } else if (currentGraphingFunction === 'parabola') {
-                    // Parábola Cónica (Vertical u Horizontal)
                     if (isGraphingCanonical) {
                         configs.push({ param: 'a', label: 'Coeficiente (a)', def: 1 });
                         configs.push({ param: 'h', label: 'Vértice X (h)', def: 0 });
                         configs.push({ param: 'k', label: 'Vértice Y (k)', def: 0 });
                     } else {
-                        // General Parábola
                         if (currentOrientation === 'vertical') {
                             configs.push({ param: 'D', label: 'D', def: 0 });
-                            configs.push({ param: 'E', label: 'E', def: -1 }); // y
+                            configs.push({ param: 'E', label: 'E', def: -1 });
                             configs.push({ param: 'F', label: 'F', def: 0 });
                         } else {
-                            configs.push({ param: 'D', label: 'D', def: -1 }); // x
+                            configs.push({ param: 'D', label: 'D', def: -1 });
                             configs.push({ param: 'E', label: 'E', def: 0 });
                             configs.push({ param: 'F', label: 'F', def: 0 });
                         }
@@ -3528,7 +3293,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: true,
-                        aspectRatio: 1, // Fuerza el cuadrado 1:1
+                        aspectRatio: 1,
                         scales: {
                             x: {
                                 type: 'linear',
@@ -3536,7 +3301,6 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    // Lógica para pintar el eje X (valor 0) más brillante y grueso
                                     color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
                                     lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
@@ -3557,7 +3321,6 @@
                                 min: -currentScale,
                                 max: currentScale,
                                 grid: {
-                                    // Lógica para pintar el eje Y (valor 0) más brillante y grueso
                                     color: (context) => context.tick.value === 0 ? '#ffffff' : 'rgba(255, 255, 255, 0.1)',
                                     lineWidth: (context) => context.tick.value === 0 ? 2 : 1
                                 },
@@ -3579,7 +3342,6 @@
                                 position: 'top',
                                 labels: {
                                     color: '#ffffff',
-                                    // FILTRO: Esto oculta la etiqueta 'Origen' de la leyenda superior
                                     filter: function(item, chart) {
                                         return item.text !== 'Origen';
                                     }
@@ -3596,13 +3358,11 @@
             function updateGraphingChart() {
                 if (!graphingChart) return;
                 
-                // Obtener valores actuales de los inputs
                 const params = {};
                 document.querySelectorAll('.graphing-param-input').forEach(input => {
                     params[input.dataset.param] = parseFloat(input.value) || 0;
                 });
 
-                // Configurar escalas
                 graphingChart.options.scales.x.min = -currentScale;
                 graphingChart.options.scales.x.max = currentScale;
                 graphingChart.options.scales.y.min = -currentScale;
@@ -3611,11 +3371,9 @@
                 graphingChart.options.scales.y.ticks.stepSize = currentScale / 5;
 
                 const dataPoints = [];
-                const step = currentScale / 100; // Resolución
+                const step = currentScale / 100;
                 
-                // Lógica de Graficado por Tipo
                 if (['linear', 'quadratic', 'cubic', 'sin', 'cos', 'tan', 'log', 'exp'].includes(currentGraphingFunction)) {
-                    // Funciones explícitas y = f(x)
                     for (let x = -currentScale; x <= currentScale; x += step) {
                         let y = null;
                         
@@ -3625,7 +3383,7 @@
                         } 
                         else if (currentGraphingFunction === 'quadratic') {
                             if (isGraphingCanonical) y = params.a * Math.pow(x - params.h, 2) + params.k;
-                            else y = params.A * x * x + params.B * x + params.C; // Simplificación general y=...
+                            else y = params.A * x * x + params.B * x + params.C;
                         }
                         else if (currentGraphingFunction === 'cubic') {
                             if (isGraphingCanonical) y = params.a * Math.pow(x - params.h, 3) + params.k;
@@ -3635,7 +3393,6 @@
                         else if (currentGraphingFunction === 'cos') y = params.a * Math.cos(params.b * (x - params.h)) + params.k;
                         else if (currentGraphingFunction === 'tan') {
                             y = params.a * Math.tan(params.b * (x - params.h)) + params.k;
-                            // Evitar asíntotas verticales visuales
                             if (Math.abs(y) > currentScale) y = null;
                         }
                         else if (currentGraphingFunction === 'log') {
@@ -3654,12 +3411,9 @@
                     }
                 } 
                 else {
-                    // Cónicas (Paramétricas para mejor dibujo)
-                    // Paso angular 0 a 2PI
                     const tStep = 0.05; 
                     
                     if (currentGraphingFunction === 'circle') {
-                        // (x-h)^2 + (y-k)^2 = r^2
                         const r = isGraphingCanonical ? params.r : Math.sqrt(Math.max(0, (params.D*params.D + params.E*params.E)/4 - params.F));
                         const h = isGraphingCanonical ? params.h : -params.D/2;
                         const k = isGraphingCanonical ? params.k : -params.E/2;
@@ -3672,28 +3426,19 @@
                     }
                     else if (currentGraphingFunction === 'ellipse') {
                         let h = params.h, k = params.k, a = params.a, b = params.b;
-                        // Simplificación para General Elipse (Ajuste aproximado para visualización)
                         if (!isGraphingCanonical) {
                             h = -params.D / (2*params.A);
                             k = -params.E / (2*params.C);
-                            // Calculo aproximado radio
                             a = Math.sqrt(Math.abs((params.F - params.A*h*h - params.C*k*k)/params.A));
                             b = Math.sqrt(Math.abs((params.F - params.A*h*h - params.C*k*k)/params.C));
                         }
                         
-                        // Intercambiar ejes si es horizontal/vertical según orientación deseada
-                        if (currentOrientation === 'vertical' && isGraphingCanonical) {
-                            // En canónica, a suele ser eje mayor. Si es vertical, b > a visualmente o rotamos
-                            // Usaremos a como eje X y b como eje Y directo de los inputs
-                        }
 
                         for(let t=0; t <= 2*Math.PI; t+=tStep) {
                             dataPoints.push({ x: h + a*Math.cos(t), y: k + b*Math.sin(t) });
                         }
                     }
                     else if (currentGraphingFunction === 'parabola') {
-                        // V: y = a(x-h)^2 + k  -> Paramétrica: x=t, y=a(t-h)^2+k
-                        // H: x = a(y-k)^2 + h  -> Paramétrica: y=t, x=a(t-k)^2+h
                         for (let t = -currentScale; t <= currentScale; t += step) {
                             let px, py;
                             if (currentOrientation === 'vertical') {
@@ -3710,21 +3455,16 @@
                         }
                     }
                     else if (currentGraphingFunction === 'hyperbola') {
-                        // Rama derecha/izq (Horizontal) o Arriba/Abajo (Vertical)
-                        // x = h + a sec(t), y = k + b tan(t)
                         const h = params.h, k = params.k, a = params.a, b = params.b;
                         
-                        // Dibujar en dos partes para evitar líneas cruzadas
-                        for (let section = 0; section < 2; section++) { // 0: -PI/2 a PI/2, 1: PI/2 a 3PI/2
-                             for(let t = -1.3; t <= 1.3; t+=0.05) { // Limitar t para evitar infinito tan(t)
+                        for (let section = 0; section < 2; section++) { 
+                             for(let t = -1.3; t <= 1.3; t+=0.05) { 
                                  let px, py;
                                  if (currentOrientation === 'horizontal') {
-                                     // Horizontal: (x-h)^2/a^2 - ... = 1
                                      const sign = section === 0 ? 1 : -1;
                                      px = h + a * Math.cosh(t) * sign;
                                      py = k + b * Math.sinh(t);
                                  } else {
-                                     // Vertical: (y-k)^2/a^2 - ... = 1
                                      const sign = section === 0 ? 1 : -1;
                                      py = k + a * Math.cosh(t) * sign;
                                      px = h + b * Math.sinh(t);
@@ -3732,15 +3472,13 @@
                                  if(Math.abs(px) <= currentScale && Math.abs(py) <= currentScale)
                                     dataPoints.push({x: px, y: py});
                              }
-                             // Añadir corte null para separar ramas
                              dataPoints.push({x: null, y: null});
                         }
                     }
                 }
 
-                // Construcción de Datasets
                 const datasets = [{
-                    label: 'Función', // CAMBIO: Ahora siempre dice solo "Función"
+                    label: 'Función',
                     data: dataPoints,
                     borderColor: '#9c27b0',
                     backgroundColor: '#9c27b0',
@@ -3750,7 +3488,6 @@
                     fill: false
                 }];
 
-                // Puntos Eje
                 datasets.push({
                     label: 'Origen',
                     data: [{ x: 0, y: 0 }],
@@ -3758,23 +3495,20 @@
                     pointRadius: 4
                 });
 
-                // Coordenadas marcadas por el usuario
                 if (markedCoordinates.length > 0) {
                     datasets.push({
                         label: 'Marcas',
                         data: markedCoordinates,
-                        backgroundColor: 'red',    // Relleno rojo intenso
-                        borderColor: 'white',      // Borde blanco para que resalte sobre el fondo oscuro
-                        borderWidth: 2,            // Grosor del borde
-                        pointRadius: 8,            // Tamaño del punto aumentado para visibilidad
-                        pointHoverRadius: 10,      // Efecto al pasar el mouse
-                        pointStyle: 'circle'       // Cambiado a círculo sólido (es más visible que la X)
+                        backgroundColor: 'red',
+                        borderColor: 'white',
+                        borderWidth: 2,
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        pointStyle: 'circle'
                     });
                 }
                 
-                // Línea proyectada
                 if (lineProjectionDataset) datasets.push(lineProjectionDataset);
-                // Expresión algebraica manual
                 if (algebraicDataset) datasets.push(algebraicDataset);
 
                 graphingChart.data.datasets = datasets;
@@ -3782,7 +3516,7 @@
             }
             
             function resetGraphingParams() {
-                updateGraphingParamControls(); // Esto recarga los inputs con los valores "def" (default)
+                updateGraphingParamControls();
                 markedCoordinates = [];
                 lineProjectionDataset = null;
                 algebraicDataset = null;
@@ -3832,10 +3566,30 @@
                 buttonSound.play().catch(e => console.error("Error al reproducir sonido de botón:", e));
             }
             
-            document.querySelectorAll('.btn, .option-btn, .calculator-btn, .tag, .video-toggle, .control-btn, .color-picker-wrapper, #clear-button, .volume-btn-new, .graphing-func-btn, .graphing-form-toggle-btn, .graphing-btn').forEach(el => {
-                el.addEventListener('click', (e) => {
+            document.body.addEventListener('click', (e) => {
+                const soundClasses = [
+                    '.btn', 
+                    '.option-btn', 
+                    '.calculator-btn', 
+                    '.tag', 
+                    '.video-toggle', 
+                    '.control-btn', 
+                    '.color-picker-wrapper', 
+                    '#clear-button', 
+                    '.volume-btn-new', 
+                    '.graphing-func-btn', 
+                    '.graphing-form-toggle-btn', 
+                    '.graphing-btn',
+                    '.privacy-modal-close',
+                    '.close-modal-btn',
+                    '#logout-btn'
+                ];
+
+                const target = e.target.closest(soundClasses.join(','));
+
+                if (target && !target.disabled && !target.classList.contains('btn-disabled')) {
                     playButtonSound();
-                });
+                }
             });
 
             if(welcomeVideoToggle) {
@@ -4035,7 +3789,7 @@
                 currentUser = { name: 'Invitado', email: 'invitado@example.com', whatsapp: '0000000000' };
                 screens.login.classList.add('hidden');
                 screens.setup.classList.remove('hidden');
-                if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOTÓN
+                if(logoutBtn) logoutBtn.style.display = 'flex';
                 welcomeName.textContent = 'Invitado';
                 answeredIdsInput.disabled = true;
                 setupLookupForGuest();
@@ -4062,7 +3816,6 @@
                 gameModeToggle.parentElement.style.pointerEvents = 'auto';
                 continuousModeToggle.disabled = false;
                 
-                // RESTRICCIÓN VISUAL CHATBOT
                 if(chatbotToggle) {
                     chatbotToggle.style.opacity = '0.5';
                     chatbotToggle.style.cursor = 'not-allowed';
@@ -4090,19 +3843,17 @@
                     const isValid = await validateUserAccess(name, emailToValidate, whatsappToValidate);
                     if (isValid) {
                         isGuest = false;
-                        // Nota: currentUser ya podría haberse actualizado en validateUserAccess con el nombre real
                         if (!currentUser.name || currentUser.name === 'Invitado') {
                              currentUser = { name, email: emailToValidate, whatsapp: whatsappToValidate };
                         } else {
-                             // Mantener el nombre que vino de la base de datos pero asegurar email/whatsap
                              currentUser.email = emailToValidate;
                              currentUser.whatsapp = whatsappToValidate;
                         }
                         
                         screens.login.classList.add('hidden');
                         screens.setup.classList.remove('hidden');
-                        welcomeName.textContent = currentUser.name; // Usar el nombre actual
-                        if(logoutBtn) logoutBtn.style.display = 'flex'; // MUESTRA EL BOTÓN
+                        welcomeName.textContent = currentUser.name;
+                        if(logoutBtn) logoutBtn.style.display = 'flex';
                         
                         await loadData();
                         gameModeToggle.disabled = false;
@@ -4244,7 +3995,6 @@
                 isGameMode = gameModeToggle.checked;
                 isContinuousMode = continuousModeToggle.checked;
                 
-                // Reiniciar contador de preguntas para publicidad de invitados
                 if (isGuest) {
                     questionCountInGuestMode = 0;
                 }
@@ -4252,9 +4002,6 @@
                 let finalQuestionPool = [];
 
                 if (isGuest) {
-                    // --- LÓGICA PARA INVITADOS ---
-                    
-                    // 1. FILTRO DE SEGURIDAD (Punto 7): Eliminar cualquier pregunta con Imgur (en planteamiento u opciones)
                     let safeQuestions = allQuestions.filter(q => {
                         const hasImgurMain = q.image && q.image.includes('imgur.com');
                         const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
@@ -4262,19 +4009,15 @@
                     });
 
                     if (isGameMode) {
-                        // 2. MODO SIMULACRO (Punto 2): Solo las primeras 20 preguntas del JSON (limpio)
-                        // Tomamos las primeras 20 disponibles
                         let first20 = safeQuestions.slice(0, 20);
                         
                         if (first20.length < 20) {
                             errorMessage.textContent = `Error: El banco no tiene suficientes preguntas seguras (sin Imgur) para el simulacro de invitado.`;
                             return;
                         }
-                        // Las barajamos para que no salgan siempre en el mismo orden visual, pero son las mismas 20
                         finalQuestionPool = shuffleArray(first20);
 
                     } else if (isContinuousMode) {
-                        // 3. MODO AVANCE CONTINUO (Punto 1): Solo IDs terminados en A, B, C, D, E
                         const allowedEndings = ['A', 'B', 'C', 'D', 'E'];
                         
                         finalQuestionPool = safeQuestions.filter(q => {
@@ -4283,23 +4026,19 @@
                             return allowedEndings.includes(lastChar);
                         });
                         
-                        // Barajar todo el pool disponible
                         finalQuestionPool = shuffleArray(finalQuestionPool);
 
                     } else {
-                        // Si por error selecciona modo normal, aplicamos la misma restricción de IDs A-E por seguridad
                         const allowedEndings = ['A', 'B', 'C', 'D', 'E'];
                         let filtered = safeQuestions.filter(q => {
                             if (!q.id) return false;
                             const lastChar = q.id.trim().toUpperCase().slice(-1);
                             return allowedEndings.includes(lastChar);
                         });
-                        // Solo tomamos 10 al azar
                         finalQuestionPool = shuffleArray(filtered).slice(0, 10);
                     }
 
                 } else {
-                    // --- LÓGICA PARA USUARIOS REGISTRADOS (Original) ---
                     const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                     const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
                     
@@ -4312,14 +4051,12 @@
                         return;
                     }
 
-                    // Filtrar por tags
                     let availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && Array.isArray(q.uni_tags) && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && Array.isArray(q.level_tag) && q.level_tag.some(tag => selectedLevelTags.includes(tag));
                         return hasUniTag && hasLevelTag;
                     });
 
-                    // Filtrar preguntas ya respondidas (pegadas en el input)
                     let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
 
                     if (isGameMode) {
@@ -4327,7 +4064,6 @@
                             errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
                             return;
                         }
-                        // En simulacro registrado, se usan preguntas al azar de todo el filtro
                         finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
                     } else if (isContinuousMode) {
                         finalQuestionPool = shuffleArray(newQuestions);
@@ -4340,7 +4076,6 @@
                     }
                 }
                 
-                // --- VALIDACIÓN FINAL COMÚN ---
                 const availableCount = finalQuestionPool.length;
                 
                 if (availableCount === 0) {
@@ -4355,8 +4090,6 @@
                 if (isContinuousMode) {
                     availableQuestionsInContinuousMode = finalQuestionPool;
                     quizQuestions = [];
-                    // IMPORTANTE: Limpiamos los IDs respondidos en sesión anterior al iniciar nuevo quiz continuo
-                    // O mantenemos si queremos continuidad. Aquí reiniciamos la vista del quiz.
                     const firstQuestion = getNextQuestionInContinuousMode();
                     
                     if (firstQuestion) {
@@ -4417,20 +4150,15 @@
             }
 
             function displayQuestion() {
-                // --- INICIO CÓDIGO NUEVO: RESETEAR TEMPORIZADOR ---
-                // Detener el intervalo si está corriendo
                 if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
-                dtSeconds = 90; // Restablecer a 90 segundos
+                dtSeconds = 90;
                 dtTotalSeconds = 90;
                 
-                // Actualizar la visualización (Barra y Números)
                 if (typeof updateDtVisuals === 'function') updateDtVisuals();
                 
-                // Cambiar el icono de Pausa a Play
                 const dtIconReset = document.querySelector('#dt-play-btn i');
                 if (dtIconReset) dtIconReset.classList.replace('fa-pause', 'fa-play');
-                // --- FIN CÓDIGO NUEVO ---
 
                 if (isContinuousMode && (currentQuestionIndex >= userAnswers.length || userAnswers.length === 0)) {
                     const nextQuestion = getNextQuestionInContinuousMode();
@@ -4532,14 +4260,12 @@
                 const noIdOption = options.find(opt => opt.text.includes('No puedo identificar'));
                 if(noIdOption) shuffledOptions.push(noIdOption);
 
-                // Verificar si hay imágenes en las opciones (excluyendo la opción de "No puedo identificar")
                 const hasImages = shuffledOptions.some(opt => isImageOption(opt.text));
 
-                // Configurar el contenedor para Grid o Lista normal
                 if (hasImages) {
-                    optionsContainer.className = 'w-full options-grid-mode'; // Activa grid 2x2
+                    optionsContainer.className = 'w-full options-grid-mode';
                 } else {
-                    optionsContainer.className = 'w-full space-y-3'; // Lista vertical normal
+                    optionsContainer.className = 'w-full space-y-3';
                 }
 
                 shuffledOptions.forEach((option, index) => {
@@ -4552,12 +4278,10 @@
                     
                     button.className = 'option-btn';
                     
-                    // Si es una imagen, agregamos clase especial
                     if (isImg) {
                         button.classList.add('is-image');
                     }
 
-                    // Si es la opción "No puedo identificar" y estamos en modo imágenes, ocupa todo el ancho
                     if (isNoId && hasImages) {
                         button.classList.add('full-width');
                     }
@@ -4566,13 +4290,11 @@
                         letterElement.style.display = 'none';
                         if (!hasImages) button.style.paddingLeft = '15px';
                     } else {
-                        // Asignar letra A, B, C... solo a las opciones reales
                         letterElement.textContent = String.fromCharCode(65 + index);
                     }
 
                     button.appendChild(letterElement);
 
-                    // Contenido del botón (Imagen o Texto)
                     if (isImg) {
                         const img = document.createElement('img');
                         img.src = option.text;
@@ -4580,11 +4302,9 @@
                         img.alt = `Opción ${String.fromCharCode(65 + index)}`;
                         button.appendChild(img);
 
-                        // Lógica de Marca de Agua para IMGUR en opciones
                         if (option.text.includes('imgur.com')) {
                             const watermark = document.createElement('div');
                             watermark.className = 'option-watermark';
-                            // Repetir texto para crear patrón de fondo
                             watermark.textContent = (currentUser.name + ' CEPREDIX ').repeat(50); 
                             button.appendChild(watermark);
                         }
@@ -4605,9 +4325,7 @@
                     optionsContainer.appendChild(button);
                 });
                 setTimeout(() => {
-                    // Procesamos Pregunta, Opciones y Texto de apoyo
                     MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
-                        // Opcional: Ajuste visual si fuera necesario tras renderizar
                     }).catch((err) => console.log('Error renderizando formulas:', err));
                 }, 50);
                 
@@ -4769,10 +4487,8 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                // --- CORRECCIÓN: Detener también el temporizador discreto ---
                 if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
-                // ------------------------------------------------------------
 
                 screens.quiz.classList.add('hidden');
                 
@@ -4818,13 +4534,13 @@
             }
             
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
-                // Ahora también enviar para invitados
-                
                 const formData = new FormData();
-                formData.append('EvaluationName', "PRUEBA (Global)");
-                formData.append('Name', currentUser.name);
-                formData.append('Email', currentUser.email);
-                formData.append('WhatsApp', currentUser.whatsapp);
+                
+                formData.append('EvaluationName', "PRUEBA (Global)"); 
+                
+                formData.append('Name', currentUser.name || 'Invitado');
+                formData.append('Email', currentUser.email || 'sin_email');
+                formData.append('WhatsApp', currentUser.whatsapp || '0000000000');
                 formData.append('TotalTime', totalTime);
                 formData.append('AverageTime', numQuestions > 0 ? (totalTime / numQuestions).toFixed(2) : 0);
                 formData.append('Score', score.toFixed(2));
@@ -4832,16 +4548,15 @@
                 formData.append('TotalQuestions', numQuestions);
                 formData.append('IDs', idsString);
                 
-                // Agregar flag para identificar invitados si es necesario
                 formData.append('UserType', isGuest ? 'Invitado' : 'Registrado');
-                
+
                 try {
-                    await fetch(RESULTS_SCRIPT_URL, { method: 'POST', body: formData });
+                    await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
+                    console.log("Resultados enviados con éxito al script de respaldo.");
                 } catch (error) {
                     console.error("Error al enviar los resultados:", error);
                 }
-            }
-            
+            }            
             function endQuiz() {
                 if (isGameMode && gameModeLives > 0) {
                     const successSounds = [simulacroSuccess1, simulacroSuccess2];
@@ -4856,13 +4571,11 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                // Si es invitado, mostrar modal de datos antes de mostrar resultados
                 if (isGuest) {
                     showGuestInfoModal();
-                    return; // Salir aquí, mostrará resultados después de llenar datos
+                    return;
                 }
                 
-                // Resto del código para usuarios registrados...
                 screens.quiz.classList.add('hidden');
                 screens.results.classList.remove('hidden');
                 let answersToEvaluate = userAnswers;
@@ -4900,7 +4613,6 @@
                 else if (finalScoreValue >= 7) resultImage.src = RESULT_IMAGES.between7_8;
                 else resultImage.src = RESULT_IMAGES.less7;
                 
-                // Solo enviar resultados si NO es invitado (pero ahora sí se envía)
                 submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
                 
                 populateResultsTable(answersToEvaluate);
@@ -4908,7 +4620,6 @@
                 const allAnsweredIds = generateAnsweredIdsList();
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
-                // Ocultar sección de copiar IDs para invitados
                 if (isGuest) {
                     const idsOutputSection = document.querySelector('.mt-8.space-y-2');
                     if (idsOutputSection) {
@@ -4925,7 +4636,6 @@
                     copyIdsBtn.classList.remove('btn-disabled');
                 }
                 
-                // Para modo simulacro, mostrar botón de volver al menú
                 if (isGameMode) {
                     let returnBtn = document.getElementById('return-to-menu-btn');
                     if (!returnBtn) {
@@ -4950,19 +4660,15 @@
                 }
             }
             
-            // Función para mostrar el modal de datos de invitado
             function showGuestInfoModal() {
-                // Mostrar modal
                 guestInfoModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 
-                // Limpiar errores y campos
                 guestEmailInput.value = '';
                 guestWhatsappInput.value = '';
                 guestEmailError.style.display = 'none';
                 guestWhatsappError.style.display = 'none';
                 
-                // Validación en tiempo real
                 guestEmailInput.addEventListener('input', function() {
                     if (this.value.includes('@')) {
                         guestEmailError.style.display = 'none';
@@ -4980,29 +4686,24 @@
                     }
                 });
                 
-                // Cancelar
                 guestCancelBtn.onclick = function() {
                     guestInfoModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
-                    // Volver al menú principal
                     screens.quiz.classList.add('hidden');
                     screens.setup.classList.remove('hidden');
                 };
                 
-                // Enviar formulario
                 guestInfoForm.onsubmit = function(e) {
                     e.preventDefault();
                     
                     let isValid = true;
                     
-                    // Validar correo
                     if (!guestEmailInput.value.includes('@')) {
                         guestEmailError.style.display = 'block';
                         guestEmailInput.style.borderColor = '#f44336';
                         isValid = false;
                     }
                     
-                    // Validar WhatsApp
                     const whatsappDigits = guestWhatsappInput.value.replace(/\D/g, '');
                     if (whatsappDigits.length !== 10) {
                         guestWhatsappError.style.display = 'block';
@@ -5011,30 +4712,24 @@
                     }
                     
                     if (isValid) {
-                        // Actualizar datos del usuario invitado
                         currentUser = {
                             name: 'Invitado',
                             email: guestEmailInput.value.trim(),
                             whatsapp: whatsappDigits
                         };
                         
-                        // Ocultar modal
                         guestInfoModal.style.display = 'none';
                         document.body.style.overflow = 'auto';
                         
-                        // Proceder a mostrar resultados
                         proceedWithGuestResults();
                     }
                 };
             }
             
-            // Función para mostrar resultados después de capturar datos del invitado
             function proceedWithGuestResults() {
-                // Mostrar pantalla de resultados
                 screens.quiz.classList.add('hidden');
                 screens.results.classList.remove('hidden');
                 
-                // Calcular resultados
                 let answersToEvaluate = userAnswers;
                 if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
                     answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
@@ -5059,7 +4754,6 @@
                 const averageTime = answersToEvaluate.length > 0 ? (totalTimeEvaluated / answersToEvaluate.length).toFixed(2) : 0;
                 const idsString = answersToEvaluate.map(a => a.question.id).filter(id => id).join(', ');
                 
-                // Mostrar resultados en pantalla
                 finalScore.textContent = `${finalScoreValue.toFixed(2)} / 10.00`;
                 totalTime.textContent = `${totalTimeEvaluated} segundos`;
                 avgTime.textContent = `${averageTime} seg por pregunta`;
@@ -5068,7 +4762,6 @@
                 omittedCount.textContent = stats.omitted;
                 unansweredCount.textContent = stats.unidentified;
                 
-                // Imagen de resultado
                 if (finalScoreValue === 10) resultImage.src = RESULT_IMAGES.perfect10;
                 else if (finalScoreValue >= 9.5) resultImage.src = RESULT_IMAGES.between9_5_10;
                 else if (finalScoreValue >= 9) resultImage.src = RESULT_IMAGES.between9_9_5;
@@ -5076,16 +4769,13 @@
                 else if (finalScoreValue >= 7) resultImage.src = RESULT_IMAGES.between7_8;
                 else resultImage.src = RESULT_IMAGES.less7;
                 
-                // Enviar resultados (ahora con datos completos del invitado)
                 submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
                 
-                // Llenar tabla y gráfico
                 populateResultsTable(answersToEvaluate);
                 drawResultsChart(stats);
                 const allAnsweredIds = generateAnsweredIdsList();
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
-                // Ocultar sección de copiar IDs para invitados
                 const idsOutputSection = document.querySelector('.mt-8.space-y-2');
                 if (idsOutputSection) {
                     idsOutputSection.style.display = 'none';
@@ -5093,7 +4783,6 @@
                 copyIdsBtn.disabled = true;
                 copyIdsBtn.classList.add('btn-disabled');
                 
-                // Para modo simulacro, mostrar botón de volver al menú
                 if (isGameMode) {
                     let returnBtn = document.getElementById('return-to-menu-btn');
                     if (!returnBtn) {
@@ -5248,12 +4937,10 @@
             const correctOption = question.options.find(o => o.correct);
             let optionsHtml = '';
 
-            // Generar HTML de opciones
             question.options.forEach((option, index) => {
                 const isCorrect = option.correct;
                 const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
 
-                // Verificar si la opción es imagen
                 const isImgOpt = isImageOption(option.text);
                 let contentHtml = '';
 
@@ -5272,7 +4959,6 @@
                 `;
             });
 
-            // Generar HTML de la imagen principal de la pregunta si existe
             let mainImageHtml = '';
             if (question.image) {
                 mainImageHtml = `
@@ -5283,7 +4969,6 @@
                 `;
             }
 
-            // Renderizar todo el contenido
             lookupResultContainer.innerHTML = `
                 <div class="lookup-question-container">
                     <h3 class="text-xl font-bold mb-4">${question.id}</h3>
@@ -5310,17 +4995,15 @@
                 </div>
             `;
             lookupResultContainer.classList.remove('hidden');
-            // Renderizar fórmulas matemáticas si las hay
             MathJax.typesetPromise([lookupResultContainer]);
         }
             
             loadData();
             initializeVolumes();
             
-			// --- LÓGICA DEL TEMPORIZADOR DISCRETO CORREGIDA ---
             let dtInterval = null;
-            let dtSeconds = 90; // Tiempo actual
-            let dtTotalSeconds = 90; // Referencia para la barra de progreso
+            let dtSeconds = 90;
+            let dtTotalSeconds = 90;
             let dtIsRunning = false;
 
             const dtDisplay = document.getElementById('dt-display');
@@ -5331,40 +5014,32 @@
             const dtBar = document.getElementById('dt-bar');
             const dtIcon = document.getElementById('dt-icon');
 			
-			// Función para inicializar el temporizador en estado colapsado en móviles
             function initTimerResponsive() {
                 const isMobile = window.innerWidth <= 768;
                 const dtBar = document.getElementById('dt-bar');
                 const dtIcon = document.getElementById('dt-icon');
     
                 if (isMobile && dtBar && dtIcon) {
-                    // Colapsar por defecto en móviles
                     dtBar.classList.add('hidden');
                     dtIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
                 }
             }
 
-            // Ejecutar al cargar y al cambiar tamaño de ventana
-            initTimerResponsive(); // Llamar inmediatamente
+            initTimerResponsive();
             window.addEventListener('resize', initTimerResponsive);
 
-            // FUNCIÓN CORREGIDA: Actualiza SOLO el temporizador discreto
             function updateDtVisuals() {
-                // 1. Actualizar display digital del temporizador discreto
                 const m = Math.floor(dtSeconds / 60).toString().padStart(2, '0');
                 const s = (dtSeconds % 60).toString().padStart(2, '0');
                 if(dtDisplay) dtDisplay.textContent = `${m}:${s}`;
 
-                // 2. Calcular porcentaje de la barra
                 if(dtProgressFill) {
-                    // Si el tiempo actual supera la referencia inicial, ajustamos la escala
                     if (dtSeconds > dtTotalSeconds) dtTotalSeconds = dtSeconds;
 
                     const percent = dtTotalSeconds > 0 ? 
                         Math.min(100, (dtSeconds / dtTotalSeconds) * 100) : 0;
                     dtProgressFill.style.width = `${percent}%`;
 
-                    // 3. Colores dinámicos
                     dtProgressFill.classList.remove('bg-green-500', 'bg-yellow-500', 'bg-red-600');
 
                     if (dtSeconds > 30) {
@@ -5375,7 +5050,6 @@
                         dtProgressFill.classList.add('bg-red-600');
                     }
 
-                    // 4. Efecto parpadeo final
                     if (dtSeconds <= 10 && dtIsRunning) {
                         dtProgressFill.classList.add('opacity-80');
                         setTimeout(() => {
@@ -5388,12 +5062,10 @@
             function toggleDtTimer() {
                 const icon = dtPlayBtn.querySelector('i');
                 if (dtIsRunning) {
-                    // Pausar
                     clearInterval(dtInterval);
                     dtIsRunning = false;
                     icon.classList.replace('fa-pause', 'fa-play');
                 } else {
-                    // Iniciar
                     if (dtSeconds <= 0) return;
                     dtIsRunning = true;
                     icon.classList.replace('fa-play', 'fa-pause');
@@ -5406,18 +5078,12 @@
                             clearInterval(dtInterval);
                             dtIsRunning = false;
                             icon.classList.replace('fa-pause', 'fa-play');
-                            if(typeof buttonSound !== 'undefined') {
-                                // Sonido discreto o vibración si lo deseas
-                                // navigator.vibrate(200); 
-                            }
                         }
                     }, 1000);
                 }
             }
 
-            // Inicialización de Listeners si existen los elementos
             if (dtPlayBtn && dtTab) {
-                // Pestaña
                 dtTab.addEventListener('click', () => {
                     dtBar.classList.toggle('hidden');
                     if (dtBar.classList.contains('hidden')) {
@@ -5427,42 +5093,34 @@
                     }
                 });
 
-                // Play/Pause
                 dtPlayBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     toggleDtTimer();
                 });
 
-                // Reset (1:30)
                 dtResetBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     clearInterval(dtInterval);
                     dtIsRunning = false;
                     dtSeconds = 90;
-                    dtTotalSeconds = 90; // Reiniciar referencia
+                    dtTotalSeconds = 90;
                     dtPlayBtn.querySelector('i').classList.replace('fa-pause', 'fa-play');
                     updateDtVisuals();
                 });
 
-                // Zona Menos (-30s)
                 document.getElementById('dt-zone-minus').addEventListener('click', () => {
                     dtSeconds = Math.max(0, dtSeconds - 30);
                     updateDtVisuals();
                 });
 
-                // Zona Mas (+30s)
                 document.getElementById('dt-zone-plus').addEventListener('click', () => {
                     dtSeconds += 30;
-                    // Actualizamos el total si el tiempo actual supera la referencia, para que la barra no se quede pegada en 100%
                     if(dtSeconds > dtTotalSeconds) dtTotalSeconds = dtSeconds;
                     updateDtVisuals();
                 });
 
-                // Iniciar visuales
                 updateDtVisuals();
             }
-			
-            // Inicializar herramientas una sola vez al cargar la página
         });
     </script>
 </body>
