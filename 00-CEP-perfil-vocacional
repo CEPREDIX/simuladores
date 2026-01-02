@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANALIZADOR DE PERFIL VOCACIONAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://i.imgur.com/7ndIyWP.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); z-index: -1;
+        }
+        
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .header {
+            text-align: center; padding: 15px; border-radius: 15px; margin-bottom: 20px;
+            background: linear-gradient(45deg, #0d47a1, #00695c, #ff6f00, #b71c1c, #4a148c);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .logo {
+            width: 100px; height: 100px; margin: 0 auto 10px;
+            background: url('https://i.imgur.com/I1unSiu.png') center/contain no-repeat;
+        }
+        
+        .card {
+            background: rgba(25, 25, 35, 0.85); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 100%; margin-bottom: 20px; position: relative;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .card.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        
+        .card.fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            padding: 10px 20px; font-size: 1.1rem; border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s ease; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); margin: 8px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary { background: linear-gradient(45deg, #2196F3, #21CBF3); color: white; }
+        .btn-secondary { background: linear-gradient(45deg, #f44336, #ff9800); color: white; }
+        .btn-disabled, .btn:disabled {
+            background: #9e9e9e; cursor: not-allowed; transform: none !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+        }
+        .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+        .btn:active:not(:disabled) { transform: translateY(1px); }
+        
+        .question-container {
+            margin: 15px 0 20px; padding: 20px; background: rgba(30, 30, 40, 0.8);
+            border-radius: 15px; border-left: 5px solid #4fc3f7; position: relative;
+        }
+        
+        .option-btn {
+            padding: 15px 15px 15px 50px; background: rgba(50, 50, 70, 0.8);
+            border-radius: 10px; cursor: pointer; transition: all 0.3s ease;
+            font-size: 1.1rem; border: 2px solid transparent; text-align: left;
+            position: relative; width: 100%; margin-bottom: 12px; display: flex; align-items: center;
+            word-break: break-word;
+        }
+        .option-btn:hover:not([disabled]) { background: rgba(70, 70, 90, 0.9); transform: translateY(-2px); }
+        .option-btn.selected { filter: brightness(0.7); border-color: #ff9800; box-shadow: 0 0 0 2px #ff9800; }
+        .option-letter {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 25px; height: 25px; background: rgba(79, 195, 247, 0.3);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        /* Temporizador con barra de progreso */
+        .timer-container {
+            width: 100%; height: 30px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px; overflow: hidden; margin: 20px 0;
+            position: relative;
+        }
+        
+        .timer-bar {
+            height: 100%; width: 100%; border-radius: 15px;
+            transition: width 1s linear, background-color 0.5s ease;
+        }
+        
+        .timer-bar.green { background: linear-gradient(90deg, #4CAF50, #8BC34A); }
+        .timer-bar.yellow { background: linear-gradient(90deg, #FFC107, #FF9800); }
+        .timer-bar.red { 
+            background: linear-gradient(90deg, #f44336, #ff5722);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .timer-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-size: 1.1rem;
+        }
+        
+        /* Escala Likert - SOLO EN PÁGINA PRINCIPAL */
+        .scale-container {
+            display: flex; justify-content: space-between; flex-wrap: wrap;
+            margin: 20px 0; gap: 5px;
+        }
+        
+        .scale-item {
+            flex: 1; min-width: 120px; display: flex; flex-direction: column;
+            align-items: center; padding: 10px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px; margin: 5px;
+        }
+        
+        .scale-emoji { font-size: 1.5rem; margin-bottom: 5px; }
+        .scale-value { font-weight: bold; font-size: 1.2rem; }
+        .scale-label { font-size: 0.8rem; color: #aaa; text-align: center; }
+        
+        /* Gráfico de radar mejorado */
+        .radar-container {
+            width: 100%; 
+            max-width: 600px; 
+            height: 500px; 
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Modal de intuición */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95); z-index: 9999;
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: rgba(25, 25, 35, 0.95); border-radius: 15px;
+            max-width: 600px; width: 90%; padding: 30px; text-align: center;
+            border: 2px solid #4fc3f7; animation: modalAppear 0.3s ease;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Modal de publicidad mejorado */
+        #advertisement-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        #advertisement-modal .modal-content {
+            background: #1a1a2e;
+            max-width: 480px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #4fc3f7;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+            position: relative;
+        }
+
+        #advertisement-modal img {
+            max-width: 100%;
+            height: auto;
+            max-height: 40vh;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #advertisement-buttons {
+            margin-top: 15px;
+        }
+
+        #advertisement-buttons button,
+        #advertisement-buttons a {
+            margin: 5px;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #advertisement-buttons button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        
+        /* Resultados */
+        .profile-box {
+            background: rgba(30, 30, 40, 0.8); border-radius: 10px; padding: 15px;
+            margin: 15px 0; border-left: 5px solid;
+        }
+        
+        .profile-1 { border-left-color: #2196F3; }
+        .profile-2 { border-left-color: #4CAF50; }
+        .profile-3 { border-left-color: #FF9800; }
+        .profile-4 { border-left-color: #9C27B0; }
+        
+        .suggested-profile {
+            background: linear-gradient(45deg, #FF9800, #FF5722);
+            padding: 15px; border-radius: 10px; margin: 20px 0;
+            text-align: center; font-size: 1.3rem; font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Video container */
+        .video-container {
+            width: 100%; margin: 20px 0;
+        }
+        .video-wrapper {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+        }
+        .video-wrapper iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: none; border-radius: 10px;
+        }
+        
+        /* Footer */
+        #footer {
+            width: 100%;
+            background: rgba(25, 25, 35, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 12px;
+            z-index: 100;
+            border-top: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        
+        #footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        #footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 3px;
+        }
+        
+        .footer-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .footer-link:hover {
+            color: #21CBF3;
+            text-decoration: underline;
+        }
+        
+        .social-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .social-link:hover {
+            color: #21CBF3;
+        }
+        
+        #copyright {
+            color: #aaaaaa;
+            font-size: 11px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .btn { 
+                font-size: 1rem; 
+                padding: 8px 16px; 
+                width: 100%;
+                max-width: 300px;
+                margin: 4px auto;
+                display: block;
+            }
+            
+            .option-btn { 
+                font-size: 0.9rem !important; 
+                padding: 12px 12px 12px 40px !important; 
+            }
+            
+            .header { padding: 12px; }
+            .header h1 { font-size: 1.5rem; }
+            .header h2 { font-size: 1.2rem; }
+            
+            .card { padding: 15px; }
+            .question-container { padding: 15px; margin: 10px 0; }
+            
+            .scale-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .scale-item {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .radar-container {
+                height: 400px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .option-btn { 
+                font-size: 0.85rem !important; 
+                padding: 10px 10px 10px 35px !important; 
+            }
+            
+            .option-letter { 
+                width: 20px !important; 
+                height: 20px !important; 
+                font-size: 0.8rem !important; 
+                left: 10px !important; 
+            }
+            
+            .timer-text {
+                font-size: 0.9rem;
+            }
+            
+            #footer-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                row-gap: 5px;
+            }
+            
+            #footer-links span.text-gray-500 {
+                display: none;
+            }
+            
+            .footer-link, .social-link {
+                font-size: 0.75rem; 
+                padding: 4px 6px;
+                background: rgba(0,0,0,0.2);
+                border-radius: 4px;
+            }
+            
+            .radar-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="affirmative-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Correct_sound.mp3" preload="auto"></audio>
+    <audio id="click-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Clic_sound.mp3" preload="auto"></audio>
+
+    <div class="main-content">
+        <div id="intuition-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="text-2xl font-bold mb-4" style="color: #4fc3f7;">¡Importante!</h2>
+                <p id="intuition-message" class="text-lg mb-6"></p>
+                <button id="understand-btn" class="btn btn-primary">Lo entiendo ☺</button>
+            </div>
+        </div>
+        
+        <div id="advertisement-modal" class="modal-overlay">
+            <div class="modal-content">
+                <img id="advertisement-image" src="" alt="Publicidad">
+                <audio id="advertisement-audio"></audio>
+                <div id="advertisement-countdown" class="text-lg mb-4" style="color: #FF9800;">La publicidad se cerrará en 5 segundos</div>
+                <div id="advertisement-buttons">
+                    <button id="advertisement-skip" disabled>Espera 5s...</button>
+                    <a id="advertisement-info" href="#" target="_blank" style="pointer-events:none; opacity:0.5;">
+                        Me interesa
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="guest-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="text-2xl font-bold mb-4" style="color: #4fc3f7;">📧 Para ver tus resultados</h2>
+                <p class="mb-6">Ingresa tus datos para recibir un resumen completo de tu perfil vocacional</p>
+                <form id="guest-form" class="space-y-4">
+                    <div>
+                        <input type="email" id="guest-email" 
+                               class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white" 
+                               placeholder="Correo electrónico" required>
+                    </div>
+                    <div>
+                        <input type="tel" id="guest-whatsapp" 
+                               class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white"
+                               placeholder="Número de WhatsApp (10 dígitos)" 
+                               maxlength="10" inputmode="numeric" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full">Ver mis resultados</button>
+                </form>
+                <p class="text-sm text-gray-400 mt-4">Tus datos son confidenciales y solo se usarán para enviarte los resultados</p>
+            </div>
+        </div>
+        
+        <div id="welcome-screen" class="card fade-in">
+            <div class="header">
+                <div class="logo"></div>
+                <h1 class="text-2xl sm:text-3xl font-bold">ANALIZADOR DE PERFIL VOCACIONAL</h1>
+                <h2 class="text-xl sm:text-2xl">Descubre tu vocación profesional</h2>
+                <p class="text-sm sm:text-base">Una evaluación científica para identificar tus aptitudes e intereses 🧭</p>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-bold mb-4" style="color: #4fc3f7;">¡Bienvenido/a al Analizador de Perfil Vocacional!</h3>
+                <p class="mb-4">Este cuestionario te ayudará a identificar tus áreas de interés y aptitudes profesionales a través de 40 afirmaciones cuidadosamente diseñadas.</p>
+                
+                <div class="bg-gray-800 p-4 rounded-lg mb-6">
+                    <h4 class="font-bold mb-2" style="color: #FF9800;">📋 Instrucciones:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Responde cada afirmación según tu nivel de identificación</li>
+                        <li>Usa la escala del 1 al 5 con los siguientes significados:</li>
+                    </ul>
+                    <div class="scale-container mt-4">
+                        <div class="scale-item">
+                            <div class="scale-emoji">😫</div>
+                            <div class="scale-value">1</div>
+                            <div class="scale-label">Totalmente en desacuerdo</div>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-emoji">🤨</div>
+                            <div class="scale-value">2</div>
+                            <div class="scale-label">En desacuerdo</div>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-emoji">😶</div>
+                            <div class="scale-value">3</div>
+                            <div class="scale-label">Neutral</div>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-emoji">🙂</div>
+                            <div class="scale-value">4</div>
+                            <div class="scale-label">De acuerdo</div>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-emoji">😃</div>
+                            <div class="scale-value">5</div>
+                            <div class="scale-label">Totalmente de acuerdo</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-container">
+                    <h4 class="font-bold mb-2" style="color: #4fc3f7;">🎥 Video de bienvenida e instrucciones</h4>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/jh0xqP4IPhI" allowfullscreen></iframe>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Video explicativo sobre cómo realizar la evaluación</p>
+                </div>
+                
+                <div class="bg-gray-800 p-4 rounded-lg mb-6">
+                    <h4 class="font-bold mb-2" style="color: #4CAF50;">⏱️ Información importante:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Cada pregunta tiene un tiempo límite de <strong>20 segundos</strong></li>
+                        <li>No pienses mucho la respuesta, entre más honesta sea tu respuesta el resultado es mejor</li>
+                        <li>Al final obtendrás un diagrama de telaraña con tu perfil vocacional</li>
+                        <li>El test es completamente confidencial</li>
+                    </ul>
+                </div>
+                
+                <button id="start-btn" class="btn btn-primary w-full text-lg py-4">
+                    <i class="fas fa-play-circle mr-2"></i> COMENZAR EVALUACIÓN
+                </button>
+                
+                <p class="text-xs text-center text-gray-400 mt-4">
+                    Al hacer clic en "Comenzar evaluación", aceptas que tus respuestas sean utilizadas para generar tu perfil vocacional.
+                </p>
+            </div>
+        </div>
+        
+        <div id="quiz-screen" class="card hidden">
+            <div class="header">
+                <h1 class="text-xl sm:text-2xl font-bold">ANALIZADOR DE PERFIL VOCACIONAL</h1>
+                <p class="text-sm sm:text-base">Pregunta <span id="current-question">1</span>/40</p>
+            </div>
+            
+            <div class="timer-container">
+                <div id="timer-bar" class="timer-bar green" style="width: 100%"></div>
+                <div class="timer-text">Tiempo restante: <span id="timer">20</span>s</div>
+            </div>
+            
+            <div class="question-container">
+                <h2 id="question-text" class="text-xl sm:text-2xl font-semibold"></h2>
+            </div>
+            
+            <div id="options-container" class="space-y-3"></div>
+            
+            <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="confirm-btn" class="btn btn-primary" disabled>
+                    <i class="fas fa-check-circle mr-2"></i> Confirmar y avanzar
+                </button>
+            </div>
+            
+            <div class="mt-6 text-center text-gray-400">
+                <p><i class="fas fa-info-circle mr-2"></i> Selecciona una opción antes de confirmar. La publicidad puede aparecer después de cada 7 preguntas.</p>
+            </div>
+        </div>
+        
+        <div id="results-screen" class="card hidden">
+            <div class="header">
+                <h1 class="text-2xl sm:text-3xl font-bold">TUS RESULTADOS VOCACIONALES</h1>
+                <h2 class="text-xl sm:text-2xl">Análisis completo de tu perfil</h2>
+            </div>
+            
+            <div id="results-content">
+                </div>
+        </div>
+    </div>
+    
+    <div id="footer">
+        <div id="footer-content">
+            <div id="footer-links">
+                <a href="#" id="privacy-link" class="footer-link">Aviso de Privacidad</a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.facebook.com/cepredix/" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.instagram.com/cepredix/" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.tiktok.com/@cepredix" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.youtube.com/@Cepredix" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+            </div>
+            <div id="copyright">
+                &copy; CEPREDIX 2025 - Todos los derechos reservados. Versión CEP-1.1225
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Datos del cuestionario - 40 preguntas organizadas por perfil
+        const questions = [
+            // PERFIL 1: Físico-Matemático (10 preguntas)
+            { id: 1, text: "Me siento competente resolviendo problemas que requieren lógica matemática abstracta y cálculo numérico.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 2, text: "Disfruto entendiendo el funcionamiento interno de máquinas, software o estructuras físicas.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 3, text: "Prefiero asignaturas donde las respuestas son exactas y objetivas (como Física o Cálculo) sobre aquellas subjetivas.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 4, text: "Tengo facilidad para visualizar objetos en tres dimensiones y rotarlos mentalmente.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 5, text: "Me interesa investigar fenómenos naturales desde una perspectiva científica (gravedad, electricidad, termodinámica).", profile: 1, profileName: "Físico-Matemático" },
+            { id: 6, text: "Me veo trabajando en el desarrollo de nuevas tecnologías, inteligencia artificial o construcción de infraestructura.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 7, text: "Siento satisfacción al optimizar procesos para hacerlos más rápidos y eficientes.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 8, text: "Tengo la paciencia y disciplina para trabajar con largas series de datos y fórmulas complejas.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 9, text: "Considero que el progreso de la humanidad depende fundamentalmente de los avances tecnológicos y científicos.", profile: 1, profileName: "Físico-Matemático" },
+            { id: 10, text: "Ante un problema, mi primer instinto es buscar una solución lógica, analítica y basada en hechos.", profile: 1, profileName: "Físico-Matemático" },
+            
+            // PERFIL 2: Ciencias de la Salud y Bioquímicas (10 preguntas)
+            { id: 11, text: "Siento una vocación genuina por ayudar a sanar el dolor físico o emocional de otras personas.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 12, text: "Me genera gran curiosidad el funcionamiento biológico del cuerpo humano, las células y los ecosistemas.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 13, text: "No me causa repulsión el contacto con fluidos corporales, heridas o procedimientos quirúrgicos (o disecciones).", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 14, text: "Me interesa entender la composición química de los medicamentos y alimentos que consumimos.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 15, text: "Disfruto estar en contacto directo con la naturaleza y me preocupa la preservación del medio ambiente.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 16, text: "Tengo paciencia para realizar observaciones detalladas en laboratorios o entornos clínicos durante horas.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 17, text: "Poseo la estabilidad emocional necesaria para enfrentar situaciones de emergencia, enfermedad o crisis.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 18, text: "Me veo trabajando en entornos como hospitales, laboratorios farmacéuticos o reservas ecológicas.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 19, text: "Tengo facilidad para memorizar y clasificar nombres técnicos, anatomía o procesos biológicos.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            { id: 20, text: "Valoro la preservación de la vida y la salud por encima del éxito financiero o el reconocimiento público.", profile: 2, profileName: "Ciencias de la Salud y Bioquímicas" },
+            
+            // PERFIL 3: Sociales y Económico-Administrativas (10 preguntas)
+            { id: 21, text: "Me interesa profundamente entender cómo se organizan las sociedades, la economía y la política.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 22, text: "Me siento cómodo asumiendo roles de liderazgo, coordinando equipos y tomando decisiones bajo presión.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 23, text: "Disfruto debatir ideas, argumentar mis puntos de vista y persuadir a otros.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 24, text: "Me mantengo informado sobre el acontecer mundial, leyes y movimientos financieros.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 25, text: "Siento indignación ante las injusticias sociales y tengo impulso por defender los derechos de los demás.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 26, text: "Tengo facilidad para las relaciones públicas, la negociación y el emprendimiento de proyectos.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 27, text: "Me interesa analizar el pasado (historia) para comprender el contexto actual de mi país.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 28, text: "Prefiero trabajar gestionando talento humano y recursos que trabajar aislado con objetos o máquinas.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 29, text: "Creo que el orden jurídico y la administración eficiente son claves para el bienestar común.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            { id: 30, text: "Me veo trabajando en tribunales, empresas multinacionales, organismos de gobierno o medios de comunicación.", profile: 3, profileName: "Sociales y Económico-Administrativas" },
+            
+            // PERFIL 4: Artes y Humanidades (10 preguntas)
+            { id: 31, text: "Considero que mi creatividad y capacidad de expresión son mis mayores fortalezas.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 32, text: "Disfruto profundamente la lectura, la escritura creativa o el aprendizaje de nuevos idiomas.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 33, text: "Me cuestiono constantemente el sentido de la existencia, la ética y los valores humanos.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 34, text: "Tengo sensibilidad y gusto por manifestaciones artísticas como la música, pintura, teatro o danza.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 35, text: "Prefiero actividades que permitan la libre interpretación y la subjetividad sobre aquellas rígidas y exactas.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 36, text: "Me interesa la docencia, la transmisión de cultura o la preservación del patrimonio histórico.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 37, text: "Tengo facilidad para comunicar ideas complejas de manera visual, escrita o performática.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 38, text: "Valoro la estética, la belleza y la originalidad en todo lo que hago.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 39, text: "Me veo trabajando en estudios creativos, editoriales, museos, escuelas o escenarios.", profile: 4, profileName: "Artes y Humanidades" },
+            { id: 40, text: "Creo que el arte y la filosofía son esenciales para elevar el espíritu humano.", profile: 4, profileName: "Artes y Humanidades" }
+        ];
+
+        // Mensajes de intuición
+        const intuitionMessages = [
+            "Tranquilo, no lo pienses mucho, déjate guiar por tu intuición y así la prueba será más certera",
+            "Entiendo que parece difícil decidir, pero lo primero que pienses, eso selecciona, así la prueba saldrá mejor",
+            "Parece estresante que haya un temporizador, pero NTP, no lo pienses, lee claramente y escoge lo primero que venga a tu mente",
+            "Recuerda que estas pruebas funcionan mejor con la respuesta más intuitiva, no le pienses mucho"
+        ];
+
+        // Publicidad
+        const ADS_CSV_URL = "https://docs.google.com/spreadsheets/d/1VkMosrVw7vJdZqGvInDcu3oKlK7WZlTrWAnH2YHqrew/export?format=csv&gid=0";
+        let guestAds = [];
+        
+        // URLs para envío de datos
+        const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxF2v5plRObokCgrV-3olVosjn-3q08B9bMUpeLMuYXyzuiRmsKAEadMUMb-WH2Dg7F/exec';
+        
+        // Variables globales
+        let currentQuestionIndex = 0;
+        let answers = new Array(40).fill(null);
+        let shuffledQuestions = [];
+        let timerInterval;
+        let timeLeft = 20;
+        let adShownCount = 0;
+        let profileScores = [0, 0, 0, 0]; // [Perfil1, Perfil2, Perfil3, Perfil4]
+        let chartInstance = null;
+        let lastShownAdUrl = null;
+        let adTimeoutId = null;
+        let adIntervalId = null;
+        
+        // Elementos del DOM
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startBtn = document.getElementById('start-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const currentQuestionElement = document.getElementById('current-question');
+        const timerElement = document.getElementById('timer');
+        const timerBar = document.getElementById('timer-bar');
+        const intuitionModal = document.getElementById('intuition-modal');
+        const intuitionMessage = document.getElementById('intuition-message');
+        const understandBtn = document.getElementById('understand-btn');
+        const advertisementModal = document.getElementById('advertisement-modal');
+        const advertisementImage = document.getElementById('advertisement-image');
+        const advertisementAudio = document.getElementById('advertisement-audio');
+        const advertisementCountdown = document.getElementById('advertisement-countdown');
+        const advertisementSkip = document.getElementById('advertisement-skip');
+        const advertisementInfo = document.getElementById('advertisement-info');
+        const guestModal = document.getElementById('guest-modal');
+        const guestForm = document.getElementById('guest-form');
+        const guestEmail = document.getElementById('guest-email');
+        const guestWhatsapp = document.getElementById('guest-whatsapp');
+        const resultsContent = document.getElementById('results-content');
+        const privacyLink = document.getElementById('privacy-link');
+        
+        // Referencias a Audio
+        const affirmativeSound = document.getElementById('affirmative-sound');
+        const clickSound = document.getElementById('click-sound');
+
+        // Función auxiliar de sonido
+        function playSound(type) {
+            let sound = null;
+            if (type === 'click') sound = clickSound;
+            if (type === 'affirmative') sound = affirmativeSound;
+            
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("Audio play error:", e));
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cargar publicidad
+            fetch(ADS_CSV_URL)
+                .then(r => r.text())
+                .then(csv => {
+                    const rows = csv.split("\n").slice(1);
+                    rows.forEach(row => {
+                        const cols = row.split(",");
+                        if (cols.length >= 5) {
+                            const item = {
+                                Imagen: cols[0].trim(),
+                                Audio: cols[1].trim(),
+                                Infolink: cols[2].trim(),
+                                Tipo: cols[4].trim().replace(/\r/g, "")
+                            };
+
+                            if (item.Tipo === "PUB-INVITADO") {
+                                guestAds.push(item);
+                            }
+                        }
+                    });
+                }).catch(err => {
+                    console.error("Error al cargar publicidad:", err);
+                });
+            
+            // Mezclar preguntas aleatoriamente
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            
+            // Event listeners con sonidos
+            startBtn.addEventListener('click', () => { playSound('affirmative'); startQuiz(); });
+            confirmBtn.addEventListener('click', () => { playSound('affirmative'); confirmAnswer(); });
+            understandBtn.addEventListener('click', () => { playSound('affirmative'); closeIntuitionModal(); });
+            advertisementSkip.addEventListener('click', () => { playSound('click'); hideAd(); });
+            guestForm.addEventListener('submit', (e) => { playSound('affirmative'); submitGuestData(e); });
+            
+            // Enlace de privacidad
+            if (privacyLink) {
+                privacyLink.addEventListener('click', function(e) {
+                    playSound('click');
+                    e.preventDefault();
+                    alert("AVISO DE PRIVACIDAD\n\nCEPREDIX protege tus datos personales. La información que proporciones será utilizada exclusivamente para enviarte los resultados de tu evaluación vocacional y para fines estadísticos internos. No compartiremos tu información con terceros sin tu consentimiento.");
+                });
+            }
+        });
+
+        function startQuiz() {
+            welcomeScreen.classList.add('fade-out');
+            setTimeout(() => {
+                welcomeScreen.classList.add('hidden');
+                welcomeScreen.classList.remove('fade-out');
+                quizScreen.classList.remove('hidden');
+                quizScreen.classList.add('fade-in');
+                showRandomIntuitionMessage();
+            }, 300);
+        }
+
+        function showRandomIntuitionMessage() {
+            const randomIndex = Math.floor(Math.random() * intuitionMessages.length);
+            intuitionMessage.textContent = intuitionMessages[randomIndex];
+            intuitionModal.style.display = 'flex';
+        }
+
+        function closeIntuitionModal() {
+            intuitionModal.style.display = 'none';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= shuffledQuestions.length) {
+                showGuestModal();
+                return;
+            }
+            quizScreen.classList.remove('fade-in');
+            setTimeout(() => {
+                updateQuestionContent();
+                quizScreen.classList.add('fade-in');
+                questionStartTime = Date.now();
+            }, 50);
+        }
+        
+        function updateQuestionContent() {
+            const question = shuffledQuestions[currentQuestionIndex];
+            questionText.textContent = question.text;
+            currentQuestionElement.textContent = currentQuestionIndex + 1;
+            optionsContainer.innerHTML = '';
+            
+            const options = [
+                { value: 1, emoji: "😫", label: "Totalmente en desacuerdo" },
+                { value: 2, emoji: "🤨", label: "En desacuerdo" },
+                { value: 3, emoji: "😶", label: "Neutral" },
+                { value: 4, emoji: "🙂", label: "De acuerdo" },
+                { value: 5, emoji: "😃", label: "Totalmente de acuerdo" }
+            ];
+            
+            options.forEach(option => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn';
+                optionBtn.innerHTML = `
+                    <div class="option-letter">${option.value}</div>
+                    <div class="flex items-center">
+                        <span class="text-xl mr-3">${option.emoji}</span>
+                        <span>${option.label}</span>
+                    </div>
+                `;
+                optionBtn.dataset.value = option.value;
+                optionBtn.addEventListener('click', function() {
+                    playSound('click');
+                    document.querySelectorAll('.option-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    confirmBtn.disabled = false;
+                });
+                optionsContainer.appendChild(optionBtn);
+            });
+            
+            if (answers[currentQuestionIndex] !== null) {
+                const optionBtns = document.querySelectorAll('.option-btn');
+                optionBtns.forEach(btn => {
+                    if (parseInt(btn.dataset.value) === answers[currentQuestionIndex]) {
+                        btn.classList.add('selected');
+                        confirmBtn.disabled = false;
+                    }
+                });
+            } else {
+                confirmBtn.disabled = true;
+            }
+            
+            resetTimer();
+            startTimer();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 20;
+            updateTimerDisplay();
+            updateTimerBar();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                updateTimerBar();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (answers[currentQuestionIndex] === null) {
+                        showRandomIntuitionMessage();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            timerElement.textContent = timeLeft;
+        }
+        
+        function updateTimerBar() {
+            const percentage = (timeLeft / 20) * 100;
+            timerBar.style.width = `${percentage}%`;
+            if (timeLeft > 10) {
+                timerBar.className = 'timer-bar green';
+                timerBar.style.animation = 'none';
+            } else if (timeLeft > 5) {
+                timerBar.className = 'timer-bar yellow';
+                timerBar.style.animation = 'none';
+            } else {
+                timerBar.className = 'timer-bar red';
+                timerBar.style.animation = 'pulse 1s infinite';
+            }
+        }
+
+        function confirmAnswer() {
+            const selectedOption = document.querySelector('.option-btn.selected');
+            if (!selectedOption) {
+                alert('Por favor selecciona una opción antes de confirmar.');
+                return;
+            }
+            const answerValue = parseInt(selectedOption.dataset.value);
+            answers[currentQuestionIndex] = answerValue;
+            
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            profileScores[currentQuestion.profile - 1] += answerValue;
+            
+            currentQuestionIndex++;
+            adShownCount++;
+            if (adShownCount % 7 === 0 && currentQuestionIndex < shuffledQuestions.length) {
+                showAdvertisement();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function showAdvertisement() {
+            if (!guestAds || guestAds.length === 0) {
+                loadQuestion();
+                return;
+            }
+            if (adTimeoutId) clearTimeout(adTimeoutId);
+            if (adIntervalId) clearInterval(adIntervalId);
+
+            let candidateAds = guestAds;
+            if (guestAds.length > 1 && lastShownAdUrl) {
+                candidateAds = guestAds.filter(ad => ad.Imagen !== lastShownAdUrl);
+            }
+
+            const ad = candidateAds[Math.floor(Math.random() * candidateAds.length)];
+            lastShownAdUrl = ad.Imagen;
+
+            advertisementImage.src = ad.Imagen;
+            advertisementAudio.src = ad.Audio;
+            
+            advertisementAudio.play().catch(e => {
+                console.log("Audio no se pudo reproducir automáticamente:", e);
+            });
+
+            if (ad.Infolink && ad.Infolink.length > 5) {
+                advertisementInfo.href = ad.Infolink;
+                advertisementInfo.style.pointerEvents = "auto";
+                advertisementInfo.style.opacity = "1";
+            } else {
+                advertisementInfo.removeAttribute('href');
+                advertisementInfo.style.pointerEvents = "none";
+                advertisementInfo.style.opacity = "0.5";
+            }
+            
+            advertisementSkip.disabled = true;
+            advertisementSkip.style.opacity = "0.5";
+            advertisementSkip.textContent = "Espera 5s...";
+            
+            advertisementModal.style.display = "flex";
+            document.body.style.overflow = 'hidden';
+            
+            let countdown = 5;
+            advertisementCountdown.textContent = `La publicidad se cerrará en ${countdown} segundos`;
+            
+            adIntervalId = setInterval(() => {
+                countdown--;
+                advertisementCountdown.textContent = `La publicidad se cerrará en ${countdown} segundos`;
+                if (countdown <= 0) {
+                    clearInterval(adIntervalId);
+                    adIntervalId = null;
+                    advertisementSkip.disabled = false;
+                    advertisementSkip.style.opacity = "1";
+                    advertisementSkip.textContent = "Saltar Publicidad";
+                }
+            }, 1000);
+            
+            adTimeoutId = setTimeout(hideAd, 25000);
+        }
+
+        function hideAd() {
+            if (adTimeoutId) {
+                clearTimeout(adTimeoutId);
+                adTimeoutId = null;
+            }
+            if (adIntervalId) {
+                clearInterval(adIntervalId);
+                adIntervalId = null;
+            }
+            advertisementAudio.pause();
+            advertisementAudio.currentTime = 0;
+            advertisementModal.style.display = "none";
+            document.body.style.overflow = 'auto';
+            loadQuestion();
+        }
+
+        function showGuestModal() {
+            quizScreen.classList.add('fade-out');
+            setTimeout(() => {
+                quizScreen.classList.add('hidden');
+                quizScreen.classList.remove('fade-out');
+                guestModal.style.display = 'flex';
+            }, 300);
+        }
+
+        function submitGuestData(event) {
+            event.preventDefault();
+            const email = guestEmail.value;
+            const whatsapp = guestWhatsapp.value;
+            if (!email || !whatsapp) {
+                alert('Por favor completa todos los campos.');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                alert('Por favor ingresa un correo electrónico válido.');
+                return;
+            }
+            if (whatsapp.length !== 10 || isNaN(whatsapp)) {
+                alert('Por favor ingresa un número de WhatsApp válido de 10 dígitos.');
+                return;
+            }
+            sendDataToGoogleSheets(email, whatsapp);
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        async function sendDataToGoogleSheets(email, whatsapp) {
+            try {
+                guestModal.querySelector('.modal-content').innerHTML = `
+                    <h2 class="text-2xl font-bold mb-4" style="color: #4fc3f7;">Enviando datos...</h2>
+                    <div class="text-center">
+                        <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+                        <p>Guardando tus resultados, por favor espera...</p>
+                    </div>
+                `;
+                
+                const profileSummary = `Físico: ${profileScores[0]}, Salud: ${profileScores[1]}, Social: ${profileScores[2]}, Artes: ${profileScores[3]}`;
+
+                const formData = new FormData();
+                formData.append('EvaluationName', 'ANALIZADOR DE PERFIL VOCACIONAL');
+                formData.append('Name', 'Estudiante');
+                formData.append('Email', email);
+                formData.append('WhatsApp', whatsapp);
+                formData.append('TotalTime', '0');
+                formData.append('AverageTime', '0');
+                formData.append('Score', '0');
+                formData.append('CorrectAnswers', '40');
+                formData.append('TotalQuestions', '40');
+                formData.append('IDs', profileSummary);
+                formData.append('UserType', 'Invitado'); 
+                
+                const response = await fetch(RESULTS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                setTimeout(() => {
+                    guestModal.style.display = 'none';
+                    showResults();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error al enviar datos:', error);
+                guestModal.style.display = 'none';
+                showResults();
+            }
+        }
+
+        function showResults() {
+            guestModal.style.display = 'none';
+            resultsScreen.classList.remove('hidden');
+            resultsScreen.classList.add('fade-in');
+            generateResults();
+        }
+
+        function generateResults() {
+            // Calcular puntuaciones finales por perfil
+            const profileNames = [
+                "Físico-Matemático",
+                "Ciencias de la Salud y Bioquímicas", 
+                "Sociales y Económico-Administrativas",
+                "Artes y Humanidades"
+            ];
+            
+            const profileColors = ["#2196F3", "#4CAF50", "#FF9800", "#9C27B0"];
+            const profileDescriptions = [
+                "Ingenierías, Ciencias Exactas, Arquitectura",
+                "Medicina, Química, Biología, Psicología Clínica",
+                "Derecho, Negocios, Ciencias Políticas, Comunicación",
+                "Filosofía, Diseño, Artes Plásticas, Letras, Pedagogía"
+            ];
+            
+            // Crear contenido de resultados
+            let resultsHTML = `
+                <div class="mt-6">
+                    <h3 class="text-2xl font-bold mb-6 text-center" style="color: #4fc3f7;">Tu Perfil Vocacional</h3>
+                    
+                    <div class="radar-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            `;
+            
+            // Agregar tarjetas de perfil con interpretación detallada
+            profileScores.forEach((score, index) => {
+                const percentage = (score / 50) * 100;
+                let level, interpretation, levelClass;
+                
+                if (score <= 25) {
+                    level = "Nivel Bajo / Zona de Esfuerzo";
+                    interpretation = "Esta puntuación indica que las carreras de esta área te demandarían una cantidad excesiva de energía cognitiva y emocional. No posees una inclinación natural hacia estos temas, lo que podría traducirse en frustración académica o desinterés profesional a largo plazo. <strong>No se recomienda como opción principal.</strong>";
+                    levelClass = "text-red-400";
+                } else if (score <= 39) {
+                    level = "Nivel Medio / Interés Pasivo";
+                    interpretation = "Tienes ciertas competencias en esta área, pero no representan tu mayor fortaleza natural. Podrías cursar una carrera aquí con disciplina y estudio constante, pero es probable que no sientas esa 'chispa' de pasión vocacional. Funciona excelente como un complemento o hobby, pero es arriesgado como eje central de vida.";
+                    levelClass = "text-yellow-400";
+                } else {
+                    level = "Nivel Alto / Zona de Genialidad";
+                    interpretation = "<strong>¡Punto Favorable Detectado!</strong> Tu mente opera con fluidez natural en esta área. Posees tanto el interés genuino como la aptitud cognitiva necesaria. Estudiar una carrera de este perfil te resultará estimulante y tendrás altas probabilidades de destacar profesionalmente y sentirte realizado.";
+                    levelClass = "text-green-400";
+                }
+                
+                resultsHTML += `
+                    <div class="profile-box profile-${index + 1}">
+                        <div class="profile-title text-xl font-bold" style="color: ${profileColors[index]}">${profileNames[index]}</div>
+                        <div class="text-sm text-gray-400 mb-2 italic">${profileDescriptions[index]}</div>
+                        <div class="text-3xl font-bold mb-2 ${levelClass}">${score} / 50 puntos</div>
+                        <div class="text-lg font-semibold mb-2 ${levelClass}">${level}</div>
+                        <div class="text-sm mb-3 text-justify leading-relaxed">${interpretation}</div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+                            <div class="h-2.5 rounded-full" style="width: ${percentage}%; background-color: ${profileColors[index]}"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsHTML += `
+                    </div>
+                    
+                    <div class="bg-gray-800 p-6 rounded-lg mt-8 text-left">
+                        <h4 class="text-2xl font-bold mb-4 text-center" style="color: #4fc3f7;">Interpretación de tu Mapa Vocacional</h4>
+            `;
+            
+            // Lógica de interpretación Global Detallada
+            const maxScore = Math.max(...profileScores);
+            const highScores = profileScores.filter(score => score >= 40);
+            
+            // Caso 1: Perfil Indeciso (Ninguna área llega a 40)
+            if (highScores.length === 0) {
+                resultsHTML += `
+                    <div class="p-4 border-l-4 border-red-500 bg-gray-900 rounded mb-4">
+                        <h5 class="text-xl font-bold text-red-400 mb-2">⚠️ PERFIL INDECISO O EN EXPLORACIÓN</h5>
+                        <p class="text-gray-300 mb-2">
+                            Hemos detectado que <strong>en ninguna de las 4 áreas alcanzaste el umbral mínimo de 40 puntos</strong>. Esto es un indicador muy importante: significa que actualmente te encuentras en una etapa de neutralidad o confusión vocacional.
+                        </p>
+                        <p class="text-gray-300">
+                            No posees aún una pasión dominante clara. Elegir una carrera en este momento basándote solo en estos resultados podría llevarte a una elección poco satisfactoria. Te recomendamos ampliamente iniciar un proceso de introspección más profundo, investigar planes de estudio a detalle o buscar orientación vocacional personalizada antes de tomar una decisión definitiva.
+                        </p>
+                    </div>
+                `;
+            } 
+            // Caso 2: Puntos Favorables (Al menos un área > 40)
+            else {
+                resultsHTML += `
+                    <div class="p-4 border-l-4 border-green-500 bg-gray-900 rounded mb-4">
+                        <h5 class="text-xl font-bold text-green-400 mb-2">✅ PUNTOS FAVORABLES DETECTADOS</h5>
+                        <p class="text-gray-300 mb-2">
+                            ¡Excelentes noticias! Has superado la barrera de los 40 puntos en una o más áreas. Esto significa que <strong>no eres un perfil indeciso</strong>; tienes intereses y capacidades bien definidas que puedes capitalizar profesionalmente.
+                        </p>
+                    </div>
+                `;
+
+                // Sub-casos de patrones favorables
+                if (highScores.length === 1) {
+                    // Pico Único
+                    const index = profileScores.indexOf(maxScore);
+                    resultsHTML += `
+                        <p class="mb-2"><strong>🎯 Perfil de Especialista (Pico Único):</strong> Tu energía vocacional está concentrada en una sola dirección: <strong>${profileNames[index]}</strong>. Esto es ideal porque evita la dispersión. Tienes luz verde para enfocarte totalmente en carreras de este sector sin miedo a equivocarte.</p>
+                    `;
+                } else {
+                    // Multipotencial
+                    resultsHTML += `
+                        <p class="mb-2"><strong>🌟 Perfil Multipotencial (Varios Picos):</strong> Tienes la fortuna (y el reto) de ser talentoso en más de un área. Superaste los 40 puntos en varias zonas. No tienes que "renunciar" a una; busca carreras que combinen tus intereses (ej. Bioingeniería combina Salud + Físico) o elige una como profesión y otra como pasión personal.</p>
+                    `;
+                }
+            }
+            
+            resultsHTML += `
+                    </div>
+                    
+                    <div class="bg-gray-800 p-6 rounded-lg mt-8">
+                        <h4 class="text-xl font-bold mb-4" style="color: #4fc3f7;">Pasos Recomendados</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-left">
+                            <li>Si obtuviste <strong>más de 40 puntos</strong> en algún área, descarga el plan de estudios de carreras afines y visualízate cursándolas.</li>
+                            <li>Si tu perfil resultó <strong>indeciso (todos menos de 40)</strong>, no te desanimes. Significa que debes explorar más. Visita ferias universitarias o habla con profesionales.</li>
+                            <li>Recuerda que este instrumento evalúa tus afinidades actuales, las cuales pueden evolucionar con nuevas experiencias.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <button id="restart-btn" class="btn btn-primary mr-4">
+                            <i class="fas fa-redo mr-2"></i> Realizar otra evaluación
+                        </button>
+                        <button id="download-btn" class="btn btn-secondary">
+                            <i class="fas fa-download mr-2"></i> Descargar resultados
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = resultsHTML;
+            
+            // Agregar eventos a los botones
+            document.getElementById('restart-btn').addEventListener('click', () => { playSound('affirmative'); restartQuiz(); });
+            document.getElementById('download-btn').addEventListener('click', () => { playSound('affirmative'); downloadResults(); });
+            
+            // Generar gráfico de radar
+            generateRadarChart(profileNames, profileScores, profileColors);
+        }
+
+        function generateRadarChart(labels, data, colors) {
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Puntuación',
+                    data: data,
+                    backgroundColor: 'rgba(79, 195, 247, 0.2)',
+                    borderColor: '#4fc3f7',
+                    pointBackgroundColor: colors,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: colors,
+                    pointRadius: 6,
+                    pointHoverRadius: 10,
+                    borderWidth: 3
+                }]
+            };
+            
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true,
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 2
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            circular: true
+                        },
+                        pointLabels: {
+                            color: '#fff',
+                            font: {
+                                size: window.innerWidth < 768 ? 12 : 16,
+                                weight: 'bold',
+                                family: 'Roboto'
+                            },
+                            padding: window.innerWidth < 768 ? 10 : 20
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#fff',
+                            backdropColor: 'transparent',
+                            stepSize: 10,
+                            min: 10,
+                            max: 50,
+                            font: {
+                                size: window.innerWidth < 768 ? 10 : 12
+                            }
+                        },
+                        suggestedMin: 10,
+                        suggestedMax: 50,
+                        beginAtZero: false
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw} puntos`;
+                            }
+                        },
+                        backgroundColor: 'rgba(25, 25, 35, 0.9)',
+                        titleColor: '#4fc3f7',
+                        bodyColor: '#fff',
+                        borderColor: '#4fc3f7',
+                        borderWidth: 1
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0.2
+                    }
+                }
+            };
+            
+            chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: chartData,
+                options: options
+            });
+        }
+
+        function downloadResults() {
+            const canvas = document.getElementById('radarChart');
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'perfil-vocacional.png';
+            link.href = dataURL;
+            link.click();
+            alert('Gráfico descargado como "perfil-vocacional.png"');
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            answers = new Array(40).fill(null);
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            profileScores = [0, 0, 0, 0];
+            adShownCount = 0;
+            lastShownAdUrl = null;
+            
+            if (adTimeoutId) clearTimeout(adTimeoutId);
+            if (adIntervalId) clearInterval(adIntervalId);
+            
+            resultsScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                resultsScreen.classList.add('hidden');
+                resultsScreen.classList.remove('fade-out');
+                welcomeScreen.classList.remove('hidden');
+                welcomeScreen.classList.add('fade-in');
+                
+                guestEmail.value = '';
+                guestWhatsapp.value = '';
+                
+                window.scrollTo(0, 0);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
