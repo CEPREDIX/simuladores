@@ -14,6 +14,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
+    <!-- Glide.js para carrusel -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.theme.min.css">
+    
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,6 +111,50 @@
             max-height: 500px !important;
             opacity: 1 !important;
         }
+        
+        /* Carrusel personalizado */
+        .glide__slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .glide__bullets {
+            bottom: -30px;
+        }
+        
+        .glide__bullet {
+            background-color: rgba(255, 255, 255, 0.3);
+            border: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .glide__bullet--active {
+            background-color: #50c5f7;
+            transform: scale(1.2);
+        }
+        
+        /* Botones grandes responsivos */
+        .large-btn {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            min-height: 200px;
+            aspect-ratio: 1200/630;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .large-btn {
+                min-height: 150px;
+            }
+        }
     </style>
 </head>
 <body class="text-white overflow-x-hidden selection:bg-primary selection:text-black">
@@ -126,12 +174,6 @@
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center gap-8">
-                <!-- Botón Inicio -->
-                <a class="text-base font-bold text-gray-300 hover:text-primary transition-colors flex items-center gap-1" href="#">
-                    <span class="material-symbols-outlined text-lg">home</span>
-                    INICIO
-                </a>
-
                 <!-- Botón Plataforma (Dropdown) -->
                 <div class="relative group">
                     <button class="flex items-center gap-1 h-9 rounded-full bg-primary/10 px-6 text-base font-bold text-primary border border-primary/20 hover:bg-primary hover:text-black hover:shadow-neon transition-all duration-300">
@@ -140,24 +182,44 @@
                         <span class="material-symbols-outlined text-sm ml-1 group-hover:rotate-180 transition-transform">expand_more</span>
                     </button>
                     
-                    <!-- Dropdown Content -->
-                    <div class="dropdown-menu absolute right-0 top-full mt-4 w-60 rounded-xl border border-white/10 bg-[#0f1619] shadow-card p-2 z-50">
-                        <a href="https://simuladores.cepredix.com.mx/00-cep-temarios.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item">
-                            <span class="material-symbols-outlined text-primary group-hover/item:scale-110 transition-transform">quiz</span>
+                    <!-- Dropdown Content - 4 opciones -->
+                    <div class="dropdown-menu absolute right-0 top-full mt-4 w-64 rounded-xl border border-white/10 bg-[#0f1619] shadow-card p-2 z-50">
+                        <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item">
+                            <span class="material-symbols-outlined text-primary group-hover/item:scale-110 transition-transform">school</span>
                             <div class="flex flex-col">
-                                <span class="font-bold text-sm">Acceder Simulacros</span>
-                                <span class="text-[10px] text-gray-500">Práctica examen real</span>
+                                <span class="font-bold text-sm">ACREDITA-BACH</span>
+                                <span class="text-[10px] text-gray-500">Acreditación de bachillerato</span>
                             </div>
                         </a>
-                        <a href="https://simuladores.cepredix.com.mx/00-cep-clases-grabadas.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item mt-1">
-                            <span class="material-symbols-outlined text-secondary group-hover/item:scale-110 transition-transform">play_circle</span>
+                        <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item mt-1">
+                            <span class="material-symbols-outlined text-secondary group-hover/item:scale-110 transition-transform">backpack</span>
                             <div class="flex flex-col">
-                                <span class="font-bold text-sm">Clases Grabadas</span>
-                                <span class="text-[10px] text-gray-500">Tu biblioteca 24/7</span>
+                                <span class="font-bold text-sm">ADMISIÓN PREPA</span>
+                                <span class="text-[10px] text-gray-500">Ingreso a preparatoria</span>
+                            </div>
+                        </a>
+                        <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item mt-1">
+                            <span class="material-symbols-outlined text-blue-400 group-hover/item:scale-110 transition-transform">school</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-sm">ADMISIÓN UNI</span>
+                                <span class="text-[10px] text-gray-500">Ingreso a universidad</span>
+                            </div>
+                        </a>
+                        <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-white/5 text-gray-200 hover:text-primary transition-colors group/item mt-1">
+                            <span class="material-symbols-outlined text-green-400 group-hover/item:scale-110 transition-transform">library_books</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-sm">OTROS CURSOS</span>
+                                <span class="text-[10px] text-gray-500">Más opciones educativas</span>
                             </div>
                         </a>
                     </div>
                 </div>
+                
+                <!-- Botón MATERIAL GRATUITO -->
+                <a href="https://www.facebook.com/groups/123859062681159" target="_blank" class="flex items-center gap-1 h-9 rounded-full bg-secondary/10 px-6 text-base font-bold text-secondary border border-secondary/20 hover:bg-secondary hover:text-white hover:shadow-neon transition-all duration-300">
+                    <span class="material-symbols-outlined text-lg">download</span>
+                    MATERIAL GRATUITO
+                </a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -169,24 +231,36 @@
         <!-- Mobile Menu (Hidden by default) -->
         <div id="mobile-menu" class="md:hidden bg-background-card border-b border-white/10 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out">
             <div class="p-4 space-y-4">
-                <a href="#" class="block w-full p-3 text-center rounded-lg bg-white/5 text-white font-bold">INICIO</a>
-                <div class="border-t border-white/10 pt-4">
-                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-3 px-2">Acceso a Plataforma</p>
-                    <a href="https://simuladores.cepredix.com.mx/00-cep-temarios.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary border border-primary/20 mb-2">
-                        <span class="material-symbols-outlined">quiz</span>
-                        <span class="font-bold">Acceder Simulacros</span>
+                <div class="border-b border-white/10 pb-4">
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-3 px-2">Plataforma</p>
+                    <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary border border-primary/20 mb-2">
+                        <span class="material-symbols-outlined">school</span>
+                        <span class="font-bold">ACREDITA-BACH</span>
                     </a>
-                    <a href="https://simuladores.cepredix.com.mx/00-cep-clases-grabadas.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-secondary/10 text-secondary border border-secondary/20">
-                        <span class="material-symbols-outlined">play_circle</span>
-                        <span class="font-bold">Clases Grabadas</span>
+                    <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary border border-primary/20 mb-2">
+                        <span class="material-symbols-outlined">backpack</span>
+                        <span class="font-bold">ADMISIÓN PREPA</span>
+                    </a>
+                    <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary border border-primary/20 mb-2">
+                        <span class="material-symbols-outlined">school</span>
+                        <span class="font-bold">ADMISIÓN UNI</span>
+                    </a>
+                    <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                        <span class="material-symbols-outlined">library_books</span>
+                        <span class="font-bold">OTROS CURSOS</span>
                     </a>
                 </div>
+                
+                <a href="https://www.facebook.com/groups/123859062681159" target="_blank" class="flex items-center gap-3 p-3 rounded-lg bg-secondary/10 text-secondary border border-secondary/20 mb-2">
+                    <span class="material-symbols-outlined">download</span>
+                    <span class="font-bold">MATERIAL GRATUITO</span>
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section & Video -->
-    <section class="relative pt-10 pb-20 overflow-hidden">
+    <!-- Sección 1: Contenedor de Bienvenida -->
+    <section class="relative pt-10 pb-16 overflow-hidden">
         <!-- Abstract Glows -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
         <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
@@ -209,10 +283,10 @@
                 Domina tu examen de admisión con la metodología de alto rendimiento de CEPREDIX. Tecnología, estrategia y resultados.
             </p>
 
-            <!-- Video Container -->
-            <div class="relative mx-auto max-w-5xl w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-neon-hover group bg-black">
+            <!-- Contenedor de Bienvenida - Video/Imagen -->
+            <div class="relative mx-auto max-w-6xl w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-neon-hover group bg-black mb-16">
                 <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors z-10 pointer-events-none"></div>
-                <!-- Iframe Youtube -->
+                <!-- Opción 1: Video de YouTube -->
                 <iframe 
                     class="w-full h-full relative z-0" 
                     src="https://www.youtube.com/embed/jh0xqP4IPhI?autoplay=0&controls=1&rel=0" 
@@ -221,186 +295,317 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     allowfullscreen>
                 </iframe>
+                
+                <!-- Opción 2: Imagen PNG/GIF (comentada) -->
+                <!--
+                <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/welcome-banner.png" 
+                     alt="Bienvenida CEPREDIX" 
+                     class="w-full h-full object-cover"
+                     onerror="this.style.display='none'; document.querySelector('iframe').style.display='block';">
+                -->
             </div>
-
-            <!-- Banner Alargado (Responsive) -->
-            <div class="mt-16 mx-auto max-w-7xl w-full relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative w-full h-32 sm:h-48 md:h-60 rounded-lg overflow-hidden border border-white/10 bg-background-card flex items-center justify-center">
-                    <!-- Background Banner Image Placeholder -->
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
-                    
-                    <div class="relative z-10 text-center px-4">
-                        <h3 class="font-display text-2xl md:text-4xl font-bold text-white mb-2"> TU FUTURO EMPIEZA AQUÍ</h3>
-                        <p class="text-primary font-medium tracking-widest uppercase text-sm md:text-base">Centro de Preparación Educativa Digital de México</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- Services Grid -->
+    <!-- Sección 2: Carrusel de Testimonios -->
+    <section class="py-16 bg-background-card relative">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4 text-center">
+                Historias de <span class="text-primary">Éxito</span>
+            </h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+                Estudiantes como tú que lograron su objetivo con nuestra metodología
+            </p>
+            
+            <!-- Carrusel Glide.js -->
+            <div class="glide relative">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <!-- Testimonio 1 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_01.png" 
+                                         alt="Testimonio Fer" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "Soy Fer y mi sueño era quedar en medicina, gracias al curso CEPREDIX hoy estoy estudiando en la UAM"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Fer</p>
+                                            <p class="text-gray-500 text-sm">Admitida en Medicina UNAM 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Testimonio 2 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_02.png" 
+                                         alt="Testimonio Estudiante" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "Cuando quería ingresar a la uni trabajaba y era muy complicado encontrar un horario accesible, el curso virtual me cayó de maravilla 😃 y la verdad me fue muy bien en mi examen"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Estudiante CEPREDIX</p>
+                                            <p class="text-gray-500 text-sm">Admitido 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Testimonio 3 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_03.png" 
+                                         alt="Testimonio Estudiante" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "Tenía mucho miedo de no quedar y que mis papás se enojaran conmigo jejeje... pero la verdad me gustado muchísimo las clases del profe Juan lo recomiendo muchisimo 10 de 10"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Estudiante CEPREDIX</p>
+                                            <p class="text-gray-500 text-sm">Admitida 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Testimonio 4 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_04.png" 
+                                         alt="Testimonio Estudiante" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "La verdad me ayudó muchísimo este curso principalmente en mate sentí el examen muy fácil el mío fue un exani II, Si sigue las recomendaciones estoy seguroa de que quedas"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Estudiante CEPREDIX</p>
+                                            <p class="text-gray-500 text-sm">Admitido 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Testimonio 5 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_05.png" 
+                                         alt="Testimonio Estudiante" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "Tenía ya varios años que no estudiaba. Busqué un curso en línea que se ajustara con mi trabajo y la verdad es que las clases del profesor Juan son muy buenas me ayudaron a quedar en mi examen en SUAyED de la unam lo recomiendo mucho solamente que sí tienes que ser muy ordenado, Si tienes tiempo que no estudias este curso te va a funcionar muy bien"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Estudiante CEPREDIX</p>
+                                            <p class="text-gray-500 text-sm">Admitido 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Testimonio 6 -->
+                        <li class="glide__slide">
+                            <div class="flex flex-col md:flex-row items-center gap-8 p-6">
+                                <div class="w-full md:w-1/3">
+                                    <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Admitido_cepredix_2025_06.png" 
+                                         alt="Testimonio Estudiante" 
+                                         class="w-full h-auto max-w-md mx-auto rounded-xl border-2 border-primary/30 shadow-neon">
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="bg-background-dark p-8 rounded-2xl border border-white/10">
+                                        <span class="material-symbols-outlined text-5xl text-primary mb-4">format_quote</span>
+                                        <p class="text-xl italic text-gray-300 mb-6">
+                                            "Este era mi segundo intento y con las clases del curso francamente creo que llegué bien preparado al examen, tuve muy poquitas dudas recomiendo este curso. Lo que más me agradó son las asesorías la verdad me ayudaron un buen cuando me atoraba"
+                                        </p>
+                                        <div class="border-t border-white/10 pt-4">
+                                            <p class="text-primary font-bold">Estudiante CEPREDIX</p>
+                                            <p class="text-gray-500 text-sm">Admitido 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Navegación -->
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left absolute left-0 top-1/2 -translate-y-1/2 bg-background-card/80 p-3 rounded-full border border-white/10 hover:bg-primary hover:text-black transition-all" data-glide-dir="<">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <button class="glide__arrow glide__arrow--right absolute right-0 top-1/2 -translate-y-1/2 bg-background-card/80 p-3 rounded-full border border-white/10 hover:bg-primary hover:text-black transition-all" data-glide-dir=">">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+                
+                <!-- Bullets -->
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    <button class="glide__bullet" data-glide-dir="=0"></button>
+                    <button class="glide__bullet" data-glide-dir="=1"></button>
+                    <button class="glide__bullet" data-glide-dir="=2"></button>
+                    <button class="glide__bullet" data-glide-dir="=3"></button>
+                    <button class="glide__bullet" data-glide-dir="=4"></button>
+                    <button class="glide__bullet" data-glide-dir="=5"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 3: Botones Grandes de Productos/Servicios -->
     <section class="py-20 bg-background-dark relative">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-12 text-center border-b border-white/10 pb-6">
-                Nuestros <span class="text-primary">Ecosistemas</span> de Aprendizaje
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4 text-center">
+                Nuestros <span class="text-primary">Productos</span> y <span class="text-secondary">Servicios</span>
             </h2>
-
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+                Descubre todo lo que tenemos para ofrecerte en tu preparación educativa
+            </p>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Servicio 1 -->
-                <div class="group relative p-6 rounded-2xl bg-background-card border border-white/5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon">
-                    <div class="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-black transition-colors">
-                        <span class="material-symbols-outlined text-3xl">school</span>
+                <!-- Botón MATERIAL GRATUITO -->
+                <a href="https://www.facebook.com/groups/123859062681159" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-blue-900/30 to-background-card border border-blue-500/30 hover:border-blue-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">download</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 font-display">Curso Ingreso a Universidad</h3>
-                    <p class="text-gray-400 text-sm">Preparación estratégica intensiva para dominar el examen de admisión superior.</p>
-                </div>
-
-                <!-- Servicio 2 -->
-                <div class="group relative p-6 rounded-2xl bg-background-card border border-white/5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon">
-                    <div class="size-12 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center mb-4 group-hover:bg-secondary group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-3xl">terminal</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 font-display">Plataforma Universidad</h3>
-                    <p class="text-gray-400 text-sm">Guía interactiva digital con herramientas tecnológicas de última generación.</p>
-                </div>
-
-                <!-- Servicio 3 -->
-                <div class="group relative p-6 rounded-2xl bg-background-card border border-white/5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon">
-                    <div class="size-12 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-3xl">backpack</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 font-display">Curso Ingreso a Prepa</h3>
-                    <p class="text-gray-400 text-sm">Asegura tu lugar en bachillerato. Cimientos sólidos para tu educación media.</p>
-                </div>
-
-                <!-- Servicio 4 -->
-                <div class="group relative p-6 rounded-2xl bg-background-card border border-white/5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon">
-                    <div class="size-12 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center mb-4 group-hover:bg-pink-500 group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-3xl">laptop_chromebook</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 font-display">Plataforma Prepa</h3>
-                    <p class="text-gray-400 text-sm">Entorno digital interactivo diseñado específicamente para aspirantes COMIPEMS/Prepas.</p>
-                </div>
-
-                 <!-- Servicio 5 -->
-                 <div class="group relative p-6 rounded-2xl bg-background-card border border-white/5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon lg:col-span-2 lg:col-start-1 lg:mx-auto w-full lg:w-1/2">
-                    <div class="size-12 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center mb-4 group-hover:bg-green-500 group-hover:text-black transition-colors">
-                        <span class="material-symbols-outlined text-3xl">co_present</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 font-display">Asesorías Particulares</h3>
-                    <p class="text-gray-400 text-sm">Atención 1 a 1 para niveles secundaria, preparatoria y materias universitarias complejas.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Guarantee & Features Section -->
-    <section class="py-24 relative overflow-hidden bg-[#080d10]">
-        <!-- Gradient Separator -->
-        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">MATERIAL GRATUITO</h3>
+                    <p class="text-gray-300 text-sm">Accede a recursos de estudio sin costo</p>
+                </a>
                 
-                <!-- Guarantee Text -->
-                <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded text-xs font-bold bg-primary text-black mb-6">
-                        <span class="material-symbols-outlined text-sm">verified</span>
-                        GARANTÍA DE SATISFACCIÓN
+                <!-- Botón ADMISIÓN PREPA 2026 -->
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-purple-900/30 to-background-card border border-purple-500/30 hover:border-purple-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">backpack</span>
                     </div>
-                    <h2 class="font-display text-4xl font-bold text-white mb-6 leading-tight">
-                        Tu Inversión Está <span class="text-primary underline decoration-wavy decoration-secondary">Blindada</span>
-                    </h2>
-                    <p class="text-gray-300 text-lg mb-6 leading-relaxed">
-                        En CEPREDIX no solo prometemos, nos comprometemos. Vas a recibir todos los materiales y estrategias necesarias para garantizar un resultado sobresaliente en tu proceso de admisión. 
-                    </p>
-                    <div class="bg-white/5 border border-white/10 p-6 rounded-xl mb-8">
-                        <p class="text-gray-200 text-sm italic">
-                            <strong class="text-primary block mb-2 not-italic text-base">La Condición de Oro:</strong>
-                            Si cumples con al menos el <span class="text-white font-bold">90% de los requisitos solicitados</span> durante el curso PRO con garantía de reembolso del 50% (asistencias, tareas, simulacros) y no obtienes resultados, nuestra garantía te respalda. 
-                        </p>
-                        <div class="mt-4 pt-4 border-t border-white/10 flex items-start gap-3">
-                            <span class="material-symbols-outlined text-green-400">monetization_on</span>
-                            <p class="text-xs text-gray-400">Además, tienes <strong>15 días de reembolso garantizado</strong> al iniciar el curso. Si por alguna razón no te gusta el servicio, te devolvemos tu dinero. Sin letras chiquitas.</p>
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">ADMISIÓN PREPA 2026</h3>
+                    <p class="text-gray-300 text-sm">Prepárate para el examen de preparatoria</p>
+                </a>
+                
+                <!-- Botón ADMISIÓN UNI 2026 -->
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-cyan-900/30 to-background-card border border-cyan-500/30 hover:border-cyan-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">school</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">ADMISIÓN UNI 2026</h3>
+                    <p class="text-gray-300 text-sm">Ingresa a la universidad de tus sueños</p>
+                </a>
+                
+                <!-- Botón ASESORÍAS 1 A 1 -->
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-green-900/30 to-background-card border border-green-500/30 hover:border-green-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mb-4 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">person</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">ASESORÍAS 1 A 1</h3>
+                    <p class="text-gray-300 text-sm">Atención personalizada con expertos</p>
+                </a>
+                
+                <!-- Botón PLATAFORMA DE SIMULACROS -->
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-orange-900/30 to-background-card border border-orange-500/30 hover:border-orange-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center mb-4 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">quiz</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">PLATAFORMA DE SIMULACROS</h3>
+                    <p class="text-gray-300 text-sm">Practica con exámenes reales</p>
+                </a>
+                
+                <!-- Botón OTROS CURSOS -->
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="group relative p-6 rounded-2xl bg-gradient-to-br from-pink-900/30 to-background-card border border-pink-500/30 hover:border-pink-500 transition-all duration-300 hover:-translate-y-2 hover:shadow-neon flex flex-col items-center justify-center text-center large-btn">
+                    <div class="size-16 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center mb-4 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-4xl">library_books</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2 font-display">OTROS CURSOS</h3>
+                    <p class="text-gray-300 text-sm">Más opciones para tu formación</p>
+                </a>
+            </div>
+            
+            <!-- Botón LABS -->
+            <div class="mt-12">
+                <h3 class="font-display text-2xl font-bold text-white mb-6 text-center">Laboratorio Virtual de Herramientas de Estudio</h3>
+                <a href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html" target="_blank" class="block w-full max-w-4xl mx-auto large-btn">
+                    <div class="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 hover:border-primary transition-all duration-300 group">
+                        <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/Thumbnail-CEP-LABS.png" 
+                             alt="CEPREDIX LABS" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center">
+                            <div class="text-center p-6">
+                                <div class="size-20 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-4 mx-auto group-hover:bg-primary group-hover:text-black transition-colors">
+                                    <span class="material-symbols-outlined text-5xl">science</span>
+                                </div>
+                                <h3 class="text-3xl font-bold text-white mb-2 font-display">LABS</h3>
+                                <p class="text-gray-300 text-lg">Laboratorio virtual de herramientas de estudio</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Features List -->
-                <div class="space-y-6">
-                    <div class="flex gap-4 items-start group">
-                        <div class="size-12 shrink-0 rounded-full bg-surface-dark border border-white/10 flex items-center justify-center shadow-lg group-hover:border-primary transition-colors">
-                            <span class="material-symbols-outlined text-primary">live_tv</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white font-display">Clases en Vivo y Grabadas</h3>
-                            <p class="text-sm text-gray-400 mt-1">Interacción en tiempo real con expertos y acceso 24/7 a repeticiones hasta el día de tu examen.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 items-start group">
-                        <div class="size-12 shrink-0 rounded-full bg-surface-dark border border-white/10 flex items-center justify-center shadow-lg group-hover:border-primary transition-colors">
-                            <span class="material-symbols-outlined text-secondary">checklist</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white font-display">Banco de Preguntas & Simulacros</h3>
-                            <p class="text-sm text-gray-400 mt-1">Entrena con el sistema más robusto de reactivos tipo examen real para medir tu avance.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 items-start group">
-                        <div class="size-12 shrink-0 rounded-full bg-surface-dark border border-white/10 flex items-center justify-center shadow-lg group-hover:border-primary transition-colors">
-                            <span class="material-symbols-outlined text-blue-400">all_inclusive</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white font-display">Duración Extendida</h3>
-                            <p class="text-sm text-gray-400 mt-1">Tu acceso no caduca a mitad del camino. Te acompañamos hasta el día que presentes tu examen de admisión.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8">
-                         <a href="https://simuladores.cepredix.com.mx/00-cep-temarios.html" class="inline-flex items-center text-primary font-bold hover:text-white transition-colors">
-                            Ver plataforma de simulacros
-                            <span class="material-symbols-outlined ml-2">arrow_forward</span>
-                        </a>
-                    </div>
-                </div>
-
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Test Vocacional Section -->
-    <section class="py-16 bg-primary/5 border-y border-primary/20" id="test">
-        <div class="mx-auto max-w-4xl px-4 text-center">
-            <span class="material-symbols-outlined text-5xl text-primary mb-4">psychology_alt</span>
-            <h2 class="font-display text-3xl font-bold text-white mb-4">¿Aún no decides tu carrera?</h2>
-            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Descubre tu perfil profesional ideal con nuestra herramienta de orientación vocacional gratuita.</p>
-            <a href="https://simuladores.cepredix.com.mx/00-CEP-perfil-vocacional.html" class="inline-flex h-12 items-center justify-center rounded-full border border-primary text-primary px-8 text-sm font-bold hover:bg-primary hover:text-black transition-all duration-300">
-                REALIZAR TEST VOCACIONAL
-            </a>
-        </div>
-    </section>
-
-    <!-- Promoters Section -->
-    <section class="py-20 bg-background-dark">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
-                <div>
-                    <h2 class="font-display text-2xl font-bold text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-green-500">verified_user</span>
-                        Promotores Oficiales
-                    </h2>
-                    <p class="text-gray-400 text-sm mt-2 max-w-xl">
-                        Para tu seguridad y evitar fraudes, verifica que la persona que te contacta esté en esta lista oficial de CEPREDIX.
-                    </p>
-                </div>
+    <!-- Sección de Promotores Oficiales con Video/Imagen -->
+    <section class="py-20 bg-background-card border-t border-white/10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4 text-center">
+                Promotores <span class="text-primary">Oficiales</span>
+            </h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+                Para tu seguridad y evitar fraudes, verifica que la persona que te contacta esté en esta lista oficial de CEPREDIX.
+            </p>
+            
+            <!-- Contenedor para Video/Imagen GIF -->
+            <div class="relative mx-auto max-w-4xl w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-neon-hover group bg-black mb-12">
+                <!-- Puede ser un video o imagen GIF -->
+                <iframe 
+                    class="w-full h-full relative z-0" 
+                    src="https://www.youtube.com/embed/jh0xqP4IPhI?autoplay=0&controls=1&rel=0" 
+                    title="Promotores CEPREDIX" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+                
+                <!-- Opción de imagen GIF (comentada) -->
+                <!--
+                <img src="https://raw.githubusercontent.com/IALUMX/img_cepredix/refs/heads/main/promotores-gif.gif" 
+                     alt="Promotores Oficiales CEPREDIX" 
+                     class="w-full h-full object-cover"
+                     onerror="this.style.display='none'; document.querySelector('iframe').style.display='block';">
+                -->
             </div>
-
-            <div class="overflow-x-auto rounded-xl border border-white/10 bg-background-card shadow-card">
+            
+            <!-- Tabla de Promotores -->
+            <div class="overflow-x-auto rounded-xl border border-white/10 bg-background-dark shadow-card">
                 <table class="w-full text-left text-sm text-gray-400">
                     <thead class="bg-white/5 text-xs uppercase text-gray-300">
                         <tr>
@@ -440,28 +645,6 @@
         </div>
     </section>
 
-    <!-- Main CTA -->
-    <section class="py-24 bg-gradient-to-b from-background-dark to-[#0b1418] border-t border-white/10">
-        <div class="mx-auto max-w-4xl px-4 text-center">
-            <h2 class="font-display text-5xl md:text-6xl font-black text-white mb-8 tracking-tight drop-shadow-[0_0_15px_rgba(80,197,247,0.5)]">
-                ¡QUIERO INSCRIBIRME!
-            </h2>
-            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-                No dejes tu futuro al azar. Únete a la comunidad de estudiantes de alto rendimiento y asegura tu lugar hoy mismo.
-            </p>
-            
-            <a href="https://forms.gle/8Fu9QiV5AH9JUoS36" target="_blank" class="group relative inline-flex h-16 w-full sm:w-auto min-w-[300px] items-center justify-center overflow-hidden rounded-full bg-primary font-bold text-background-dark shadow-neon-hover transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary">
-                <span class="relative z-10 flex items-center text-lg">
-                    IR A PÁGINA DE PAGOS
-                    <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">payments</span>
-                </span>
-                <div class="absolute inset-0 -z-10 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            </a>
-            
-            <p class="mt-6 text-sm text-gray-500">Pagos 100% seguros y verificados.</p>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-[#020405] border-t border-white/10 pt-16 pb-8">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -478,9 +661,9 @@
                         Transformando la educación en México a través de tecnología disruptiva y excelencia académica garantizada.
                     </p>
                     <div class="flex gap-4">
-                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><i class="material-symbols-outlined">thumb_up</i></a>
-                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><i class="material-symbols-outlined">smart_display</i></a>
-                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><i class="material-symbols-outlined">alternate_email</i></a>
+                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">thumb_up</span></a>
+                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">smart_display</span></a>
+                        <a class="text-gray-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
                     </div>
                 </div>
                 
@@ -488,8 +671,8 @@
                 <div>
                     <h3 class="font-display font-bold text-white mb-4">Accesos Rápidos</h3>
                     <ul class="space-y-3 text-sm text-gray-500">
-                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-cep-temarios.html">Simuladores</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-cep-clases-grabadas.html">Clases Grabadas</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html">Simuladores</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html">Clases Grabadas</a></li>
                         <li><a class="hover:text-primary transition-colors" href="#test">Test Vocacional</a></li>
                     </ul>
                 </div>
@@ -498,9 +681,9 @@
                 <div>
                     <h3 class="font-display font-bold text-white mb-4">Legal</h3>
                     <ul class="space-y-3 text-sm text-gray-500">
-                        <li><a class="hover:text-primary transition-colors" href="#">Términos y Condiciones</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Política de Privacidad</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Garantía de Satisfacción</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html">Términos y Condiciones</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html">Política de Privacidad</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html">Garantía de Satisfacción</a></li>
                     </ul>
                 </div>
                 
@@ -522,7 +705,8 @@
 
 </div>
 
-<!-- Scripts básicos para funcionalidad -->
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/glide.min.js"></script>
 <script>
     // Toggle Mobile Menu
     const btn = document.getElementById('mobile-menu-btn');
@@ -534,6 +718,34 @@
         } else {
             menu.classList.add('mobile-menu-active');
         }
+    });
+    
+    // Inicializar carrusel
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Glide !== 'undefined') {
+            new Glide('.glide', {
+                type: 'carousel',
+                startAt: 0,
+                perView: 1,
+                autoplay: 5000,
+                hoverpause: true,
+                gap: 20,
+                breakpoints: {
+                    768: {
+                        perView: 1
+                    }
+                }
+            }).mount();
+        }
+        
+        // Agregar enlace temporal a todos los botones sin enlace explícito
+        const allButtons = document.querySelectorAll('a, button');
+        allButtons.forEach(element => {
+            if (element.tagName === 'A' && element.getAttribute('href') === '#') {
+                element.setAttribute('href', 'https://simuladores.cepredix.com.mx/00-espera-un-poco-un-poquito-maaaaas.html');
+                element.setAttribute('target', '_blank');
+            }
+        });
     });
 </script>
 
