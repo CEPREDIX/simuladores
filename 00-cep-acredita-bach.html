@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACREDITA-BACH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS ORIGINALES CONSERVADOS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://i.imgur.com/7ndIyWP.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 15px;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); z-index: -1;
+        }
+        .container {
+            width: 100%; max-width: 1200px; margin: 0 auto;
+            display: flex; flex-direction: column;            
+            flex: 1; /* Para empujar el footer hacia abajo si hay poco contenido */
+        }
+        .header {
+            text-align: center; padding: 15px; border-radius: 15px; margin-bottom: 20px;
+            background: linear-gradient(45deg, #0d47a1, #00695c, #ff6f00, #b71c1c, #4a148c);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .logo {
+            width: 100px; height: 100px; margin: 0 auto 10px;
+            background: url('https://i.imgur.com/I1unSiu.png') center/contain no-repeat;
+        }
+        .card {
+            background: rgba(25, 25, 35, 0.85); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 40px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 100%; max-width: 900px; margin: 0 auto 20px; position: relative;
+            text-align: center; border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        .btn {
+            padding: 12px 25px; font-size: 1.1rem; border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s ease; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); margin: 8px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary { background: linear-gradient(45deg, #2196F3, #21CBF3); color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+        .btn:active { transform: translateY(1px); }
+        
+        /* Estilos para los botones del menú */
+        .menu-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px 20px; border-radius: 20px; text-align: center;
+            transition: all 0.3s ease; cursor: pointer; margin-bottom: 20px;
+            border: 2px solid transparent; min-height: 220px;
+            text-decoration: none;
+        }
+        .menu-btn:hover {
+            transform: translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+        }
+        .menu-icon {
+            font-size: 4rem; margin-bottom: 20px; border-radius: 50%;
+            width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
+            margin-top: 10px;
+        }
+        .menu-title {
+            font-size: 1.6rem; font-weight: 700; margin-bottom: 10px;
+        }
+        .menu-desc {
+            font-size: 0.95rem; opacity: 0.9; line-height: 1.4;
+        }
+        
+        /* Colores específicos para cada botón */
+        .btn-temarios {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            border-color: rgba(79, 195, 247, 0.5);
+        }
+        .btn-clases {
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            border-color: rgba(156, 39, 176, 0.5);
+        }
+        .btn-labs {
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            border-color: rgba(255, 64, 129, 0.5);
+        }
+
+        #banner-container {
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            min-height: 50px;
+            margin: 10px auto 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        #banner-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Footer Styles */
+        #footer {
+            position: relative;
+            width: 100%;
+            margin-top: auto; /* Empuja el footer al final */
+            background: rgba(25, 25, 35, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 12px;
+            z-index: 100;
+            border-top: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        #footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        #footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 3px;
+        }
+        .footer-link, .social-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .footer-link:hover, .social-link:hover {
+            color: #21CBF3;
+            text-decoration: underline;
+        }
+        #copyright {
+            color: #aaaaaa;
+            font-size: 11px;
+        }
+
+        /* Estilos para el contenido del temario */
+        .temario-container {
+            background: rgba(25, 25, 35, 0.85); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 100%; max-width: 1000px; margin: 20px auto;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            text-align: left;
+        }
+        
+        .temario-title {
+            text-align: center;
+            color: #4fc3f7;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4fc3f7;
+            padding-bottom: 15px;
+        }
+        
+        .materia-section {
+            margin-bottom: 30px;
+            background: rgba(40, 40, 60, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4fc3f7;
+        }
+        
+        .materia-title {
+            color: #ff9800;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .materia-title i {
+            margin-right: 10px;
+        }
+        
+        .subtema-section {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .subtema-title {
+            color: #26d0ce;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+        
+        .temario-item {
+            margin: 8px 0;
+            padding: 10px 15px;
+            background: rgba(60, 60, 80, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .temario-item:hover {
+            background: rgba(79, 195, 247, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .temario-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 5px 0;
+        }
+        
+        .temario-link i {
+            color: #4fc3f7;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 65, 108, 0.4);
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 405px;
+            border: none;
+            display: block;
+        }
+
+        /* Media Queries para Footer Movil */
+        @media (max-width: 768px) {
+            #footer { padding: 10px 0; }
+            #footer-links { gap: 10px; }
+            .footer-link, .social-link { font-size: 0.8rem; }
+            .header h1 { font-size: 1.5rem; }
+            .header h2 { font-size: 1.1rem; }
+            .menu-btn { min-height: 180px; padding: 20px 15px; }
+            .menu-icon { font-size: 3rem; width: 80px; height: 80px; }
+            .menu-title { font-size: 1.3rem; }
+            .video-container iframe { height: 250px; }
+            .temario-container { padding: 20px; }
+            .materia-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="p-2 sm:p-4">
+
+    <!-- Audios originales conservados -->
+    <audio id="button-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Clic_sound.mp3" preload="auto"></audio>
+    <audio id="correct-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Correct_sound.mp3" preload="auto"></audio>
+    <audio id="incorrect-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Incorrect_sound.mp3" preload="auto"></audio>
+
+    <div class="container">
+        <!-- Encabezado Modificado para ACREDITA-BACH -->
+        <header class="header">
+            <div class="logo"></div>
+            <h1 class="text-2xl sm:text-3xl font-bold">ACREDITA-BACH</h1>
+            <h2 class="text-xl sm:text-2xl">Portal de Preparación Académica</h2>
+            <p class="text-sm sm:text-base mt-2">Todo lo que necesitas para tu preparación</p>
+        </header>
+
+        <!-- Contenedor para video de YouTube -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/jh0xqP4IPhI?list=PLXOxJVJlgkrvbX27SwvdY4TupN5tS_BTH" 
+                    title="ACREDITA-BACH" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- Menú Principal con 3 Botones Grandes -->
+        <div class="card" id="main-menu">
+            <h2 class="text-3xl font-bold mb-8" style="color: #4fc3f7;">
+                <i class="fas fa-graduation-cap mr-3"></i>Selecciona lo que necesitas
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Botón 1: TEMARIO Y BANCOS DE PREGUNTAS -->
+                <a href="#" 
+                   class="menu-btn btn-temarios" 
+                   id="temarios-btn">
+                    <div class="menu-icon" style="background: rgba(38, 208, 206, 0.2);">
+                        <i class="fas fa-book-open" style="color: #1a2980;"></i>
+                    </div>
+                    <div class="menu-title">TEMARIO Y BANCOS DE PREGUNTAS "ACREDITA-BACH"</div>
+                    <div class="menu-desc">
+                        Accede al temario completo con todos los temas y bancos de preguntas para tu preparación efectiva.
+                    </div>
+                </a>
+                
+                <!-- Botón 2: LABS Y SIMULACROS -->
+                <a href="http://bit.ly/458et4r" 
+                   class="menu-btn btn-clases" 
+                   id="labs-btn"
+                   target="_blank">
+                    <div class="menu-icon" style="background: rgba(142, 45, 226, 0.2);">
+                        <i class="fas fa-flask" style="color: #8E2DE2;"></i>
+                    </div>
+                    <div class="menu-title">LABS Y SIMULACROS "ACREDITA-BACH"</div>
+                    <div class="menu-desc">
+                        Practica con laboratorios virtuales y simulacros para evaluar tu conocimiento.
+                    </div>
+                </a>
+                
+                <!-- Botón 3: INFO -->
+                <a href="http://bit.ly/458et4r" 
+                   class="menu-btn btn-labs" 
+                   id="info-btn"
+                   target="_blank">
+                    <div class="menu-icon" style="background: rgba(255, 65, 108, 0.2);">
+                        <i class="fas fa-info-circle" style="color: #FF416C;"></i>
+                    </div>
+                    <div class="menu-title">INFO "ACREDITA-BACH"</div>
+                    <div class="menu-desc">
+                        Información importante sobre el programa ACREDITA-BACH y recursos adicionales.
+                    </div>
+                </a>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-700">
+                <p class="text-gray-300 mb-4">
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    Selecciona cualquiera de las opciones para acceder a los recursos de preparación.
+                </p>
+            </div>
+        </div>
+
+        <!-- Contenedor del Temario (inicialmente oculto) -->
+        <div class="temario-container" id="temario-content" style="display: none;">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="temario-title">TEMARIO COMPLETO - ACREDITA-BACH</h2>
+                <a href="#" class="back-btn" id="back-to-menu">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver al Menú
+                </a>
+            </div>
+            
+            <!-- SECCIÓN 1: MATEMÁTICAS -->
+            <div class="materia-section">
+                <h3 class="materia-title"><i class="fas fa-calculator"></i> 1. Matemáticas (Global)</h3>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Álgebra (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Razones y proporciones
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Sucesiones y series
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Operaciones con polinomios
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuaciones lineales
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuaciones cuadráticas
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Probabilidad y estadística (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Estadística descriptiva
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Probabilidad
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Geometría y trigonometría (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Triángulos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Polígonos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Poliedros
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Circunferencia y círculo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Triángulos rectángulos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Triángulos oblicuángulos
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Geometría analítica (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Lugar geométrico de líneas rectas y curvas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pendiente y ángulo de inclinación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuación de la recta
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuación de la circunferencia
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuación de la parábola
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Funciones (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Relaciones y funciones
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Graficación de funciones
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Función lineal
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Funciones cuadráticas
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN 2: CIENCIAS SOCIALES -->
+            <div class="materia-section">
+                <h3 class="materia-title"><i class="fas fa-globe-americas"></i> 2. Ciencias Sociales (Global)</h3>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Metodología de la investigación (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Tipos de investigación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Modelos y métodos de investigación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Protocolo de investigación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Marco teórico
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Reporte de investigación
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Socioeconomía (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Concepto del ser social y del ser individual
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Tipos de conocimiento
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Interpretaciones científicas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Categorías sociales
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Instituciones del Estado Mexicano
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Modelos económicos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Teorías de crecimiento económico
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Historia de México (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Horizontes culturales de Mesoamérica
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Conquista
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Virreinato
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Independencia
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> México independiente
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Intervenciones extranjeras
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Constitución de 1857
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Porfiriato
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Revolución Mexicana
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Cardenismo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Transición democrática
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Historia Universal Contemporánea (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Imperialismo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Primera Guerra Mundial
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Gobiernos totalitarios
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Segunda Guerra Mundial
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Guerra Fría
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Nuevo orden mundial
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN 3: HUMANIDADES -->
+            <div class="materia-section">
+                <h3 class="materia-title"><i class="fas fa-users"></i> 3. Humanidades (Global)</h3>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Ética (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Diferencia entre ética y moral
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Escuelas éticas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Juicios valorativos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Tipos de normas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Aspectos éticos del individuo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Aspectos éticos de la sociedad
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Derechos humanos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Formas de gobierno y democracia
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Multiculturalidad e interculturalidad
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Implicaciones éticas en el uso de la ciencia y la tecnología
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Principios bioéticos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Aspectos éticos del medio ambiente
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Filosofía (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Características de la filosofía
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento presocrático
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento griego clásico
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento medieval
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento renacentista
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento moderno
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Crítica a la modernidad
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Pensamiento filosófico en México
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Literatura (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Literariedad
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Géneros literarios
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Épocas literarias
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN 4: CIENCIAS EXPERIMENTALES -->
+            <div class="materia-section">
+                <h3 class="materia-title"><i class="fas fa-flask"></i> 4. Ciencias Experimentales (Global)</h3>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Química (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Materia
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Modelos atómicos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Partículas subatómicas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Tabla periódica
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Enlace químico
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Nomenclatura UIQPA
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Reacción química
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ecuación química
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Mol
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Sistemas dispersos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Hidrocarburos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Grupos funcionales
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Física (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Sistemas de unidades
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Cantidades vectoriales
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Movimiento en una dimensión
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Movimiento en dos dimensiones
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Leyes de Newton
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ley de la gravitación universal
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Trabajo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Energía
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Potencia
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Hidrostática
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Electrostática
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Electricidad
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Biología (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Niveles de organización de la materia viva
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Características de los seres vivos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Biomoléculas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> La célula
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Biotecnología contemporánea
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ciclo celular
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Sistema nervioso
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Sistema reproductor
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Características hereditarias
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Mutaciones
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Evolución
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Virus
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Dominios de los seres vivos
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Geografía (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Recursos geográficos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Litósfera
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Hidrósfera
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Atmósfera
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Prevención de desastres derivados de la dinámica terrestre
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Población humana
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Ecología (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Antecedentes de la ecología
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Desarrollo sustentable
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Factores ambientales
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Recursos naturales
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN 5: COMUNICACIÓN -->
+            <div class="materia-section">
+                <h3 class="materia-title"><i class="fas fa-comments"></i> 5. Comunicación (Global)</h3>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Español (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Los elementos del proceso comunicativo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Funciones del lenguaje
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Estrategias de comprensión lectora
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Principios básicos de sintaxis
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Reglas de acentuación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Reglas de puntuación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Propiedades de la redacción
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Prototipos textuales de la redacción
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Razonamiento lógico-verbal de relaciones semánticas
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Funciones y características de los textos expositivos
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Clasificación del ensayo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Metodología para la elaboración de un ensayo
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Estructura del ensayo
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="subtema-section">
+                    <h4 class="subtema-title">Informática (Global)</h4>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Conceptos básicos de informática
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ciudadanía y seguridad digital
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Navegadores
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Buscadores
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Correo electrónico
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Software de aplicación
+                        </a>
+                    </div>
+                    <div class="temario-item">
+                        <a href="http://bit.ly/458et4r" class="temario-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Algoritmos y diagramas de flujo
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="back-btn" id="back-to-menu-bottom">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver al Menú Principal
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Original -->
+    <div id="footer">
+        <div id="footer-content">
+            <div id="footer-links">
+                <a href="#" class="footer-link">Aviso de Privacidad</a>
+                <span class="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://www.facebook.com/cepredix/" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+                <span class="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://www.instagram.com/cepredix/" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <span class="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://www.tiktok.com/@cepredix" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <span class="text-gray-500 hidden sm:inline">|</span>
+                <a href="https://www.youtube.com/@Cepredix" target="_blank" class="footer-link social-link">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+            </div>
+            <div id="copyright">
+                &copy; ACREDITA-BACH 2025 - Todos los derechos reservados.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttonSound = document.getElementById('button-sound');
+            const correctSound = document.getElementById('correct-sound');
+            const incorrectSound = document.getElementById('incorrect-sound');
+            
+            // Elementos del DOM
+            const mainMenu = document.getElementById('main-menu');
+            const temarioContent = document.getElementById('temario-content');
+            const temariosBtn = document.getElementById('temarios-btn');
+            const labsBtn = document.getElementById('labs-btn');
+            const infoBtn = document.getElementById('info-btn');
+            const backToMenuBtn = document.getElementById('back-to-menu');
+            const backToMenuBottomBtn = document.getElementById('back-to-menu-bottom');
+
+            // Función para reproducir sonido de clic
+            function playClickSound() {
+                if(buttonSound) {
+                    buttonSound.currentTime = 0;
+                    buttonSound.volume = 0.5;
+                    buttonSound.play().catch(e => console.error("Error audio:", e));
+                }
+            }
+            
+            // Función para mostrar el temario
+            function showTemario() {
+                playClickSound();
+                mainMenu.style.display = 'none';
+                temarioContent.style.display = 'block';
+                
+                // Efecto visual en el botón
+                temariosBtn.style.transform = "scale(0.98)";
+                setTimeout(() => {
+                    temariosBtn.style.transform = "scale(1)";
+                }, 150);
+                
+                // Desplazar hacia arriba
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Función para regresar al menú principal
+            function backToMainMenu() {
+                playClickSound();
+                temarioContent.style.display = 'none';
+                mainMenu.style.display = 'block';
+                
+                // Desplazar hacia arriba
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Evento para el botón de temarios
+            if (temariosBtn) {
+                temariosBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showTemario();
+                });
+            }
+            
+            // Evento para el botón de LABS
+            if (labsBtn) {
+                labsBtn.addEventListener('click', (e) => {
+                    playClickSound();
+                    labsBtn.style.transform = "scale(0.98)";
+                    setTimeout(() => {
+                        labsBtn.style.transform = "scale(1)";
+                    }, 150);
+                });
+            }
+            
+            // Evento para el botón de INFO
+            if (infoBtn) {
+                infoBtn.addEventListener('click', (e) => {
+                    playClickSound();
+                    infoBtn.style.transform = "scale(0.98)";
+                    setTimeout(() => {
+                        infoBtn.style.transform = "scale(1)";
+                    }, 150);
+                });
+            }
+            
+            // Eventos para los botones de volver al menú
+            if (backToMenuBtn) {
+                backToMenuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    backToMainMenu();
+                });
+            }
+            
+            if (backToMenuBottomBtn) {
+                backToMenuBottomBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    backToMainMenu();
+                });
+            }
+
+            // Reproducir sonido en enlaces del footer
+            document.querySelectorAll('.footer-link, .social-link').forEach(link => {
+                link.addEventListener('click', playClickSound);
+            });
+            
+            // Reproducir sonido en enlaces del temario
+            document.querySelectorAll('.temario-link').forEach(link => {
+                link.addEventListener('click', playClickSound);
+            });
+        });
+    </script>
+</body>
+</html>
