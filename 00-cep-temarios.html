@@ -1058,10 +1058,7 @@
                         <input type="checkbox" id="toggleTags">
                         <label for="toggleTags">.</label>
                     </div>
-                    <button id="exportBtn" class="export-btn">
-                        <i class="fas fa-download"></i> Exportar Temario (.txt)
-                    </button>
-                </div>
+                    </div>
             </div>
         </header>
 
@@ -1329,10 +1326,19 @@
                 <div class="filter-status" id="filterStatus">
                     No hay filtros aplicados
                 </div>
-                <div class="filter-actions">
+                <div class="filter-actions" style="gap: 15px; flex-wrap: wrap;">
                     <span id="warningMsg"></span>
+                    
+                    <button id="cleanFiltersBtn" style="background: #ff3860; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-trash"></i> Limpiar
+                    </button>
+
                     <button id="applyFilters">
                         <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+
+                    <button id="exportBtn" class="export-btn" style="background: var(--accent); color: var(--primary); margin: 0;">
+                        <i class="fas fa-download"></i> Descargar
                     </button>
                 </div>
             </div>
@@ -1782,6 +1788,26 @@
         function setupEventListeners() {
             // Botón aplicar filtros
             document.getElementById('applyFilters').addEventListener('click', applyFilters);
+            // --- NUEVO CÓDIGO: Función para Limpiar Filtros ---
+            const cleanBtn = document.getElementById('cleanFiltersBtn');
+            if (cleanBtn) {
+                cleanBtn.addEventListener('click', function() {
+                    // 1. Desmarcar todos los checkboxes
+                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    
+                    // 2. Resetear radios a la opción vacía
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.checked = (radio.value === "");
+                    });
+
+                    // 3. Reactivar módulos EXANI si estaban bloqueados
+                    document.querySelectorAll('.exani-mod').forEach(cb => cb.disabled = false);
+
+                    // 4. Actualizar la vista (esto mostrará todo de nuevo)
+                    applyFilters();
+                });
+            }
+            // --- FIN DEL NUEVO CÓDIGO ---
             
             // Toggle para mostrar/ocultar tags
             document.getElementById('toggleTags').addEventListener('change', function(e) {
@@ -2189,10 +2215,6 @@
                     const indent = '  '.repeat(level);
                     txtContent += `${indent}${item.nivel}. ${item.contenido}\n`;
 
-                    // AQUÍ TAMBIÉN: Permitimos que se incluya el enlace en el TXT
-                    if (item.url && item.url.trim() !== '') {
-                        txtContent += `${indent}  Enlace: ${item.url}\n`;
-                    }
 
                     txtContent += '\n';
 
