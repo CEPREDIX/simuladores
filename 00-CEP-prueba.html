@@ -1443,7 +1443,10 @@
                 <div id="lookup-section-content" class="hidden mt-3">
                     <div class="flex gap-2">
                         <input type="text" id="lookup-id-input" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="Introduce el ID del reactivo">
-                        <button id="lookup-btn" class="btn btn-secondary !m-0">Buscar</button>
+                       <button id="lookup-btn" class="btn btn-secondary !m-0">Buscar</button>
+                        <button id="lookup-wb-btn" class="btn btn-secondary !m-0" title="Abrir Pizarra" style="min-width: 50px;">
+                            <i class="fas fa-pen-to-square"></i>
+                        </button>
                     </div>
                     <div id="lookup-result-container" class="mt-2 p-4 bg-gray-800 rounded-lg hidden text-left">
                     </div>
@@ -5294,7 +5297,8 @@
             }
 
             const wbTriggerBtn = document.getElementById('whiteboard-trigger-btn'); // Botón del Quiz
-            const setupWbBtn = document.getElementById('setup-wb-btn'); // Nuevo Botón del Setup
+            const setupWbBtn = document.getElementById('setup-wb-btn'); // Botón del Setup (Volumen)
+            const lookupWbBtn = document.getElementById('lookup-wb-btn'); // Nuevo Botón (Buscar ID)
             const wbOverlay = document.getElementById('overlay-whiteboard');
             const wbCanvas = document.getElementById('wb-canvas');
             const wbCloseBtn = document.getElementById('wb-close-btn');
@@ -5349,9 +5353,14 @@
                     wbTriggerBtn.addEventListener('click', openWhiteboard);
                 }
 
-                // Abrir Pizarra desde Configuración (Setup)
+                // Abrir Pizarra desde Configuración (Setup - Volumen)
                 if (setupWbBtn) {
                     setupWbBtn.addEventListener('click', openWhiteboard);
+                }
+
+                // Abrir Pizarra desde Configuración (Setup - Buscar ID)
+                if (lookupWbBtn) {
+                    lookupWbBtn.addEventListener('click', openWhiteboard);
                 }
 
                 // Cerrar Pizarra
