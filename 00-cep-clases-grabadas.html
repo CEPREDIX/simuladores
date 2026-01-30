@@ -312,99 +312,97 @@
             // --- LÓGICA DE AUTENTICACIÓN ---
 
            // --- LÓGICA DE AUTENTICACIÓN MEJORADA (COPIADA DE REFERENCIA) ---
-            loginForm.addEventListener('submit', async (e) => {
+            // --- LÓGICA DE AUTENTICACIÓN CORREGIDA (USANDO PAPAPARSE DIRECTO) ---
+            loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // 1. Obtener y limpiar datos (Igual que en el código de referencia)
+                // 1. Obtener y limpiar datos
                 const name = document.getElementById('name-input').value.trim();
                 const emailRaw = document.getElementById('email-input').value.trim();
                 const whatsappRaw = document.getElementById('whatsapp-input').value.trim();
 
                 // Limpieza estricta: Correo a minúsculas, WhatsApp solo números
                 const email = emailRaw.toLowerCase();
-                const whatsapp = whatsappRaw.replace(/\D/g, ''); // Quita espacios o guiones
+                const whatsapp = whatsappRaw.replace(/\D/g, ''); 
 
                 // UI: Mostrar carga
                 loginError.textContent = '';
+                loginError.style.color = "#f87171"; // Reset color error
                 loginBtn.disabled = true;
                 loginBtnText.classList.add('hidden');
                 loginBtnSpinner.classList.remove('hidden');
 
-                try {
-                    // 2. Truco Anti-Caché: Agregar timestamp para forzar datos nuevos
-                    const timestamp = new Date().getTime();
-                    // Usamos la misma hoja de AUTH pero forzamos recarga
-                    const freshSheetUrl = AUTH_SHEET_URL + '&v=' + timestamp;
-                    const freshProxyUrl = `https://corsproxy.io/?${encodeURIComponent(freshSheetUrl)}`;
+                // 2. Usar PapaParse directamente (Igual que el calendario)
+                // Agregamos timestamp para evitar caché antiguo
+                const freshUrl = AUTH_SHEET_URL + '&v=' + new Date().getTime();
 
-                    const response = await fetch(freshProxyUrl);
-                    if (!response.ok) throw new Error('Error al conectar con la base de datos.');
-                    
-                    const csvData = await response.text();
-                    const rows = csvData.split('\n').map(row => row.split(',').map(c => c.trim()));
-                    
-                    let userFound = false;
-                    let isInactive = false;
+                Papa.parse(freshUrl, {
+                    download: true,
+                    header: false, // Leemos por índice de columna (0, 1, 2...)
+                    skipEmptyLines: true,
+                    error: function(err) {
+                        console.error('Error de conexión:', err);
+                        loginError.textContent = 'Error de conexión. Verifica tu internet.';
+                        resetBtn();
+                    },
+                    complete: async function(results) {
+                        let userFound = false;
+                        let isInactive = false;
+                        const rows = results.data;
 
-                    // 3. Buscar usuario en el CSV (Columnas: 1=Email, 2=Whatsapp, 6=Estado)
-                    for (let i = 1; i < rows.length; i++) {
-                        const cols = rows[i];
-                        if (cols.length < 3) continue;
+                        // 3. Buscar usuario en el CSV
+                        // Asumimos fila 1=Email, 2=Whatsapp, 6=Estado (Indices empiezan en 0, así que col B es index 1)
+                        for (let i = 1; i < rows.length; i++) {
+                            const cols = rows[i];
+                            if (cols.length < 3) continue;
 
-                        const rowEmail = cols[1] ? cols[1].toLowerCase() : "";
-                        const rowWhatsapp = cols[2] ? cols[2].replace(/\D/g, '') : "";
-                        
-                        if (rowEmail === email && rowWhatsapp === whatsapp) {
-                            userFound = true;
-                            // Verificar si está ACTIVO o INACTIVO (Columna 6 aprox en tu referencia)
-                            const status = cols[6] ? cols[6].toUpperCase().replace(/[^A-Z]/g, '') : 'ACTIVO';
-                            if (status === 'INACTIVO') {
-                                isInactive = true;
+                            const rowEmail = cols[1] ? cols[1].toString().trim().toLowerCase() : "";
+                            const rowWhatsapp = cols[2] ? cols[2].toString().replace(/\D/g, '') : "";
+                            
+                            if (rowEmail === email && rowWhatsapp === whatsapp) {
+                                userFound = true;
+                                // Verificar si está ACTIVO o INACTIVO (Columna G es index 6)
+                                const status = cols[6] ? cols[6].toString().toUpperCase().replace(/[^A-Z]/g, '') : 'ACTIVO';
+                                if (status === 'INACTIVO') {
+                                    isInactive = true;
+                                }
+                                break;
                             }
-                            break;
-                        }
-                    }
-
-                    if (isInactive) {
-                        loginError.style.color = "#ff5722";
-                        loginError.textContent = 'Tu cuenta aparece como INACTIVA. Contacta al administrador.';
-                        throw new Error('Usuario inactivo');
-                    }
-
-                    if (userFound) {
-                        // 4. Validación extra con el Servidor (POST al Script) para asegurar
-                        const formData = new FormData();
-                        formData.append('action', 'login');
-                        formData.append('email', email);
-                        formData.append('whatsapp', whatsapp);
-
-                        // Intentamos validar con el script oficial también
-                        try {
-                            await fetch(RESULTS_SCRIPT_URL, {
-                                method: 'POST',
-                                body: formData,
-                                redirect: 'follow'
-                            });
-                            // Si el fetch funciona, asumimos éxito (el CSV ya confirmó los datos)
-                        } catch (errScript) {
-                            console.log("Advertencia: El script secundario no respondió, pero el CSV validó ok.");
                         }
 
-                        // ¡ÉXITO!
-                        userNameDisplay.textContent = name;
-                        showCalendar();
-                    } else {
-                        loginError.style.color = "#f87171";
-                        loginError.textContent = 'Datos incorrectos. Verifica tu correo y WhatsApp (sin espacios).';
-                    }
+                        // 4. Procesar resultado
+                        if (isInactive) {
+                            loginError.style.color = "#ff5722";
+                            loginError.textContent = 'Tu cuenta aparece como INACTIVA. Contacta al administrador.';
+                            resetBtn();
+                            return;
+                        }
 
-                } catch (error) {
-                    console.error(error);
-                    if (error.message !== 'Usuario inactivo') {
-                        loginError.textContent = 'Error de conexión o datos no encontrados.';
+                        if (userFound) {
+                            // Validación secundaria opcional (Script de respaldo) - No bloqueante
+                            try {
+                                const formData = new FormData();
+                                formData.append('action', 'login');
+                                formData.append('email', email);
+                                formData.append('whatsapp', whatsapp);
+                                await fetch(RESULTS_SCRIPT_URL, { method: 'POST', body: formData, redirect: 'follow' });
+                            } catch (errScript) {
+                                console.log("Nota: Registro en script secundario omitido por error de red, pero el acceso es válido.");
+                            }
+
+                            // ¡ÉXITO!
+                            userNameDisplay.textContent = name;
+                            showCalendar();
+                            // El botón se queda oculto porque cambiamos de pantalla
+                        } else {
+                            loginError.style.color = "#f87171";
+                            loginError.textContent = 'Datos incorrectos. Verifica tu correo y WhatsApp.';
+                            resetBtn();
+                        }
                     }
-                } finally {
-                    // Restaurar botón
+                });
+
+                function resetBtn() {
                     loginBtn.disabled = false;
                     loginBtnText.classList.remove('hidden');
                     loginBtnSpinner.classList.add('hidden');
