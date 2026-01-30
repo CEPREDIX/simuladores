@@ -736,9 +736,9 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">Evaluación Completa</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">Diagnóstico ciencias de la salud</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
-            <p class="text-sm sm:text-base">Demuestra tus conocimientos con esta evaluación completa 🧠</p>
+            <p class="text-sm sm:text-base">Demuestra tus conocimientos con esta evaluación de Diagnóstico ciencias de la salud 🧠</p>
         </header>
         <div id="banner-container" style="display: none;">
             <a id="banner-link" href="#" target="_blank">
@@ -2241,7 +2241,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 const formData = new FormData();
                 
-                formData.append('EvaluationName', "Evaluación Completa"); 
+                formData.append('EvaluationName', "Diagnóstico ciencias de la salud"); 
                 
                 formData.append('Name', currentUser.name || 'Invitado');
                 formData.append('Email', currentUser.email || 'sin_email');
@@ -2432,7 +2432,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "Evaluación Completa";
+                summaryEvalName.textContent = "Diagnóstico ciencias de la salud";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
