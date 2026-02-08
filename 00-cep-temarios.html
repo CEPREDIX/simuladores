@@ -625,7 +625,7 @@
                     const indentClass = `level-${Math.min(node.nivelNum, 4)}`;
                     const tagsHTML = node.tags.map(t => `<span class="tag ${t === 'GENERAL' ? 'general' : ''}">${t}</span>`).join('');
                     
-                    // Link Logic
+                    // Link Logic (Para items normales)
                     let link = `<span class="disabled">${node.contenido}</span>`;
                     if (node.url && node.url.length > 5) {
                         link = `<a href="${node.url.startsWith('http') ? node.url : 'https://' + node.url}" target="_blank">${node.contenido}</a>`;
@@ -633,7 +633,14 @@
 
                     // Bloque vs Item
                     if (node.nivelNum === 1) {
-                        str += `<div class="bloque-title">${node.nivel}. ${node.contenido}</div>`;
+                        // Link Logic (Para Bloques Nivel 1)
+                        let blockContent = node.contenido;
+                        if (node.url && node.url.length > 5) {
+                            const safeUrl = node.url.startsWith('http') ? node.url : 'https://' + node.url;
+                            blockContent = `<a href="${safeUrl}" target="_blank" style="color: inherit; text-decoration: underline;">${node.contenido}</a>`;
+                        }
+
+                        str += `<div class="bloque-title">${node.nivel}. ${blockContent}</div>`;
                         if (node.children.length > 0) {
                             str += `<ul class="temario-list">${buildHTML(node.children)}</ul>`;
                         }
