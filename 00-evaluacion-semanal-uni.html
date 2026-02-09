@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVALUACIÓN SEMANAL</title>
+    <title>EVALUACIÓN ACUMULATIVA SEMANAL</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -12,7 +12,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="EVALUACIÓN SEMANAL - CEPREDIX">
+    <meta property="og:title" content="EVALUACIÓN ACUMULATIVA SEMANAL - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1316,7 +1316,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">EVALUACIÓN SEMANAL</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">EVALUACIÓN ACUMULATIVA SEMANAL</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1399,6 +1399,20 @@
                 </div>
             </div>
             <div class="space-y-4">
+                <div class="space-y-2 border-b border-gray-700 pb-4">
+                    <p class="font-medium text-blue-400">Filtro por Rango de IDs (Opcional)</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400">Desde ID:</label>
+                            <input type="text" id="start-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00AD">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400">Hasta ID:</label>
+                            <input type="text" id="end-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00BJ">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-2">
                     <p class="font-medium">Proceso de Admisión</p>
                     <p class="text-xs text-gray-400">Selecciona tu proceso de admisión, recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
@@ -1419,9 +1433,14 @@
                 <label for="answered-ids-input" class="font-medium">Pegar IDs de ejercicios ya respondidos (opcional)</label>
                 <textarea id="answered-ids-input" rows="3" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="CEPCOL8Ht, CEPCOL4aA, ..."></textarea>
                 <div class="text-sm text-gray-300 space-y-2 mt-2 bg-gray-800 p-3 rounded-lg">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between items-center">
                         <span>📚 Total Banco:</span> 
-                        <strong id="stats-total">0</strong>
+                        <div class="flex items-center gap-2">
+                            <strong id="stats-total">0</strong>
+                            <button id="reload-data-btn" class="mini-nav-btn" title="Actualizar banco de preguntas" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="flex justify-between">
                         <span>🔍 Con Filtros (Nivel/Proceso):</span> 
@@ -1938,6 +1957,9 @@
             const levelTagsContainer = document.getElementById('level-tags-container');
             const typeTagsContainer = document.getElementById('type-tags-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
+            const startIdInput = document.getElementById('start-id-input'); // Nuevo filtro ID inicio
+            const endIdInput = document.getElementById('end-id-input');     // Nuevo filtro ID fin
+            const reloadDataBtn = document.getElementById('reload-data-btn'); // Nuevo botón recargar
             const statsTotal = document.getElementById('stats-total');
             const statsTotalFiltered = document.getElementById('stats-total-filtered');
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
@@ -3918,16 +3940,32 @@
                 
                 let filteredQuestions = allQuestions;
 
-                // Lógica de filtrado con los 3 tags
+               // Lógica de filtrado con tags + Rango de IDs
+                const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
                 filteredQuestions = allQuestions.filter(q => {
                     // Verificar Uni
                     const hasUniTag = selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag)));
                     // Verificar Nivel
                     const hasLevelTag = selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag)));
-                    // Verificar Tipo (NUEVO)
+                    // Verificar Tipo
                     const hasTypeTag = selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag)));
+                    
+                    // Verificar Rango de IDs
+                    let inIdRange = true;
+                    if (startIdVal && endIdVal) {
+                        // Si hay ambos, debe estar entre los dos (alfabéticamente)
+                        inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                    } else if (startIdVal) {
+                        // Solo inicio: mayor o igual
+                        inIdRange = (q.id >= startIdVal);
+                    } else if (endIdVal) {
+                        // Solo final: menor o igual
+                        inIdRange = (q.id <= endIdVal);
+                    }
 
-                    return hasUniTag && hasLevelTag && hasTypeTag;
+                    return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
                 });
                 
                 // 2. Preguntas con Filtros
@@ -3941,6 +3979,18 @@
             }
             
             answeredIdsInput.addEventListener('input', updateQuestionStats);
+            // Nuevos eventos para filtros y recarga
+            if(startIdInput) startIdInput.addEventListener('input', updateQuestionStats);
+            if(endIdInput) endIdInput.addEventListener('input', updateQuestionStats);
+            
+            if(reloadDataBtn) {
+                reloadDataBtn.addEventListener('click', async () => {
+                    const icon = reloadDataBtn.querySelector('i');
+                    icon.classList.add('fa-spin'); // Añadir animación de giro
+                    await loadData(); // Recargar datos
+                    setTimeout(() => icon.classList.remove('fa-spin'), 1000); // Quitar animación
+                });
+            }
             
             function populateTagFilters() {
                 const uniTags = [...new Set(allQuestions.flatMap(q => q.uni_tags || []))];
@@ -4247,6 +4297,7 @@
                 questionIdDisplay.textContent = question.id || 'N/A';
                 uniTagsDisplay.innerHTML = (question.uni_tags || []).map(t => `<span class="uni-tag-display">${t}</span>`).join(' ');
                 levelTagDisplay.innerHTML = (question.level_tag || []).map(t => `<span class="level-tag-display">${t}</span>`).join(' ');
+                questionText.style.whiteSpace = 'pre-line'; // Esta línea hace que el navegador respete los saltos de línea \n
                 let questionHTML = question.question;
                 questionText.innerHTML = questionHTML;
                 questionStartTime = Date.now();
@@ -4753,7 +4804,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 const formData = new FormData();
                 
-                formData.append('EvaluationName', "EVALUACIÓN SEMANAL"); 
+                formData.append('EvaluationName', "EVALUACIÓN ACUMULATIVA SEMANAL"); 
                 
                 formData.append('Name', currentUser.name || 'Invitado');
                 formData.append('Email', currentUser.email || 'sin_email');
@@ -5052,7 +5103,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "EVALUACIÓN SEMANAL";
+                summaryEvalName.textContent = "EVALUACIÓN ACUMULATIVA SEMANAL";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -5587,13 +5638,11 @@
                     wbIsEraser = true;
                 });
 
-                // Limpiar todo
+                // Limpiar todo (MODIFICADO: Sin confirmación)
                 document.getElementById('wb-clear-btn').addEventListener('click', () => {
-                    if(confirm("¿Borrar toda la pizarra?")) {
-                        wbPaths = [];
-                        saveHistory(); // Guardar el estado vacío
-                        redrawWb();
-                    }
+                    wbPaths = [];
+                    saveHistory(); // Guardar el estado vacío
+                    redrawWb();
                 });
 
                 // --- DESHACER (UNDO) CORREGIDO ---
