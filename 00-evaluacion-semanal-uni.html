@@ -4161,11 +4161,29 @@
                     }
 
                     // Filtrado Maestro
+                    // Captura valores actuales de los inputs de ID
+                    const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                    const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
                     let availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
                         const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
-                        return hasUniTag && hasLevelTag && hasTypeTag;
+                        
+                        // Lógica de filtro por Rango de IDs
+                        let inIdRange = true;
+                        if (startIdVal && endIdVal) {
+                            // Si hay inicio y fin, debe estar en medio
+                            inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                        } else if (startIdVal) {
+                            // Solo inicio
+                            inIdRange = (q.id >= startIdVal);
+                        } else if (endIdVal) {
+                            // Solo fin
+                            inIdRange = (q.id <= endIdVal);
+                        }
+
+                        return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
                     });
 
                     let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
