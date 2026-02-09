@@ -3980,8 +3980,35 @@
             
             answeredIdsInput.addEventListener('input', updateQuestionStats);
             // Nuevos eventos para filtros y recarga
-            if(startIdInput) startIdInput.addEventListener('input', updateQuestionStats);
-            if(endIdInput) endIdInput.addEventListener('input', updateQuestionStats);
+           // Lógica para actualizar etiquetas dinámicamente al escribir rango de IDs
+            const handleIdFilterUpdate = () => {
+                const start = startIdInput.value.trim().toUpperCase();
+                const end = endIdInput.value.trim().toUpperCase();
+                
+                let filteredData = allQuestions;
+
+                if (start || end) {
+                    filteredData = allQuestions.filter(q => {
+                        let inRange = true;
+                        if (start && end) {
+                            inRange = (q.id >= start && q.id <= end);
+                        } else if (start) {
+                            inRange = (q.id >= start);
+                        } else if (end) {
+                            inRange = (q.id <= end);
+                        }
+                        return inRange;
+                    });
+                }
+                
+                // Regenerar etiquetas con los datos filtrados (mantiene "allQuestions" si los inputs están vacíos)
+                populateTagFilters(filteredData);
+                // Actualizar estadísticas finales
+                updateQuestionStats();
+            };
+
+            if(startIdInput) startIdInput.addEventListener('input', handleIdFilterUpdate);
+            if(endIdInput) endIdInput.addEventListener('input', handleIdFilterUpdate);
             
             if(reloadDataBtn) {
                 reloadDataBtn.addEventListener('click', async () => {
@@ -3992,10 +4019,10 @@
                 });
             }
             
-            function populateTagFilters() {
-                const uniTags = [...new Set(allQuestions.flatMap(q => q.uni_tags || []))];
-                const levelTags = [...new Set(allQuestions.flatMap(q => q.level_tag || []))];
-                const typeTags = [...new Set(allQuestions.flatMap(q => q.type_tag || []))]; // Nuevo
+            function populateTagFilters(dataSource = allQuestions) {
+                const uniTags = [...new Set(dataSource.flatMap(q => q.uni_tags || []))];
+                const levelTags = [...new Set(dataSource.flatMap(q => q.level_tag || []))];
+                const typeTags = [...new Set(dataSource.flatMap(q => q.type_tag || []))];
 
                 uniTagsContainer.innerHTML = '';
                 levelTagsContainer.innerHTML = '';
