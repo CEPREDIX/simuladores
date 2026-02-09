@@ -3899,7 +3899,7 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL);
+                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
                     if (!response.ok) {
                         throw new Error('No se pudo cargar el archivo JSON');
                     }
@@ -4014,8 +4014,15 @@
                 reloadDataBtn.addEventListener('click', async () => {
                     const icon = reloadDataBtn.querySelector('i');
                     icon.classList.add('fa-spin'); // Añadir animación de giro
-                    await loadData(); // Recargar datos
-                    setTimeout(() => icon.classList.remove('fa-spin'), 1000); // Quitar animación
+                    
+                    // Recargar datos forzando la limpieza de caché
+                    await loadData(); 
+                    
+                    setTimeout(() => {
+                        icon.classList.remove('fa-spin'); // Quitar animación
+                        // Mostrar mensaje de éxito visual
+                        showTemporaryMessage("Banco de preguntas actualizado correctamente desde el servidor ✅", "bg-green-600");
+                    }, 1000); 
                 });
             }
             
