@@ -51,11 +51,16 @@
             line-height: 1.4; /* Ajuste global de interlineado */
         }
         #question-text {
-            line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
-            margin-bottom: 15px !important;
+            line-height: 1.1 !important; /* Texto muy compacto */
+            margin-bottom: 10px !important;
+            font-size: 1.15rem !important; /* Tamaño legible */
         }
         #question-text p {
-            margin-bottom: 8px !important; /* Menos espacio entre párrafos */
+            margin-bottom: 4px !important; /* Espacio mínimo entre párrafos */
+            padding: 0 !important;
+        }
+        body {
+            line-height: 1.2; /* Ajuste global para todo el cuerpo */
         }
         body::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -359,18 +364,20 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); object-fit: contain;
         }
        #image-container {
-            position: relative; 
-            width: 100%; 
-            max-width: 100%; 
-            aspect-ratio: 1 / 1; /* Fuerza al contenedor a ser siempre cuadrado */
-            max-height: 60vh; /* Límite de altura para que no se salga de pantalla en PC */
-            background-size: contain; 
-            background-position: center; 
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            /* Eliminamos aspect-ratio para permitir rectángulos panorámicos */
+            height: 50vh; /* Usa la mitad de la altura de la pantalla */
+            min-height: 300px; /* Altura mínima garantizada */
+            max-height: 600px; /* Tope para monitores grandes */
+            background-size: contain; /* Asegura que la imagen se vea completa */
+            background-position: center;
             background-repeat: no-repeat;
-            overflow: hidden; 
-            margin: 15px auto; 
+            overflow: hidden;
+            margin: 10px auto;
             border-radius: 10px;
-            background-color: rgba(0,0,0,0.2);
+            background-color: rgba(0, 0, 0, 0.3);
         }
         #watermark-overlay {
             position: absolute; inset: -50%; width: 200%; height: 200%;
@@ -1179,21 +1186,26 @@
             .justification h4 { font-size: 1rem !important; }
             .calculator-container { width: 95%; max-width: 300px; height: auto; padding-bottom: 20px; }
         }
-		/* Ajuste para que los controles de la pizarra se vean pequeños en PC */
-        @media (min-width: 1024px) {
+		/* Ajuste REFORZADO para controles pequeños en PC y Tablet */
+        @media (min-width: 768px) {
             #overlay-whiteboard .absolute.bottom-6 {
-                transform: translateX(-50%) scale(0.75); /* Reduce la barra al 75% de su tamaño */
+                transform: translateX(-50%) scale(0.6); /* Reducido al 60% del tamaño original */
                 transform-origin: bottom center;
-                bottom: 1.5rem;
-                padding: 0.5rem !important;
-                max-width: 80% !important;
+                bottom: 1rem;
+                padding: 4px !important;
+                width: auto !important;
+                white-space: nowrap;
             }
-            /* Forzar tamaño pequeño de los botones internos */
+            /* Forzar botones internos muy compactos */
             #overlay-whiteboard .wb-tool-btn, 
             #overlay-whiteboard #wb-custom-wrapper,
             #overlay-whiteboard #wb-eraser-btn {
-                width: 1.5rem !important; 
-                height: 1.5rem !important;
+                width: 28px !important; 
+                height: 28px !important;
+            }
+            /* Ocultar barra vertical divisoria en modo compacto para ahorrar espacio */
+            #overlay-whiteboard .bg-gray-600.w-px {
+                margin: 0 4px !important;
             }
         }
     </style>
