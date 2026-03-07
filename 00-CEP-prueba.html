@@ -48,6 +48,14 @@
             padding: 15px;
             position: relative;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            line-height: 1.4; /* Ajuste global de interlineado */
+        }
+        #question-text {
+            line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
+            margin-bottom: 15px !important;
+        }
+        #question-text p {
+            margin-bottom: 8px !important; /* Menos espacio entre párrafos */
         }
         body::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -351,13 +359,18 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); object-fit: contain;
         }
         #image-container {
-            position: relative; width: 100%; max-width: 100%; 
-            height: 45vh; /* Usa el 45% de la altura de la pantalla del dispositivo */
-            max-height: 500px; /* Límite para que no sea gigante en PC */
-            min-height: 250px; /* Límite para que no sea muy chica en móviles */
-            background-size: contain; background-position: center; background-repeat: no-repeat;
-            overflow: hidden; margin: 15px auto; border-radius: 10px;
-            background-color: rgba(0,0,0,0.2); /* Fondo sutil para distinguir el área */
+            position: relative; 
+            width: 100%; 
+            max-width: 100%; 
+            aspect-ratio: 1 / 1; /* Fuerza al contenedor a ser siempre cuadrado */
+            max-height: 60vh; /* Límite de altura para que no se salga de pantalla en PC */
+            background-size: contain; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            overflow: hidden; 
+            margin: 15px auto; 
+            border-radius: 10px;
+            background-color: rgba(0,0,0,0.2);
         }
         #watermark-overlay {
             position: absolute; inset: -50%; width: 200%; height: 200%;
@@ -1166,6 +1179,23 @@
             .justification h4 { font-size: 1rem !important; }
             .calculator-container { width: 95%; max-width: 300px; height: auto; padding-bottom: 20px; }
         }
+        /* Ajuste para que los controles de la pizarra se vean pequeños en PC */
+        @media (min-width: 1024px) {
+            #overlay-whiteboard .absolute.bottom-6 {
+                transform: translateX(-50%) scale(0.75); /* Reduce la barra al 75% de su tamaño */
+                transform-origin: bottom center;
+                bottom: 1.5rem;
+                padding: 0.5rem !important;
+                max-width: 80% !important;
+            }
+            /* Forzar tamaño pequeño de los botones internos */
+            #overlay-whiteboard .wb-tool-btn, 
+            #overlay-whiteboard #wb-custom-wrapper,
+            #overlay-whiteboard #wb-eraser-btn {
+                width: 1.5rem !important; 
+                height: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1399,6 +1429,20 @@
                 </div>
             </div>
             <div class="space-y-4">
+                <div class="space-y-2 border-b border-gray-700 pb-4">
+                    <p class="font-medium text-blue-400">Filtro por Rango de IDs (Opcional)</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400">Desde ID:</label>
+                            <input type="text" id="start-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00AD">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400">Hasta ID:</label>
+                            <input type="text" id="end-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00BJ">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-2">
                     <p class="font-medium">Proceso de Admisión</p>
                     <p class="text-xs text-gray-400">Selecciona tu proceso de admisión, recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
@@ -1419,9 +1463,14 @@
                 <label for="answered-ids-input" class="font-medium">Pegar IDs de ejercicios ya respondidos (opcional)</label>
                 <textarea id="answered-ids-input" rows="3" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="CEPCOL8Ht, CEPCOL4aA, ..."></textarea>
                 <div class="text-sm text-gray-300 space-y-2 mt-2 bg-gray-800 p-3 rounded-lg">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between items-center">
                         <span>📚 Total Banco:</span> 
-                        <strong id="stats-total">0</strong>
+                        <div class="flex items-center gap-2">
+                            <strong id="stats-total">0</strong>
+                            <button id="reload-data-btn" class="mini-nav-btn" title="Actualizar banco de preguntas" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="flex justify-between">
                         <span>🔍 Con Filtros (Nivel/Proceso):</span> 
@@ -1865,8 +1914,8 @@
         <button class="wb-tool-btn w-8 h-8 lg:w-6 lg:h-6 rounded-full border-2 border-white bg-white hover:scale-110 transition-transform shrink-0" data-color="#ffffff" title="Blanco"></button>
         <button class="wb-tool-btn w-8 h-8 lg:w-6 lg:h-6 rounded-full border-2 border-gray-600 bg-[#39ff14] hover:scale-110 transition-transform shadow-[0_0_10px_#39ff14] shrink-0" data-color="#39ff14" title="Verde Neón"></button>
         
-        <div class="relative w-8 h-8 lg:w-6 lg:h-6 rounded-full border-2 border-gray-600 shrink-0 overflow-hidden hover:scale-110 transition-transform shadow-[0_0_10px_#ff073a]" title="Color Personalizable (Default: Rojo)">
-            <input type="color" id="wb-custom-color-picker" value="#ff073a" class="absolute inset-0 w-[150%] h-[150%] -top-1/4 -left-1/4 p-0 m-0 border-0 cursor-pointer opacity-0">
+        <div id="wb-custom-wrapper" class="relative w-8 h-8 lg:w-6 lg:h-6 rounded-full border-2 border-gray-600 shrink-0 overflow-hidden hover:scale-110 transition-transform shadow-[0_0_10px_#ff073a] cursor-pointer" title="1 Clic: Seleccionar Rojo / Doble Clic: Cambiar Color">
+            <input type="color" id="wb-custom-color-picker" value="#ff073a" class="absolute inset-0 w-[150%] h-[150%] -top-1/4 -left-1/4 p-0 m-0 border-0 cursor-pointer opacity-0" style="pointer-events: none;">
             <div id="wb-custom-preview" class="w-full h-full bg-[#ff073a] pointer-events-none"></div>
         </div>
         
@@ -1938,6 +1987,9 @@
             const levelTagsContainer = document.getElementById('level-tags-container');
             const typeTagsContainer = document.getElementById('type-tags-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
+            const startIdInput = document.getElementById('start-id-input'); // Nuevo filtro ID inicio
+            const endIdInput = document.getElementById('end-id-input');     // Nuevo filtro ID fin
+            const reloadDataBtn = document.getElementById('reload-data-btn'); // Nuevo botón recargar
             const statsTotal = document.getElementById('stats-total');
             const statsTotalFiltered = document.getElementById('stats-total-filtered');
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
@@ -3877,7 +3929,7 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL);
+                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
                     if (!response.ok) {
                         throw new Error('No se pudo cargar el archivo JSON');
                     }
@@ -3918,16 +3970,32 @@
                 
                 let filteredQuestions = allQuestions;
 
-                // Lógica de filtrado con los 3 tags
+               // Lógica de filtrado con tags + Rango de IDs
+                const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
                 filteredQuestions = allQuestions.filter(q => {
                     // Verificar Uni
                     const hasUniTag = selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag)));
                     // Verificar Nivel
                     const hasLevelTag = selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag)));
-                    // Verificar Tipo (NUEVO)
+                    // Verificar Tipo
                     const hasTypeTag = selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag)));
+                    
+                    // Verificar Rango de IDs
+                    let inIdRange = true;
+                    if (startIdVal && endIdVal) {
+                        // Si hay ambos, debe estar entre los dos (alfabéticamente)
+                        inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                    } else if (startIdVal) {
+                        // Solo inicio: mayor o igual
+                        inIdRange = (q.id >= startIdVal);
+                    } else if (endIdVal) {
+                        // Solo final: menor o igual
+                        inIdRange = (q.id <= endIdVal);
+                    }
 
-                    return hasUniTag && hasLevelTag && hasTypeTag;
+                    return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
                 });
                 
                 // 2. Preguntas con Filtros
@@ -3941,11 +4009,57 @@
             }
             
             answeredIdsInput.addEventListener('input', updateQuestionStats);
+            // Nuevos eventos para filtros y recarga
+           // Lógica para actualizar etiquetas dinámicamente al escribir rango de IDs
+            const handleIdFilterUpdate = () => {
+                const start = startIdInput.value.trim().toUpperCase();
+                const end = endIdInput.value.trim().toUpperCase();
+                
+                let filteredData = allQuestions;
+
+                if (start || end) {
+                    filteredData = allQuestions.filter(q => {
+                        let inRange = true;
+                        if (start && end) {
+                            inRange = (q.id >= start && q.id <= end);
+                        } else if (start) {
+                            inRange = (q.id >= start);
+                        } else if (end) {
+                            inRange = (q.id <= end);
+                        }
+                        return inRange;
+                    });
+                }
+                
+                // Regenerar etiquetas con los datos filtrados (mantiene "allQuestions" si los inputs están vacíos)
+                populateTagFilters(filteredData);
+                // Actualizar estadísticas finales
+                updateQuestionStats();
+            };
+
+            if(startIdInput) startIdInput.addEventListener('input', handleIdFilterUpdate);
+            if(endIdInput) endIdInput.addEventListener('input', handleIdFilterUpdate);
             
-            function populateTagFilters() {
-                const uniTags = [...new Set(allQuestions.flatMap(q => q.uni_tags || []))];
-                const levelTags = [...new Set(allQuestions.flatMap(q => q.level_tag || []))];
-                const typeTags = [...new Set(allQuestions.flatMap(q => q.type_tag || []))]; // Nuevo
+            if(reloadDataBtn) {
+                reloadDataBtn.addEventListener('click', async () => {
+                    const icon = reloadDataBtn.querySelector('i');
+                    icon.classList.add('fa-spin'); // Añadir animación de giro
+                    
+                    // Recargar datos forzando la limpieza de caché
+                    await loadData(); 
+                    
+                    setTimeout(() => {
+                        icon.classList.remove('fa-spin'); // Quitar animación
+                        // Mostrar mensaje de éxito visual
+                        showTemporaryMessage("Banco de preguntas actualizado correctamente desde el servidor ✅", "bg-green-600");
+                    }, 1000); 
+                });
+            }
+            
+            function populateTagFilters(dataSource = allQuestions) {
+                const uniTags = [...new Set(dataSource.flatMap(q => q.uni_tags || []))];
+                const levelTags = [...new Set(dataSource.flatMap(q => q.level_tag || []))];
+                const typeTags = [...new Set(dataSource.flatMap(q => q.type_tag || []))];
 
                 uniTagsContainer.innerHTML = '';
                 levelTagsContainer.innerHTML = '';
@@ -4084,11 +4198,29 @@
                     }
 
                     // Filtrado Maestro
+                    // Captura valores actuales de los inputs de ID
+                    const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                    const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
                     let availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
                         const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
-                        return hasUniTag && hasLevelTag && hasTypeTag;
+                        
+                        // Lógica de filtro por Rango de IDs
+                        let inIdRange = true;
+                        if (startIdVal && endIdVal) {
+                            // Si hay inicio y fin, debe estar en medio
+                            inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                        } else if (startIdVal) {
+                            // Solo inicio
+                            inIdRange = (q.id >= startIdVal);
+                        } else if (endIdVal) {
+                            // Solo fin
+                            inIdRange = (q.id <= endIdVal);
+                        }
+
+                        return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
                     });
 
                     let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
@@ -4247,6 +4379,7 @@
                 questionIdDisplay.textContent = question.id || 'N/A';
                 uniTagsDisplay.innerHTML = (question.uni_tags || []).map(t => `<span class="uni-tag-display">${t}</span>`).join(' ');
                 levelTagDisplay.innerHTML = (question.level_tag || []).map(t => `<span class="level-tag-display">${t}</span>`).join(' ');
+                questionText.style.whiteSpace = 'pre-line'; // Esta línea hace que el navegador respete los saltos de línea \n
                 let questionHTML = question.question;
                 questionText.innerHTML = questionHTML;
                 questionStartTime = Date.now();
@@ -5161,87 +5294,129 @@
                 }
             });
             
-            function showQuestionLookup(question) {
-            const correctOption = question.options.find(o => o.correct);
-            let optionsHtml = '';
+           function showQuestionLookup(question) {
+                const isHybrid = question.options.some(opt => 'text_op1' in opt);
+                let optionsHtml = '';
+                let hasImageOptions = false;
 
-            question.options.forEach((option, index) => {
-                const isCorrect = option.correct;
-                const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                if (isHybrid) {
+                    let group1Html = '<div class="hybrid-group"><div class="hybrid-group-title">Columna 1</div>';
+                    let group2Html = '<div class="hybrid-group"><div class="hybrid-group-title">Columna 2</div>';
 
-                const isImgOpt = isImageOption(option.text);
-                let contentHtml = '';
+                    question.options.filter(o => 'text_op1' in o).forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                        const text = option.text_op1;
+                        const isImgOpt = isImageOption(text);
+                        if (isImgOpt) hasImageOptions = true;
+                        const contentHtml = isImgOpt ? `<img src="${text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">` : text;
 
-                if (isImgOpt) {
-                    contentHtml = `<img src="${option.text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">`;
+                        group1Html += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
+                    group1Html += '</div>';
+
+                    question.options.filter(o => 'text_op2' in o).forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                        const text = option.text_op2;
+                        const isImgOpt = isImageOption(text);
+                        if (isImgOpt) hasImageOptions = true;
+                        const contentHtml = isImgOpt ? `<img src="${text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">` : text;
+
+                        group2Html += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(70 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
+                    group2Html += '</div>';
+
+                    optionsHtml = `<div class="hybrid-container">${group1Html}${group2Html}</div>`;
                 } else {
-                    contentHtml = option.text;
+                    question.options.forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+
+                        const isImgOpt = isImageOption(option.text);
+                        if (isImgOpt) hasImageOptions = true;
+                        let contentHtml = '';
+
+                        if (isImgOpt) {
+                            contentHtml = `<img src="${option.text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">`;
+                        } else {
+                            contentHtml = option.text;
+                        }
+
+                        optionsHtml += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
                 }
 
-                optionsHtml += `
-                    <div class="${optionClass}">
-                        <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
-                        ${contentHtml}
-                        ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
-                    </div>
-                `;
-            });
-
-            let mainImageHtml = '';
-            if (question.image) {
-                if (question.image.includes('imgur.com')) {
-                    // Generar marca de agua dinámica
-                    const wmText = `${currentUser.name || 'Usuario'} ${currentUser.email || ''} ${currentUser.whatsapp || ''}   `.repeat(100);
-                    
-                    mainImageHtml = `
-                        <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
-                            <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
-                            
-                            <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
-                                <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
-                                    ${wmText}
+                let mainImageHtml = '';
+                if (question.image) {
+                    if (question.image.includes('imgur.com')) {
+                        const wmText = `${currentUser.name || 'Usuario'} ${currentUser.email || ''} ${currentUser.whatsapp || ''}   `.repeat(100);
+                        mainImageHtml = `
+                            <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
+                                <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
+                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
+                                    <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
+                                        ${wmText}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                } else {
-                    // Imagen normal sin marca de agua (no es IMGUR)
-                    mainImageHtml = `
-                        <div style="margin: 15px 0; text-align: center;">
-                            <img src="${question.image}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        mainImageHtml = `
+                            <div style="margin: 15px 0; text-align: center;">
+                                <img src="${question.image}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                            </div>
+                        `;
+                    }
                 }
-            }
 
-            lookupResultContainer.innerHTML = `
-                <div class="lookup-question-container">
-                    <h3 class="text-xl font-bold mb-4">${question.id}</h3>
-                    <div class="mb-4 text-lg">${question.question}</div>
+                lookupResultContainer.innerHTML = `
+                    <div class="lookup-question-container">
+                        <h3 class="text-xl font-bold mb-4">${question.id}</h3>
+                        <div class="mb-4 text-lg">${question.question}</div>
 
-                    ${mainImageHtml} <div class="lookup-section">
-                        <h4 class="lookup-section-title">Opciones</h4>
-                        <div style="${question.options.some(o => isImageOption(o.text)) ? 'display:grid; grid-template-columns:1fr 1fr; gap:10px;' : ''}">
-                            ${optionsHtml}
+                        ${mainImageHtml} 
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Opciones</h4>
+                            <div style="${hasImageOptions && !isHybrid ? 'display:grid; grid-template-columns:1fr 1fr; gap:10px;' : ''}">
+                                ${optionsHtml}
+                            </div>
                         </div>
+                        ${question.explanation ? `
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Explicación</h4>
+                            <div>${question.explanation}</div>
+                        </div>
+                        ` : ''}
+                        ${question.hint ? `
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Pista</h4>
+                            <div>${question.hint}</div>
+                        </div>
+                        ` : ''}
                     </div>
-                    ${question.explanation ? `
-                    <div class="lookup-section">
-                        <h4 class="lookup-section-title">Explicación</h4>
-                        <div>${question.explanation}</div>
-                    </div>
-                    ` : ''}
-                    ${question.hint ? `
-                    <div class="lookup-section">
-                        <h4 class="lookup-section-title">Pista</h4>
-                        <div>${question.hint}</div>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-            lookupResultContainer.classList.remove('hidden');
-            MathJax.typesetPromise([lookupResultContainer]);
-        }
+                `;
+                lookupResultContainer.classList.remove('hidden');
+                MathJax.typesetPromise([lookupResultContainer]);
+            }
             
             loadData();
             initializeVolumes();
@@ -5367,80 +5542,78 @@
                 updateDtVisuals();
             }
 
-            const wbTriggerBtn = document.getElementById('whiteboard-trigger-btn'); // Botón del Quiz
-            const setupWbBtn = document.getElementById('setup-wb-btn'); // Botón del Setup (Volumen)
-            const lookupWbBtn = document.getElementById('lookup-wb-btn'); // Nuevo Botón (Buscar ID)
+            const wbTriggerBtn = document.getElementById('whiteboard-trigger-btn');
+            const setupWbBtn = document.getElementById('setup-wb-btn');
+            const lookupWbBtn = document.getElementById('lookup-wb-btn');
             const wbOverlay = document.getElementById('overlay-whiteboard');
             const wbCanvas = document.getElementById('wb-canvas');
             const wbCloseBtn = document.getElementById('wb-close-btn');
             const wbCtx = wbCanvas ? wbCanvas.getContext('2d') : null;
             
+            // --- SISTEMA DE DIBUJO Y DESHACER INTELIGENTE ---
+            let wbPaths = []; // Lista de objetos actuales en pantalla
+            let wbHistory = [[]]; // Historial completo de estados (snapshots)
+            let wbStep = 0; // Paso actual en el historial
+            
             let wbIsDrawing = false;
-            let wbHistory = [];
-            let wbStep = -1;
-            let wbCurrentColor = '#ffffff';
+            let wbCurrentColor = '#ffffff'; // Blanco por defecto
             let wbCurrentWidth = 2;
+            let wbIsEraser = false; 
 
-            // Ajustar tamaño del canvas al abrir
+            // Función para guardar el estado actual en el historial
+            function saveHistory() {
+                // Si hemos deshecho y dibujamos algo nuevo, borramos el futuro (rehacer)
+                if (wbStep < wbHistory.length - 1) {
+                    wbHistory = wbHistory.slice(0, wbStep + 1);
+                }
+                // Guardamos una COPIA de los objetos actuales
+                wbHistory.push(JSON.parse(JSON.stringify(wbPaths)));
+                wbStep++;
+            }
+
+            // Ajustar tamaño del canvas
             function resizeWbCanvas() {
                 if(!wbCanvas) return;
                 wbCanvas.width = window.innerWidth;
                 wbCanvas.height = window.innerHeight;
-                // Restaurar imagen si existe historial
-                if (wbStep >= 0) {
-                    const img = new Image();
-                    img.src = wbHistory[wbStep];
-                    img.onload = () => wbCtx.drawImage(img, 0, 0);
-                }
-                // Reconfigurar contexto
-                wbCtx.lineCap = 'round';
-                wbCtx.lineJoin = 'round';
-                wbCtx.strokeStyle = wbCurrentColor;
-                wbCtx.lineWidth = wbCurrentWidth;
+                redrawWb(); 
             }
 
-            // Guardar estado para deshacer
-            function wbSaveState() {
-                if (wbStep < wbHistory.length - 1) {
-                    wbHistory = wbHistory.slice(0, wbStep + 1);
-                }
-                wbHistory.push(wbCanvas.toDataURL());
-                wbStep++;
+            // Redibujar todos los objetos en memoria
+            function redrawWb() {
+                if (!wbCtx) return;
+                wbCtx.clearRect(0, 0, wbCanvas.width, wbCanvas.height);
+                wbCtx.lineCap = 'round';
+                wbCtx.lineJoin = 'round';
+
+                wbPaths.forEach(path => {
+                    if (path.points.length < 1) return;
+                    wbCtx.beginPath();
+                    wbCtx.lineWidth = path.width;
+                    wbCtx.strokeStyle = path.color;
+                    wbCtx.moveTo(path.points[0].x, path.points[0].y);
+                    for (let i = 1; i < path.points.length; i++) {
+                        wbCtx.lineTo(path.points[i].x, path.points[i].y);
+                    }
+                    wbCtx.stroke();
+                });
             }
 
             if (wbOverlay) {
-                // Función unificada para abrir pizarra
                 const openWhiteboard = () => {
                     wbOverlay.classList.remove('hidden');
-                    // IMPORTANTE: No bloqueamos el scroll aquí para permitir que los botones funcionen
-                    // El "touch-action: none" del div overlay evitará que se mueva al dibujar con el dedo
                     resizeWbCanvas();
-                    // Si no hay historial inicial, guardar el blanco
-                    if (wbStep === -1) wbSaveState();
                 };
 
-                // Abrir Pizarra desde el Quiz
-                if (wbTriggerBtn) {
-                    wbTriggerBtn.addEventListener('click', openWhiteboard);
-                }
+                if (wbTriggerBtn) wbTriggerBtn.addEventListener('click', openWhiteboard);
+                if (setupWbBtn) setupWbBtn.addEventListener('click', openWhiteboard);
+                if (lookupWbBtn) lookupWbBtn.addEventListener('click', openWhiteboard);
 
-                // Abrir Pizarra desde Configuración (Setup - Volumen)
-                if (setupWbBtn) {
-                    setupWbBtn.addEventListener('click', openWhiteboard);
-                }
-
-                // Abrir Pizarra desde Configuración (Setup - Buscar ID)
-                if (lookupWbBtn) {
-                    lookupWbBtn.addEventListener('click', openWhiteboard);
-                }
-
-                // Cerrar Pizarra
                 wbCloseBtn.addEventListener('click', () => {
                     wbOverlay.classList.add('hidden');
-                    document.body.style.overflow = 'auto'; // Restaurar scroll
+                    document.body.style.overflow = 'auto';
                 });
 
-                // Eventos de Dibujo (Ratón y Táctil)
                 const getWbPos = (e) => {
                     const rect = wbCanvas.getBoundingClientRect();
                     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -5448,28 +5621,73 @@
                     return { x: clientX - rect.left, y: clientY - rect.top };
                 };
 
+                // --- LÓGICA DE DIBUJO ---
+                let currentPathPoints = [];
+
                 const startWbDraw = (e) => {
                     wbIsDrawing = true;
-                    wbCtx.beginPath();
                     const pos = getWbPos(e);
-                    wbCtx.moveTo(pos.x, pos.y);
-                    // Solo prevenir default si es touch para evitar scroll
-                    if(e.type === 'touchstart') e.preventDefault(); 
+
+                    if (wbIsEraser) {
+                        checkEraserCollision(pos.x, pos.y);
+                    } else {
+                        currentPathPoints = [{x: pos.x, y: pos.y}];
+                        wbCtx.beginPath();
+                        wbCtx.lineWidth = wbCurrentWidth;
+                        wbCtx.strokeStyle = wbCurrentColor;
+                        wbCtx.moveTo(pos.x, pos.y);
+                    }
+                    if(e.type === 'touchstart') e.preventDefault();
                 };
 
                 const moveWbDraw = (e) => {
                     if (!wbIsDrawing) return;
                     const pos = getWbPos(e);
-                    wbCtx.lineTo(pos.x, pos.y);
-                    wbCtx.stroke();
+
+                    if (wbIsEraser) {
+                        checkEraserCollision(pos.x, pos.y);
+                    } else {
+                        currentPathPoints.push({x: pos.x, y: pos.y});
+                        wbCtx.lineTo(pos.x, pos.y);
+                        wbCtx.stroke();
+                    }
                     if(e.type === 'touchmove') e.preventDefault();
                 };
 
                 const endWbDraw = (e) => {
-                    if (wbIsDrawing) {
-                        wbCtx.closePath();
-                        wbIsDrawing = false;
-                        wbSaveState();
+                    if (!wbIsDrawing) return;
+                    wbIsDrawing = false;
+
+                    // Si estábamos dibujando (no borrando), guardamos el trazo
+                    if (!wbIsEraser && currentPathPoints.length > 0) {
+                        wbPaths.push({
+                            color: wbCurrentColor,
+                            width: wbCurrentWidth,
+                            points: currentPathPoints
+                        });
+                        saveHistory(); // <--- GUARDAR ESTADO AL TERMINAR DE DIBUJAR
+                    }
+                };
+
+                // --- LÓGICA DE BORRADOR ---
+                const checkEraserCollision = (x, y) => {
+                    const threshold = 20; 
+                    let removed = false;
+                    
+                    for (let i = wbPaths.length - 1; i >= 0; i--) {
+                        const path = wbPaths[i];
+                        for (let pt of path.points) {
+                            const dist = Math.sqrt(Math.pow(pt.x - x, 2) + Math.pow(pt.y - y, 2));
+                            if (dist < threshold) {
+                                wbPaths.splice(i, 1); 
+                                removed = true;
+                                break; 
+                            }
+                        }
+                    }
+                    if (removed) {
+                        redrawWb();
+                        saveHistory(); // <--- GUARDAR ESTADO AL BORRAR UN OBJETO
                     }
                 };
 
@@ -5482,110 +5700,92 @@
                 wbCanvas.addEventListener('touchmove', moveWbDraw, { passive: false });
                 wbCanvas.addEventListener('touchend', endWbDraw);
 
-                // Control del Slider de Grosor
+                // Slider de grosor
                 const wbWidthSlider = document.getElementById('wb-width-slider');
                 if(wbWidthSlider) {
                     wbWidthSlider.addEventListener('input', (e) => {
                         wbCurrentWidth = parseInt(e.target.value);
-                        wbCtx.lineWidth = wbCurrentWidth;
                     });
                 }
 
-                // Herramientas: Colores Fijos
+                // Botones de colores
                 document.querySelectorAll('.wb-tool-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
+                        wbIsEraser = false;
                         wbCurrentColor = e.target.dataset.color;
-                        wbCtx.globalCompositeOperation = 'source-over';
-                        wbCtx.strokeStyle = wbCurrentColor;
-                        wbCtx.lineWidth = wbCurrentWidth;
                     });
                 });
 
-                // Herramienta: Color Personalizable (Rojo por defecto)
+                // Lógica Botón Rojo (Clic vs Doble Clic)
+                const customWrapper = document.getElementById('wb-custom-wrapper');
                 const customPicker = document.getElementById('wb-custom-color-picker');
                 const customPreview = document.getElementById('wb-custom-preview');
                 
-                if (customPicker && customPreview) {
-                    // Al cambiar el input de color
-                    customPicker.addEventListener('input', (e) => {
-                        wbCurrentColor = e.target.value;
-                        wbCtx.globalCompositeOperation = 'source-over';
-                        wbCtx.strokeStyle = wbCurrentColor;
-                        wbCtx.lineWidth = wbCurrentWidth;
-                        customPreview.style.backgroundColor = wbCurrentColor;
-                        // Actualizar la sombra para efecto neón si se desea
-                        customPreview.parentElement.style.boxShadow = `0 0 10px ${wbCurrentColor}`;
+                if (customWrapper && customPicker) {
+                    let clickTimeout;
+                    
+                    customWrapper.addEventListener('click', (e) => {
+                        if (clickTimeout) return;
+                        clickTimeout = setTimeout(() => {
+                            clickTimeout = null;
+                            wbIsEraser = false;
+                            wbCurrentColor = customPicker.value;
+                            customWrapper.style.transform = "scale(0.95)";
+                            setTimeout(() => customWrapper.style.transform = "", 100);
+                        }, 250); 
                     });
 
-                    // Al hacer clic en el contenedor (para reactivar el pincel si se usó borrador antes)
-                    customPicker.addEventListener('click', () => {
-                         wbCurrentColor = customPicker.value;
-                         wbCtx.globalCompositeOperation = 'source-over';
-                         wbCtx.strokeStyle = wbCurrentColor;
+                    customWrapper.addEventListener('dblclick', (e) => {
+                        clearTimeout(clickTimeout);
+                        clickTimeout = null;
+                        customPicker.style.pointerEvents = 'auto';
+                        customPicker.click();
+                        customPicker.style.pointerEvents = 'none';
+                    });
+
+                    customPicker.addEventListener('input', (e) => {
+                        wbIsEraser = false;
+                        wbCurrentColor = e.target.value;
+                        customPreview.style.backgroundColor = wbCurrentColor;
+                        customWrapper.style.boxShadow = `0 0 10px ${wbCurrentColor}`;
                     });
                 }
 
-                // Lógica de los Botones de Scroll
+                // Scroll
                 const btnScrollUp = document.getElementById('wb-scroll-up');
                 const btnScrollDown = document.getElementById('wb-scroll-down');
-                const scrollAmount = 300; // Cantidad de píxeles a mover
+                if (btnScrollUp) btnScrollUp.addEventListener('click', (e) => { e.stopPropagation(); window.scrollBy({ top: -300, behavior: 'smooth' }); });
+                if (btnScrollDown) btnScrollDown.addEventListener('click', (e) => { e.stopPropagation(); window.scrollBy({ top: 300, behavior: 'smooth' }); });
 
-                if (btnScrollUp) {
-                    btnScrollUp.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Evitar pintar al hacer clic
-                        window.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
-                    });
-                }
-
-                if (btnScrollDown) {
-                    btnScrollDown.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Evitar pintar al hacer clic
-                        window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-                    });
-                }
-
-                // Herramienta: Borrador (Corregido)
+                // Activar Borrador
                 document.getElementById('wb-eraser-btn').addEventListener('click', () => {
-                    wbCurrentWidth = 10; // Tamaño fijo y pequeño para el borrador
-                    wbCtx.lineWidth = wbCurrentWidth;
-                    wbCtx.globalCompositeOperation = 'destination-out'; // Activar modo borrar
-                    
-                    // Actualizamos visualmente el slider para que coincida
-                    const slider = document.getElementById('wb-width-slider');
-                    if(slider) slider.value = 10;
+                    wbIsEraser = true;
                 });
 
+                // Limpiar todo (MODIFICADO: Sin confirmación)
                 document.getElementById('wb-clear-btn').addEventListener('click', () => {
-                    wbCtx.clearRect(0, 0, wbCanvas.width, wbCanvas.height);
-                    wbSaveState();
+                    wbPaths = [];
+                    saveHistory(); // Guardar el estado vacío
+                    redrawWb();
                 });
 
+                // --- DESHACER (UNDO) CORREGIDO ---
                 document.getElementById('wb-undo-btn').addEventListener('click', () => {
                     if (wbStep > 0) {
                         wbStep--;
-                        const img = new Image();
-                        img.src = wbHistory[wbStep];
-                        img.onload = () => {
-                            wbCtx.clearRect(0, 0, wbCanvas.width, wbCanvas.height);
-                            wbCtx.globalCompositeOperation = 'source-over'; // Importante para redibujar imagen
-                            wbCtx.drawImage(img, 0, 0);
-                            // Restaurar estado del pincel actual
-                            wbCtx.globalCompositeOperation = wbCurrentWidth === 20 ? 'destination-out' : 'source-over';
-                        };
+                        // Recuperar el estado anterior completo
+                        wbPaths = JSON.parse(JSON.stringify(wbHistory[wbStep]));
+                        redrawWb();
                     }
                 });
 
+                // --- REHACER (REDO) ---
                 document.getElementById('wb-redo-btn').addEventListener('click', () => {
                     if (wbStep < wbHistory.length - 1) {
                         wbStep++;
-                        const img = new Image();
-                        img.src = wbHistory[wbStep];
-                        img.onload = () => {
-                            wbCtx.clearRect(0, 0, wbCanvas.width, wbCanvas.height);
-                            wbCtx.globalCompositeOperation = 'source-over';
-                            wbCtx.drawImage(img, 0, 0);
-                            wbCtx.globalCompositeOperation = wbCurrentWidth === 20 ? 'destination-out' : 'source-over';
-                        };
+                        // Recuperar el estado siguiente completo
+                        wbPaths = JSON.parse(JSON.stringify(wbHistory[wbStep]));
+                        redrawWb();
                     }
                 });
                 
