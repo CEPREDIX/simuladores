@@ -48,6 +48,14 @@
             padding: 15px;
             position: relative;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            line-height: 1.4; /* Ajuste global de interlineado */
+        }
+        #question-text {
+            line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
+            margin-bottom: 15px !important;
+        }
+        #question-text p {
+            margin-bottom: 8px !important; /* Menos espacio entre párrafos */
         }
         body::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -351,13 +359,18 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3); object-fit: contain;
         }
         #image-container {
-            position: relative; width: 100%; max-width: 100%; 
-            height: 45vh; /* Usa el 45% de la altura de la pantalla del dispositivo */
-            max-height: 500px; /* Límite para que no sea gigante en PC */
-            min-height: 250px; /* Límite para que no sea muy chica en móviles */
-            background-size: contain; background-position: center; background-repeat: no-repeat;
-            overflow: hidden; margin: 15px auto; border-radius: 10px;
-            background-color: rgba(0,0,0,0.2); /* Fondo sutil para distinguir el área */
+            position: relative; 
+            width: 100%; 
+            max-width: 100%; 
+            aspect-ratio: 1 / 1; /* Fuerza al contenedor a ser siempre cuadrado */
+            max-height: 60vh; /* Límite de altura para que no se salga de pantalla en PC */
+            background-size: contain; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            overflow: hidden; 
+            margin: 15px auto; 
+            border-radius: 10px;
+            background-color: rgba(0,0,0,0.2);
         }
         #watermark-overlay {
             position: absolute; inset: -50%; width: 200%; height: 200%;
@@ -1166,6 +1179,62 @@
             .justification h4 { font-size: 1rem !important; }
             .calculator-container { width: 95%; max-width: 300px; height: auto; padding-bottom: 20px; }
         }
+        /* Ajuste para que los controles de la pizarra se vean pequeños en PC */
+        @media (min-width: 1024px) {
+            #overlay-whiteboard .absolute.bottom-6 {
+                transform: translateX(-50%) scale(0.75); /* Reduce la barra al 75% de su tamaño */
+                transform-origin: bottom center;
+                bottom: 1.5rem;
+                padding: 0.5rem !important;
+                max-width: 80% !important;
+            }
+            /* Forzar tamaño pequeño de los botones internos */
+            #overlay-whiteboard .wb-tool-btn, 
+            #overlay-whiteboard #wb-custom-wrapper,
+            #overlay-whiteboard #wb-eraser-btn {
+                width: 1.5rem !important; 
+                height: 1.5rem !important;
+            }
+        }
+    /* NUEVOS ESTILOS: Opción gris y contador de votos */
+        .option-dark-gray {
+            background-color: #4a4a4a !important;
+            color: #888888 !important;
+            filter: grayscale(100%);
+        }
+        .vote-counter-container {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            z-index: 20;
+        }
+        .vote-btn {
+            background: transparent;
+            border: none;
+            color: #4fc3f7;
+            cursor: pointer;
+            padding: 0 4px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        .vote-btn:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+        .vote-count {
+            min-width: 15px;
+            text-align: center;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1385,7 +1454,7 @@
             <div class="space-y-4">
                 <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
                     <label class="font-medium flex items-center">
-                        <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5">
+                        <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5" checked>
                         MODO AVANCE CONTINUO 🚀 (Sin límite de preguntas)
                     </label>
                     <p class="text-xs text-gray-400">Responde preguntas del banco de forma aleatoria sin fin. Termina la ronda cuando quieras con "Evaluar avance".</p>
@@ -1399,9 +1468,23 @@
                 </div>
             </div>
             <div class="space-y-4">
+                <div class="space-y-2 border-b border-gray-700 pb-4">
+                    <p class="font-medium text-blue-400">Filtro por Rango de IDs (Opcional)</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400">Desde ID:</label>
+                            <input type="text" id="start-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00AD">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400">Hasta ID:</label>
+                            <input type="text" id="end-id-input" class="w-full p-2 bg-gray-700 rounded-lg border border-gray-600 text-white uppercase" placeholder="Ej: CEP00BJ">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-2">
-                    <p class="font-medium">Proceso de Admisión</p>
-                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisión, recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
+                    <p class="font-medium">Proceso de Admisión o Materia</p>
+                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisión o materia(s), recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
                     <div id="uni-tags-container" class="flex flex-wrap gap-2"></div>
                 </div>
                 <div class="space-y-2">
@@ -1419,9 +1502,14 @@
                 <label for="answered-ids-input" class="font-medium">Pegar IDs de ejercicios ya respondidos (opcional)</label>
                 <textarea id="answered-ids-input" rows="3" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="CEPCOL8Ht, CEPCOL4aA, ..."></textarea>
                 <div class="text-sm text-gray-300 space-y-2 mt-2 bg-gray-800 p-3 rounded-lg">
-                    <div class="flex justify-between">
+                    <div class="flex justify-between items-center">
                         <span>📚 Total Banco:</span> 
-                        <strong id="stats-total">0</strong>
+                        <div class="flex items-center gap-2">
+                            <strong id="stats-total">0</strong>
+                            <button id="reload-data-btn" class="mini-nav-btn" title="Actualizar banco de preguntas" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="flex justify-between">
                         <span>🔍 Con Filtros (Nivel/Proceso):</span> 
@@ -1900,7 +1988,7 @@
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/02-sam-acreditabach.json';
+            const QUIZ_JSON_URL = 'https://simuladores.cepredix.com.mx/03-sam-acredita-bach.html';
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYESY3dBy0h5QrY5EyJ_jfHwlEwnhByFcPTywwK4jJhGa3rvrnIzR9OXleZUZ7zVqUqw/exec';
@@ -1938,6 +2026,9 @@
             const levelTagsContainer = document.getElementById('level-tags-container');
             const typeTagsContainer = document.getElementById('type-tags-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
+            const startIdInput = document.getElementById('start-id-input'); // Nuevo filtro ID inicio
+            const endIdInput = document.getElementById('end-id-input');     // Nuevo filtro ID fin
+            const reloadDataBtn = document.getElementById('reload-data-btn'); // Nuevo botón recargar
             const statsTotal = document.getElementById('stats-total');
             const statsTotalFiltered = document.getElementById('stats-total-filtered');
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
@@ -2077,7 +2168,7 @@
             let totalQuestionTime = 0;
             let isGuest = false;
             let isGameMode = false;
-            let isContinuousMode = false;
+            let isContinuousMode = true;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -3864,7 +3955,7 @@
                         gameModeToggle.parentElement.style.pointerEvents = 'auto';
                         continuousModeToggle.disabled = false;
                     } else {
-                        loginErrorMessage.textContent = 'Los datos no coinciden. Por favor, verifica tu información.';
+                        loginErrorMessage.textContent = 'Los datos no coinciden. Por favor, verifica tu información. Si no eres alumno CEPREDIX manda mensaje al 7774516364';
                     }
                 } catch (error) {
                     loginErrorMessage.textContent = 'Error al conectar con la base de datos. Intenta de nuevo.';
@@ -3877,7 +3968,7 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL);
+                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
                     if (!response.ok) {
                         throw new Error('No se pudo cargar el archivo JSON');
                     }
@@ -3911,24 +4002,61 @@
                 // 1. Total Banco
                 if(statsTotal) statsTotal.textContent = allQuestions.length;
 
-                // Calcular Filtros
-                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                
-                let filteredQuestions = allQuestions;
+                // Valores de rango de IDs
+                const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
 
-                // Lógica de filtrado con los 3 tags
-                filteredQuestions = allQuestions.filter(q => {
-                    // Verificar Uni
-                    const hasUniTag = selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag)));
-                    // Verificar Nivel
-                    const hasLevelTag = selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag)));
-                    // Verificar Tipo (NUEVO)
-                    const hasTypeTag = selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag)));
-
-                    return hasUniTag && hasLevelTag && hasTypeTag;
+                // Filtro base por IDs
+                const basePool = allQuestions.filter(q => {
+                    let inIdRange = true;
+                    if (startIdVal && endIdVal) inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                    else if (startIdVal) inIdRange = (q.id >= startIdVal);
+                    else if (endIdVal) inIdRange = (q.id <= endIdVal);
+                    return inIdRange;
                 });
+
+                // --- LÓGICA DE CASCADA PARA ETIQUETAS ---
+                
+                // Nivel 1: Universidades disponibles en el basePool
+                const availableUniTags = new Set(basePool.flatMap(q => q.uni_tags || []));
+                uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
+                    if (availableUniTags.has(tagEl.textContent)) {
+                        tagEl.style.display = '';
+                    } else {
+                        tagEl.style.display = 'none';
+                        tagEl.classList.remove('selected');
+                    }
+                });
+                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+
+                // Nivel 2: Niveles disponibles después de aplicar filtro de Universidad
+                const poolAfterUni = basePool.filter(q => selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag))));
+                const availableLevelTags = new Set(poolAfterUni.flatMap(q => q.level_tag || []));
+                levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
+                    if (availableLevelTags.has(tagEl.textContent)) {
+                        tagEl.style.display = '';
+                    } else {
+                        tagEl.style.display = 'none';
+                        tagEl.classList.remove('selected');
+                    }
+                });
+                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+
+                // Nivel 3: Tipos disponibles después de aplicar filtro de Nivel
+                const poolAfterLevel = poolAfterUni.filter(q => selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag))));
+                const availableTypeTags = new Set(poolAfterLevel.flatMap(q => q.type_tag || []));
+                typeTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
+                    if (availableTypeTags.has(tagEl.textContent)) {
+                        tagEl.style.display = '';
+                    } else {
+                        tagEl.style.display = 'none';
+                        tagEl.classList.remove('selected');
+                    }
+                });
+                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+
+                // 4. Filtro Final de preguntas
+                let filteredQuestions = poolAfterLevel.filter(q => selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag))));
                 
                 // 2. Preguntas con Filtros
                 if(statsTotalFiltered) statsTotalFiltered.textContent = filteredQuestions.length;
@@ -3941,11 +4069,57 @@
             }
             
             answeredIdsInput.addEventListener('input', updateQuestionStats);
+            // Nuevos eventos para filtros y recarga
+           // Lógica para actualizar etiquetas dinámicamente al escribir rango de IDs
+            const handleIdFilterUpdate = () => {
+                const start = startIdInput.value.trim().toUpperCase();
+                const end = endIdInput.value.trim().toUpperCase();
+                
+                let filteredData = allQuestions;
+
+                if (start || end) {
+                    filteredData = allQuestions.filter(q => {
+                        let inRange = true;
+                        if (start && end) {
+                            inRange = (q.id >= start && q.id <= end);
+                        } else if (start) {
+                            inRange = (q.id >= start);
+                        } else if (end) {
+                            inRange = (q.id <= end);
+                        }
+                        return inRange;
+                    });
+                }
+                
+                // Regenerar etiquetas con los datos filtrados (mantiene "allQuestions" si los inputs están vacíos)
+                populateTagFilters(filteredData);
+                // Actualizar estadísticas finales
+                updateQuestionStats();
+            };
+
+            if(startIdInput) startIdInput.addEventListener('input', handleIdFilterUpdate);
+            if(endIdInput) endIdInput.addEventListener('input', handleIdFilterUpdate);
             
-            function populateTagFilters() {
-                const uniTags = [...new Set(allQuestions.flatMap(q => q.uni_tags || []))];
-                const levelTags = [...new Set(allQuestions.flatMap(q => q.level_tag || []))];
-                const typeTags = [...new Set(allQuestions.flatMap(q => q.type_tag || []))]; // Nuevo
+            if(reloadDataBtn) {
+                reloadDataBtn.addEventListener('click', async () => {
+                    const icon = reloadDataBtn.querySelector('i');
+                    icon.classList.add('fa-spin'); // Añadir animación de giro
+                    
+                    // Recargar datos forzando la limpieza de caché
+                    await loadData(); 
+                    
+                    setTimeout(() => {
+                        icon.classList.remove('fa-spin'); // Quitar animación
+                        // Mostrar mensaje de éxito visual
+                        showTemporaryMessage("Banco de preguntas actualizado correctamente desde el servidor ✅", "bg-green-600");
+                    }, 1000); 
+                });
+            }
+            
+            function populateTagFilters(dataSource = allQuestions) {
+                const uniTags = [...new Set(dataSource.flatMap(q => q.uni_tags || []))];
+                const levelTags = [...new Set(dataSource.flatMap(q => q.level_tag || []))];
+                const typeTags = [...new Set(dataSource.flatMap(q => q.type_tag || []))];
 
                 uniTagsContainer.innerHTML = '';
                 levelTagsContainer.innerHTML = '';
@@ -4071,7 +4245,7 @@
                     
                     // Validaciones de filtros vacíos
                     if (selectedUniTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión".';
+                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión o Materias".';
                         return;
                     }
                     if (selectedLevelTags.length === 0) {
@@ -4084,11 +4258,29 @@
                     }
 
                     // Filtrado Maestro
+                    // Captura valores actuales de los inputs de ID
+                    const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                    const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
                     let availableQuestions = allQuestions.filter(q => {
                         const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
                         const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
                         const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
-                        return hasUniTag && hasLevelTag && hasTypeTag;
+                        
+                        // Lógica de filtro por Rango de IDs
+                        let inIdRange = true;
+                        if (startIdVal && endIdVal) {
+                            // Si hay inicio y fin, debe estar en medio
+                            inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                        } else if (startIdVal) {
+                            // Solo inicio
+                            inIdRange = (q.id >= startIdVal);
+                        } else if (endIdVal) {
+                            // Solo fin
+                            inIdRange = (q.id <= endIdVal);
+                        }
+
+                        return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
                     });
 
                     let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
@@ -4184,6 +4376,73 @@
                 startEvaluateEmojiAnimation();
                 document.getElementById('action-buttons').classList.remove('hidden');
                 allQuestionsCompletedMessage.classList.add('hidden');
+            }
+
+            function addOptionFeatures(button, isCepredixUser, questionId, optionText) {
+                // 1) Función de mantener presionado (2 segundos) para poner gris
+                let pressTimer;
+                const startPress = () => {
+                    pressTimer = setTimeout(() => {
+                        button.classList.toggle('option-dark-gray');
+                    }, 2000);
+                };
+                const cancelPress = () => {
+                    if (pressTimer) clearTimeout(pressTimer);
+                };
+
+                // Detectar clics en PC y Toques en Móviles/Tablets
+                button.addEventListener('mousedown', startPress);
+                button.addEventListener('touchstart', startPress, {passive: true});
+                button.addEventListener('mouseup', cancelPress);
+                button.addEventListener('mouseleave', cancelPress);
+                button.addEventListener('touchend', cancelPress);
+                button.addEventListener('touchmove', cancelPress);
+
+                // 2) Función de contador de votos discreto (solo para @cepredix.com)
+                if (isCepredixUser) {
+                    const voteContainer = document.createElement('div');
+                    voteContainer.className = 'vote-counter-container';
+                    
+                    // Evita que al hacer clic en los votos se seleccione la opción
+                    voteContainer.onclick = (e) => e.stopPropagation();
+                    voteContainer.onmousedown = (e) => e.stopPropagation();
+                    voteContainer.ontouchstart = (e) => e.stopPropagation();
+
+                    const btnMinus = document.createElement('button');
+                    btnMinus.className = 'vote-btn';
+                    btnMinus.textContent = '-';
+                    
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'vote-count';
+                    
+                    // Usamos localStorage para guardar los votos temporalmente en el navegador
+                    const voteKey = `vote_${questionId}_${optionText.substring(0, 20)}`;
+                    let currentVotes = parseInt(localStorage.getItem(voteKey)) || 0;
+                    countSpan.textContent = currentVotes;
+
+                    const btnPlus = document.createElement('button');
+                    btnPlus.className = 'vote-btn';
+                    btnPlus.textContent = '+';
+
+                    btnMinus.onclick = (e) => { 
+                        e.preventDefault();
+                        currentVotes--; 
+                        countSpan.textContent = currentVotes; 
+                        localStorage.setItem(voteKey, currentVotes); 
+                    };
+                    btnPlus.onclick = (e) => { 
+                        e.preventDefault();
+                        currentVotes++; 
+                        countSpan.textContent = currentVotes; 
+                        localStorage.setItem(voteKey, currentVotes); 
+                    };
+
+                    voteContainer.appendChild(btnMinus);
+                    voteContainer.appendChild(countSpan);
+                    voteContainer.appendChild(btnPlus);
+                    
+                    button.appendChild(voteContainer);
+                }
             }
 
             function displayQuestion() {
@@ -4373,6 +4632,10 @@
                             span.innerHTML = opt.text;
                             btn.appendChild(span);
 
+                            // Agregamos las nuevas funciones (presión de 2 seg y contador)
+                            const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
+                            addOptionFeatures(btn, isCepredix, question.id, opt.text);
+
                             // Evento Click Híbrido
                             btn.addEventListener('click', () => {
                                 if (userAnswers[currentQuestionIndex].status !== 'unanswered') return;
@@ -4453,6 +4716,11 @@
 
                         button.dataset.text = option.text;
                         
+                        // Agregamos las nuevas funciones (presión de 2 seg y contador)
+                        // Excluimos la opción de "No puedo identificar" del contador
+                        const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com') && !isNoId;
+                        addOptionFeatures(button, isCepredix, question.id, option.text);
+
                         // Triple clic logic standard
                         let clickCount = 0;
                         let clickTimer = null;
@@ -5162,87 +5430,129 @@
                 }
             });
             
-            function showQuestionLookup(question) {
-            const correctOption = question.options.find(o => o.correct);
-            let optionsHtml = '';
+           function showQuestionLookup(question) {
+                const isHybrid = question.options.some(opt => 'text_op1' in opt);
+                let optionsHtml = '';
+                let hasImageOptions = false;
 
-            question.options.forEach((option, index) => {
-                const isCorrect = option.correct;
-                const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                if (isHybrid) {
+                    let group1Html = '<div class="hybrid-group"><div class="hybrid-group-title">Columna 1</div>';
+                    let group2Html = '<div class="hybrid-group"><div class="hybrid-group-title">Columna 2</div>';
 
-                const isImgOpt = isImageOption(option.text);
-                let contentHtml = '';
+                    question.options.filter(o => 'text_op1' in o).forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                        const text = option.text_op1;
+                        const isImgOpt = isImageOption(text);
+                        if (isImgOpt) hasImageOptions = true;
+                        const contentHtml = isImgOpt ? `<img src="${text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">` : text;
 
-                if (isImgOpt) {
-                    contentHtml = `<img src="${option.text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">`;
+                        group1Html += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
+                    group1Html += '</div>';
+
+                    question.options.filter(o => 'text_op2' in o).forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+                        const text = option.text_op2;
+                        const isImgOpt = isImageOption(text);
+                        if (isImgOpt) hasImageOptions = true;
+                        const contentHtml = isImgOpt ? `<img src="${text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">` : text;
+
+                        group2Html += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(70 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
+                    group2Html += '</div>';
+
+                    optionsHtml = `<div class="hybrid-container">${group1Html}${group2Html}</div>`;
                 } else {
-                    contentHtml = option.text;
+                    question.options.forEach((option, index) => {
+                        const isCorrect = option.correct;
+                        const optionClass = isCorrect ? 'lookup-option' : 'lookup-option incorrect';
+
+                        const isImgOpt = isImageOption(option.text);
+                        if (isImgOpt) hasImageOptions = true;
+                        let contentHtml = '';
+
+                        if (isImgOpt) {
+                            contentHtml = `<img src="${option.text}" style="max-height: 100px; border-radius: 5px; margin-top: 5px;">`;
+                        } else {
+                            contentHtml = option.text;
+                        }
+
+                        optionsHtml += `
+                            <div class="${optionClass}">
+                                <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
+                                ${contentHtml}
+                                ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
+                            </div>
+                        `;
+                    });
                 }
 
-                optionsHtml += `
-                    <div class="${optionClass}">
-                        <div class="lookup-option-label">${String.fromCharCode(65 + index)}</div>
-                        ${contentHtml}
-                        ${isCorrect ? '<span class="lookup-correct-badge">Correcta</span>' : ''}
-                    </div>
-                `;
-            });
-
-            let mainImageHtml = '';
-            if (question.image) {
-                if (question.image.includes('imgur.com')) {
-                    // Generar marca de agua dinámica
-                    const wmText = `${currentUser.name || 'Usuario'} ${currentUser.email || ''} ${currentUser.whatsapp || ''}   `.repeat(100);
-                    
-                    mainImageHtml = `
-                        <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
-                            <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
-                            
-                            <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
-                                <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
-                                    ${wmText}
+                let mainImageHtml = '';
+                if (question.image) {
+                    if (question.image.includes('imgur.com')) {
+                        const wmText = `${currentUser.name || 'Usuario'} ${currentUser.email || ''} ${currentUser.whatsapp || ''}   `.repeat(100);
+                        mainImageHtml = `
+                            <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
+                                <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
+                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
+                                    <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
+                                        ${wmText}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                } else {
-                    // Imagen normal sin marca de agua (no es IMGUR)
-                    mainImageHtml = `
-                        <div style="margin: 15px 0; text-align: center;">
-                            <img src="${question.image}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        mainImageHtml = `
+                            <div style="margin: 15px 0; text-align: center;">
+                                <img src="${question.image}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                            </div>
+                        `;
+                    }
                 }
-            }
 
-            lookupResultContainer.innerHTML = `
-                <div class="lookup-question-container">
-                    <h3 class="text-xl font-bold mb-4">${question.id}</h3>
-                    <div class="mb-4 text-lg">${question.question}</div>
+                lookupResultContainer.innerHTML = `
+                    <div class="lookup-question-container">
+                        <h3 class="text-xl font-bold mb-4">${question.id}</h3>
+                        <div class="mb-4 text-lg">${question.question}</div>
 
-                    ${mainImageHtml} <div class="lookup-section">
-                        <h4 class="lookup-section-title">Opciones</h4>
-                        <div style="${question.options.some(o => isImageOption(o.text)) ? 'display:grid; grid-template-columns:1fr 1fr; gap:10px;' : ''}">
-                            ${optionsHtml}
+                        ${mainImageHtml} 
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Opciones</h4>
+                            <div style="${hasImageOptions && !isHybrid ? 'display:grid; grid-template-columns:1fr 1fr; gap:10px;' : ''}">
+                                ${optionsHtml}
+                            </div>
                         </div>
+                        ${question.explanation ? `
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Explicación</h4>
+                            <div>${question.explanation}</div>
+                        </div>
+                        ` : ''}
+                        ${question.hint ? `
+                        <div class="lookup-section">
+                            <h4 class="lookup-section-title">Pista</h4>
+                            <div>${question.hint}</div>
+                        </div>
+                        ` : ''}
                     </div>
-                    ${question.explanation ? `
-                    <div class="lookup-section">
-                        <h4 class="lookup-section-title">Explicación</h4>
-                        <div>${question.explanation}</div>
-                    </div>
-                    ` : ''}
-                    ${question.hint ? `
-                    <div class="lookup-section">
-                        <h4 class="lookup-section-title">Pista</h4>
-                        <div>${question.hint}</div>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-            lookupResultContainer.classList.remove('hidden');
-            MathJax.typesetPromise([lookupResultContainer]);
-        }
+                `;
+                lookupResultContainer.classList.remove('hidden');
+                MathJax.typesetPromise([lookupResultContainer]);
+            }
             
             loadData();
             initializeVolumes();
@@ -5588,13 +5898,11 @@
                     wbIsEraser = true;
                 });
 
-                // Limpiar todo
+                // Limpiar todo (MODIFICADO: Sin confirmación)
                 document.getElementById('wb-clear-btn').addEventListener('click', () => {
-                    if(confirm("¿Borrar toda la pizarra?")) {
-                        wbPaths = [];
-                        saveHistory(); // Guardar el estado vacío
-                        redrawWb();
-                    }
+                    wbPaths = [];
+                    saveHistory(); // Guardar el estado vacío
+                    redrawWb();
                 });
 
                 // --- DESHACER (UNDO) CORREGIDO ---
