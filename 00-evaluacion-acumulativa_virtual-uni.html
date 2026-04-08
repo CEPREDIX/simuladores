@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💻 EVALUACIÓN CLASES VIRTUALES 😎</title>
+    <title>💻 EVALUACIÓN VIRTUAL 🤯</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -12,7 +12,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="💻 EVALUACIÓN CLASES VIRTUALES 😎 - CEPREDIX">
+    <meta property="og:title" content="💻 EVALUACIÓN VIRTUAL 🤯 - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1385,7 +1385,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">💻 EVALUACIÓN CLASES VIRTUALES 😎</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">💻 EVALUACIÓN VIRTUAL 🤯</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1948,7 +1948,7 @@
                 <a href="#" id="privacy-link" class="footer-link">Aviso de Privacidad</a>
             </div>
             <div id="copyright">
-                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-2.2401
+                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-3.0704
             </div>
         </div>
     </div>
@@ -5139,7 +5139,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 const formData = new FormData();
                 
-                formData.append('EvaluationName', "💻 EVALUACIÓN CLASES VIRTUALES 😎"); 
+                formData.append('EvaluationName', "💻 EVALUACIÓN VIRTUAL 🤯"); 
                 
                 formData.append('Name', currentUser.name || 'Invitado');
                 formData.append('Email', currentUser.email || 'sin_email');
@@ -5232,12 +5232,13 @@
                 copyIdsBtn.classList.add('btn-disabled');
                 if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = true; copyIncorrectIdsBtn.classList.add('btn-disabled'); }
                 } else {
-                    const idsOutputSection = document.querySelector('.mt-8.space-y-2');
+                    const idsOutputSection = document.getElementById('ids-output-section');
                     if (idsOutputSection) {
-                        idsOutputSection.style.display = 'block';
+                        idsOutputSection.style.display = 'grid';
                     }
                     copyIdsBtn.disabled = false;
                     copyIdsBtn.classList.remove('btn-disabled');
+                    if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = false; copyIncorrectIdsBtn.classList.remove('btn-disabled'); }
                 }
                 
                 if (isGameMode) {
@@ -5380,12 +5381,13 @@
                 const allAnsweredIds = generateAnsweredIdsList();
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
-                const idsOutputSection = document.querySelector('.mt-8.space-y-2');
+                const idsOutputSection = document.getElementById('ids-output-section');
                 if (idsOutputSection) {
                     idsOutputSection.style.display = 'none';
                 }
                 copyIdsBtn.disabled = true;
                 copyIdsBtn.classList.add('btn-disabled');
+                if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = true; copyIncorrectIdsBtn.classList.add('btn-disabled'); }
                 
                 if (isGameMode) {
                     let returnBtn = document.getElementById('return-to-menu-btn');
@@ -5439,7 +5441,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "💻 EVALUACIÓN CLASES VIRTUALES 😎";
+                summaryEvalName.textContent = "💻 EVALUACIÓN VIRTUAL 🤯";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -5534,19 +5536,16 @@
                     }
                 });
             }
-            lookupBtn.addEventListener('click', () => {
+           lookupBtn.addEventListener('click', () => {
                 if (isGuest) {
-                    const idsOutputSection = document.getElementById('ids-output-section');
-                    if (idsOutputSection) idsOutputSection.style.display = 'none';
-                    copyIdsBtn.disabled = true;
-                    copyIdsBtn.classList.add('btn-disabled');
-                    if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = true; copyIncorrectIdsBtn.classList.add('btn-disabled'); }
-                } else {
-                    const idsOutputSection = document.getElementById('ids-output-section');
-                    if (idsOutputSection) idsOutputSection.style.display = 'grid';
-                    copyIdsBtn.disabled = false;
-                    copyIdsBtn.classList.remove('btn-disabled');
-                    if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = false; copyIncorrectIdsBtn.classList.remove('btn-disabled'); }
+                    showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
+                    return;
+                }
+                const lookupId = lookupIdInput.value.trim().toUpperCase();
+                if (!lookupId) {
+                    lookupResultContainer.classList.add('hidden');
+                    showTemporaryMessage("Por favor, ingresa un ID para buscar", "bg-yellow-600");
+                    return;
                 }
                 const question = allQuestions.find(q => q.id === lookupId);
                 if (question) {
