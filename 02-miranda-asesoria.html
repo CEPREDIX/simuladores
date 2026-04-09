@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIRANDA ASESORÍAS</title>
+    <title>ASESORÍAS MIRANDA 😎</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -12,7 +12,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="MIRANDA ASESORÍAS - CEPREDIX">
+    <meta property="og:title" content="ASESORÍAS MIRANDA 😎 - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -49,13 +49,30 @@
             position: relative;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             line-height: 1.4; /* Ajuste global de interlineado */
+            overscroll-behavior-y: none; /* EVITA EL PULL-TO-REFRESH EN IPHONE */
         }
         #question-text {
             line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
             margin-bottom: 15px !important;
+            max-width: 100%; /* Asegura que el contenedor no rebase la pantalla */
+            overflow-x: auto; /* Permite scroll horizontal en la pregunta si algo es muy ancho */
+            word-wrap: break-word; /* Obliga al texto normal a saltar de línea */
+            overflow-wrap: break-word;
         }
         #question-text p {
             margin-bottom: 8px !important; /* Menos espacio entre párrafos */
+            max-width: 100%;
+        }
+        /* Controles responsivos específicos para el renderizado de LaTeX (MathJax) */
+        mjx-container[display="true"] {
+            max-width: 100%;
+            overflow-x: auto !important; /* Añade barra de desplazamiento a ecuaciones largas */
+            overflow-y: hidden !important;
+            padding-bottom: 5px; /* Espacio extra inferior para la barra de desplazamiento */
+            padding-top: 5px;
+        }
+        mjx-container {
+            max-width: 100%;
         }
         body::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -1202,38 +1219,52 @@
             color: #888888 !important;
             filter: grayscale(100%);
         }
-        .vote-counter-container {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .option-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            z-index: 20;
+            width: 100%;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .option-wrapper .option-btn {
+            margin-bottom: 0 !important;
+            flex-grow: 1;
+            padding-right: 15px !important;
+        }
+        .vote-counter-container {
+            display: flex;
+            flex-direction: column; /* Apila los elementos verticalmente */
+            align-items: center;
+            justify-content: center;
+            gap: 2px; /* Menos espacio entre flechas y número */
+            background: rgba(0, 0, 0, 0.3); /* Fondo más transparente y discreto */
+            padding: 4px 6px;
+            border-radius: 8px;
+            flex-shrink: 0; 
+            min-width: 32px;
         }
         .vote-btn {
             background: transparent;
             border: none;
-            color: #4fc3f7;
+            color: #4fc3f7; /* Azul claro original */
             cursor: pointer;
-            padding: 0 4px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+            padding: 2px;
+            font-size: 0.9rem; /* Flechas más pequeñas */
+            transition: transform 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .vote-btn:hover {
             color: #fff;
-            transform: scale(1.2);
+            transform: scale(1.3);
         }
         .vote-count {
-            min-width: 15px;
+            font-weight: bold;
+            font-size: 0.85rem; /* Número un poco más pequeño */
             text-align: center;
             color: #fff;
+            line-height: 1;
         }
     </style>
 </head>
@@ -1243,7 +1274,7 @@
     <audio id="button-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Clic_sound.mp3" preload="auto"></audio>
     <audio id="sad-violin-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
     <audio id="simulacro-fail-1" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_fail_1.mp3" preload="auto"></audio>
-    <audio id="simulacro-fail-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
+    <audio id="simulacro-fail-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_fail_2.mp3" preload="auto"></audio>
     <audio id="simulacro-success-1" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_1.mp3" preload="auto"></audio>
     <audio id="simulacro-success-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_2.mp3" preload="auto"></audio>
     <div id="adOverlay" style="display: none;">
@@ -1385,7 +1416,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">MIRANDA ASESORÍAS</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">ASESORÍAS MIRANDA 😎</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1451,20 +1482,27 @@
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
                 <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
-            <div class="space-y-4">
-                <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
-                    <label class="font-medium flex items-center">
-                        <input type="checkbox" id="continuous-mode-toggle" class="mr-2 h-5 w-5" checked>
-                        MODO AVANCE CONTINUO 🚀 (Sin límite de preguntas)
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-4 pt-4 border-t border-gray-700">
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+                    <label class="font-medium flex items-start text-left cursor-pointer">
+                        <input type="checkbox" id="continuous-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0" checked>
+                        <span class="text-sm">MODO AVANCE CONTINUO 🚀<br><span class="text-xs font-normal text-gray-300">(Sin límite)</span></span>
                     </label>
-                    <p class="text-xs text-gray-400">Responde preguntas del banco de forma aleatoria sin fin. Termina la ronda cuando quieras con "Evaluar avance".</p>
+                    <p class="text-xs text-gray-400 text-left mt-2">Responde aleatorio sin fin. Termina con "Evaluar avance".</p>
                 </div>
-                <div class="space-y-2 mt-4 pt-4 border-t border-gray-700">
-                    <label class="font-medium flex items-center">
-                        <input type="checkbox" id="game-mode-toggle" class="mr-2 h-5 w-5">
-                        MODO SIMULACRO MORTAL ☠ (Desafío)
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+                    <label class="font-medium flex items-start text-left cursor-pointer">
+                        <input type="checkbox" id="game-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO SIMULACRO MORTAL ☠<br><span class="text-xs font-normal text-gray-300">(Desafío)</span></span>
                     </label>
-                    <p class="text-xs text-gray-400">Temporizador fijo de 30 minutos, 20 ejercicios aleatorios y 3 vidas</p>
+                    <p class="text-xs text-gray-400 text-left mt-2">30 minutos, 20 ejercicios al azar y 3 vidas.</p>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+                    <label class="font-medium flex items-start text-left cursor-pointer">
+                        <input type="checkbox" id="real-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO AVANCE REAL 😱<br><span class="text-xs font-normal text-gray-300">(Sin ayudas)</span></span>
+                    </label>
+                    <p class="text-xs text-gray-400 text-left mt-2">Oculta aciertos, sin confirmación de color/audio.</p>
                 </div>
             </div>
             <div class="space-y-4">
@@ -1885,11 +1923,26 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-8 space-y-2">
-                <label for="answered-ids-output" class="font-medium">Estos son los id´s solo de los ejercicios correctamente respondidos en esta evaluación, cópialos si deseas que no aparezcan estos ejercicios en la siguiente evaluación que realices:</label>
-                <div class="flex gap-2">
-                    <textarea id="answered-ids-output" rows="4" class="w-full p-3 bg-gray-700 rounded-lg border border-gray-600 text-white" readonly></textarea>
-                    <button id="copy-ids-btn" class="btn btn-secondary">Copiar</button>
+            <div id="ids-output-section" class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                <div class="space-y-2 bg-green-900 bg-opacity-20 p-4 rounded-lg border border-green-700">
+                    <label for="answered-ids-output" class="font-bold text-green-400 text-lg flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i> IDs Correctos
+                    </label>
+                    <p class="text-xs text-gray-300 mb-2">Ejercicios respondidos <b>correctamente</b>. Cópialos si deseas omitirlos en tu próxima sesión.</p>
+                    <div class="flex gap-2">
+                        <textarea id="answered-ids-output" rows="3" class="w-full p-3 bg-gray-800 rounded-lg border border-green-600 text-green-300" readonly></textarea>
+                        <button id="copy-ids-btn" class="btn btn-correct flex-shrink-0" style="margin:0;"><i class="fas fa-copy"></i> Copiar</button>
+                    </div>
+                </div>
+                <div class="space-y-2 bg-red-900 bg-opacity-20 p-4 rounded-lg border border-red-700">
+                    <label for="incorrect-ids-output" class="font-bold text-red-400 text-lg flex items-center gap-2">
+                        <i class="fas fa-times-circle"></i> IDs Incorrectos / Omitidos
+                    </label>
+                    <p class="text-xs text-gray-300 mb-2">Ejercicios <b>incorrectos, omitidos o no identificados</b>. Cópialos para repasarlos después.</p>
+                    <div class="flex gap-2">
+                        <textarea id="incorrect-ids-output" rows="3" class="w-full p-3 bg-gray-800 rounded-lg border border-red-600 text-red-300" readonly></textarea>
+                        <button id="copy-incorrect-ids-btn" class="btn btn-incorrect flex-shrink-0" style="margin:0;"><i class="fas fa-copy"></i> Copiar</button>
+                    </div>
                 </div>
             </div>
             <button id="restart-quiz-btn" class="btn btn-primary w-full sm:w-auto mt-8">Hacer otro cuestionario</button>
@@ -1926,7 +1979,7 @@
                 <a href="#" id="privacy-link" class="footer-link">Aviso de Privacidad</a>
             </div>
             <div id="copyright">
-                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-2.2401
+                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-3.0704
             </div>
         </div>
     </div>
@@ -2009,6 +2062,14 @@
                 quiz: document.getElementById('quiz-screen'),
                 results: document.getElementById('results-screen'),
             };
+
+            // ALERTA DE PROTECCIÓN CONTRA CIERRE ACCIDENTAL
+            window.addEventListener('beforeunload', function (e) {
+                if (!screens.quiz.classList.contains('hidden')) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
             const loginForm = document.getElementById('login-form');
             const nameInput = document.getElementById('name-input');
             const emailInput = document.getElementById('email-input');
@@ -2020,9 +2081,10 @@
             const guestLoginBtn = document.getElementById('guest-login-btn');
             const noAccessBtn = document.querySelector('a[href="https://wa.link/i5rp89"]');
             const welcomeName = document.getElementById('welcome-name');
-            const gameModeToggle = document.getElementById('game-mode-toggle');
-            const continuousModeToggle = document.getElementById('continuous-mode-toggle');
-           const uniTagsContainer = document.getElementById('uni-tags-container');
+            const gameModeToggle = document.getElementById('game-mode-toggle');
+            const continuousModeToggle = document.getElementById('continuous-mode-toggle');
+            const realModeToggle = document.getElementById('real-mode-toggle');
+            const uniTagsContainer = document.getElementById('uni-tags-container');
             const levelTagsContainer = document.getElementById('level-tags-container');
             const typeTagsContainer = document.getElementById('type-tags-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
@@ -2067,6 +2129,8 @@
             const resultsTableBody = document.querySelector('#results-table tbody');
             const answeredIdsOutput = document.getElementById('answered-ids-output');
             const copyIdsBtn = document.getElementById('copy-ids-btn');
+            const incorrectIdsOutput = document.getElementById('incorrect-ids-output');
+            const copyIncorrectIdsBtn = document.getElementById('copy-incorrect-ids-btn');
             const restartQuizBtn = document.getElementById('restart-quiz-btn');
             const resultsChartCanvas = document.getElementById('results-chart');
             const summaryEvalName = document.getElementById('summary-eval-name');
@@ -2168,7 +2232,8 @@
             let totalQuestionTime = 0;
             let isGuest = false;
             let isGameMode = false;
-            let isContinuousMode = true;
+            let isContinuousMode = true;
+            let isRealMode = false;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -2783,42 +2848,42 @@
 
                 // --- BLOQUE DE SONIDOS Y VIDAS (Igual que antes) ---
                 if (statusResult === 'unidentified') {
-                    if (effectsVolume > 0) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
+                    if (effectsVolume > 0 && !isRealMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
 
-                } else if (statusResult === 'correct') {
-                    if (effectsVolume > 0) {
-                        correctSound.currentTime = 0;
-                        correctSound.volume = effectsVolume;
-                        correctSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) {
-                        consecutiveCorrect++;
-                        // Si es híbrido cuenta doble en la mente del usuario, pero en sistema es 1 acierto lógico. 
-                        // Sin embargo, podemos dar doble bonificación de racha si lo deseas, 
-                        // pero para mantener simpleza, mantendremos +1 a la racha normal.
-                        if (consecutiveCorrect >= 3) {
-                            if (gameModeLives < 3) {
-                                gameModeLives++;
-                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
-                            }
-                            consecutiveCorrect = 0;
-                            updateGameModeLivesDisplay();
-                        }
-                    }
-                } else {
-                    // Incorrecto
-                    if (effectsVolume > 0) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
-                }
+                } else if (statusResult === 'correct') {
+                    if (effectsVolume > 0 && !isRealMode) {
+                        correctSound.currentTime = 0;
+                        correctSound.volume = effectsVolume;
+                        correctSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) {
+                        consecutiveCorrect++;
+                        // Si es híbrido cuenta doble en la mente del usuario, pero en sistema es 1 acierto lógico. 
+                        // Sin embargo, podemos dar doble bonificación de racha si lo deseas, 
+                        // pero para mantener simpleza, mantendremos +1 a la racha normal.
+                        if (consecutiveCorrect >= 3) {
+                            if (gameModeLives < 3) {
+                                gameModeLives++;
+                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
+                            }
+                            consecutiveCorrect = 0;
+                            updateGameModeLivesDisplay();
+                        }
+                    }
+                } else {
+                    // Incorrecto
+                    if (effectsVolume > 0 && !isRealMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
+                }
 
                 // ... resto de la lógica (Continuous Mode, Live Score, etc.) se mantiene igual
                 if (isContinuousMode && currentAnswer.status !== 'unanswered') {
@@ -3668,7 +3733,8 @@
                     '.graphing-btn',
                     '.privacy-modal-close',
                     '.close-modal-btn',
-                    '#logout-btn'
+                    '#logout-btn',
+                    'input[type="checkbox"]'
                 ];
 
                 const target = e.target.closest(soundClasses.join(','));
@@ -4178,31 +4244,55 @@
             }
 
             continuousModeToggle.addEventListener('change', () => {
-                isContinuousMode = continuousModeToggle.checked;
-                if (isContinuousMode) {
-                    gameModeToggle.checked = false;
-                    gameModeToggle.disabled = true;
-                    isGameMode = false;
-                } else {
-                    gameModeToggle.disabled = false;
-                }
-            });
+                isContinuousMode = continuousModeToggle.checked;
+                if (isContinuousMode) {
+                    gameModeToggle.checked = false;
+                    realModeToggle.checked = false;
+                    gameModeToggle.disabled = true;
+                    realModeToggle.disabled = true;
+                    isGameMode = false;
+                    isRealMode = false;
+                } else {
+                    gameModeToggle.disabled = false;
+                    realModeToggle.disabled = false;
+                }
+            });
 
-            gameModeToggle.addEventListener('change', () => {
-                isGameMode = gameModeToggle.checked;
-                if (isGameMode) {
-                    continuousModeToggle.checked = false;
-                    continuousModeToggle.disabled = true;
-                    isContinuousMode = false;
-                } else {
-                    continuousModeToggle.disabled = false;
-                }
-            });
+            gameModeToggle.addEventListener('change', () => {
+                isGameMode = gameModeToggle.checked;
+                if (isGameMode) {
+                    continuousModeToggle.checked = false;
+                    realModeToggle.checked = false;
+                    continuousModeToggle.disabled = true;
+                    realModeToggle.disabled = true;
+                    isContinuousMode = false;
+                    isRealMode = false;
+                } else {
+                    continuousModeToggle.disabled = false;
+                    realModeToggle.disabled = false;
+                }
+            });
+
+            realModeToggle.addEventListener('change', () => {
+                isRealMode = realModeToggle.checked;
+                if (isRealMode) {
+                    continuousModeToggle.checked = false;
+                    gameModeToggle.checked = false;
+                    continuousModeToggle.disabled = true;
+                    gameModeToggle.disabled = true;
+                    isContinuousMode = false;
+                    isGameMode = false;
+                } else {
+                    continuousModeToggle.disabled = false;
+                    gameModeToggle.disabled = false;
+                }
+            });
             
            startQuizBtn.addEventListener('click', () => {
                 errorMessage.textContent = '';
                 isGameMode = gameModeToggle.checked;
-                isContinuousMode = continuousModeToggle.checked;
+                isContinuousMode = continuousModeToggle.checked;
+                isRealMode = realModeToggle ? realModeToggle.checked : false;
                 
                 if (isGuest) {
                     questionCountInGuestMode = 0;
@@ -4335,41 +4425,51 @@
             });
             
             function startQuiz() {
+                screens.setup.classList.add('hidden');
+                screens.quiz.classList.remove('hidden');
                 currentQuestionIndex = 0;
                 seconds = 0;
                 totalQuestionTime = 0;
                 consecutiveCorrect = 0;
                 answeredIdsInContinuousMode.clear();
-                if (isContinuousMode) {
-                    userAnswers = quizQuestions.map(q => ({
-                        question: q, status: 'unanswered', selected: null, timeSpent: 0
-                    }));
-                } else {
-                    userAnswers = quizQuestions.map(q => ({
-                        question: q, status: 'unanswered', selected: null, timeSpent: 0
-                    }));
-                }
+                userAnswers = quizQuestions.map(q => ({
+                    question: q, status: 'unanswered', selected: null, timeSpent: 0
+                }));
                 screens.setup.classList.add('hidden');
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 updateEvaluationButton();
                 timerContainer.style.display = 'flex';
-                if (isGameMode) {
-                    document.getElementById('live-score').style.display = 'none';
-                    gameModeRules.classList.remove('hidden');
-                    gameModeRules.classList.add('game-mode-warning');
-                    gameModeLives = 3;
-                    updateGameModeLivesDisplay();
-                    startGameModeTimer();
-                } else {
-                    document.getElementById('live-score').style.display = 'flex';
-                    gameModeRules.classList.add('hidden');
-                    clearInterval(timer);
-                    timer = setInterval(() => { 
-                        seconds++; 
-                        timerDisplay.textContent = `${seconds}s`;
-                    }, 1000);
-                }
+                if (isRealMode) {
+                    document.getElementById('live-score').style.display = 'none';
+                    gameModeRules.classList.add('hidden');
+                    clearInterval(timer);
+                    timer = setInterval(() => { 
+                        seconds++; 
+                        timerDisplay.textContent = `${seconds}s`;
+                    }, 1000);
+                    hintBtn.style.display = 'none';
+                    chatbotToggle.style.display = 'none';
+                } else if (isGameMode) {
+                    document.getElementById('live-score').style.display = 'none';
+                    gameModeRules.classList.remove('hidden');
+                    gameModeRules.classList.add('game-mode-warning');
+                    gameModeLives = 3;
+                    updateGameModeLivesDisplay();
+                    startGameModeTimer();
+                    hintBtn.style.display = 'block';
+                    chatbotToggle.style.display = 'flex';
+                } else {
+                    document.getElementById('live-score').style.display = 'flex';
+                    gameModeRules.classList.add('hidden');
+                    clearInterval(timer);
+                    timer = setInterval(() => { 
+                        seconds++; 
+                        timerDisplay.textContent = `${seconds}s`;
+                    }, 1000);
+                    hintBtn.style.display = 'block';
+                    chatbotToggle.style.display = 'flex';
+                }
                 questionStartTime = Date.now();
                 displayQuestion();
                 updateLiveScore();
@@ -4379,24 +4479,30 @@
             }
 
             function addOptionFeatures(button, isCepredixUser, questionId, optionText) {
-                // 1) Función de mantener presionado (2 segundos) para poner gris
-                let pressTimer;
-                const startPress = () => {
-                    pressTimer = setTimeout(() => {
+                // 1) Función de descartar opción (poner gris) al presionar la letra del inciso
+                const letterElement = button.querySelector('.option-letter');
+                if (letterElement) {
+                    // Evitar que el clic en la letra seleccione la opción principal
+                    letterElement.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         button.classList.toggle('option-dark-gray');
-                    }, 2000);
-                };
-                const cancelPress = () => {
-                    if (pressTimer) clearTimeout(pressTimer);
-                };
-
-                // Detectar clics en PC y Toques en Móviles/Tablets
-                button.addEventListener('mousedown', startPress);
-                button.addEventListener('touchstart', startPress, {passive: true});
-                button.addEventListener('mouseup', cancelPress);
-                button.addEventListener('mouseleave', cancelPress);
-                button.addEventListener('touchend', cancelPress);
-                button.addEventListener('touchmove', cancelPress);
+                    });
+                    
+                    // Asegurar que funcione igual en móviles (touch)
+                    letterElement.addEventListener('touchstart', (e) => {
+                        e.stopPropagation();
+                    }, {passive: true});
+                    
+                    letterElement.addEventListener('touchend', (e) => {
+                        e.stopPropagation();
+                        e.preventDefault(); // Evita doble disparo en algunos dispositivos
+                        button.classList.toggle('option-dark-gray');
+                    });
+                    
+                    // Efecto visual sutil para que el usuario sepa que es interactiva
+                    letterElement.style.cursor = 'pointer';
+                    letterElement.title = 'Toca aquí para descartar esta opción';
+                }
 
                 // 2) Función de contador de votos discreto (solo para @cepredix.com)
                 if (isCepredixUser) {
@@ -4408,10 +4514,11 @@
                     voteContainer.onmousedown = (e) => e.stopPropagation();
                     voteContainer.ontouchstart = (e) => e.stopPropagation();
 
-                    const btnMinus = document.createElement('button');
-                    btnMinus.className = 'vote-btn';
-                    btnMinus.textContent = '-';
-                    
+                    const btnPlus = document.createElement('button');
+                    btnPlus.className = 'vote-btn';
+                    btnPlus.innerHTML = '<i class="fas fa-chevron-up"></i>'; // Icono de flecha arriba
+                    btnPlus.title = "Votar a favor";
+
                     const countSpan = document.createElement('span');
                     countSpan.className = 'vote-count';
                     
@@ -4420,33 +4527,36 @@
                     let currentVotes = parseInt(localStorage.getItem(voteKey)) || 0;
                     countSpan.textContent = currentVotes;
 
-                    const btnPlus = document.createElement('button');
-                    btnPlus.className = 'vote-btn';
-                    btnPlus.textContent = '+';
+                    const btnMinus = document.createElement('button');
+                    btnMinus.className = 'vote-btn';
+                    btnMinus.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Icono de flecha abajo
+                    btnMinus.title = "Votar en contra";
 
-                    btnMinus.onclick = (e) => { 
-                        e.preventDefault();
-                        currentVotes--; 
-                        countSpan.textContent = currentVotes; 
-                        localStorage.setItem(voteKey, currentVotes); 
-                    };
                     btnPlus.onclick = (e) => { 
                         e.preventDefault();
                         currentVotes++; 
                         countSpan.textContent = currentVotes; 
                         localStorage.setItem(voteKey, currentVotes); 
                     };
+                    btnMinus.onclick = (e) => { 
+                        e.preventDefault();
+                        currentVotes--; 
+                        countSpan.textContent = currentVotes; 
+                        localStorage.setItem(voteKey, currentVotes); 
+                    };
 
-                    voteContainer.appendChild(btnMinus);
-                    voteContainer.appendChild(countSpan);
+                    // Orden vertical: Arriba (+), Medio (Número), Abajo (-)
                     voteContainer.appendChild(btnPlus);
+                    voteContainer.appendChild(countSpan);
+                    voteContainer.appendChild(btnMinus);
                     
-                    button.appendChild(voteContainer);
+                    return voteContainer;
                 }
+                return null;
             }
 
             function displayQuestion() {
-                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
                 dtSeconds = 90;
                 dtTotalSeconds = 90;
@@ -4473,8 +4583,36 @@
                 }
 
                 const currentAnswer = userAnswers[currentQuestionIndex];
-                const { question } = currentAnswer;
-                justificationBox.classList.add('hidden');
+                const { question } = currentAnswer;
+                justificationBox.classList.add('hidden');
+
+                if (isRealMode) {
+                    let timeToSet = 90; // Default BÁSICO y otros
+                    if (question.level_tag && question.level_tag.includes('INTERMEDIO')) {
+                        timeToSet = 120;
+                    } else if (question.level_tag && question.level_tag.includes('AVANZADO')) {
+                        timeToSet = 180;
+                    }
+                    
+                    dtSeconds = timeToSet;
+                    dtTotalSeconds = timeToSet;
+                    if (typeof updateDtVisuals === 'function') updateDtVisuals();
+                    
+                    // Iniciar automáticamente
+                    const dtIconReset = document.querySelector('#dt-play-btn i');
+                    if (dtIconReset) dtIconReset.classList.replace('fa-play', 'fa-pause');
+                    dtIsRunning = true;
+                    dtInterval = setInterval(() => {
+                        if (dtSeconds > 0) {
+                            dtSeconds--;
+                            updateDtVisuals();
+                        } else {
+                            clearInterval(dtInterval);
+                            dtIsRunning = false;
+                            if (dtIconReset) dtIconReset.classList.replace('fa-pause', 'fa-play');
+                        }
+                    }, 1000);
+                }
                 justificationText.innerHTML = '';
                 
                 if (isContinuousMode) {
@@ -4634,7 +4772,7 @@
 
                             // Agregamos las nuevas funciones (presión de 2 seg y contador)
                             const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
-                            addOptionFeatures(btn, isCepredix, question.id, opt.text);
+                            const voteNode = addOptionFeatures(btn, isCepredix, question.id, opt.text);
 
                             // Evento Click Híbrido
                             btn.addEventListener('click', () => {
@@ -4651,7 +4789,11 @@
                                 evaluateBtn.disabled = !(g1Selected && g2Selected);
                             });
 
-                            colDiv.appendChild(btn);
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'option-wrapper';
+                            wrapper.appendChild(btn);
+                            if (voteNode) wrapper.appendChild(voteNode);
+                            colDiv.appendChild(wrapper);
                         });
                         return colDiv;
                     };
@@ -4719,7 +4861,7 @@
                         // Agregamos las nuevas funciones (presión de 2 seg y contador)
                         // Excluimos la opción de "No puedo identificar" del contador
                         const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com') && !isNoId;
-                        addOptionFeatures(button, isCepredix, question.id, option.text);
+                        const voteNode = addOptionFeatures(button, isCepredix, question.id, option.text);
 
                         // Triple clic logic standard
                         let clickCount = 0;
@@ -4741,10 +4883,19 @@
                                 }
                             }
                         });
-                        optionsContainer.appendChild(button);
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'option-wrapper';
+                        wrapper.appendChild(button);
+                        if (voteNode) wrapper.appendChild(voteNode);
+                        optionsContainer.appendChild(wrapper);
                     });
                 }
                 setTimeout(() => {
+                    // Liberar memoria de MathJax antes de renderizar (Crucial para evitar crasheos en iOS)
+                    if (window.MathJax && window.MathJax.typesetClear) {
+                        window.MathJax.typesetClear([questionText, optionsContainer, textContent]);
+                    }
                     MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
                     }).catch((err) => console.log('Error renderizando formulas:', err));
                 }, 50);
@@ -4823,17 +4974,19 @@
                         const group = btn.dataset.group; // "1" o "2"
                         const isSelected = btn.classList.contains('selected');
 
-                        // Colorear Correctas
-                        if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
-                            btn.classList.add('correct');
-                        }
-                        
-                        // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
-                        if (isSelected && status !== 'correct') {
-                             if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
-                                 btn.classList.add('incorrect');
-                             }
-                        }
+                        if (!isRealMode) {
+                            // Colorear Correctas
+                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
+                                btn.classList.add('correct');
+                            }
+                            
+                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
+                            if (isSelected && status !== 'correct') {
+                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
+                                     btn.classList.add('incorrect');
+                                 }
+                            }
+                        }
                     });
 
                 } else {
@@ -4846,32 +4999,39 @@
                     document.querySelectorAll('.option-btn').forEach(btn => {
                         btn.disabled = true;
                         
-                        // 1. Marcar siempre la correcta en verde
-                        if (btn.dataset.text === correctOption) btn.classList.add('correct');
-                        
-                        // 2. Verificar si este es el botón que el usuario presionó previamente
-                        // (Comparamos el texto del botón con lo guardado en userAnswers)
-                        if (btn.dataset.text === userSelectedText) {
-                            
-                            // Restauramos la clase visual de "seleccionado"
-                            btn.classList.add('selected'); 
+                        if (!isRealMode) {
+                            // 1. Marcar siempre la correcta en verde
+                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
+                            
+                            // 2. Verificar si este es el botón que el usuario presionó previamente
+                            // (Comparamos el texto del botón con lo guardado en userAnswers)
+                            if (btn.dataset.text === userSelectedText) {
+                                
+                                // Restauramos la clase visual de "seleccionado"
+                                btn.classList.add('selected'); 
 
-                            // 3. Si el estado general de la respuesta fue incorrecto,
-                            // y este botón NO es la opción correcta, lo pintamos de rojo.
-                            if (status === 'incorrect' || status === 'unidentified') {
-                                if (btn.dataset.text !== correctOption) {
-                                    btn.classList.add('incorrect');
-                                }
-                            }
-                        }
+                                // 3. Si el estado general de la respuesta fue incorrecto,
+                                // y este botón NO es la opción correcta, lo pintamos de rojo.
+                                if (status === 'incorrect' || status === 'unidentified') {
+                                    if (btn.dataset.text !== correctOption) {
+                                        btn.classList.add('incorrect');
+                                    }
+                                }
+                            }
+                        } else {
+                            // En MODO AVANCE REAL, solo mantenemos la selección en oscuro sin validación
+                            if (btn.dataset.text === userSelectedText) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
                 }
 
-                if (question.explanation) {
-                    justificationText.innerHTML = question.explanation;
-                    justificationBox.classList.remove('hidden');
-                    MathJax.typesetPromise([justificationText]);
-                }
+                if (question.explanation && !isRealMode) {
+                    justificationText.innerHTML = question.explanation;
+                    justificationBox.classList.remove('hidden');
+                    MathJax.typesetPromise([justificationText]);
+                }
             }
             
             function playSound(soundId) {
@@ -4961,9 +5121,6 @@
                     }
                 } else if (!isContinuousMode) {
                     endQuiz();
-                } else {
-                    showFeedback();
-                    updateButtonStates();
                 }
             });
             
@@ -4971,7 +5128,7 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
 
                 screens.quiz.classList.add('hidden');
@@ -4988,7 +5145,11 @@
                 simulacroSuccess2.pause();
             });
             
-            finishBtn.addEventListener('click', () => endQuiz());
+            finishBtn.addEventListener('click', () => {
+                if (confirm("¿Estás seguro de que deseas evaluar tu avance ahora?")) {
+                    endQuiz();
+                }
+            });
             
             hintBtn.addEventListener('click', () => {
                 const question = userAnswers[currentQuestionIndex].question;
@@ -5009,6 +5170,9 @@
                 modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
                     modalElement.remove();
                 });
+                if (window.MathJax && window.MathJax.typesetClear) {
+                    window.MathJax.typesetClear([modalElement.querySelector('.hint-content')]);
+                }
                 MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
             });
             
@@ -5020,29 +5184,94 @@
             }
             
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
-                const formData = new FormData();
-                
-                formData.append('EvaluationName', "MIRANDA ASESORÍAS"); 
-                
-                formData.append('Name', currentUser.name || 'Invitado');
-                formData.append('Email', currentUser.email || 'sin_email');
-                formData.append('WhatsApp', currentUser.whatsapp || '0000000000');
-                formData.append('TotalTime', totalTime);
-                formData.append('AverageTime', numQuestions > 0 ? (totalTime / numQuestions).toFixed(2) : 0);
-                formData.append('Score', score.toFixed(2));
-                formData.append('CorrectAnswers', stats.correct);
-                formData.append('TotalQuestions', numQuestions);
-                formData.append('IDs', idsString);
-                
-                formData.append('UserType', isGuest ? 'Invitado' : 'Registrado');
+                // 1. Empaquetamos los datos en un objeto simple
+                const payload = {
+                    EvaluationName: "ASESORÍAS MIRANDA 😎",
+                    Name: currentUser.name || 'Invitado',
+                    Email: currentUser.email || 'sin_email',
+                    WhatsApp: currentUser.whatsapp || '0000000000',
+                    TotalTime: totalTime,
+                    AverageTime: numQuestions > 0 ? (totalTime / numQuestions).toFixed(2) : 0,
+                    Score: score.toFixed(2),
+                    CorrectAnswers: stats.correct,
+                    TotalQuestions: numQuestions,
+                    IDs: idsString,
+                    UserType: isGuest ? 'Invitado' : 'Registrado',
+                    Timestamp: new Date().toLocaleString('es-MX') // Para saber cuándo lo hizo
+                };
 
-                try {
-                    await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
-                    console.log("Resultados enviados con éxito al script de respaldo.");
-                } catch (error) {
-                    console.error("Error al enviar los resultados:", error);
+                await sendOrQueueResult(payload);
+            }
+
+            async function sendOrQueueResult(payload) {
+                if (navigator.onLine) {
+                    try {
+                        const formData = new FormData();
+                        for (const key in payload) {
+                            formData.append(key, payload[key]);
+                        }
+                        await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
+                        console.log("Resultados enviados con éxito al servidor.");
+                    } catch (error) {
+                        console.warn("Fallo el envío por red inestable, guardando en cola offline...");
+                        saveToOfflineQueue(payload);
+                    }
+                } else {
+                    console.warn("Sin conexión a internet, guardando en cola offline...");
+                    saveToOfflineQueue(payload);
+                    showTemporaryMessage("Sin conexión. Tus resultados se guardaron y se enviarán cuando regrese el internet.", "bg-yellow-600");
                 }
-            }            
+            }
+
+            function saveToOfflineQueue(payload) {
+                let queue = JSON.parse(localStorage.getItem('cepredix_offline_queue') || '[]');
+                queue.push(payload);
+                localStorage.setItem('cepredix_offline_queue', JSON.stringify(queue));
+            }
+
+            async function processOfflineQueue() {
+                if (!navigator.onLine) return;
+                let queue = JSON.parse(localStorage.getItem('cepredix_offline_queue') || '[]');
+                if (queue.length === 0) return;
+
+                console.log(`Procesando ${queue.length} resultados pendientes...`);
+                let remainingQueue = [];
+
+                for (const payload of queue) {
+                    try {
+                        const formData = new FormData();
+                        for (const key in payload) {
+                            formData.append(key, payload[key]);
+                        }
+                        await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
+                        console.log("Resultado pendiente enviado con éxito.");
+                    } catch (error) {
+                        console.error("Error enviando resultado de la cola, se intentará luego.", error);
+                        remainingQueue.push(payload); // Lo mantenemos en la cola si vuelve a fallar
+                    }
+                }
+                
+                // Actualizamos la cola solo con los que fallaron (si es que alguno falló)
+                localStorage.setItem('cepredix_offline_queue', JSON.stringify(remainingQueue));
+                
+                if (remainingQueue.length === 0) {
+                    showTemporaryMessage("Se han sincronizado tus resultados pendientes con el servidor ✅", "bg-green-600");
+                }
+            }
+
+            // Listeners nativos del navegador para detectar cuando se va o vuelve el internet
+            window.addEventListener('online', () => {
+                showTemporaryMessage("¡Conexión restaurada! Sincronizando datos...", "bg-blue-600");
+                processOfflineQueue();
+            });
+            
+            window.addEventListener('offline', () => {
+                showTemporaryMessage("Sin conexión a internet. Puedes seguir trabajando, tus datos se guardarán.", "bg-red-600");
+            });
+
+            // Al cargar la página, verificamos si hay algo atorado en la cola de sesiones anteriores
+            setTimeout(processOfflineQueue, 3000);
+
             function endQuiz() {
                 if (isGameMode && gameModeLives > 0) {
                     const successSounds = [simulacroSuccess1, simulacroSuccess2];
@@ -5107,19 +5336,21 @@
                 populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
                 
                 if (isGuest) {
-                    const idsOutputSection = document.querySelector('.mt-8.space-y-2');
-                    if (idsOutputSection) {
-                        idsOutputSection.style.display = 'none';
-                    }
-                    copyIdsBtn.disabled = true;
-                    copyIdsBtn.classList.add('btn-disabled');
+                    const idsOutputSection = document.getElementById('ids-output-section');
+                if (idsOutputSection) {
+                    idsOutputSection.style.display = 'none';
+                }
+                copyIdsBtn.disabled = true;
+                copyIdsBtn.classList.add('btn-disabled');
+                if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = true; copyIncorrectIdsBtn.classList.add('btn-disabled'); }
                 } else {
-                    const idsOutputSection = document.querySelector('.mt-8.space-y-2');
+                    const idsOutputSection = document.getElementById('ids-output-section');
                     if (idsOutputSection) {
-                        idsOutputSection.style.display = 'block';
+                        idsOutputSection.style.display = 'grid';
                     }
                     copyIdsBtn.disabled = false;
                     copyIdsBtn.classList.remove('btn-disabled');
+                    if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = false; copyIncorrectIdsBtn.classList.remove('btn-disabled'); }
                 }
                 
                 if (isGameMode) {
@@ -5207,90 +5438,9 @@
                         guestInfoModal.style.display = 'none';
                         document.body.style.overflow = 'auto';
                         
-                        proceedWithGuestResults();
+                        endQuiz();
                     }
                 };
-            }
-            
-            function proceedWithGuestResults() {
-                screens.quiz.classList.add('hidden');
-                screens.results.classList.remove('hidden');
-                
-                let answersToEvaluate = userAnswers;
-                if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
-                    answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
-                    if (answersToEvaluate.length === 0) {
-                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al menú.");
-                        screens.results.classList.add('hidden');
-                        screens.setup.classList.remove('hidden');
-                        return;
-                    }
-                }
-                
-                const stats = {
-                    correct: answersToEvaluate.filter(a => a.status === 'correct').length,
-                    incorrect: answersToEvaluate.filter(a => a.status === 'incorrect').length,
-                    omitted: answersToEvaluate.filter(a => a.status === 'omitted').length,
-                    unidentified: answersToEvaluate.filter(a => a.status === 'unidentified').length
-                };
-                
-                const totalEvaluated = stats.correct + stats.incorrect + stats.unidentified;
-                const finalScoreValue = totalEvaluated > 0 ? (stats.correct / totalEvaluated) * 10 : 0;
-                const totalTimeEvaluated = answersToEvaluate.reduce((acc, curr) => acc + curr.timeSpent, 0);
-                const averageTime = answersToEvaluate.length > 0 ? (totalTimeEvaluated / answersToEvaluate.length).toFixed(2) : 0;
-                const idsString = answersToEvaluate.map(a => a.question.id).filter(id => id).join(', ');
-                
-                finalScore.textContent = `${finalScoreValue.toFixed(2)} / 10.00`;
-                totalTime.textContent = `${totalTimeEvaluated} segundos`;
-                avgTime.textContent = `${averageTime} seg por pregunta`;
-                correctCount.textContent = stats.correct;
-                incorrectCount.textContent = stats.incorrect;
-                omittedCount.textContent = stats.omitted;
-                unansweredCount.textContent = stats.unidentified;
-                
-                if (finalScoreValue === 10) resultImage.src = RESULT_IMAGES.perfect10;
-                else if (finalScoreValue >= 9.5) resultImage.src = RESULT_IMAGES.between9_5_10;
-                else if (finalScoreValue >= 9) resultImage.src = RESULT_IMAGES.between9_9_5;
-                else if (finalScoreValue >= 8) resultImage.src = RESULT_IMAGES.between8_9;
-                else if (finalScoreValue >= 7) resultImage.src = RESULT_IMAGES.between7_8;
-                else resultImage.src = RESULT_IMAGES.less7;
-                
-                submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
-                
-                populateResultsTable(answersToEvaluate);
-                drawResultsChart(stats);
-                const allAnsweredIds = generateAnsweredIdsList();
-                populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
-                
-                const idsOutputSection = document.querySelector('.mt-8.space-y-2');
-                if (idsOutputSection) {
-                    idsOutputSection.style.display = 'none';
-                }
-                copyIdsBtn.disabled = true;
-                copyIdsBtn.classList.add('btn-disabled');
-                
-                if (isGameMode) {
-                    let returnBtn = document.getElementById('return-to-menu-btn');
-                    if (!returnBtn) {
-                        returnBtn = document.createElement('button');
-                        returnBtn.id = 'return-to-menu-btn';
-                        returnBtn.className = 'btn btn-primary w-full mt-4';
-                        returnBtn.textContent = 'VOLVER AL MENÚ PRINCIPAL';
-                        returnBtn.addEventListener('click', () => {
-                            screens.results.classList.add('hidden');
-                            screens.setup.classList.remove('hidden');
-                        });
-                        const restartBtnParent = restartQuizBtn.closest('div');
-                        if (restartBtnParent && restartBtnParent.nextElementSibling) {
-                            restartBtnParent.nextElementSibling.before(returnBtn);
-                        } else {
-                             document.getElementById('results-screen').appendChild(returnBtn);
-                        }
-                    }
-                } else {
-                    const returnBtn = document.getElementById('return-to-menu-btn');
-                    if(returnBtn) returnBtn.remove();
-                }
             }
             
             function populateResultsTable(answers) {
@@ -5321,7 +5471,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "MIRANDA ASESORÍAS";
+                summaryEvalName.textContent = "ASESORÍAS MIRANDA 😎";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -5329,22 +5479,42 @@
             }
             
             function generateAnsweredIdsList() {
+                // Generar lista de correctas
                 const correctIds = userAnswers
                     .filter(a => a.status === 'correct' && a.question.id)
                     .map(a => a.question.id);
                 const combinedIds = new Set([...pastedAnsweredIds, ...correctIds]);
                 const sortedIds = [...combinedIds].sort();
                 const idsString = sortedIds.join(', ');
-                answeredIdsOutput.value = idsString;
+                if (answeredIdsOutput) answeredIdsOutput.value = idsString;
+
+                // Generar lista de incorrectas/omitidas
+                const incorrectIds = userAnswers
+                    .filter(a => (a.status === 'incorrect' || a.status === 'omitted' || a.status === 'unidentified') && a.question.id)
+                    .map(a => a.question.id);
+                const sortedIncorrectIds = [...new Set(incorrectIds)].sort();
+                if (incorrectIdsOutput) {
+                    incorrectIdsOutput.value = sortedIncorrectIds.join(', ');
+                }
+
                 return idsString;
             }
             
             copyIdsBtn.addEventListener('click', () => {
                 answeredIdsOutput.select();
                 document.execCommand('copy');
-                copyIdsBtn.textContent = '¡Copiado!';
-                setTimeout(() => { copyIdsBtn.textContent = 'Copiar'; }, 2000);
+                copyIdsBtn.innerHTML = '<i class="fas fa-check"></i> Copiado';
+                setTimeout(() => { copyIdsBtn.innerHTML = '<i class="fas fa-copy"></i> Copiar'; }, 2000);
             });
+
+            if (copyIncorrectIdsBtn) {
+                copyIncorrectIdsBtn.addEventListener('click', () => {
+                    incorrectIdsOutput.select();
+                    document.execCommand('copy');
+                    copyIncorrectIdsBtn.innerHTML = '<i class="fas fa-check"></i> Copiado';
+                    setTimeout(() => { copyIncorrectIdsBtn.innerHTML = '<i class="fas fa-copy"></i> Copiar'; }, 2000);
+                });
+            }
             
             function drawResultsChart(stats) {
                 if (resultsChart) resultsChart.destroy();
@@ -5396,7 +5566,7 @@
                     }
                 });
             }
-            lookupBtn.addEventListener('click', () => {
+           lookupBtn.addEventListener('click', () => {
                 if (isGuest) {
                     showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
                     return;
@@ -5508,7 +5678,7 @@
                         mainImageHtml = `
                             <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
                                 <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
-                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
+                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden; animation: watermark-scroll 40s linear infinite;">
                                     <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
                                         ${wmText}
                                     </div>
@@ -5551,6 +5721,9 @@
                     </div>
                 `;
                 lookupResultContainer.classList.remove('hidden');
+                if (window.MathJax && window.MathJax.typesetClear) {
+                    window.MathJax.typesetClear([lookupResultContainer]);
+                }
                 MathJax.typesetPromise([lookupResultContainer]);
             }
             
@@ -5705,6 +5878,12 @@
                 // Guardamos una COPIA de los objetos actuales
                 wbHistory.push(JSON.parse(JSON.stringify(wbPaths)));
                 wbStep++;
+                
+                // LÍMITE DE MEMORIA PARA EVITAR CRASHEOS EN SAFARI/IPHONE
+                if (wbHistory.length > 8) {
+                    wbHistory.shift();
+                    wbStep--;
+                }
             }
 
             // Ajustar tamaño del canvas
@@ -5925,24 +6104,17 @@
                     }
                 });
                 
+                let resizeTimeout;
                 window.addEventListener('resize', () => {
-                    // Solo redimensionar si está visible para no perder datos innecesariamente
                     if(!wbOverlay.classList.contains('hidden')) {
-                        // Guardar imagen actual temporalmente
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = wbCanvas.width;
-                        tempCanvas.height = wbCanvas.height;
-                        tempCanvas.getContext('2d').drawImage(wbCanvas, 0, 0);
-                        
-                        wbCanvas.width = window.innerWidth;
-                        wbCanvas.height = window.innerHeight;
-                        
-                        wbCtx.lineCap = 'round';
-                        wbCtx.lineJoin = 'round';
-                        wbCtx.strokeStyle = wbCurrentColor;
-                        wbCtx.lineWidth = wbCurrentWidth;
-                        
-                        wbCtx.drawImage(tempCanvas, 0, 0);
+                        // Debounce: Evita que se ejecute cientos de veces por segundo en iOS
+                        clearTimeout(resizeTimeout);
+                        resizeTimeout = setTimeout(() => {
+                            wbCanvas.width = window.innerWidth;
+                            wbCanvas.height = window.innerHeight;
+                            // Redibujamos desde el array de memoria sin crear Canvas temporales asesinos de RAM
+                            redrawWb();
+                        }, 200);
                     }
                 });
             }
