@@ -845,7 +845,7 @@
                 <div class="text-xs sm:text-lg font-bold text-gray-200 order-1">
                     Pregunta <span id="current-question-num"></span>/<span id="total-questions-num"></span>
                 </div>
-                <div id="live-score" class="flex gap-2 text-xs sm:text-lg order-2">
+                <div id="live-score" class="hidden">
                     <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
                     <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
                 </div>
@@ -924,7 +924,7 @@
             </div>
             <div id="action-buttons" class="mt-6 space-y-3">
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="hint-btn" class="btn btn-hint w-full">💡 PISTA</button>
+                    <button id="hint-btn" class="btn btn-hint w-full">💡 PISTA (10)</button>
                     <button id="evaluate-btn" class="btn btn-primary w-full" disabled>
                         <span class="evaluate-emoji">🤨</span> EVALUAR
                     </button>
@@ -1237,6 +1237,7 @@
             let allQuestions = [], quizQuestions = [], userAnswers = [];
             let currentQuestionIndex = 0, quizTimer, quizSeconds = 0, resultsChart;
             let currentUser = {};
+            let remainingHints = 10;
             let questionStartTime = 0;
             let totalQuestionTime = 0;
             let effectsVolume = 0.5;
@@ -1558,24 +1559,11 @@
                 currentAnswer.timeSpent = timeSpent;
                 currentAnswer.status = statusResult;
 
-                if (statusResult === 'unidentified') {
-                    if (effectsVolume > 0) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                } else if (statusResult === 'correct') {
-                    if (effectsVolume > 0) {
-                        correctSound.currentTime = 0;
-                        correctSound.volume = effectsVolume;
-                        correctSound.play().catch(e => console.error(e));
-                    }
-                } else {
-                    if (effectsVolume > 0) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
+                // Sonidos de acierto/error eliminados. Solo se reproduce sonido neutral.
+                if (effectsVolume > 0) {
+                    buttonSound.currentTime = 0;
+                    buttonSound.volume = effectsVolume;
+                    buttonSound.play().catch(e => console.error(e));
                 }
 
                 updateLiveScore();
@@ -1790,6 +1778,8 @@
                     }
                 }, 1000);
                 
+                remainingHints = 10;
+                document.getElementById('hint-btn').innerHTML = `💡 PISTA (10)`;
                 questionStartTime = Date.now();
                 displayQuestion();
                 updateLiveScore();
@@ -2105,57 +2095,15 @@
             }
 
            function showFeedback() {
-                const { question, selected, status } = userAnswers[currentQuestionIndex];
-                const isHybrid = question.options.some(opt => 'text_op1' in opt);
-
-                if (isHybrid) {
-                    const correctOp1 = question.options.find(o => 'text_op1' in o && o.correct)?.text_op1;
-                    const correctOp2 = question.options.find(o => 'text_op2' in o && o.correct)?.text_op2;
-                    
-                    document.querySelectorAll('.option-btn').forEach(btn => {
-                        btn.disabled = true;
-                        const txt = btn.dataset.text;
-                        const group = btn.dataset.group;
-                        const isSelected = btn.classList.contains('selected');
-
-                        if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
-                            btn.classList.add('correct');
-                        }
-                        
-                        if (isSelected && status !== 'correct') {
-                             if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
-                                 btn.classList.add('incorrect');
-                             }
-                        }
-                    });
-
-                } else {
-                    const correctOption = question.options.find(opt => opt.correct)?.text || null;
-                    
-                    const userSelectedText = userAnswers[currentQuestionIndex].selected;
-
-                    document.querySelectorAll('.option-btn').forEach(btn => {
-                        btn.disabled = true;
-                        
-                        if (btn.dataset.text === correctOption) btn.classList.add('correct');
-                        
-                        if (btn.dataset.text === userSelectedText) {
-                            btn.classList.add('selected'); 
-
-                            if (status === 'incorrect' || status === 'unidentified') {
-                                if (btn.dataset.text !== correctOption) {
-                                    btn.classList.add('incorrect');
-                                }
-                            }
-                        }
-                    });
-                }
-
-                if (question.explanation) {
-                    justificationText.innerHTML = question.explanation;
-                    justificationBox.classList.remove('hidden');
-                    MathJax.typesetPromise([justificationText]);
-                }
+                const { selected } = userAnswers[currentQuestionIndex];
+                
+                // Solo bloqueamos las opciones y mantenemos seleccionada la que el alumno eligió
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.disabled = true;
+                    if (selected && selected.includes(btn.dataset.text)) {
+                        btn.classList.add('selected');
+                    }
+                });
             }
             
             if (evaluateBtn) {
@@ -2210,6 +2158,13 @@
             finishBtn.addEventListener('click', () => endQuiz());
             
             hintBtn.addEventListener('click', () => {
+                if (remainingHints <= 0) {
+                    showTemporaryMessage("Ya no te quedan pistas disponibles 😥", "bg-yellow-600");
+                    return;
+                }
+                remainingHints--;
+                hintBtn.innerHTML = `💡 PISTA (${remainingHints})`;
+                
                 const question = userAnswers[currentQuestionIndex].question;
                 const modalElement = document.createElement('div');
                 modalElement.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1001]";
