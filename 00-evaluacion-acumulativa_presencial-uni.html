@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🟣 EVALUACIÓN CURSO PRESENCIAL 🙂</title>
+    <title>🟩 ADMISIÓN PREPA 2026 EVALUACIÓN DE CLASES 😎</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -12,7 +12,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="🟣 EVALUACIÓN CURSO PRESENCIAL 🙂 - CEPREDIX">
+    <meta property="og:title" content="🟩 ADMISIÓN PREPA 2026 EVALUACIÓN DE CLASES 😎 - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -49,13 +49,30 @@
             position: relative;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             line-height: 1.4; /* Ajuste global de interlineado */
+            overscroll-behavior-y: none; /* EVITA EL PULL-TO-REFRESH EN IPHONE */
         }
         #question-text {
             line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
             margin-bottom: 15px !important;
+            max-width: 100%; /* Asegura que el contenedor no rebase la pantalla */
+            overflow-x: auto; /* Permite scroll horizontal en la pregunta si algo es muy ancho */
+            word-wrap: break-word; /* Obliga al texto normal a saltar de línea */
+            overflow-wrap: break-word;
         }
         #question-text p {
             margin-bottom: 8px !important; /* Menos espacio entre párrafos */
+            max-width: 100%;
+        }
+        /* Controles responsivos específicos para el renderizado de LaTeX (MathJax) */
+        mjx-container[display="true"] {
+            max-width: 100%;
+            overflow-x: auto !important; /* Añade barra de desplazamiento a ecuaciones largas */
+            overflow-y: hidden !important;
+            padding-bottom: 5px; /* Espacio extra inferior para la barra de desplazamiento */
+            padding-top: 5px;
+        }
+        mjx-container {
+            max-width: 100%;
         }
         body::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -1202,38 +1219,52 @@
             color: #888888 !important;
             filter: grayscale(100%);
         }
-        .vote-counter-container {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .option-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            z-index: 20;
+            width: 100%;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .option-wrapper .option-btn {
+            margin-bottom: 0 !important;
+            flex-grow: 1;
+            padding-right: 15px !important;
+        }
+        .vote-counter-container {
+            display: flex;
+            flex-direction: column; /* Apila los elementos verticalmente */
+            align-items: center;
+            justify-content: center;
+            gap: 2px; /* Menos espacio entre flechas y número */
+            background: rgba(0, 0, 0, 0.3); /* Fondo más transparente y discreto */
+            padding: 4px 6px;
+            border-radius: 8px;
+            flex-shrink: 0; 
+            min-width: 32px;
         }
         .vote-btn {
             background: transparent;
             border: none;
-            color: #4fc3f7;
+            color: #4fc3f7; /* Azul claro original */
             cursor: pointer;
-            padding: 0 4px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+            padding: 2px;
+            font-size: 0.9rem; /* Flechas más pequeñas */
+            transition: transform 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .vote-btn:hover {
             color: #fff;
-            transform: scale(1.2);
+            transform: scale(1.3);
         }
         .vote-count {
-            min-width: 15px;
+            font-weight: bold;
+            font-size: 0.85rem; /* Número un poco más pequeño */
             text-align: center;
             color: #fff;
+            line-height: 1;
         }
     </style>
 </head>
@@ -1243,7 +1274,7 @@
     <audio id="button-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/Clic_sound.mp3" preload="auto"></audio>
     <audio id="sad-violin-sound" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
     <audio id="simulacro-fail-1" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_fail_1.mp3" preload="auto"></audio>
-    <audio id="simulacro-fail-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/sad_violin.mp3" preload="auto"></audio>
+    <audio id="simulacro-fail-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_fail_2.mp3" preload="auto"></audio>
     <audio id="simulacro-success-1" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_1.mp3" preload="auto"></audio>
     <audio id="simulacro-success-2" src="https://github.com/IALUMX/Audios_cepredix/raw/refs/heads/main/simulacro_logrado_2.mp3" preload="auto"></audio>
     <div id="adOverlay" style="display: none;">
@@ -1385,7 +1416,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">🟣 EVALUACIÓN CURSO PRESENCIAL 🙂</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">🟩 ADMISIÓN PREPA 2026 EVALUACIÓN DE CLASES 😎</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1451,7 +1482,7 @@
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
                 <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-4 pt-4 border-t border-gray-700">
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left mt-4 pt-4 border-t border-gray-700">
                 <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
                     <label class="font-medium flex items-start text-left cursor-pointer">
                         <input type="checkbox" id="continuous-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0" checked>
@@ -1472,6 +1503,13 @@
                         <span class="text-sm">MODO AVANCE REAL 😱<br><span class="text-xs font-normal text-gray-300">(Sin ayudas)</span></span>
                     </label>
                     <p class="text-xs text-gray-400 text-left mt-2">Oculta aciertos, sin confirmación de color/audio.</p>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+                    <label class="font-medium flex items-start text-left cursor-pointer">
+                        <input type="checkbox" id="memory-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO MEMORIA 🧠<br><span class="text-xs font-normal text-gray-300">(Flashcards)</span></span>
+                    </label>
+                    <p class="text-xs text-gray-400 text-left mt-2">Autoevaluación sin opciones. Exclusivo para registrados.</p>
                 </div>
             </div>
             <div class="space-y-4">
@@ -1570,6 +1608,13 @@
                     <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
                     <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
                 </div>
+                <div id="memory-stats" class="flex gap-3 text-xs sm:text-sm font-bold order-2 hidden items-center bg-gray-800 px-3 py-1 rounded-full border border-gray-600 shadow-md">
+                     <span class="text-green-400">✅ <span id="mem-score-correct">0</span></span>
+                     <span class="text-gray-500">|</span>
+                     <span class="text-red-400">❌ <span id="mem-score-incorrect">0</span></span>
+                     <span class="text-gray-500">|</span>
+                     <span id="mem-avg-time" class="text-gray-300"><i class="fas fa-clock"></i> 0s</span>
+                </div>
                 <div class="flex items-center space-x-1 text-xs sm:text-lg font-bold order-3" id="timer-container">
                     <svg class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span id="timer" class="timer-green">30:00</span>
@@ -1663,6 +1708,33 @@
                     </button>
                 </div>
                 <div id="options-container" class="w-full space-y-3"></div>
+                
+                <div id="memory-mode-ui" class="w-full space-y-4 hidden flex-col items-center mt-4">
+                    <button id="memory-show-answer-btn" class="btn btn-primary w-full py-4 text-lg sm:text-xl shadow-lg border-2 border-blue-400 transition-all transform hover:scale-105">
+                        <i class="fas fa-eye"></i> MOSTRAR RESPUESTA
+                    </button>
+                    
+                    <div id="memory-answer-box" class="w-full bg-gray-800 p-4 sm:p-6 rounded-lg border-2 border-yellow-500 hidden flex-col items-center shadow-xl text-center">
+                        <h3 class="text-yellow-400 font-bold mb-3 text-sm sm:text-lg uppercase tracking-wider"><i class="fas fa-check-circle"></i> Respuesta Correcta</h3>
+                        <div id="memory-correct-text" class="text-lg sm:text-xl text-white font-semibold w-full overflow-x-auto break-words"></div>
+                        <div id="memory-correct-image" class="mt-4 flex justify-center w-full"></div>
+                    </div>
+                    
+                    <div id="memory-eval-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 w-full hidden mt-4">
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-green-500 hover:bg-green-600 text-white transition-colors" data-action="correct">
+                            <span class="text-2xl sm:text-3xl mb-1">✅</span> <span class="text-xs sm:text-sm">BIEN</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-red-500 hover:bg-red-600 text-white transition-colors" data-action="incorrect">
+                            <span class="text-2xl sm:text-3xl mb-1">❌</span> <span class="text-xs sm:text-sm">MAL</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-yellow-500 hover:bg-yellow-600 text-white transition-colors" data-action="repeat">
+                            <span class="text-2xl sm:text-3xl mb-1">🔁</span> <span class="text-xs sm:text-sm">REPETIR (+5)</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-gray-400 hover:bg-gray-500 text-white transition-colors" data-action="skip">
+                            <span class="text-2xl sm:text-3xl mb-1">⏭️</span> <span class="text-xs sm:text-sm">OMITIR</span>
+                        </button>
+                    </div>
+                </div>
                 <div id="justification-box" class="justification w-full hidden">
                     <h4>Justificación:</h4>
                     <p id="justification-text"></p>
@@ -2031,6 +2103,14 @@
                 quiz: document.getElementById('quiz-screen'),
                 results: document.getElementById('results-screen'),
             };
+
+            // ALERTA DE PROTECCIÓN CONTRA CIERRE ACCIDENTAL
+            window.addEventListener('beforeunload', function (e) {
+                if (!screens.quiz.classList.contains('hidden')) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
             const loginForm = document.getElementById('login-form');
             const nameInput = document.getElementById('name-input');
             const emailInput = document.getElementById('email-input');
@@ -2057,6 +2137,15 @@
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
             const startQuizBtn = document.getElementById('start-quiz-btn');
             const errorMessage = document.getElementById('error-message');
+            const memoryModeToggle = document.getElementById('memory-mode-toggle');
+            const memoryModeUI = document.getElementById('memory-mode-ui');
+            const memoryShowAnswerBtn = document.getElementById('memory-show-answer-btn');
+            const memoryAnswerBox = document.getElementById('memory-answer-box');
+            const memoryCorrectText = document.getElementById('memory-correct-text');
+            const memoryCorrectImage = document.getElementById('memory-correct-image');
+            const memoryEvalButtons = document.getElementById('memory-eval-buttons');
+            const memoryStats = document.getElementById('memory-stats');
+
             const currentQuestionNum = document.getElementById('current-question-num');
             const totalQuestionsNum = document.getElementById('total-questions-num');
             const liveCorrect = document.getElementById('live-correct');
@@ -2193,8 +2282,13 @@
             let totalQuestionTime = 0;
             let isGuest = false;
             let isGameMode = false;
-            let isContinuousMode = true;
-            let isRealMode = false;
+            let isContinuousMode = true;
+            let isRealMode = false;
+            let isMemoryMode = false;
+            let memoryCorrectCount = 0;
+            let memoryIncorrectCount = 0;
+            let memoryTotalTime = 0;
+            let memoryAnsweredQuestions = 0;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -2342,7 +2436,7 @@
             });
 
             function showAd() {
-                if (!isGuest || !(isContinuousMode || isGameMode)) return;
+                if (!isGuest) return;
                 
                 if (!guestAds || guestAds.length === 0) return; 
 
@@ -2484,6 +2578,7 @@
 
             chatbotToggle.addEventListener('click', () => {
                 if (isGuest) {
+                    showProAlert();
                     return; 
                 }
                 const isHidden = chatbotContent.classList.toggle('hidden');
@@ -2857,7 +2952,7 @@
                 updateButtonStates();
 
                 // Publicidad
-                if (isGuest && (isContinuousMode || isGameMode)) {
+                if (isGuest) {
                     questionCountInGuestMode++;
                     if (questionCountInGuestMode % 5 === 0) {
                         setTimeout(showAd, 500);
@@ -3781,7 +3876,28 @@
                 }
                 showSimulacroEndScreen();
             }
-            
+
+            function showProAlert() {
+                const modalElement = document.createElement('div');
+                modalElement.className = "fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-[9999]";
+                modalElement.innerHTML = `
+                    <div class="bg-gray-800 border-2 border-yellow-500 rounded-xl p-6 w-full max-w-md text-center relative shadow-2xl">
+                        <button class="absolute top-2 right-4 text-3xl font-bold text-gray-500 hover:text-white close-modal-btn">&times;</button>
+                        <div class="text-5xl mb-4">🌟</div>
+                        <h3 class="text-xl font-bold text-yellow-400 mb-4">¡Función PRO Descubierta!</h3>
+                        <p class="text-white text-md mb-6">
+                            Felicidades, acabas de descubrir una función PRO. Desbloquéala enviando mensaje por WhatsApp a CEPREDIX al <strong>777 451 6364</strong> o da clic aquí abajo 👇
+                        </p>
+                        <a href="https://wa.link/97gwu6" target="_blank" class="btn w-full text-lg" style="background: linear-gradient(45deg, #25D366, #128C7E); color: white; display: block; text-decoration: none;">
+                            <i class="fab fa-whatsapp"></i> Desbloquear PRO
+                        </a>
+                    </div>
+                `;
+                document.body.appendChild(modalElement);
+                modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
+                    modalElement.remove();
+                });
+            }
             function showTemporaryMessage(message, bgColor = "bg-blue-600") {
                 const tempMessage = document.createElement('div');
                 tempMessage.className = `fixed top-1/4 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg z-50`;
@@ -3904,44 +4020,16 @@
                 screens.setup.classList.remove('hidden');
                 if(logoutBtn) logoutBtn.style.display = 'flex';
                 welcomeName.textContent = 'Invitado';
-                answeredIdsInput.disabled = true;
-                setupLookupForGuest();
-                loadData().then(() => {
-                    uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        if (tagEl.textContent === 'GENERAL') {
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                    levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        if (tagEl.textContent === 'BÁSICO') {
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                    updateQuestionStats();
-                   // Bloquear tags de Tipo para invitado
-                    typeTagsContainer.querySelectorAll('.tag').forEach((tagEl, index) => {
-                        if (index === 0) { // O lógica de selección por defecto
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                });
-                gameModeToggle.disabled = false;
-                gameModeToggle.checked = false;
-                gameModeToggle.parentElement.style.opacity = '1';
-                gameModeToggle.parentElement.style.pointerEvents = 'auto';
-                continuousModeToggle.disabled = false;
                 
-                if(chatbotToggle) {
-                    chatbotToggle.style.opacity = '0.5';
-                    chatbotToggle.style.cursor = 'not-allowed';
-                    chatbotToggle.title = "No disponible para invitados";
-                }
+                // Activar Modo Avance Real por defecto
+                realModeToggle.checked = true;
+                isRealMode = true;
+                continuousModeToggle.checked = false;
+                isContinuousMode = false;
+                gameModeToggle.checked = false;
+                isGameMode = false;
+
+                loadData();
             });
             
             noAccessBtn.addEventListener('click', (e) => {
@@ -4084,7 +4172,17 @@
 
                 // 4. Filtro Final de preguntas
                 let filteredQuestions = poolAfterLevel.filter(q => selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag))));
-                
+                // REGLAS PARA INVITADOS: Sin Imgur y que terminen en A, B, C o D
+                if (isGuest) {
+                    filteredQuestions = filteredQuestions.filter(q => {
+                        const hasImgurMain = q.image && q.image.includes('imgur.com');
+                        const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
+                        const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
+                        const hasValidEndChar = ['A', 'B', 'C', 'D'].includes(lastChar);
+                        return !hasImgurMain && !hasImgurOption && hasValidEndChar;
+                    });
+                }
+
                 // 2. Preguntas con Filtros
                 if(statsTotalFiltered) statsTotalFiltered.textContent = filteredQuestions.length;
 
@@ -4161,7 +4259,6 @@
                         tagEl.classList.add('selected');
                     }
                     tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
                         tagEl.classList.toggle('selected');
                         updateQuestionStats();
                     });
@@ -4177,7 +4274,6 @@
                         tagEl.classList.add('selected');
                     }
                     tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
                         tagEl.classList.toggle('selected');
                         updateQuestionStats();
                     });
@@ -4194,7 +4290,6 @@
                         tagEl.classList.add('selected');
                     }
                     tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
                         tagEl.classList.toggle('selected');
                         updateQuestionStats();
                     });
@@ -4204,154 +4299,130 @@
                 updateQuestionStats();
             }
 
+            continuousModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); continuousModeToggle.checked = false; showProAlert(); return; }
+            });
             continuousModeToggle.addEventListener('change', () => {
-                isContinuousMode = continuousModeToggle.checked;
-                if (isContinuousMode) {
-                    gameModeToggle.checked = false;
-                    realModeToggle.checked = false;
-                    gameModeToggle.disabled = true;
-                    realModeToggle.disabled = true;
-                    isGameMode = false;
-                    isRealMode = false;
-                } else {
-                    gameModeToggle.disabled = false;
-                    realModeToggle.disabled = false;
-                }
-            });
+                if(isGuest) return;
+                isContinuousMode = continuousModeToggle.checked;
+                if (isContinuousMode) {
+                    gameModeToggle.checked = false; realModeToggle.checked = false;
+                    if(memoryModeToggle) memoryModeToggle.checked = false;
+                    isGameMode = false; isRealMode = false; isMemoryMode = false;
+                }
+            });
 
-            gameModeToggle.addEventListener('change', () => {
-                isGameMode = gameModeToggle.checked;
-                if (isGameMode) {
-                    continuousModeToggle.checked = false;
-                    realModeToggle.checked = false;
-                    continuousModeToggle.disabled = true;
-                    realModeToggle.disabled = true;
-                    isContinuousMode = false;
-                    isRealMode = false;
-                } else {
-                    continuousModeToggle.disabled = false;
-                    realModeToggle.disabled = false;
-                }
-            });
+            gameModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); gameModeToggle.checked = false; showProAlert(); return; }
+            });
+            gameModeToggle.addEventListener('change', () => {
+                if(isGuest) return;
+                isGameMode = gameModeToggle.checked;
+                if (isGameMode) {
+                    continuousModeToggle.checked = false; realModeToggle.checked = false;
+                    if(memoryModeToggle) memoryModeToggle.checked = false;
+                    isContinuousMode = false; isRealMode = false; isMemoryMode = false;
+                }
+            });
 
-            realModeToggle.addEventListener('change', () => {
-                isRealMode = realModeToggle.checked;
-                if (isRealMode) {
-                    continuousModeToggle.checked = false;
-                    gameModeToggle.checked = false;
-                    continuousModeToggle.disabled = true;
-                    gameModeToggle.disabled = true;
-                    isContinuousMode = false;
-                    isGameMode = false;
-                } else {
-                    continuousModeToggle.disabled = false;
-                    gameModeToggle.disabled = false;
-                }
-            });
+            realModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); realModeToggle.checked = true; showProAlert(); return; }
+            });
+            realModeToggle.addEventListener('change', () => {
+                if(isGuest) return;
+                isRealMode = realModeToggle.checked;
+                if (isRealMode) {
+                    continuousModeToggle.checked = false; gameModeToggle.checked = false;
+                    if(memoryModeToggle) memoryModeToggle.checked = false;
+                    isContinuousMode = false; isGameMode = false; isMemoryMode = false;
+                }
+            });
+
+            if (memoryModeToggle) {
+                memoryModeToggle.addEventListener('click', (e) => {
+                    if (isGuest) { e.preventDefault(); memoryModeToggle.checked = false; showProAlert(); return; }
+                });
+                memoryModeToggle.addEventListener('change', () => {
+                    if(isGuest) return;
+                    isMemoryMode = memoryModeToggle.checked;
+                    if (isMemoryMode) {
+                        continuousModeToggle.checked = false; gameModeToggle.checked = false; realModeToggle.checked = false;
+                        isContinuousMode = false; isGameMode = false; isRealMode = false;
+                    }
+                });
+            }
             
            startQuizBtn.addEventListener('click', () => {
                 errorMessage.textContent = '';
                 isGameMode = gameModeToggle.checked;
-                isContinuousMode = continuousModeToggle.checked;
-                isRealMode = realModeToggle ? realModeToggle.checked : false;
+                isContinuousMode = continuousModeToggle.checked;
+                isRealMode = realModeToggle ? realModeToggle.checked : false;
+                isMemoryMode = memoryModeToggle ? memoryModeToggle.checked : false;
                 
                 if (isGuest) {
                     questionCountInGuestMode = 0;
                 }
 
-                let finalQuestionPool = [];
+                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                
+                if (selectedUniTags.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión o Materias".';
+                    return;
+                }
+                if (selectedLevelTags.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
+                    return;
+                }
+                if (selectedTypeTags.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Tipo de Reactivo".';
+                    return;
+                }
 
-                if (isGuest) {
-                    // 1. Filtrar preguntas seguras (sin Imgur)
-                    let safeQuestions = allQuestions.filter(q => {
+                const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
+                let availableQuestions = allQuestions.filter(q => {
+                    const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
+                    const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
+                    const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
+                    
+                    let inIdRange = true;
+                    if (startIdVal && endIdVal) {
+                        inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                    } else if (startIdVal) {
+                        inIdRange = (q.id >= startIdVal);
+                    } else if (endIdVal) {
+                        inIdRange = (q.id <= endIdVal);
+                    }
+
+                    // Regla de invitado integrada aquí
+                    let isAllowedForGuest = true;
+                    if (isGuest) {
                         const hasImgurMain = q.image && q.image.includes('imgur.com');
                         const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
-                        return !hasImgurMain && !hasImgurOption;
-                    });
+                        const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
+                        isAllowedForGuest = !hasImgurMain && !hasImgurOption && ['A', 'B', 'C', 'D'].includes(lastChar);
+                    }
 
-                    // 2. RESTRICCIÓN DE INVITADO: Solo acceso a las primeras 30 preguntas del banco seguro
-                    let guestPool = safeQuestions.slice(0, 30);
+                    return hasUniTag && hasLevelTag && hasTypeTag && inIdRange && isAllowedForGuest;
+                });
 
-                    if (guestPool.length === 0) {
-                        errorMessage.textContent = 'No hay preguntas disponibles para el modo invitado.';
+                let finalQuestionPool = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
+
+                if (isGameMode) {
+                    if (availableQuestions.length < 20) {
+                        errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
                         return;
                     }
-
-                    // 3. Asignación según modo
-                    if (isGameMode) {
-                        // Simulacro: Intenta tomar 20 al azar de las 30
-                        let count = Math.min(guestPool.length, 20);
-                        finalQuestionPool = shuffleArray([...guestPool]).slice(0, count);
-                    } else {
-                        // MODO NORMAL / CONTINUO: Usa TODAS las disponibles en el pool de invitado (hasta 30)
-                        // Eliminamos el slice(0,10) para que puedan responder todas las que tengan permitidas
-                        finalQuestionPool = shuffleArray([...guestPool]);
-                    }
-
+                    finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
                 } else {
-                    // --- MODO USUARIO REGISTRADO ---
-                    const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    
-                    // Validaciones de filtros vacíos
-                    if (selectedUniTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión o Materias".';
+                    if (finalQuestionPool.length < 5) {
+                        errorMessage.textContent = `Solo se encontraron ${finalQuestionPool.length} ejercicios disponibles. Se necesita un mínimo de 5.`;
                         return;
                     }
-                    if (selectedLevelTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
-                        return;
-                    }
-                    if (selectedTypeTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Tipo de Reactivo".';
-                        return;
-                    }
-
-                    // Filtrado Maestro
-                    // Captura valores actuales de los inputs de ID
-                    const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
-                    const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
-
-                    let availableQuestions = allQuestions.filter(q => {
-                        const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
-                        const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
-                        const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
-                        
-                        // Lógica de filtro por Rango de IDs
-                        let inIdRange = true;
-                        if (startIdVal && endIdVal) {
-                            // Si hay inicio y fin, debe estar en medio
-                            inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
-                        } else if (startIdVal) {
-                            // Solo inicio
-                            inIdRange = (q.id >= startIdVal);
-                        } else if (endIdVal) {
-                            // Solo fin
-                            inIdRange = (q.id <= endIdVal);
-                        }
-
-                        return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
-                    });
-
-                    let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
-
-                    if (isGameMode) {
-                        if (availableQuestions.length < 20) {
-                            errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
-                            return;
-                        }
-                        finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
-                    } else {
-                        // MODO NORMAL / CONTINUO: 
-                        // Verificamos mínimo 5 (o 10 según prefieras, dejé 5 para no bloquear si quedan pocas)
-                        if (newQuestions.length < 5) {
-                            errorMessage.textContent = `Solo se encontraron ${newQuestions.length} ejercicios disponibles. Se necesita un mínimo de 5.`;
-                            return;
-                        }
-                        // CAMBIO CLAVE: Ya no cortamos a 10. Pasamos TODAS las preguntas filtradas.
-                        finalQuestionPool = shuffleArray(newQuestions);
-                    }
+                    finalQuestionPool = shuffleArray(finalQuestionPool);
                 }
                 
                 const availableCount = finalQuestionPool.length;
@@ -4393,21 +4464,42 @@
                 totalQuestionTime = 0;
                 consecutiveCorrect = 0;
                 answeredIdsInContinuousMode.clear();
-                if (isContinuousMode) {
-                    userAnswers = quizQuestions.map(q => ({
-                        question: q, status: 'unanswered', selected: null, timeSpent: 0
-                    }));
-                } else {
-                    userAnswers = quizQuestions.map(q => ({
-                        question: q, status: 'unanswered', selected: null, timeSpent: 0
-                    }));
+                userAnswers = quizQuestions.map(q => ({
+                    question: q, status: 'unanswered', selected: null, timeSpent: 0
+                }));
+                // Reiniciar variables Modo Memoria
+                memoryCorrectCount = 0;
+                memoryIncorrectCount = 0;
+                memoryTotalTime = 0;
+                memoryAnsweredQuestions = 0;
+                if(document.getElementById('mem-score-correct')) document.getElementById('mem-score-correct').textContent = '0';
+                if(document.getElementById('mem-score-incorrect')) document.getElementById('mem-score-incorrect').textContent = '0';
+                if(document.getElementById('mem-avg-time')) {
+                    document.getElementById('mem-avg-time').innerHTML = `<i class="fas fa-clock"></i> 0s`;
+                    document.getElementById('mem-avg-time').className = "text-gray-300 ml-1";
                 }
+
                 screens.setup.classList.add('hidden');
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 updateEvaluationButton();
+                
+                // Mostrar u Ocultar UI dependiendo del modo
+                document.getElementById('action-buttons').style.display = isMemoryMode ? 'none' : 'block';
+                memoryModeUI.style.display = isMemoryMode ? 'flex' : 'none';
+                memoryStats.style.display = isMemoryMode ? 'flex' : 'none';
+                document.getElementById('live-score').style.display = isMemoryMode ? 'none' : 'flex';
                 timerContainer.style.display = 'flex';
-                if (isRealMode) {
+
+                if (isMemoryMode) {
+                    gameModeRules.classList.add('hidden');
+                    clearInterval(timer);
+                    timer = setInterval(() => { 
+                        seconds++; 
+                        timerDisplay.textContent = `${seconds}s`;
+                    }, 1000);
+                    hintBtn.style.display = 'none';
+                } else if (isRealMode) {
                     document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
@@ -4473,9 +4565,6 @@
 
                 // 2) Función de contador de votos discreto (solo para @cepredix.com)
                 if (isCepredixUser) {
-                    // Agregar padding dinámico para evitar solapamiento del texto con el contador
-                    button.style.paddingRight = '85px';
-
                     const voteContainer = document.createElement('div');
                     voteContainer.className = 'vote-counter-container';
                     
@@ -4484,10 +4573,11 @@
                     voteContainer.onmousedown = (e) => e.stopPropagation();
                     voteContainer.ontouchstart = (e) => e.stopPropagation();
 
-                    const btnMinus = document.createElement('button');
-                    btnMinus.className = 'vote-btn';
-                    btnMinus.textContent = '-';
-                    
+                    const btnPlus = document.createElement('button');
+                    btnPlus.className = 'vote-btn';
+                    btnPlus.innerHTML = '<i class="fas fa-chevron-up"></i>'; // Icono de flecha arriba
+                    btnPlus.title = "Votar a favor";
+
                     const countSpan = document.createElement('span');
                     countSpan.className = 'vote-count';
                     
@@ -4496,33 +4586,36 @@
                     let currentVotes = parseInt(localStorage.getItem(voteKey)) || 0;
                     countSpan.textContent = currentVotes;
 
-                    const btnPlus = document.createElement('button');
-                    btnPlus.className = 'vote-btn';
-                    btnPlus.textContent = '+';
+                    const btnMinus = document.createElement('button');
+                    btnMinus.className = 'vote-btn';
+                    btnMinus.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Icono de flecha abajo
+                    btnMinus.title = "Votar en contra";
 
-                    btnMinus.onclick = (e) => { 
-                        e.preventDefault();
-                        currentVotes--; 
-                        countSpan.textContent = currentVotes; 
-                        localStorage.setItem(voteKey, currentVotes); 
-                    };
                     btnPlus.onclick = (e) => { 
                         e.preventDefault();
                         currentVotes++; 
                         countSpan.textContent = currentVotes; 
                         localStorage.setItem(voteKey, currentVotes); 
                     };
+                    btnMinus.onclick = (e) => { 
+                        e.preventDefault();
+                        currentVotes--; 
+                        countSpan.textContent = currentVotes; 
+                        localStorage.setItem(voteKey, currentVotes); 
+                    };
 
-                    voteContainer.appendChild(btnMinus);
-                    voteContainer.appendChild(countSpan);
+                    // Orden vertical: Arriba (+), Medio (Número), Abajo (-)
                     voteContainer.appendChild(btnPlus);
+                    voteContainer.appendChild(countSpan);
+                    voteContainer.appendChild(btnMinus);
                     
-                    button.appendChild(voteContainer);
+                    return voteContainer;
                 }
+                return null;
             }
 
             function displayQuestion() {
-                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
                 dtSeconds = 90;
                 dtTotalSeconds = 90;
@@ -4615,9 +4708,19 @@
                 questionText.innerHTML = questionHTML;
                 questionStartTime = Date.now();
                 if (question.explanative_video) {
-                    const videoId = getYouTubeID(question.explanative_video);
+                    const url = question.explanative_video;
+                    const videoId = getYouTubeID(url);
+                    
                     if (videoId) {
-                        videoIframe.src = `https://www.youtube.com/embed/${videoId}`;
+                        let embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+                        
+                        const startMatch = url.match(/[?&](start|t)=([0-9]+)/);
+                        if (startMatch) embedUrl += `&start=${startMatch[2]}`;
+                        
+                        const endMatch = url.match(/[?&]end=([0-9]+)/);
+                        if (endMatch) embedUrl += `&end=${endMatch[2]}`;
+
+                        videoIframe.src = embedUrl;
                         videoContainer.style.display = 'block';
                         videoContent.classList.add('hidden');
                         videoToggle.querySelector('.fa-chevron-down, .fa-chevron-up').classList.replace('fa-chevron-up', 'fa-chevron-down');
@@ -4661,7 +4764,42 @@
                 }
                 optionsContainer.innerHTML = '';
                 
-                // DETECCIÓN DE FORMATO HÍBRIDO
+                // --- LÓGICA MODO MEMORIA ---
+                if (isMemoryMode) {
+                    optionsContainer.style.display = 'none';
+                    memoryShowAnswerBtn.style.display = 'block';
+                    memoryAnswerBox.style.display = 'none';
+                    memoryEvalButtons.style.display = 'none';
+                    memoryCorrectText.innerHTML = '';
+                    memoryCorrectImage.innerHTML = '';
+
+                    const isHybridMem = question.options.some(opt => 'text_op1' in opt);
+                    if (isHybridMem) {
+                        const correctOp1 = question.options.find(o => 'text_op1' in o && o.correct)?.text_op1 || '';
+                        const correctOp2 = question.options.find(o => 'text_op2' in o && o.correct)?.text_op2 || '';
+                        
+                        let html1 = isImageOption(correctOp1) ? `<img src="${correctOp1}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp1;
+                        let html2 = isImageOption(correctOp2) ? `<img src="${correctOp2}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp2;
+                        
+                        memoryCorrectText.innerHTML = `<div class="grid grid-cols-2 gap-4 w-full"><div class="bg-gray-700 p-3 rounded">${html1}</div><div class="bg-gray-700 p-3 rounded">${html2}</div></div>`;
+                    } else {
+                        const correctOption = question.options.find(opt => opt.correct);
+                        if (correctOption) {
+                            if (isImageOption(correctOption.text)) {
+                                memoryCorrectImage.innerHTML = `<img src="${correctOption.text}" style="max-height:200px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.3);">`;
+                            } else {
+                                memoryCorrectText.innerHTML = correctOption.text;
+                            }
+                        }
+                    }
+
+                    setTimeout(() => { if (window.MathJax) MathJax.typesetPromise([memoryCorrectText]); }, 50);
+                    return; // Terminamos aquí la renderización de la pregunta
+                } else {
+                    optionsContainer.style.display = ''; 
+                }
+
+                // DETECCIÓN DE FORMATO HÍBRIDO NORMAL
                 const isHybrid = question.options.some(opt => 'text_op1' in opt);
 
                 if (isHybrid) {
@@ -4738,7 +4876,7 @@
 
                             // Agregamos las nuevas funciones (presión de 2 seg y contador)
                             const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
-                            addOptionFeatures(btn, isCepredix, question.id, opt.text);
+                            const voteNode = addOptionFeatures(btn, isCepredix, question.id, opt.text);
 
                             // Evento Click Híbrido
                             btn.addEventListener('click', () => {
@@ -4755,7 +4893,11 @@
                                 evaluateBtn.disabled = !(g1Selected && g2Selected);
                             });
 
-                            colDiv.appendChild(btn);
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'option-wrapper';
+                            wrapper.appendChild(btn);
+                            if (voteNode) wrapper.appendChild(voteNode);
+                            colDiv.appendChild(wrapper);
                         });
                         return colDiv;
                     };
@@ -4823,7 +4965,7 @@
                         // Agregamos las nuevas funciones (presión de 2 seg y contador)
                         // Excluimos la opción de "No puedo identificar" del contador
                         const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com') && !isNoId;
-                        addOptionFeatures(button, isCepredix, question.id, option.text);
+                        const voteNode = addOptionFeatures(button, isCepredix, question.id, option.text);
 
                         // Triple clic logic standard
                         let clickCount = 0;
@@ -4845,10 +4987,19 @@
                                 }
                             }
                         });
-                        optionsContainer.appendChild(button);
+                        
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'option-wrapper';
+                        wrapper.appendChild(button);
+                        if (voteNode) wrapper.appendChild(voteNode);
+                        optionsContainer.appendChild(wrapper);
                     });
                 }
                 setTimeout(() => {
+                    // Liberar memoria de MathJax antes de renderizar (Crucial para evitar crasheos en iOS)
+                    if (window.MathJax && window.MathJax.typesetClear) {
+                        window.MathJax.typesetClear([questionText, optionsContainer, textContent]);
+                    }
                     MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
                     }).catch((err) => console.log('Error renderizando formulas:', err));
                 }, 50);
@@ -5044,7 +5195,7 @@
                 updateLiveScore();
                 updateEvaluationButton();
                 
-                if (isGuest && (isContinuousMode || isGameMode)) {
+                if (isGuest) {
                     questionCountInGuestMode++;
                     if (questionCountInGuestMode % 5 === 0) {
                         setTimeout(showAd, 500);
@@ -5074,9 +5225,6 @@
                     }
                 } else if (!isContinuousMode) {
                     endQuiz();
-                } else {
-                    showFeedback();
-                    updateButtonStates();
                 }
             });
             
@@ -5084,7 +5232,7 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                if (typeof dtInterval !== 'undefined' && dtInterval) clearInterval(dtInterval);
+                if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
 
                 screens.quiz.classList.add('hidden');
@@ -5126,6 +5274,9 @@
                 modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
                     modalElement.remove();
                 });
+                if (window.MathJax && window.MathJax.typesetClear) {
+                    window.MathJax.typesetClear([modalElement.querySelector('.hint-content')]);
+                }
                 MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
             });
             
@@ -5137,29 +5288,94 @@
             }
             
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
-                const formData = new FormData();
-                
-                formData.append('EvaluationName', "🟣 EVALUACIÓN CURSO PRESENCIAL 🙂"); 
-                
-                formData.append('Name', currentUser.name || 'Invitado');
-                formData.append('Email', currentUser.email || 'sin_email');
-                formData.append('WhatsApp', currentUser.whatsapp || '0000000000');
-                formData.append('TotalTime', totalTime);
-                formData.append('AverageTime', numQuestions > 0 ? (totalTime / numQuestions).toFixed(2) : 0);
-                formData.append('Score', score.toFixed(2));
-                formData.append('CorrectAnswers', stats.correct);
-                formData.append('TotalQuestions', numQuestions);
-                formData.append('IDs', idsString);
-                
-                formData.append('UserType', isGuest ? 'Invitado' : 'Registrado');
+                // 1. Empaquetamos los datos en un objeto simple
+                const payload = {
+                    EvaluationName: "🟩 ADMISIÓN PREPA 2026 EVALUACIÓN DE CLASES 😎",
+                    Name: currentUser.name || 'Invitado',
+                    Email: currentUser.email || 'sin_email',
+                    WhatsApp: currentUser.whatsapp || '0000000000',
+                    TotalTime: totalTime,
+                    AverageTime: numQuestions > 0 ? (totalTime / numQuestions).toFixed(2) : 0,
+                    Score: score.toFixed(2),
+                    CorrectAnswers: stats.correct,
+                    TotalQuestions: numQuestions,
+                    IDs: idsString,
+                    UserType: isGuest ? 'Invitado' : 'Registrado',
+                    Timestamp: new Date().toLocaleString('es-MX') // Para saber cuándo lo hizo
+                };
 
-                try {
-                    await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
-                    console.log("Resultados enviados con éxito al script de respaldo.");
-                } catch (error) {
-                    console.error("Error al enviar los resultados:", error);
+                await sendOrQueueResult(payload);
+            }
+
+            async function sendOrQueueResult(payload) {
+                if (navigator.onLine) {
+                    try {
+                        const formData = new FormData();
+                        for (const key in payload) {
+                            formData.append(key, payload[key]);
+                        }
+                        await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
+                        console.log("Resultados enviados con éxito al servidor.");
+                    } catch (error) {
+                        console.warn("Fallo el envío por red inestable, guardando en cola offline...");
+                        saveToOfflineQueue(payload);
+                    }
+                } else {
+                    console.warn("Sin conexión a internet, guardando en cola offline...");
+                    saveToOfflineQueue(payload);
+                    showTemporaryMessage("Sin conexión. Tus resultados se guardaron y se enviarán cuando regrese el internet.", "bg-yellow-600");
                 }
-            }            
+            }
+
+            function saveToOfflineQueue(payload) {
+                let queue = JSON.parse(localStorage.getItem('cepredix_offline_queue') || '[]');
+                queue.push(payload);
+                localStorage.setItem('cepredix_offline_queue', JSON.stringify(queue));
+            }
+
+            async function processOfflineQueue() {
+                if (!navigator.onLine) return;
+                let queue = JSON.parse(localStorage.getItem('cepredix_offline_queue') || '[]');
+                if (queue.length === 0) return;
+
+                console.log(`Procesando ${queue.length} resultados pendientes...`);
+                let remainingQueue = [];
+
+                for (const payload of queue) {
+                    try {
+                        const formData = new FormData();
+                        for (const key in payload) {
+                            formData.append(key, payload[key]);
+                        }
+                        await fetch(SUBMISSION_SCRIPT_URL, { method: 'POST', body: formData });
+                        console.log("Resultado pendiente enviado con éxito.");
+                    } catch (error) {
+                        console.error("Error enviando resultado de la cola, se intentará luego.", error);
+                        remainingQueue.push(payload); // Lo mantenemos en la cola si vuelve a fallar
+                    }
+                }
+                
+                // Actualizamos la cola solo con los que fallaron (si es que alguno falló)
+                localStorage.setItem('cepredix_offline_queue', JSON.stringify(remainingQueue));
+                
+                if (remainingQueue.length === 0) {
+                    showTemporaryMessage("Se han sincronizado tus resultados pendientes con el servidor ✅", "bg-green-600");
+                }
+            }
+
+            // Listeners nativos del navegador para detectar cuando se va o vuelve el internet
+            window.addEventListener('online', () => {
+                showTemporaryMessage("¡Conexión restaurada! Sincronizando datos...", "bg-blue-600");
+                processOfflineQueue();
+            });
+            
+            window.addEventListener('offline', () => {
+                showTemporaryMessage("Sin conexión a internet. Puedes seguir trabajando, tus datos se guardarán.", "bg-red-600");
+            });
+
+            // Al cargar la página, verificamos si hay algo atorado en la cola de sesiones anteriores
+            setTimeout(processOfflineQueue, 3000);
+
             function endQuiz() {
                 if (isGameMode && gameModeLives > 0) {
                     const successSounds = [simulacroSuccess1, simulacroSuccess2];
@@ -5174,7 +5390,7 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                if (isGuest) {
+                if (isGuest && currentUser.email === 'invitado@example.com') {
                     showGuestInfoModal();
                     return;
                 }
@@ -5326,91 +5542,9 @@
                         guestInfoModal.style.display = 'none';
                         document.body.style.overflow = 'auto';
                         
-                        proceedWithGuestResults();
+                        endQuiz();
                     }
                 };
-            }
-            
-            function proceedWithGuestResults() {
-                screens.quiz.classList.add('hidden');
-                screens.results.classList.remove('hidden');
-                
-                let answersToEvaluate = userAnswers;
-                if (isContinuousMode || userAnswers.filter(a => a.status !== 'unanswered').length < userAnswers.length) {
-                    answersToEvaluate = userAnswers.filter(a => a.status !== 'unanswered');
-                    if (answersToEvaluate.length === 0) {
-                        showTemporaryMessage("No has respondido ninguna pregunta. Volviendo al menú.");
-                        screens.results.classList.add('hidden');
-                        screens.setup.classList.remove('hidden');
-                        return;
-                    }
-                }
-                
-                const stats = {
-                    correct: answersToEvaluate.filter(a => a.status === 'correct').length,
-                    incorrect: answersToEvaluate.filter(a => a.status === 'incorrect').length,
-                    omitted: answersToEvaluate.filter(a => a.status === 'omitted').length,
-                    unidentified: answersToEvaluate.filter(a => a.status === 'unidentified').length
-                };
-                
-                const totalEvaluated = stats.correct + stats.incorrect + stats.unidentified;
-                const finalScoreValue = totalEvaluated > 0 ? (stats.correct / totalEvaluated) * 10 : 0;
-                const totalTimeEvaluated = answersToEvaluate.reduce((acc, curr) => acc + curr.timeSpent, 0);
-                const averageTime = answersToEvaluate.length > 0 ? (totalTimeEvaluated / answersToEvaluate.length).toFixed(2) : 0;
-                const idsString = answersToEvaluate.map(a => a.question.id).filter(id => id).join(', ');
-                
-                finalScore.textContent = `${finalScoreValue.toFixed(2)} / 10.00`;
-                totalTime.textContent = `${totalTimeEvaluated} segundos`;
-                avgTime.textContent = `${averageTime} seg por pregunta`;
-                correctCount.textContent = stats.correct;
-                incorrectCount.textContent = stats.incorrect;
-                omittedCount.textContent = stats.omitted;
-                unansweredCount.textContent = stats.unidentified;
-                
-                if (finalScoreValue === 10) resultImage.src = RESULT_IMAGES.perfect10;
-                else if (finalScoreValue >= 9.5) resultImage.src = RESULT_IMAGES.between9_5_10;
-                else if (finalScoreValue >= 9) resultImage.src = RESULT_IMAGES.between9_9_5;
-                else if (finalScoreValue >= 8) resultImage.src = RESULT_IMAGES.between8_9;
-                else if (finalScoreValue >= 7) resultImage.src = RESULT_IMAGES.between7_8;
-                else resultImage.src = RESULT_IMAGES.less7;
-                
-                submitResults(stats, finalScoreValue, totalTimeEvaluated, idsString, answersToEvaluate.length);
-                
-                populateResultsTable(answersToEvaluate);
-                drawResultsChart(stats);
-                const allAnsweredIds = generateAnsweredIdsList();
-                populateSummaryBox(finalScoreValue, idsString, allAnsweredIds);
-                
-                const idsOutputSection = document.getElementById('ids-output-section');
-                if (idsOutputSection) {
-                    idsOutputSection.style.display = 'none';
-                }
-                copyIdsBtn.disabled = true;
-                copyIdsBtn.classList.add('btn-disabled');
-                if (copyIncorrectIdsBtn) { copyIncorrectIdsBtn.disabled = true; copyIncorrectIdsBtn.classList.add('btn-disabled'); }
-                
-                if (isGameMode) {
-                    let returnBtn = document.getElementById('return-to-menu-btn');
-                    if (!returnBtn) {
-                        returnBtn = document.createElement('button');
-                        returnBtn.id = 'return-to-menu-btn';
-                        returnBtn.className = 'btn btn-primary w-full mt-4';
-                        returnBtn.textContent = 'VOLVER AL MENÚ PRINCIPAL';
-                        returnBtn.addEventListener('click', () => {
-                            screens.results.classList.add('hidden');
-                            screens.setup.classList.remove('hidden');
-                        });
-                        const restartBtnParent = restartQuizBtn.closest('div');
-                        if (restartBtnParent && restartBtnParent.nextElementSibling) {
-                            restartBtnParent.nextElementSibling.before(returnBtn);
-                        } else {
-                             document.getElementById('results-screen').appendChild(returnBtn);
-                        }
-                    }
-                } else {
-                    const returnBtn = document.getElementById('return-to-menu-btn');
-                    if(returnBtn) returnBtn.remove();
-                }
             }
             
             function populateResultsTable(answers) {
@@ -5441,7 +5575,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "🟣 EVALUACIÓN CURSO PRESENCIAL 🙂";
+                summaryEvalName.textContent = "🟩 ADMISIÓN PREPA 2026 EVALUACIÓN DE CLASES 😎";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -5538,7 +5672,7 @@
             }
            lookupBtn.addEventListener('click', () => {
                 if (isGuest) {
-                    showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
+                    showProAlert();
                     return;
                 }
                 const lookupId = lookupIdInput.value.trim().toUpperCase();
@@ -5648,7 +5782,7 @@
                         mainImageHtml = `
                             <div style="margin: 15px auto; position: relative; width: 100%; max-width: 600px; height: 300px; overflow: hidden; border-radius: 10px; background-color: rgba(0,0,0,0.2);">
                                 <div style="position: absolute; inset: 0; background-image: url('${question.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 1;"></div>
-                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden;">
+                                <div style="position: absolute; inset: -50%; width: 200%; height: 200%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; transform: rotate(-30deg); pointer-events: none; z-index: 2; opacity: 0.2; overflow: hidden; animation: watermark-scroll 40s linear infinite;">
                                     <div style="color: white; font-weight: bold; font-size: 14px; line-height: 2; word-spacing: 1rem; text-align: center;">
                                         ${wmText}
                                     </div>
@@ -5691,6 +5825,9 @@
                     </div>
                 `;
                 lookupResultContainer.classList.remove('hidden');
+                if (window.MathJax && window.MathJax.typesetClear) {
+                    window.MathJax.typesetClear([lookupResultContainer]);
+                }
                 MathJax.typesetPromise([lookupResultContainer]);
             }
             
@@ -5845,6 +5982,12 @@
                 // Guardamos una COPIA de los objetos actuales
                 wbHistory.push(JSON.parse(JSON.stringify(wbPaths)));
                 wbStep++;
+                
+                // LÍMITE DE MEMORIA PARA EVITAR CRASHEOS EN SAFARI/IPHONE
+                if (wbHistory.length > 8) {
+                    wbHistory.shift();
+                    wbStep--;
+                }
             }
 
             // Ajustar tamaño del canvas
@@ -6065,27 +6208,73 @@
                     }
                 });
                 
+                let resizeTimeout;
                 window.addEventListener('resize', () => {
-                    // Solo redimensionar si está visible para no perder datos innecesariamente
                     if(!wbOverlay.classList.contains('hidden')) {
-                        // Guardar imagen actual temporalmente
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = wbCanvas.width;
-                        tempCanvas.height = wbCanvas.height;
-                        tempCanvas.getContext('2d').drawImage(wbCanvas, 0, 0);
-                        
-                        wbCanvas.width = window.innerWidth;
-                        wbCanvas.height = window.innerHeight;
-                        
-                        wbCtx.lineCap = 'round';
-                        wbCtx.lineJoin = 'round';
-                        wbCtx.strokeStyle = wbCurrentColor;
-                        wbCtx.lineWidth = wbCurrentWidth;
-                        
-                        wbCtx.drawImage(tempCanvas, 0, 0);
+                        // Debounce: Evita que se ejecute cientos de veces por segundo en iOS
+                        clearTimeout(resizeTimeout);
+                        resizeTimeout = setTimeout(() => {
+                            wbCanvas.width = window.innerWidth;
+                            wbCanvas.height = window.innerHeight;
+                            // Redibujamos desde el array de memoria sin crear Canvas temporales asesinos de RAM
+                            redrawWb();
+                        }, 200);
                     }
                 });
             }
+
+            // --- EVENTOS Y LÓGICA MODO MEMORIA ---
+            if (memoryShowAnswerBtn) {
+                memoryShowAnswerBtn.addEventListener('click', () => {
+                    memoryShowAnswerBtn.style.display = 'none';
+                    memoryAnswerBox.style.display = 'flex';
+                    memoryEvalButtons.style.display = 'grid';
+                });
+            }
+
+            document.querySelectorAll('.mem-eval-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const action = e.currentTarget.dataset.action;
+                    const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+                    memoryTotalTime += timeSpent;
+                    memoryAnsweredQuestions++;
+
+                    if (action === 'correct') {
+                        memoryCorrectCount++;
+                    } else if (action === 'incorrect') {
+                        memoryIncorrectCount++;
+                    } else if (action === 'repeat') {
+                        // Inserta la misma pregunta 5 lugares después o al final
+                        let insertIndex = currentQuestionIndex + 6; 
+                        if (insertIndex > userAnswers.length) insertIndex = userAnswers.length;
+                        userAnswers.splice(insertIndex, 0, {
+                            question: userAnswers[currentQuestionIndex].question,
+                            status: 'unanswered', selected: null, timeSpent: 0
+                        });
+                    }
+
+                    // Calculadora de promedios con colores
+                    let avg = Math.round(memoryTotalTime / memoryAnsweredQuestions);
+                    const memAvgEl = document.getElementById('mem-avg-time');
+                    memAvgEl.innerHTML = `<i class="fas fa-clock"></i> ${avg}s`;
+                    memAvgEl.className = "ml-1 font-bold " + (avg <= 45 ? "text-green-400" : (avg <= 90 ? "text-yellow-400" : "text-red-400"));
+
+                    document.getElementById('mem-score-correct').textContent = memoryCorrectCount;
+                    document.getElementById('mem-score-incorrect').textContent = memoryIncorrectCount;
+
+                    // Avanzar a la siguiente
+                    if (currentQuestionIndex < userAnswers.length - 1) {
+                        currentQuestionIndex++;
+                        questionStartTime = Date.now();
+                        displayQuestion();
+                    } else {
+                        // Fin automático 
+                        alert("¡Has terminado todas las Flashcards en este banco! Volviendo al menú principal.");
+                        document.getElementById('cancel-btn').click();
+                    }
+                });
+            });
+
         });
     </script>
 </body>
