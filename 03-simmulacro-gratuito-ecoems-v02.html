@@ -441,6 +441,24 @@
         </div>
     </div>
 
+    <div id="access-code-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="guest-info-content">
+        <h2 class="guest-info-title">🔒 Código de Acceso Requerido</h2>
+        <p class="guest-info-text">
+            Sabemos que estás emocionado por empezar tu evaluación, pero es importante que veas el vídeo para recibir información muy valiosa para que aproveches este examen simulacro y diagnóstico, ve el vídeo para obtener el código de acceso, recuerda que se escribe en MAYÚSCULAS.
+        </p>
+        <div class="guest-info-form">
+            <div>
+                <input type="text" id="access-code-input" placeholder="ESCRIBE EL CÓDIGO AQUÍ" style="text-transform: uppercase;">
+                <div id="access-code-error" class="guest-error-message" style="display: none;">❌ Código incorrecto. Por favor, verifica el video.</div>
+            </div>
+            <div class="guest-info-buttons">
+                <button id="verify-code-btn" class="btn btn-primary">Comenzar</button>
+                <button id="close-code-btn" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div id="app-container" class="w-full max-w-2xl mx-auto">
         <header class="header">
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
@@ -627,7 +645,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/03-simmulacro-gratuito-ecoems-v02.json';
+            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/03-simmulacro-gratuito-ecoems-v01.json';
             const SUBMISSION_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxF2v5plRObokCgrV-3olVosjn-3q08B9bMUpeLMuYXyzuiRmsKAEadMUMb-WH2Dg7F/exec';
             const ADS_CSV_URL = "https://docs.google.com/spreadsheets/d/1VkMosrVw7vJdZqGvInDcu3oKlK7WZlTrWAnH2YHqrew/export?format=csv&gid=0";
             
@@ -663,6 +681,13 @@
             const statsTotal = document.getElementById('stats-total');
             const statsTime = document.getElementById('stats-time');
             const startQuizBtn = document.getElementById('start-quiz-btn');
+            const accessCodeModal = document.getElementById('access-code-modal');
+            const accessCodeInput = document.getElementById('access-code-input');
+            const accessCodeError = document.getElementById('access-code-error');
+            const verifyCodeBtn = document.getElementById('verify-code-btn');
+            const closeCodeBtn = document.getElementById('close-code-btn');
+
+            const validAccessCode = "CEPSIM01";
             const errorMessage = document.getElementById('error-message');
             
             const currentQuestionNum = document.getElementById('current-question-num');
@@ -987,12 +1012,34 @@
                 textToggle.querySelector('.fas.fa-chevron-down, .fas.fa-chevron-up').classList.toggle('fa-chevron-down');
             });
 
-            // Inicio de Prueba
+            // Inicio de Prueba - Mostrar ventana emergente
             startQuizBtn.addEventListener('click', () => {
                 if (allQuestions.length === 0) return;
-                // Las preguntas se mantienen en el orden exacto del archivo JSON
-                quizQuestions = [...allQuestions];
-                startQuiz();
+                accessCodeModal.style.display = 'flex'; // Muestra la ventana
+                accessCodeInput.value = ''; // Limpia el campo por si había escrito algo
+                accessCodeError.style.display = 'none'; // Oculta el mensaje de error
+            });
+
+            // Botón de cancelar
+            closeCodeBtn.addEventListener('click', () => {
+                accessCodeModal.style.display = 'none';
+            });
+
+            // Botón para validar el código
+            verifyCodeBtn.addEventListener('click', () => {
+                // Convertimos lo que escriba el usuario a mayúsculas y quitamos espacios
+                const enteredCode = accessCodeInput.value.trim().toUpperCase();
+
+                if (enteredCode === validAccessCode) {
+                    // Si el código es correcto: oculta la ventana e inicia el examen
+                    accessCodeModal.style.display = 'none';
+                    quizQuestions = [...allQuestions];
+                    startQuiz();
+                } else {
+                    // Si el código es incorrecto: muestra el error
+                    accessCodeError.style.display = 'block';
+                    accessCodeInput.style.borderColor = '#f44336';
+                }
             });
 
             function updateDtVisuals() {
