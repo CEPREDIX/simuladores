@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>🟢 EJERCICIOS DE CLASE (UNI) VIRTUAL 💻</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
@@ -19,7 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         window.MathJax = {
@@ -50,6 +53,9 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             line-height: 1.4; /* Ajuste global de interlineado */
             overscroll-behavior-y: none; /* EVITA EL PULL-TO-REFRESH EN IPHONE */
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+            touch-action: pan-y;
         }
         #question-text {
             line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
@@ -413,7 +419,7 @@
             gap: 8px;
             width: fit-content;
         }
-        .question-id { color: #4fc3f7; }
+        .question-id { color: #4fc3f7; font-family: 'Roboto Mono', monospace; font-weight: 500; letter-spacing: 0.05em; }
         .mini-nav-btn {
             width: 32px; height: 32px; border-radius: 50%; 
             background: rgba(30, 30, 40, 0.8); border: 1px solid #4fc3f7; 
@@ -1266,6 +1272,19 @@
             color: #fff;
             line-height: 1;
         }
+        .profile-option { cursor: pointer; display: block; }
+        .profile-content {
+            display: block; padding: 8px 12px; background: rgba(30, 30, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+            font-size: 0.85rem; color: #bbb; transition: all 0.3s ease; text-align: center;
+        }
+        .profile-option:hover .profile-content {
+            background: rgba(50, 50, 70, 0.8); border-color: rgba(79, 195, 247, 0.4);
+        }
+        .profile-checkbox:checked + .profile-content {
+            background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7;
+            color: #fff; font-weight: bold; box-shadow: 0 0 8px rgba(79, 195, 247, 0.3);
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1443,6 +1462,39 @@
                 <div>
                     <label for="whatsapp-input" class="font-medium">WhatsApp (10 dígitos sin espacios)</label>
                     <input type="password" id="whatsapp-input" class="w-full p-3 mt-1 bg-gray-700 rounded-lg border border-gray-600 text-white" placeholder="••••••••••" maxlength="10" inputmode="numeric" required>
+                </div>
+                <div id="profile-selection" class="mt-4 mb-2">
+                    <p class="font-medium text-sm text-gray-300 mb-3 text-center">Selecciona tu área de interés (Obligatorio)</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="profile-option" title="Selecciona si vas para MEDICINA">
+                            <input type="checkbox" class="profile-checkbox hidden" value="MEDICINA">
+                            <span class="profile-content">👩‍⚕️ MEDICINA</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si vas para enfermería, nutrición, estomatología u otra carrera de área de la salud">
+                            <input type="checkbox" class="profile-checkbox hidden" value="SALUD">
+                            <span class="profile-content">👨‍⚕️ OTRAS CARRERAS DE LA SALUD</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si vas para alguna ingeniería o arquitectura">
+                            <input type="checkbox" class="profile-checkbox hidden" value="INGENIERIA">
+                            <span class="profile-content">👷‍♀️ INGENIERÍAS O ARQUITECTURA</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si vas para carreras como LAG, relaciones internacionales, etc.">
+                            <input type="checkbox" class="profile-checkbox hidden" value="ECONOMICO">
+                            <span class="profile-content">📈 ECONÓMICO ADMINISTRATIVAS</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si vas para derecho, filosofía, pedagogía, etc.">
+                            <input type="checkbox" class="profile-checkbox hidden" value="SOCIALES">
+                            <span class="profile-content">🤝 SOCIALES</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si eres docente o estudias una carrera de educación">
+                            <input type="checkbox" class="profile-checkbox hidden" value="DOCENCIA">
+                            <span class="profile-content">👩‍🏫 DOCENCIA/EDUCACIÓN</span>
+                        </label>
+                        <label class="profile-option" title="Selecciona si tu área de interés no está en la lista">
+                            <input type="checkbox" class="profile-checkbox hidden" value="OTRO">
+                            <span class="profile-content">📚 OTRO</span>
+                        </label>
+                    </div>
                 </div>
                 <button id="login-btn" type="submit" class="btn btn-correct w-full text-lg">
                     <span id="login-btn-text">Verificar y Entrar</span>
@@ -2104,6 +2156,33 @@
                 results: document.getElementById('results-screen'),
             };
 
+            // PREVENCIÓN DE PULL-TO-REFRESH Y RECARGA ACCIDENTAL EN IOS SAFARI
+            document.addEventListener('touchstart', function(e) {}, { passive: true });
+            
+            let lastTouchY = 0;
+            document.addEventListener('touchstart', function(e) {
+                lastTouchY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.addEventListener('touchmove', function(e) {
+                const touchY = e.touches[0].clientY;
+                const touchYDelta = touchY - lastTouchY;
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop === 0 && touchYDelta > 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevenir zoom con doble toque
+            let lastTap = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTap < 300) {
+                    e.preventDefault();
+                }
+                lastTap = now;
+            }, { passive: false });
+
             // ALERTA DE PROTECCIÓN CONTRA CIERRE ACCIDENTAL
             window.addEventListener('beforeunload', function (e) {
                 if (!screens.quiz.classList.contains('hidden')) {
@@ -2120,6 +2199,11 @@
             const loginBtnSpinner = document.getElementById('login-btn-spinner');
             const loginErrorMessage = document.getElementById('login-error-message');
             const guestLoginBtn = document.getElementById('guest-login-btn');
+            document.addEventListener('change', (e) => {
+                if (e.target.classList.contains('profile-checkbox')) {
+                    if(loginErrorMessage) loginErrorMessage.textContent = '';
+                }
+            });
             const noAccessBtn = document.querySelector('a[href="https://wa.link/i5rp89"]');
             const welcomeName = document.getElementById('welcome-name');
             const gameModeToggle = document.getElementById('game-mode-toggle');
@@ -4014,6 +4098,18 @@
             }
             
             guestLoginBtn.addEventListener('click', () => {
+                // NUEVO: Validación de perfil obligatorio para invitado
+                const checkboxes = document.querySelectorAll('.profile-checkbox');
+                let isChecked = false;
+                for (let i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) isChecked = true;
+                }
+                if (!isChecked) {
+                    loginErrorMessage.textContent = 'Debes seleccionar al menos un área de interés para continuar.';
+                    return;
+                }
+                // FIN NUEVO
+
                 isGuest = true;
                 currentUser = { name: 'Invitado', email: 'invitado@example.com', whatsapp: '0000000000' };
                 screens.login.classList.add('hidden');
@@ -4041,6 +4137,19 @@
             
             loginForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
+
+                // NUEVO: Validación de perfil obligatorio
+                const checkboxes = document.querySelectorAll('.profile-checkbox');
+                let isChecked = false;
+                for (let i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) isChecked = true;
+                }
+                if (!isChecked) {
+                    loginErrorMessage.textContent = 'Debes seleccionar al menos un área de interés para continuar.';
+                    return;
+                }
+                // FIN NUEVO
+
                 const name = nameInput.value.trim();
                 const emailToValidate = emailInput.value.trim();
                 const whatsappToValidate = whatsappInput.value.trim();
@@ -4793,7 +4902,14 @@
                         }
                     }
 
-                    setTimeout(() => { if (window.MathJax) MathJax.typesetPromise([memoryCorrectText]); }, 50);
+                    setTimeout(() => { 
+                        if (window.MathJax) {
+                            if (window.MathJax.typesetClear) {
+                                window.MathJax.typesetClear([questionText, textContent, memoryCorrectText]);
+                            }
+                            MathJax.typesetPromise([questionText, textContent, memoryCorrectText]).catch((err) => console.log('Error renderizando formulas en memoria:', err));
+                        }
+                    }, 50);
                     return; // Terminamos aquí la renderización de la pregunta
                 } else {
                     optionsContainer.style.display = ''; 
