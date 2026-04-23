@@ -2134,7 +2134,13 @@
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ejercicios-de-clase-uni.json';
+            const QUIZ_JSON_URLS = [
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-GRAM-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-LIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ARIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ALG-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PREMEDICINA-uni.json',
+            ];
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYESY3dBy0h5QrY5EyJ_jfHwlEwnhByFcPTywwK4jJhGa3rvrnIzR9OXleZUZ7zVqUqw/exec';
@@ -2399,6 +2405,14 @@
             let lineProjectionDataset = null;
             let algebraicDataset = null;
             let guestAds = [];
+            function renderMath(...elements) {
+                const validElements = elements.filter(el => el && document.contains(el));
+                if (!window.MathJax) return;
+                try {
+                    if (MathJax.typesetClear) MathJax.typesetClear(validElements);
+                    MathJax.typesetPromise(validElements).catch(err => console.warn('MathJax:', err));
+                } catch(e) { console.warn('MathJax error:', e); }
+            }
             let mainBanner = null;
             let pubBanners = [];
             let lastShownAdUrl = null;
@@ -2483,7 +2497,7 @@
                 const linkEl = document.getElementById('banner-link');
                 const audioEl = document.getElementById('banner-audio-player');
 
-                if (imgEl) imgEl.src = item.Imagen;
+                if (imgEl) { imgEl.src = ''; imgEl.src = item.Imagen; }
                 
                 if (linkEl) {
                     if (item.Infolink && item.Infolink.length > 5) {
@@ -4192,27 +4206,74 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
-                    if (!response.ok) {
-                        throw new Error('No se pudo cargar el archivo JSON');
+                    startQuizBtn.disabled = true;
+                    if(statsTotal) statsTotal.textContent = 'Cargando...';
+
+                    const timestamp = new Date().getTime();
+                    let loadedCount = 0;
+                    let errorCount = 0;
+
+                    const fetchPromises = QUIZ_JSON_URLS.map(url =>
+                        fetch(url + '?v=' + timestamp)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Error al cargar: ' + url);
+                                return response.text();
+                            })
+                            .then(jsonText => {
+                                jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
+                                jsonText = jsonText.replace(/\\u00a0/g, ' ');
+                                jsonText = jsonText.replace(/,\s*}/g, '}');
+                                jsonText = jsonText.replace(/,\s*\]/g, ']');
+                                try {
+                                    const questions = JSON.parse(jsonText);
+                                    loadedCount++;
+                                    if(statsTotal) statsTotal.textContent = 'Cargando ' + loadedCount + '/' + QUIZ_JSON_URLS.length + '...';
+                                    return Array.isArray(questions) ? questions : [];
+                                } catch (parseError) {
+                                    console.error('Error al parsear JSON de: ' + url, parseError.message);
+                                    errorCount++;
+                                    return [];
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Error al cargar archivo:', err.message);
+                                errorCount++;
+                                return [];
+                            })
+                    );
+
+                    const results = await Promise.all(fetchPromises);
+
+                    allQuestions = results.flat();
+
+                    // Eliminar duplicados por ID
+                    const seen = new Set();
+                    allQuestions = allQuestions.filter(q => {
+                        if (!q.id || seen.has(q.id)) return false;
+                        seen.add(q.id);
+                        return true;
+                    });
+
+                    if (allQuestions.length === 0) {
+                        throw new Error('No se pudo cargar ningún archivo JSON correctamente.');
                     }
-                    let jsonText = await response.text();
-                    jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
-                    jsonText = jsonText.replace(/\\u00a0/g, ' ');
-                    jsonText = jsonText.replace(/,\s*}/g, '}');
-                    jsonText = jsonText.replace(/,\s*\]/g, ']');
-                    try {
-                        allQuestions = JSON.parse(jsonText);
-                    } catch (parseError) {
-                        console.error('Error al parsear JSON:', parseError.message);
-                        allQuestions = [];
+
+                    if (errorCount > 0) {
+                        showTemporaryMessage(
+                            errorCount + ' archivo(s) no se pudieron cargar. Se cargaron ' + loadedCount + ' de ' + QUIZ_JSON_URLS.length + ' archivos.',
+                            'bg-yellow-600'
+                        );
                     }
+
                     statsTotal.textContent = allQuestions.length;
                     populateTagFilters();
                     updateQuestionStats();
+                    startQuizBtn.disabled = false;
+
                 } catch (error) {
-                    errorMessage.textContent = 'Error: ' + error.message;
+                    if(errorMessage) errorMessage.textContent = 'Error: ' + error.message;
                     console.error('Error crítico:', error);
+                    if(statsTotal) statsTotal.textContent = 'Error';
                     startQuizBtn.disabled = true;
                 }
             };
@@ -4782,6 +4843,7 @@
                     }, 1000);
                 }
                 justificationText.innerHTML = '';
+                renderMath(questionText, optionsContainer, justificationBox, textContent, justificationText);
                 
                 if (isContinuousMode) {
                     const allAnsweredIds = new Set([...pastedAnsweredIds, ...answeredIdsInContinuousMode]);
@@ -4902,13 +4964,8 @@
                         }
                     }
 
-                    setTimeout(() => { 
-                        if (window.MathJax) {
-                            if (window.MathJax.typesetClear) {
-                                window.MathJax.typesetClear([questionText, textContent, memoryCorrectText]);
-                            }
-                            MathJax.typesetPromise([questionText, textContent, memoryCorrectText]).catch((err) => console.log('Error renderizando formulas en memoria:', err));
-                        }
+                    setTimeout(() => {
+                        renderMath(questionText, textContent, memoryCorrectText);
                     }, 50);
                     return; // Terminamos aquí la renderización de la pregunta
                 } else {
@@ -5112,12 +5169,7 @@
                     });
                 }
                 setTimeout(() => {
-                    // Liberar memoria de MathJax antes de renderizar (Crucial para evitar crasheos en iOS)
-                    if (window.MathJax && window.MathJax.typesetClear) {
-                        window.MathJax.typesetClear([questionText, optionsContainer, textContent]);
-                    }
-                    MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
-                    }).catch((err) => console.log('Error renderizando formulas:', err));
+                    renderMath(questionText, optionsContainer, textContent, justificationText);
                 }, 50);
                 
                 updateButtonStates();
@@ -5248,10 +5300,10 @@
                 }
 
                 if (question.explanation && !isRealMode) {
-                    justificationText.innerHTML = question.explanation;
-                    justificationBox.classList.remove('hidden');
-                    MathJax.typesetPromise([justificationText]);
-                }
+                    justificationText.innerHTML = question.explanation;
+                    justificationBox.classList.remove('hidden');
+                    renderMath(justificationText);
+                }
             }
             
             function playSound(soundId) {
@@ -5347,6 +5399,10 @@
             cancelBtn.addEventListener('click', () => {
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
+                document.querySelectorAll('audio').forEach(function(audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
                 
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
@@ -5390,10 +5446,7 @@
                 modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
                     modalElement.remove();
                 });
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([modalElement.querySelector('.hint-content')]);
-                }
-                MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
+                renderMath(modalElement.querySelector('.hint-content'));
             });
             
             function updateLiveScore() {
@@ -5941,10 +5994,7 @@
                     </div>
                 `;
                 lookupResultContainer.classList.remove('hidden');
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([lookupResultContainer]);
-                }
-                MathJax.typesetPromise([lookupResultContainer]);
+                renderMath(lookupResultContainer);
             }
             
             loadData();
@@ -6100,7 +6150,7 @@
                 wbStep++;
                 
                 // LÍMITE DE MEMORIA PARA EVITAR CRASHEOS EN SAFARI/IPHONE
-                if (wbHistory.length > 8) {
+                if (wbHistory.length > 5) {
                     wbHistory.shift();
                     wbStep--;
                 }
@@ -6134,6 +6184,19 @@
                 });
             }
 
+            function simplifyPoints(points, tolerance) {
+                tolerance = tolerance || 3;
+                if (points.length <= 2) return points;
+                var simplified = [points[0]];
+                for (var i = 1; i < points.length - 1; i++) {
+                    var prev = simplified[simplified.length - 1];
+                    var curr = points[i];
+                    var dist = Math.sqrt(Math.pow(curr.x - prev.x, 2) + Math.pow(curr.y - prev.y, 2));
+                    if (dist > tolerance) simplified.push(curr);
+                }
+                simplified.push(points[points.length - 1]);
+                return simplified;
+            }
             if (wbOverlay) {
                 const openWhiteboard = () => {
                     wbOverlay.classList.remove('hidden');
@@ -6198,9 +6261,9 @@
                         wbPaths.push({
                             color: wbCurrentColor,
                             width: wbCurrentWidth,
-                            points: currentPathPoints
+                            points: simplifyPoints(currentPathPoints, 3)
                         });
-                        saveHistory(); // <--- GUARDAR ESTADO AL TERMINAR DE DIBUJAR
+                        saveHistory();
                     }
                 };
 
