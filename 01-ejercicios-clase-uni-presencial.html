@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <title>🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂</title>
+    <title>PRUEBA (Global)</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -15,7 +15,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂 - CEPREDIX">
+    <meta property="og:title" content="PRUEBA (Global) - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -155,9 +155,16 @@
         }
         .question-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; justify-content: center; }
         .tag {
-            background: rgba(79, 195, 247, 0.2); padding: 4px 10px; border-radius: 15px;
-            font-size: 0.8rem; border: 1px solid #4fc3f7; cursor: pointer; transition: all 0.2s ease;
-        }
+            background: rgba(79, 195, 247, 0.2); padding: 3px 8px; border-radius: 12px;
+            font-size: 0.75rem; border: 1px solid #4fc3f7; cursor: pointer; transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        /* SCROLLBAR PERSONALIZADO PARA LOS CONTENEDORES DE FILTROS */
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(79, 195, 247, 0.8); }
         .tag.selected { background: rgba(79, 195, 247, 0.8); color: white; font-weight: bold; transform: scale(1.05); }
         .option-btn {
             padding: 15px 15px 15px 50px; background: rgba(50, 50, 70, 0.8);
@@ -1422,7 +1429,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">PRUEBA (Global)</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1533,22 +1540,25 @@
                     </div>
                 </div>
 
-                <div id="container-tag01" class="space-y-2 hidden">
-                    <p class="font-medium">Filtro 1</p>
-                    <div id="tag01-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div id="container-tag02" class="space-y-2 hidden">
-                    <p class="font-medium">Filtro 2</p>
-                    <div id="tag02-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div id="container-tag03" class="space-y-2 hidden">
-                    <p class="font-medium">Filtro 3</p>
-                    <div id="tag03-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div id="container-tag04" class="space-y-2 hidden">
-                    <p class="font-medium">Filtro 4</p>
-                    <div id="tag04-container" class="flex flex-wrap gap-2"></div>
-                </div>
+                <!-- Contenedor en Grid (2 columnas en PC/Tablet, 1 en celulares) para ahorrar espacio -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <div id="container-tag01" class="space-y-1 hidden bg-gray-800 p-3 rounded-lg border border-gray-600">
+                        <p class="font-medium text-sm text-blue-400">Filtro 1</p>
+                        <div id="tag01-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
+                    </div>
+                    <div id="container-tag02" class="space-y-1 hidden bg-gray-800 p-3 rounded-lg border border-gray-600">
+                        <p class="font-medium text-sm text-blue-400">Filtro 2</p>
+                        <div id="tag02-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
+                    </div>
+                    <div id="container-tag03" class="space-y-1 hidden bg-gray-800 p-3 rounded-lg border border-gray-600">
+                        <p class="font-medium text-sm text-blue-400">Filtro 3</p>
+                        <div id="tag03-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
+                    </div>
+                    <div id="container-tag04" class="space-y-1 hidden bg-gray-800 p-3 rounded-lg border border-gray-600">
+                        <p class="font-medium text-sm text-blue-400">Filtro 4</p>
+                        <div id="tag04-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
+                    </div>
+                </div>
             </div>
             <div class="space-y-2">
                 <label for="answered-ids-input" class="font-medium">Pegar IDs de ejercicios ya respondidos (opcional)</label>
@@ -2089,25 +2099,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const QUIZ_JSON_URLS = [
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-GRAM-uni.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-LIT-uni.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ARIT-uni.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ALG-uni.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-GEO-Y-TRIG-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-PROB-Y-EST.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-CALCULO-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-FINANC-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-FISICA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-QUÍMICA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-BIOLOGIA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-SALUD-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PREMEDICINA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PSICOLOGIA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-DE-MEX-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-UNIV-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ECONOMIA-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-DERECHO-uni.json',
-				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ejercicios-de-clase-uni.json',				
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/00-json-prueba-v2-170126.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-2.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-3.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-4.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-5.json',
             ];
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
@@ -5396,7 +5392,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 // 1. Empaquetamos los datos en un objeto simple
                 const payload = {
-                    EvaluationName: "🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂",
+                    EvaluationName: "PRUEBA (Global)",
                     Name: currentUser.name || 'Invitado',
                     Email: currentUser.email || 'sin_email',
                     WhatsApp: currentUser.whatsapp || '0000000000',
@@ -5681,7 +5677,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂";
+                summaryEvalName.textContent = "PRUEBA (Global)";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
