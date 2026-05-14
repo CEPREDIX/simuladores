@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <title>PRUEBA (Global)</title>
+    <title>🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -15,7 +15,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="PRUEBA (Global) - CEPREDIX">
+    <meta property="og:title" content="🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂 - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1429,7 +1429,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">PRUEBA (Global)</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -2099,11 +2099,25 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const QUIZ_JSON_URLS = [
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/00-json-prueba-v2-170126.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-2.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-3.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-4.json',
-                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/ARCHIVO-5.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-GRAM-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-LIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ARIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ALG-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-GEO-Y-TRIG-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-PROB-Y-EST.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-CALCULO-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-FINANC-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-FISICA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-QUÍMICA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-BIOLOGIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-SALUD-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PREMEDICINA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PSICOLOGIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-DE-MEX-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-UNIV-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ECONOMIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-DERECHO-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ejercicios-de-clase-uni.json',
             ];
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
@@ -5392,7 +5406,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 // 1. Empaquetamos los datos en un objeto simple
                 const payload = {
-                    EvaluationName: "PRUEBA (Global)",
+                    EvaluationName: "🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂",
                     Name: currentUser.name || 'Invitado',
                     Email: currentUser.email || 'sin_email',
                     WhatsApp: currentUser.whatsapp || '0000000000',
@@ -5677,7 +5691,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "PRUEBA (Global)";
+                summaryEvalName.textContent = "🟣 EJERCICIOS DE CLASE (UNI) PRESENCIAL🙂";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
