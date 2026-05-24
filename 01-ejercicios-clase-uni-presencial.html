@@ -1304,6 +1304,11 @@
             background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7;
             color: #fff; font-weight: bold; box-shadow: 0 0 8px rgba(79, 195, 247, 0.3);
         }
+
+        /* Utilidad para el LockDown Browser */
+        .oculto {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1542,12 +1547,12 @@
                     </label>
                     <p class="text-xs text-gray-400 text-left mt-2">Oculta aciertos, sin confirmación de color/audio.</p>
                 </div>
-                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+               <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
                     <label class="font-medium flex items-start text-left cursor-pointer">
-                        <input type="checkbox" id="memory-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
-                        <span class="text-sm">MODO MEMORIA 🧠<br><span class="text-xs font-normal text-gray-300">(Flashcards)</span></span>
+                        <input type="checkbox" id="lockdown-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO LOCKDOWN 🔐<br><span class="text-xs font-normal text-gray-300">(Máxima Dificultad)</span></span>
                     </label>
-                    <p class="text-xs text-gray-400 text-left mt-2">Autoevaluación sin opciones. Exclusivo para registrados.</p>
+                    <p class="text-xs text-gray-400 text-left mt-2">Oculta las opciones y las evalúa como en Modo Real.</p>
                 </div>
             </div>
             <div class="space-y-4">
@@ -2231,14 +2236,7 @@
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
             const startQuizBtn = document.getElementById('start-quiz-btn');
             const errorMessage = document.getElementById('error-message');
-            const memoryModeToggle = document.getElementById('memory-mode-toggle');
-            const memoryModeUI = document.getElementById('memory-mode-ui');
-            const memoryShowAnswerBtn = document.getElementById('memory-show-answer-btn');
-            const memoryAnswerBox = document.getElementById('memory-answer-box');
-            const memoryCorrectText = document.getElementById('memory-correct-text');
-            const memoryCorrectImage = document.getElementById('memory-correct-image');
-            const memoryEvalButtons = document.getElementById('memory-eval-buttons');
-            const memoryStats = document.getElementById('memory-stats');
+            const lockdownModeToggle = document.getElementById('lockdown-mode-toggle');
 
             const currentQuestionNum = document.getElementById('current-question-num');
             const totalQuestionsNum = document.getElementById('total-questions-num');
@@ -2377,11 +2375,8 @@
             let isGameMode = false;
             let isContinuousMode = true;
             let isRealMode = false;
-            let isMemoryMode = false;
-            let memoryCorrectCount = 0;
-            let memoryIncorrectCount = 0;
-            let memoryTotalTime = 0;
-            let memoryAnsweredQuestions = 0;
+            let isLockDownMode = false;
+            let opcionExpandida = null;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -3005,42 +3000,39 @@
 
                 // --- BLOQUE DE SONIDOS Y VIDAS (Igual que antes) ---
                 if (statusResult === 'unidentified') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
 
-                } else if (statusResult === 'correct') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        correctSound.currentTime = 0;
-                        correctSound.volume = effectsVolume;
-                        correctSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) {
-                        consecutiveCorrect++;
-                        // Si es híbrido cuenta doble en la mente del usuario, pero en sistema es 1 acierto lógico. 
-                        // Sin embargo, podemos dar doble bonificación de racha si lo deseas, 
-                        // pero para mantener simpleza, mantendremos +1 a la racha normal.
-                        if (consecutiveCorrect >= 3) {
-                            if (gameModeLives < 3) {
-                                gameModeLives++;
-                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
-                            }
-                            consecutiveCorrect = 0;
-                            updateGameModeLivesDisplay();
-                        }
-                    }
-                } else {
-                    // Incorrecto
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
-                }
+                } else if (statusResult === 'correct') {
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        correctSound.currentTime = 0;
+                        correctSound.volume = effectsVolume;
+                        correctSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) {
+                        consecutiveCorrect++;
+                        if (consecutiveCorrect >= 3) {
+                            if (gameModeLives < 3) {
+                                gameModeLives++;
+                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
+                            }
+                            consecutiveCorrect = 0;
+                            updateGameModeLivesDisplay();
+                        }
+                    }
+                } else {
+                    // Incorrecto
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
+                }
 
                 // ... resto de la lógica (Continuous Mode, Live Score, etc.) se mantiene igual
                 if (isContinuousMode && currentAnswer.status !== 'unanswered') {
@@ -4284,10 +4276,35 @@
                 // --- LÓGICA PARA ETIQUETAS NUEVAS ---
                 const getSelected = (container) => Array.from(container.querySelectorAll('.selected')).map(el => el.textContent);
                 
-                const selTag01 = getSelected(tag01Container);
-                const selTag02 = getSelected(tag02Container);
-                const selTag03 = getSelected(tag03Container);
-                const selTag04 = getSelected(tag04Container);
+                let selTag01 = getSelected(tag01Container);
+                let selTag02 = getSelected(tag02Container);
+                let selTag03 = getSelected(tag03Container);
+                let selTag04 = getSelected(tag04Container);
+
+                // Control de visibilidad en cascada según selecciones previas
+                if (selTag01.length === 0) {
+                    tag02Wrapper.classList.add('hidden');
+                    tag02Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag02 = []; // Anular selecciones si el contenedor se oculta
+                } else {
+                    tag02Wrapper.classList.remove('hidden');
+                }
+
+                if (selTag02.length === 0) {
+                    tag03Wrapper.classList.add('hidden');
+                    tag03Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag03 = [];
+                } else {
+                    tag03Wrapper.classList.remove('hidden');
+                }
+
+                if (selTag03.length === 0) {
+                    tag04Wrapper.classList.add('hidden');
+                    tag04Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag04 = [];
+                } else {
+                    tag04Wrapper.classList.remove('hidden');
+                }
 
                 // Función auxiliar para actualizar UI de tags en cascada
                 const updateTagUI = (pool, tagKey, container) => {
@@ -4323,6 +4340,15 @@
                         const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
                         const hasValidEndChar = ['A', 'B', 'C', 'D'].includes(lastChar);
                         return !hasImgurMain && !hasImgurOption && hasValidEndChar;
+                    });
+                }
+
+                // REGLA MODO LOCKDOWN: Excluir ejercicios híbridos
+                const isLockDownActive = document.getElementById('lockdown-mode-toggle') ? document.getElementById('lockdown-mode-toggle').checked : false;
+                if (isLockDownActive) {
+                    filteredQuestions = filteredQuestions.filter(q => {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        return !isHybrid;
                     });
                 }
 
@@ -4389,14 +4415,33 @@
                     let tags = [...new Set(dataSource.flatMap(q => q[tagKey] || []))].filter(t => t !== null && t !== '');
                     
                     if (shouldSort) {
-                        tags.sort((a, b) => {
-                            // Se remueven emojis (símbolos Unicode) y espacios iniciales para evaluar el texto real
-                            const cleanA = a.replace(/\p{Emoji}/gu, '').trim();
-                            const cleanB = b.replace(/\p{Emoji}/gu, '').trim();
-                            // numeric: true ordena números ascendentemente ("2" antes que "10") y letras alfabéticamente
-                            return cleanA.localeCompare(cleanB, 'es', { numeric: true, sensitivity: 'base' });
-                        });
-                    }
+                        tags.sort((a, b) => {
+                            // Limpieza extrema: elimina temporalmente todo lo que NO sea letra, número, espacio o guion
+                            // Esto garantiza que cualquier símbolo, emoji compuesto o ícono sea ignorado
+                            const cleanA = a.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            const cleanB = b.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            
+                            // Extraer el número al inicio si existe (ej. "01", "02-", "3 ", etc.)
+                            const matchA = cleanA.match(/^(\d+)/);
+                            const matchB = cleanB.match(/^(\d+)/);
+                            
+                            if (matchA && matchB) {
+                                // Si ambos inician con número, se ordenan matemáticamente
+                                const numA = parseInt(matchA[1], 10);
+                                const numB = parseInt(matchB[1], 10);
+                                if (numA === numB) {
+                                    return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                                }
+                                return numA - numB;
+                            } else if (matchA) {
+                                return -1; // A tiene número, va primero
+                            } else if (matchB) {
+                                return 1;  // B tiene número, va primero
+                            } else {
+                                return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                            }
+                        });
+                    }
 
                     container.innerHTML = '';
                     if (tags.length > 0) {
@@ -4405,7 +4450,7 @@
                             const tagEl = document.createElement('span');
                             tagEl.textContent = tag;
                             tagEl.className = 'tag';
-                            if (index === 0 || tag.toUpperCase() === 'GENERAL' || tag.toUpperCase() === 'BÁSICO') {
+                            if (tagKey === 'tag01' && tag.toUpperCase() === 'GENERAL') {
                                 tagEl.classList.add('selected');
                             }
                             tagEl.addEventListener('click', () => {
@@ -4435,8 +4480,8 @@
                 isContinuousMode = continuousModeToggle.checked;
                 if (isContinuousMode) {
                     gameModeToggle.checked = false; realModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isGameMode = false; isRealMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isGameMode = false; isRealMode = false; isLockDownMode = false;
                 }
             });
 
@@ -4448,8 +4493,8 @@
                 isGameMode = gameModeToggle.checked;
                 if (isGameMode) {
                     continuousModeToggle.checked = false; realModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isContinuousMode = false; isRealMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isRealMode = false; isLockDownMode = false;
                 }
             });
 
@@ -4461,22 +4506,23 @@
                 isRealMode = realModeToggle.checked;
                 if (isRealMode) {
                     continuousModeToggle.checked = false; gameModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isContinuousMode = false; isGameMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isGameMode = false; isLockDownMode = false;
                 }
             });
 
-            if (memoryModeToggle) {
-                memoryModeToggle.addEventListener('click', (e) => {
-                    if (isGuest) { e.preventDefault(); memoryModeToggle.checked = false; showProAlert(); return; }
+            if (lockdownModeToggle) {
+                lockdownModeToggle.addEventListener('click', (e) => {
+                    if (isGuest) { e.preventDefault(); lockdownModeToggle.checked = false; showProAlert(); return; }
                 });
-                memoryModeToggle.addEventListener('change', () => {
+                lockdownModeToggle.addEventListener('change', () => {
                     if(isGuest) return;
-                    isMemoryMode = memoryModeToggle.checked;
-                    if (isMemoryMode) {
+                    isLockDownMode = lockdownModeToggle.checked;
+                    if (isLockDownMode) {
                         continuousModeToggle.checked = false; gameModeToggle.checked = false; realModeToggle.checked = false;
                         isContinuousMode = false; isGameMode = false; isRealMode = false;
                     }
+                    updateQuestionStats(); // Recalcula las preguntas al instante
                 });
             }
             
@@ -4485,7 +4531,7 @@
                 isGameMode = gameModeToggle.checked;
                 isContinuousMode = continuousModeToggle.checked;
                 isRealMode = realModeToggle ? realModeToggle.checked : false;
-                isMemoryMode = memoryModeToggle ? memoryModeToggle.checked : false;
+                isLockDownMode = lockdownModeToggle ? lockdownModeToggle.checked : false;
                 
                 if (isGuest) {
                     questionCountInGuestMode = 0;
@@ -4517,10 +4563,10 @@
                 const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
 
                 let availableQuestions = allQuestions.filter(q => {
-                    const hasTag01 = !q.tag01 || q.tag01.length === 0 || q.tag01.some(tag => selTag01.includes(tag));
-                    const hasTag02 = !q.tag02 || q.tag02.length === 0 || q.tag02.some(tag => selTag02.includes(tag));
-                    const hasTag03 = !q.tag03 || q.tag03.length === 0 || q.tag03.some(tag => selTag03.includes(tag));
-                    const hasTag04 = !q.tag04 || q.tag04.length === 0 || q.tag04.some(tag => selTag04.includes(tag));
+                    const hasTag01 = selTag01.length === 0 || !q.tag01 || q.tag01.length === 0 || q.tag01.some(tag => selTag01.includes(tag));
+                    const hasTag02 = selTag02.length === 0 || !q.tag02 || q.tag02.length === 0 || q.tag02.some(tag => selTag02.includes(tag));
+                    const hasTag03 = selTag03.length === 0 || !q.tag03 || q.tag03.length === 0 || q.tag03.some(tag => selTag03.includes(tag));
+                    const hasTag04 = selTag04.length === 0 || !q.tag04 || q.tag04.length === 0 || q.tag04.some(tag => selTag04.includes(tag));
                     
                     let inIdRange = true;
                     if (startIdVal && endIdVal) {
@@ -4540,7 +4586,14 @@
                         isAllowedForGuest = !hasImgurMain && !hasImgurOption && ['A', 'B', 'C', 'D'].includes(lastChar);
                     }
 
-                    return hasTag01 && hasTag02 && hasTag03 && hasTag04 && inIdRange && isAllowedForGuest;
+                    // Regla Modo LockDown: No admitir ejercicios híbridos
+                    let isAllowedForLockDown = true;
+                    if (isLockDownMode) {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        isAllowedForLockDown = !isHybrid;
+                    }
+
+                    return hasTag01 && hasTag02 && hasTag03 && hasTag04 && inIdRange && isAllowedForGuest && isAllowedForLockDown;
                 });
 
                 let finalQuestionPool = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
@@ -4601,31 +4654,17 @@
                 userAnswers = quizQuestions.map(q => ({
                     question: q, status: 'unanswered', selected: null, timeSpent: 0
                 }));
-                // Reiniciar variables Modo Memoria
-                memoryCorrectCount = 0;
-                memoryIncorrectCount = 0;
-                memoryTotalTime = 0;
-                memoryAnsweredQuestions = 0;
-                if(document.getElementById('mem-score-correct')) document.getElementById('mem-score-correct').textContent = '0';
-                if(document.getElementById('mem-score-incorrect')) document.getElementById('mem-score-incorrect').textContent = '0';
-                if(document.getElementById('mem-avg-time')) {
-                    document.getElementById('mem-avg-time').innerHTML = `<i class="fas fa-clock"></i> 0s`;
-                    document.getElementById('mem-avg-time').className = "text-gray-300 ml-1";
-                }
-
                 screens.setup.classList.add('hidden');
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 updateEvaluationButton();
                 
-                // Mostrar u Ocultar UI dependiendo del modo
-                document.getElementById('action-buttons').style.display = isMemoryMode ? 'none' : 'block';
-                memoryModeUI.style.display = isMemoryMode ? 'flex' : 'none';
-                memoryStats.style.display = isMemoryMode ? 'flex' : 'none';
-                document.getElementById('live-score').style.display = isMemoryMode ? 'none' : 'flex';
+                document.getElementById('action-buttons').style.display = 'block';
                 timerContainer.style.display = 'flex';
+                opcionExpandida = null; // Reiniciar vista LockDown
 
-                if (isMemoryMode) {
+                if (isRealMode || isLockDownMode) {
+                    document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
                     timer = setInterval(() => { 
@@ -4633,7 +4672,8 @@
                         timerDisplay.textContent = `${seconds}s`;
                     }, 1000);
                     hintBtn.style.display = 'none';
-                } else if (isRealMode) {
+                    chatbotToggle.style.display = 'none';
+                } else if (isGameMode) {
                     document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
@@ -4747,8 +4787,62 @@
                 }
                 return null;
             }
+            function alternarVistaOpcionLockDown(idRef, evento) {
+                evento.stopPropagation();
+                if (userAnswers[currentQuestionIndex].status !== 'unanswered') return;
+
+                const targetContent = document.getElementById(`content-op-${idRef}`);
+                const targetBtnText = document.getElementById(`btn-text-${idRef}`);
+                
+                // Elementos específicos a ocultar (para no borrar las opciones)
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+
+                if (opcionExpandida === idRef) {
+                    // Restaurar la vista
+                    opcionExpandida = null;
+                    document.querySelectorAll('.option-wrapper').forEach(w => w.classList.remove('oculto'));
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.remove('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+                    if(targetContent) targetContent.classList.add('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ver respuesta";
+                } else {
+                    // Enfocar solo en esta opción
+                    opcionExpandida = idRef;
+                    document.querySelectorAll('.option-wrapper').forEach(w => {
+                        const btn = w.querySelector('.option-btn');
+                        if (btn && !btn.id.includes(idRef)) {
+                            w.classList.add('oculto');
+                        }
+                    });
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.add('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.add('oculto'); });
+                    if(targetContent) targetContent.classList.remove('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ocultar respuesta";
+                }
+
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise();
+                }
+            }
 
             function displayQuestion() {
+                // Restaurar vista LockDown al cambiar de pregunta
+                opcionExpandida = null;
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+                elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
                 dtSeconds = 90;
@@ -4912,43 +5006,7 @@
                 }
                 optionsContainer.innerHTML = '';
                 
-                // --- LÓGICA MODO MEMORIA ---
-                if (isMemoryMode) {
-                    optionsContainer.style.display = 'none';
-                    memoryShowAnswerBtn.style.display = 'block';
-                    memoryAnswerBox.style.display = 'none';
-                    memoryEvalButtons.style.display = 'none';
-                    memoryCorrectText.innerHTML = '';
-                    memoryCorrectImage.innerHTML = '';
-
-                    const isHybridMem = question.options.some(opt => 'text_op1' in opt);
-                    if (isHybridMem) {
-                        const correctOp1 = question.options.find(o => 'text_op1' in o && o.correct)?.text_op1 || '';
-                        const correctOp2 = question.options.find(o => 'text_op2' in o && o.correct)?.text_op2 || '';
-                        
-                        let html1 = isImageOption(correctOp1) ? `<img src="${correctOp1}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp1;
-                        let html2 = isImageOption(correctOp2) ? `<img src="${correctOp2}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp2;
-                        
-                        memoryCorrectText.innerHTML = `<div class="grid grid-cols-2 gap-4 w-full"><div class="bg-gray-700 p-3 rounded">${html1}</div><div class="bg-gray-700 p-3 rounded">${html2}</div></div>`;
-                    } else {
-                        const correctOption = question.options.find(opt => opt.correct);
-                        if (correctOption) {
-                            if (isImageOption(correctOption.text)) {
-                                memoryCorrectImage.innerHTML = `<img src="${correctOption.text}" style="max-height:200px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.3);">`;
-                            } else {
-                                memoryCorrectText.innerHTML = correctOption.text;
-                            }
-                        }
-                    }
-
-                    setTimeout(() => {
-                        renderMath(questionText, textContent, memoryCorrectText);
-                    }, 50);
-                    return; // Terminamos aquí la renderización de la pregunta
-                } else {
-                    optionsContainer.style.display = ''; 
-                }
-
+                
                 // DETECCIÓN DE FORMATO HÍBRIDO NORMAL
                 const isHybrid = question.options.some(opt => 'text_op1' in opt);
 
@@ -5020,9 +5078,26 @@
                             }
                             
                             btn.appendChild(letter);
-                            const span = document.createElement('span');
-                            span.innerHTML = opt.text;
-                            btn.appendChild(span);
+                            btn.id = `option-btn-hyb-${groupNum}-${idx}`;
+                            const contentContainer = document.createElement('span');
+                            contentContainer.id = `content-op-hyb-${groupNum}-${idx}`;
+                            contentContainer.className = 'option-content flex-grow text-left';
+                            contentContainer.innerHTML = opt.text;
+
+                            if (isLockDownMode && !opt.isNoId) {
+                                contentContainer.classList.add('oculto');
+                                const toggleBtn = document.createElement('div');
+                                toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-700 z-10';
+                                toggleBtn.id = `btn-toggle-hyb-${groupNum}-${idx}`;
+                                toggleBtn.innerHTML = `
+                                    <svg class="lock-icon w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                    <span id="btn-text-hyb-${groupNum}-${idx}">Ver respuesta</span>
+                                `;
+                                toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`hyb-${groupNum}-${idx}`, e);
+                                btn.appendChild(toggleBtn);
+                            }
+                            
+                            btn.appendChild(contentContainer);
 
                             // Agregamos las nuevas funciones (presión de 2 seg y contador)
                             const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
@@ -5093,23 +5168,40 @@
 
                         button.appendChild(letterElement);
 
+                        button.id = `option-btn-std-${index}`;
+                        const contentContainer = document.createElement('div');
+                        contentContainer.id = `content-op-std-${index}`;
+                        contentContainer.className = 'option-content flex-grow text-left';
+
                         if (isImg) {
                             const img = document.createElement('img');
                             img.src = option.text;
                             img.className = 'option-image-content';
-                            button.appendChild(img);
+                            contentContainer.appendChild(img);
                              if (option.text.includes('imgur.com')) {
                                 const watermark = document.createElement('div');
                                 watermark.className = 'option-watermark';
                                 watermark.textContent = (currentUser.name + ' CEPREDIX ').repeat(50);
-                                button.appendChild(watermark);
+                                contentContainer.appendChild(watermark);
                             }
                         } else {
-                            const textSpan = document.createElement('span');
-                            textSpan.innerHTML = option.text;
-                            button.appendChild(textSpan);
+                            contentContainer.innerHTML = option.text;
                         }
 
+                        if (isLockDownMode && !isNoId) {
+                            contentContainer.classList.add('oculto');
+                            const toggleBtn = document.createElement('div');
+                            toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-3 py-1 rounded text-sm cursor-pointer hover:bg-gray-700 z-10 transition-colors';
+                            toggleBtn.id = `btn-toggle-std-${index}`;
+                            toggleBtn.innerHTML = `
+                                <svg class="lock-icon w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <span id="btn-text-std-${index}">Ver respuesta</span>
+                            `;
+                            toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`std-${index}`, e);
+                            button.appendChild(toggleBtn);
+                        }
+
+                        button.appendChild(contentContainer);
                         button.dataset.text = option.text;
                         
                         // Agregamos las nuevas funciones (presión de 2 seg y contador)
@@ -5223,19 +5315,24 @@
                         const group = btn.dataset.group; // "1" o "2"
                         const isSelected = btn.classList.contains('selected');
 
-                        if (!isRealMode) {
-                            // Colorear Correctas
-                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
-                                btn.classList.add('correct');
-                            }
-                            
-                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
-                            if (isSelected && status !== 'correct') {
-                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
-                                     btn.classList.add('incorrect');
-                                 }
-                            }
-                        }
+                        if (!isRealMode && !isLockDownMode) {
+                            // Colorear Correctas
+                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
+                                btn.classList.add('correct');
+                            }
+                            
+                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
+                            if (isSelected && status !== 'correct') {
+                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
+                                     btn.classList.add('incorrect');
+                                 }
+                            }
+                        } else {
+                            // En MODO REAL O LOCKDOWN, solo mantenemos la selección en oscuro
+                            if (isSelected) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
 
                 } else {
@@ -5248,35 +5345,35 @@
                     document.querySelectorAll('.option-btn').forEach(btn => {
                         btn.disabled = true;
                         
-                        if (!isRealMode) {
-                            // 1. Marcar siempre la correcta en verde
-                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
-                            
-                            // 2. Verificar si este es el botón que el usuario presionó previamente
-                            // (Comparamos el texto del botón con lo guardado en userAnswers)
-                            if (btn.dataset.text === userSelectedText) {
-                                
-                                // Restauramos la clase visual de "seleccionado"
-                                btn.classList.add('selected'); 
+                        if (!isRealMode && !isLockDownMode) {
+                            // 1. Marcar siempre la correcta en verde
+                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
+                            
+                            // 2. Verificar si este es el botón que el usuario presionó previamente
+                            // (Comparamos el texto del botón con lo guardado en userAnswers)
+                            if (btn.dataset.text === userSelectedText) {
+                                
+                                // Restauramos la clase visual de "seleccionado"
+                                btn.classList.add('selected'); 
 
-                                // 3. Si el estado general de la respuesta fue incorrecto,
-                                // y este botón NO es la opción correcta, lo pintamos de rojo.
-                                if (status === 'incorrect' || status === 'unidentified') {
-                                    if (btn.dataset.text !== correctOption) {
-                                        btn.classList.add('incorrect');
-                                    }
-                                }
-                            }
-                        } else {
-                            // En MODO AVANCE REAL, solo mantenemos la selección en oscuro sin validación
-                            if (btn.dataset.text === userSelectedText) {
-                                btn.classList.add('selected');
-                            }
-                        }
+                                // 3. Si el estado general de la respuesta fue incorrecto,
+                                // y este botón NO es la opción correcta, lo pintamos de rojo.
+                                if (status === 'incorrect' || status === 'unidentified') {
+                                    if (btn.dataset.text !== correctOption) {
+                                        btn.classList.add('incorrect');
+                                    }
+                                }
+                            }
+                        } else {
+                            // En MODO AVANCE REAL O LOCKDOWN, solo mantenemos la selección en oscuro sin validación
+                            if (btn.dataset.text === userSelectedText) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
                 }
 
-                if (question.explanation && !isRealMode) {
+                if (question.explanation && !isRealMode && !isLockDownMode) {
                     justificationText.innerHTML = question.explanation;
                     justificationBox.classList.remove('hidden');
                     renderMath(justificationText);
