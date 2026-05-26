@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>💥 SIMULACROS ADMISIÓN PREPA 2026 😎</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
@@ -19,7 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         window.MathJax = {
@@ -50,6 +53,9 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             line-height: 1.4; /* Ajuste global de interlineado */
             overscroll-behavior-y: none; /* EVITA EL PULL-TO-REFRESH EN IPHONE */
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+            touch-action: pan-y;
         }
         #question-text {
             line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
@@ -149,10 +155,29 @@
         }
         .question-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; justify-content: center; }
         .tag {
-            background: rgba(79, 195, 247, 0.2); padding: 4px 10px; border-radius: 15px;
-            font-size: 0.8rem; border: 1px solid #4fc3f7; cursor: pointer; transition: all 0.2s ease;
+            background: rgba(79, 195, 247, 0.05); /* Fondo casi transparente */
+            padding: 4px 10px !important;
+            border-radius: 12px !important; /* Bordes más redondeados tipo píldora */
+            font-size: 0.65rem !important; 
+            font-weight: 400 !important;
+            color: #81d4fa; /* Texto sutil */
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1 !important;
+            margin: 2px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: fit-content;
         }
-        .tag.selected { background: rgba(79, 195, 247, 0.8); color: white; font-weight: bold; transform: scale(1.05); }
+        .tag.selected { 
+            background: rgba(79, 195, 247, 0.5); /* Menos brillante al seleccionar */
+            color: white; 
+            font-weight: 600 !important; 
+            border-color: rgba(79, 195, 247, 0.7);
+            transform: scale(1.02); /* Efecto de crecimiento muy ligero */
+        }
         .option-btn {
             padding: 15px 15px 15px 50px; background: rgba(50, 50, 70, 0.8);
             border-radius: 10px; cursor: pointer; transition: all 0.3s ease;
@@ -413,7 +438,7 @@
             gap: 8px;
             width: fit-content;
         }
-        .question-id { color: #4fc3f7; }
+        .question-id { color: #4fc3f7; font-family: 'Roboto Mono', monospace; font-weight: 500; letter-spacing: 0.05em; }
         .mini-nav-btn {
             width: 32px; height: 32px; border-radius: 50%; 
             background: rgba(30, 30, 40, 0.8); border: 1px solid #4fc3f7; 
@@ -1266,6 +1291,24 @@
             color: #fff;
             line-height: 1;
         }
+        .profile-option { cursor: pointer; display: block; }
+        .profile-content {
+            display: block; padding: 8px 12px; background: rgba(30, 30, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+            font-size: 0.85rem; color: #bbb; transition: all 0.3s ease; text-align: center;
+        }
+        .profile-option:hover .profile-content {
+            background: rgba(50, 50, 70, 0.8); border-color: rgba(79, 195, 247, 0.4);
+        }
+        .profile-checkbox:checked + .profile-content {
+            background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7;
+            color: #fff; font-weight: bold; box-shadow: 0 0 8px rgba(79, 195, 247, 0.3);
+        }
+
+        /* Utilidad para el LockDown Browser */
+        .oculto {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1504,12 +1547,12 @@
                     </label>
                     <p class="text-xs text-gray-400 text-left mt-2">Oculta aciertos, sin confirmación de color/audio.</p>
                 </div>
-                <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+               <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
                     <label class="font-medium flex items-start text-left cursor-pointer">
-                        <input type="checkbox" id="memory-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
-                        <span class="text-sm">MODO MEMORIA 🧠<br><span class="text-xs font-normal text-gray-300">(Flashcards)</span></span>
+                        <input type="checkbox" id="lockdown-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO LOCKDOWN 🔐<br><span class="text-xs font-normal text-gray-300">(Máxima Dificultad)</span></span>
                     </label>
-                    <p class="text-xs text-gray-400 text-left mt-2">Autoevaluación sin opciones. Exclusivo para registrados.</p>
+                    <p class="text-xs text-gray-400 text-left mt-2">Oculta las opciones y las evalúa como en Modo Real.</p>
                 </div>
             </div>
             <div class="space-y-4">
@@ -1527,20 +1570,24 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <p class="font-medium">Proceso de Admisión o Materia</p>
-                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisión o materia(s), recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
-                    <div id="uni-tags-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-medium">Nivel de Dificultad</p>
-                    <p class="text-xs text-gray-400">Selecciona el grado de dificultad de los ejercicios.</p>
-                    <div id="level-tags-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-medium">Tipo de Reactivo</p>
-                    <p class="text-xs text-gray-400">Selecciona el tipo de pregunta (ej. TEST, REAL, HÍBRIDO).</p>
-                    <div id="type-tags-container" class="flex flex-wrap gap-2"></div>
+                <!-- Contenedores agrupados para evitar el margen forzado -->
+                <div class="flex flex-col gap-1 mt-1">
+                    <div id="tag01-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 1</p>
+                        <div id="tag01-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag02-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 2</p>
+                        <div id="tag02-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag03-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 3</p>
+                        <div id="tag03-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag04-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 4</p>
+                        <div id="tag04-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
                 </div>
             </div>
             <div class="space-y-2">
@@ -1694,8 +1741,7 @@
                     <div class="flex flex-row flex-wrap items-center justify-center gap-2">
                         <div id="question-id-tags" class="question-id-tags !m-0">
                             <span id="question-id-display" class="question-id"></span>
-                            <span id="uni-tags-display"></span>
-                            <span id="level-tag-display"></span>
+                            <span id="question-tags-display"></span>
                         </div>
 
                         <button id="whiteboard-trigger-btn" class="text-blue-400 hover:text-white transition-all hover:scale-110 p-2 bg-gray-800 bg-opacity-80 rounded-full w-10 h-10 flex items-center justify-center border border-blue-400 shadow-lg" title="Abrir Pizarra de Cálculos">
@@ -2020,7 +2066,7 @@
                 <a href="#" id="privacy-link" class="footer-link">Aviso de Privacidad</a>
             </div>
             <div id="copyright">
-                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-3.0704
+                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-4.0526
             </div>
         </div>
     </div>
@@ -2082,7 +2128,28 @@
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-simuladores-prepa.json';
+            const QUIZ_JSON_URLS = [
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-GRAM-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ESP-LIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ARIT-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-ALG-uni.json',
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-GEO-Y-TRIG-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-PROB-Y-EST.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-CALCULO-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-MAT-FINANC-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-FISICA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-QUIMICA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-BIOLOGIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-SALUD-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PREMEDICINA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-PSICOLOGIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-DE-MEX-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-HIST-UNIV-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ECONOMIA-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-DERECHO-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-TRONCO-COMUN-uni.json',
+				'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/01-ejercicios-de-clase-uni.json',
+            ];
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYESY3dBy0h5QrY5EyJ_jfHwlEwnhByFcPTywwK4jJhGa3rvrnIzR9OXleZUZ7zVqUqw/exec';
@@ -2103,6 +2170,33 @@
                 quiz: document.getElementById('quiz-screen'),
                 results: document.getElementById('results-screen'),
             };
+
+            // PREVENCIÓN DE PULL-TO-REFRESH Y RECARGA ACCIDENTAL EN IOS SAFARI
+            document.addEventListener('touchstart', function(e) {}, { passive: true });
+            
+            let lastTouchY = 0;
+            document.addEventListener('touchstart', function(e) {
+                lastTouchY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.addEventListener('touchmove', function(e) {
+                const touchY = e.touches[0].clientY;
+                const touchYDelta = touchY - lastTouchY;
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop === 0 && touchYDelta > 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevenir zoom con doble toque
+            let lastTap = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTap < 300) {
+                    e.preventDefault();
+                }
+                lastTap = now;
+            }, { passive: false });
 
             // ALERTA DE PROTECCIÓN CONTRA CIERRE ACCIDENTAL
             window.addEventListener('beforeunload', function (e) {
@@ -2125,9 +2219,14 @@
             const gameModeToggle = document.getElementById('game-mode-toggle');
             const continuousModeToggle = document.getElementById('continuous-mode-toggle');
             const realModeToggle = document.getElementById('real-mode-toggle');
-            const uniTagsContainer = document.getElementById('uni-tags-container');
-            const levelTagsContainer = document.getElementById('level-tags-container');
-            const typeTagsContainer = document.getElementById('type-tags-container');
+            const tag01Wrapper = document.getElementById('tag01-wrapper');
+            const tag02Wrapper = document.getElementById('tag02-wrapper');
+            const tag03Wrapper = document.getElementById('tag03-wrapper');
+            const tag04Wrapper = document.getElementById('tag04-wrapper');
+            const tag01Container = document.getElementById('tag01-container');
+            const tag02Container = document.getElementById('tag02-container');
+            const tag03Container = document.getElementById('tag03-container');
+            const tag04Container = document.getElementById('tag04-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
             const startIdInput = document.getElementById('start-id-input'); // Nuevo filtro ID inicio
             const endIdInput = document.getElementById('end-id-input');     // Nuevo filtro ID fin
@@ -2137,14 +2236,7 @@
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
             const startQuizBtn = document.getElementById('start-quiz-btn');
             const errorMessage = document.getElementById('error-message');
-            const memoryModeToggle = document.getElementById('memory-mode-toggle');
-            const memoryModeUI = document.getElementById('memory-mode-ui');
-            const memoryShowAnswerBtn = document.getElementById('memory-show-answer-btn');
-            const memoryAnswerBox = document.getElementById('memory-answer-box');
-            const memoryCorrectText = document.getElementById('memory-correct-text');
-            const memoryCorrectImage = document.getElementById('memory-correct-image');
-            const memoryEvalButtons = document.getElementById('memory-eval-buttons');
-            const memoryStats = document.getElementById('memory-stats');
+            const lockdownModeToggle = document.getElementById('lockdown-mode-toggle');
 
             const currentQuestionNum = document.getElementById('current-question-num');
             const totalQuestionsNum = document.getElementById('total-questions-num');
@@ -2155,8 +2247,7 @@
             const progressBar = document.getElementById('progress-bar');
             const questionText = document.getElementById('question-text');
             const questionIdDisplay = document.getElementById('question-id-display');
-            const uniTagsDisplay = document.getElementById('uni-tags-display');
-            const levelTagDisplay = document.getElementById('level-tag-display');
+            const questionTagsDisplay = document.getElementById('question-tags-display');
             const imageContainer = document.getElementById('image-container');
             const watermarkOverlay = document.getElementById('watermark-overlay');
             const optionsContainer = document.getElementById('options-container');
@@ -2284,11 +2375,8 @@
             let isGameMode = false;
             let isContinuousMode = true;
             let isRealMode = false;
-            let isMemoryMode = false;
-            let memoryCorrectCount = 0;
-            let memoryIncorrectCount = 0;
-            let memoryTotalTime = 0;
-            let memoryAnsweredQuestions = 0;
+            let isLockDownMode = false;
+            let opcionExpandida = null;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -2315,6 +2403,14 @@
             let lineProjectionDataset = null;
             let algebraicDataset = null;
             let guestAds = [];
+            function renderMath(...elements) {
+                const validElements = elements.filter(el => el && document.contains(el));
+                if (!window.MathJax) return;
+                try {
+                    if (MathJax.typesetClear) MathJax.typesetClear(validElements);
+                    MathJax.typesetPromise(validElements).catch(err => console.warn('MathJax:', err));
+                } catch(e) { console.warn('MathJax error:', e); }
+            }
             let mainBanner = null;
             let pubBanners = [];
             let lastShownAdUrl = null;
@@ -2399,7 +2495,7 @@
                 const linkEl = document.getElementById('banner-link');
                 const audioEl = document.getElementById('banner-audio-player');
 
-                if (imgEl) imgEl.src = item.Imagen;
+                if (imgEl) { imgEl.src = item.Imagen; }
                 
                 if (linkEl) {
                     if (item.Infolink && item.Infolink.length > 5) {
@@ -2904,42 +3000,39 @@
 
                 // --- BLOQUE DE SONIDOS Y VIDAS (Igual que antes) ---
                 if (statusResult === 'unidentified') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
 
-                } else if (statusResult === 'correct') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        correctSound.currentTime = 0;
-                        correctSound.volume = effectsVolume;
-                        correctSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) {
-                        consecutiveCorrect++;
-                        // Si es híbrido cuenta doble en la mente del usuario, pero en sistema es 1 acierto lógico. 
-                        // Sin embargo, podemos dar doble bonificación de racha si lo deseas, 
-                        // pero para mantener simpleza, mantendremos +1 a la racha normal.
-                        if (consecutiveCorrect >= 3) {
-                            if (gameModeLives < 3) {
-                                gameModeLives++;
-                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
-                            }
-                            consecutiveCorrect = 0;
-                            updateGameModeLivesDisplay();
-                        }
-                    }
-                } else {
-                    // Incorrecto
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
-                }
+                } else if (statusResult === 'correct') {
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        correctSound.currentTime = 0;
+                        correctSound.volume = effectsVolume;
+                        correctSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) {
+                        consecutiveCorrect++;
+                        if (consecutiveCorrect >= 3) {
+                            if (gameModeLives < 3) {
+                                gameModeLives++;
+                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
+                            }
+                            consecutiveCorrect = 0;
+                            updateGameModeLivesDisplay();
+                        }
+                    }
+                } else {
+                    // Incorrecto
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
+                }
 
                 // ... resto de la lógica (Continuous Mode, Live Score, etc.) se mantiene igual
                 if (isContinuousMode && currentAnswer.status !== 'unanswered') {
@@ -4014,6 +4107,7 @@
             }
             
             guestLoginBtn.addEventListener('click', () => {
+               
                 isGuest = true;
                 currentUser = { name: 'Invitado', email: 'invitado@example.com', whatsapp: '0000000000' };
                 screens.login.classList.add('hidden');
@@ -4041,6 +4135,8 @@
             
             loginForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
+
+
                 const name = nameInput.value.trim();
                 const emailToValidate = emailInput.value.trim();
                 const whatsappToValidate = whatsappInput.value.trim();
@@ -4083,27 +4179,74 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
-                    if (!response.ok) {
-                        throw new Error('No se pudo cargar el archivo JSON');
+                    startQuizBtn.disabled = true;
+                    if(statsTotal) statsTotal.textContent = 'Cargando...';
+
+                    const timestamp = new Date().getTime();
+                    let loadedCount = 0;
+                    let errorCount = 0;
+
+                    const fetchPromises = QUIZ_JSON_URLS.map(url =>
+                        fetch(url + '?v=' + timestamp)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Error al cargar: ' + url);
+                                return response.text();
+                            })
+                            .then(jsonText => {
+                                jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
+                                jsonText = jsonText.replace(/\\u00a0/g, ' ');
+                                jsonText = jsonText.replace(/,\s*}/g, '}');
+                                jsonText = jsonText.replace(/,\s*\]/g, ']');
+                                try {
+                                    const questions = JSON.parse(jsonText);
+                                    loadedCount++;
+                                    if(statsTotal) statsTotal.textContent = 'Cargando ' + loadedCount + '/' + QUIZ_JSON_URLS.length + '...';
+                                    return Array.isArray(questions) ? questions : [];
+                                } catch (parseError) {
+                                    console.error('Error al parsear JSON de: ' + url, parseError.message);
+                                    errorCount++;
+                                    return [];
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Error al cargar archivo:', err.message);
+                                errorCount++;
+                                return [];
+                            })
+                    );
+
+                    const results = await Promise.all(fetchPromises);
+
+                    allQuestions = results.flat();
+
+                    // Eliminar duplicados por ID
+                    const seen = new Set();
+                    allQuestions = allQuestions.filter(q => {
+                        if (!q.id || seen.has(q.id)) return false;
+                        seen.add(q.id);
+                        return true;
+                    });
+
+                    if (allQuestions.length === 0) {
+                        throw new Error('No se pudo cargar ningún archivo JSON correctamente.');
                     }
-                    let jsonText = await response.text();
-                    jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
-                    jsonText = jsonText.replace(/\\u00a0/g, ' ');
-                    jsonText = jsonText.replace(/,\s*}/g, '}');
-                    jsonText = jsonText.replace(/,\s*\]/g, ']');
-                    try {
-                        allQuestions = JSON.parse(jsonText);
-                    } catch (parseError) {
-                        console.error('Error al parsear JSON:', parseError.message);
-                        allQuestions = [];
+
+                    if (errorCount > 0) {
+                        showTemporaryMessage(
+                            errorCount + ' archivo(s) no se pudieron cargar. Se cargaron ' + loadedCount + ' de ' + QUIZ_JSON_URLS.length + ' archivos.',
+                            'bg-yellow-600'
+                        );
                     }
+
                     statsTotal.textContent = allQuestions.length;
                     populateTagFilters();
                     updateQuestionStats();
+                    startQuizBtn.disabled = false;
+
                 } catch (error) {
-                    errorMessage.textContent = 'Error: ' + error.message;
+                    if(errorMessage) errorMessage.textContent = 'Error: ' + error.message;
                     console.error('Error crítico:', error);
+                    if(statsTotal) statsTotal.textContent = 'Error';
                     startQuizBtn.disabled = true;
                 }
             };
@@ -4130,48 +4273,65 @@
                     return inIdRange;
                 });
 
-                // --- LÓGICA DE CASCADA PARA ETIQUETAS ---
+                // --- LÓGICA PARA ETIQUETAS NUEVAS ---
+                const getSelected = (container) => Array.from(container.querySelectorAll('.selected')).map(el => el.textContent);
                 
-                // Nivel 1: Universidades disponibles en el basePool
-                const availableUniTags = new Set(basePool.flatMap(q => q.uni_tags || []));
-                uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableUniTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                let selTag01 = getSelected(tag01Container);
+                let selTag02 = getSelected(tag02Container);
+                let selTag03 = getSelected(tag03Container);
+                let selTag04 = getSelected(tag04Container);
 
-                // Nivel 2: Niveles disponibles después de aplicar filtro de Universidad
-                const poolAfterUni = basePool.filter(q => selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag))));
-                const availableLevelTags = new Set(poolAfterUni.flatMap(q => q.level_tag || []));
-                levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableLevelTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                // Control de visibilidad en cascada según selecciones previas
+                if (selTag01.length === 0) {
+                    tag02Wrapper.classList.add('hidden');
+                    tag02Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag02 = []; // Anular selecciones si el contenedor se oculta
+                } else {
+                    tag02Wrapper.classList.remove('hidden');
+                }
 
-                // Nivel 3: Tipos disponibles después de aplicar filtro de Nivel
-                const poolAfterLevel = poolAfterUni.filter(q => selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag))));
-                const availableTypeTags = new Set(poolAfterLevel.flatMap(q => q.type_tag || []));
-                typeTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableTypeTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                if (selTag02.length === 0) {
+                    tag03Wrapper.classList.add('hidden');
+                    tag03Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag03 = [];
+                } else {
+                    tag03Wrapper.classList.remove('hidden');
+                }
 
-                // 4. Filtro Final de preguntas
-                let filteredQuestions = poolAfterLevel.filter(q => selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag))));
+                if (selTag03.length === 0) {
+                    tag04Wrapper.classList.add('hidden');
+                    tag04Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag04 = [];
+                } else {
+                    tag04Wrapper.classList.remove('hidden');
+                }
+
+                // Función auxiliar para actualizar UI de tags en cascada
+                const updateTagUI = (pool, tagKey, container) => {
+                    if (container.parentElement.classList.contains('hidden')) return;
+                    const availableTags = new Set(pool.flatMap(q => q[tagKey] || []));
+                    container.querySelectorAll('.tag').forEach(tagEl => {
+                        if (availableTags.has(tagEl.textContent)) {
+                            tagEl.style.display = '';
+                        } else {
+                            tagEl.style.display = 'none';
+                            tagEl.classList.remove('selected');
+                        }
+                    });
+                };
+
+                // Filtramos secuencialmente para actualizar la UI en cascada
+                updateTagUI(basePool, 'tag01', tag01Container);
+                const poolAfter1 = basePool.filter(q => selTag01.length === 0 || !q.tag01 || q.tag01.some(t => selTag01.includes(t)));
+                
+                updateTagUI(poolAfter1, 'tag02', tag02Container);
+                const poolAfter2 = poolAfter1.filter(q => selTag02.length === 0 || !q.tag02 || q.tag02.some(t => selTag02.includes(t)));
+                
+                updateTagUI(poolAfter2, 'tag03', tag03Container);
+                const poolAfter3 = poolAfter2.filter(q => selTag03.length === 0 || !q.tag03 || q.tag03.some(t => selTag03.includes(t)));
+                
+                updateTagUI(poolAfter3, 'tag04', tag04Container);
+                let filteredQuestions = poolAfter3.filter(q => selTag04.length === 0 || !q.tag04 || q.tag04.some(t => selTag04.includes(t)));
                 // REGLAS PARA INVITADOS: Sin Imgur y que terminen en A, B, C o D
                 if (isGuest) {
                     filteredQuestions = filteredQuestions.filter(q => {
@@ -4180,6 +4340,15 @@
                         const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
                         const hasValidEndChar = ['A', 'B', 'C', 'D'].includes(lastChar);
                         return !hasImgurMain && !hasImgurOption && hasValidEndChar;
+                    });
+                }
+
+                // REGLA MODO LOCKDOWN: Excluir ejercicios híbridos
+                const isLockDownActive = document.getElementById('lockdown-mode-toggle') ? document.getElementById('lockdown-mode-toggle').checked : false;
+                if (isLockDownActive) {
+                    filteredQuestions = filteredQuestions.filter(q => {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        return !isHybrid;
                     });
                 }
 
@@ -4241,60 +4410,64 @@
                 });
             }
             
-            function populateTagFilters(dataSource = allQuestions) {
-                const uniTags = [...new Set(dataSource.flatMap(q => q.uni_tags || []))];
-                const levelTags = [...new Set(dataSource.flatMap(q => q.level_tag || []))];
-                const typeTags = [...new Set(dataSource.flatMap(q => q.type_tag || []))];
-
-                uniTagsContainer.innerHTML = '';
-                levelTagsContainer.innerHTML = '';
-                typeTagsContainer.innerHTML = ''; // Nuevo
-
-                // Filtro Universidades
-                uniTags.forEach(tag => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    if (tag.toUpperCase() === 'GENERAL') {
-                        tagEl.classList.add('selected');
+           function populateTagFilters(dataSource = allQuestions) {
+                const processTags = (tagKey, container, wrapper, shouldSort = false) => {
+                    let tags = [...new Set(dataSource.flatMap(q => q[tagKey] || []))].filter(t => t !== null && t !== '');
+                    
+                    if (shouldSort) {
+                        tags.sort((a, b) => {
+                            // Limpieza extrema: elimina temporalmente todo lo que NO sea letra, número, espacio o guion
+                            // Esto garantiza que cualquier símbolo, emoji compuesto o ícono sea ignorado
+                            const cleanA = a.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            const cleanB = b.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            
+                            // Extraer el número al inicio si existe (ej. "01", "02-", "3 ", etc.)
+                            const matchA = cleanA.match(/^(\d+)/);
+                            const matchB = cleanB.match(/^(\d+)/);
+                            
+                            if (matchA && matchB) {
+                                // Si ambos inician con número, se ordenan matemáticamente
+                                const numA = parseInt(matchA[1], 10);
+                                const numB = parseInt(matchB[1], 10);
+                                if (numA === numB) {
+                                    return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                                }
+                                return numA - numB;
+                            } else if (matchA) {
+                                return -1; // A tiene número, va primero
+                            } else if (matchB) {
+                                return 1;  // B tiene número, va primero
+                            } else {
+                                return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                            }
+                        });
                     }
-                    tagEl.addEventListener('click', () => {
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    uniTagsContainer.appendChild(tagEl);
-                });
 
-                // Filtro Niveles
-                levelTags.forEach(tag => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    if (tag.toUpperCase() === 'BÁSICO') {
-                        tagEl.classList.add('selected');
+                    container.innerHTML = '';
+                    if (tags.length > 0) {
+                        wrapper.classList.remove('hidden');
+                        tags.forEach((tag, index) => {
+                            const tagEl = document.createElement('span');
+                            tagEl.textContent = tag;
+                            tagEl.className = 'tag';
+                            if (tagKey === 'tag01' && tag.toUpperCase() === 'GENERAL') {
+                                tagEl.classList.add('selected');
+                            }
+                            tagEl.addEventListener('click', () => {
+                                tagEl.classList.toggle('selected');
+                                updateQuestionStats();
+                            });
+                            container.appendChild(tagEl);
+                        });
+                    } else {
+                        wrapper.classList.add('hidden');
                     }
-                    tagEl.addEventListener('click', () => {
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    levelTagsContainer.appendChild(tagEl);
-                });
+                };
 
-                // NUEVO: Filtro Tipos
-                typeTags.forEach((tag, index) => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    // Seleccionar el primer tag por defecto
-                    if (index === 0) {
-                        tagEl.classList.add('selected');
-                    }
-                    tagEl.addEventListener('click', () => {
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    typeTagsContainer.appendChild(tagEl);
-                });
+                processTags('tag01', tag01Container, tag01Wrapper, true);
+                processTags('tag02', tag02Container, tag02Wrapper, true);
+                processTags('tag03', tag03Container, tag03Wrapper, false);
+                processTags('tag04', tag04Container, tag04Wrapper, false);
 
                 updateQuestionStats();
             }
@@ -4307,8 +4480,8 @@
                 isContinuousMode = continuousModeToggle.checked;
                 if (isContinuousMode) {
                     gameModeToggle.checked = false; realModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isGameMode = false; isRealMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isGameMode = false; isRealMode = false; isLockDownMode = false;
                 }
             });
 
@@ -4320,8 +4493,8 @@
                 isGameMode = gameModeToggle.checked;
                 if (isGameMode) {
                     continuousModeToggle.checked = false; realModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isContinuousMode = false; isRealMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isRealMode = false; isLockDownMode = false;
                 }
             });
 
@@ -4333,22 +4506,23 @@
                 isRealMode = realModeToggle.checked;
                 if (isRealMode) {
                     continuousModeToggle.checked = false; gameModeToggle.checked = false;
-                    if(memoryModeToggle) memoryModeToggle.checked = false;
-                    isContinuousMode = false; isGameMode = false; isMemoryMode = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isGameMode = false; isLockDownMode = false;
                 }
             });
 
-            if (memoryModeToggle) {
-                memoryModeToggle.addEventListener('click', (e) => {
-                    if (isGuest) { e.preventDefault(); memoryModeToggle.checked = false; showProAlert(); return; }
+            if (lockdownModeToggle) {
+                lockdownModeToggle.addEventListener('click', (e) => {
+                    if (isGuest) { e.preventDefault(); lockdownModeToggle.checked = false; showProAlert(); return; }
                 });
-                memoryModeToggle.addEventListener('change', () => {
+                lockdownModeToggle.addEventListener('change', () => {
                     if(isGuest) return;
-                    isMemoryMode = memoryModeToggle.checked;
-                    if (isMemoryMode) {
+                    isLockDownMode = lockdownModeToggle.checked;
+                    if (isLockDownMode) {
                         continuousModeToggle.checked = false; gameModeToggle.checked = false; realModeToggle.checked = false;
                         isContinuousMode = false; isGameMode = false; isRealMode = false;
                     }
+                    updateQuestionStats(); // Recalcula las preguntas al instante
                 });
             }
             
@@ -4357,26 +4531,31 @@
                 isGameMode = gameModeToggle.checked;
                 isContinuousMode = continuousModeToggle.checked;
                 isRealMode = realModeToggle ? realModeToggle.checked : false;
-                isMemoryMode = memoryModeToggle ? memoryModeToggle.checked : false;
+                isLockDownMode = lockdownModeToggle ? lockdownModeToggle.checked : false;
                 
                 if (isGuest) {
                     questionCountInGuestMode = 0;
                 }
 
-                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag01 = Array.from(tag01Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag02 = Array.from(tag02Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag03 = Array.from(tag03Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag04 = Array.from(tag04Container.querySelectorAll('.selected')).map(el => el.textContent);
                 
-                if (selectedUniTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión o Materias".';
+                if (!tag01Wrapper.classList.contains('hidden') && selTag01.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 1.';
                     return;
                 }
-                if (selectedLevelTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
+                if (!tag02Wrapper.classList.contains('hidden') && selTag02.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 2.';
                     return;
                 }
-                if (selectedTypeTags.length === 0) {
-                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Tipo de Reactivo".';
+                if (!tag03Wrapper.classList.contains('hidden') && selTag03.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 3.';
+                    return;
+                }
+                if (!tag04Wrapper.classList.contains('hidden') && selTag04.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 4.';
                     return;
                 }
 
@@ -4384,9 +4563,10 @@
                 const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
 
                 let availableQuestions = allQuestions.filter(q => {
-                    const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
-                    const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
-                    const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
+                    const hasTag01 = selTag01.length === 0 || !q.tag01 || q.tag01.length === 0 || q.tag01.some(tag => selTag01.includes(tag));
+                    const hasTag02 = selTag02.length === 0 || !q.tag02 || q.tag02.length === 0 || q.tag02.some(tag => selTag02.includes(tag));
+                    const hasTag03 = selTag03.length === 0 || !q.tag03 || q.tag03.length === 0 || q.tag03.some(tag => selTag03.includes(tag));
+                    const hasTag04 = selTag04.length === 0 || !q.tag04 || q.tag04.length === 0 || q.tag04.some(tag => selTag04.includes(tag));
                     
                     let inIdRange = true;
                     if (startIdVal && endIdVal) {
@@ -4406,7 +4586,14 @@
                         isAllowedForGuest = !hasImgurMain && !hasImgurOption && ['A', 'B', 'C', 'D'].includes(lastChar);
                     }
 
-                    return hasUniTag && hasLevelTag && hasTypeTag && inIdRange && isAllowedForGuest;
+                    // Regla Modo LockDown: No admitir ejercicios híbridos
+                    let isAllowedForLockDown = true;
+                    if (isLockDownMode) {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        isAllowedForLockDown = !isHybrid;
+                    }
+
+                    return hasTag01 && hasTag02 && hasTag03 && hasTag04 && inIdRange && isAllowedForGuest && isAllowedForLockDown;
                 });
 
                 let finalQuestionPool = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
@@ -4467,31 +4654,17 @@
                 userAnswers = quizQuestions.map(q => ({
                     question: q, status: 'unanswered', selected: null, timeSpent: 0
                 }));
-                // Reiniciar variables Modo Memoria
-                memoryCorrectCount = 0;
-                memoryIncorrectCount = 0;
-                memoryTotalTime = 0;
-                memoryAnsweredQuestions = 0;
-                if(document.getElementById('mem-score-correct')) document.getElementById('mem-score-correct').textContent = '0';
-                if(document.getElementById('mem-score-incorrect')) document.getElementById('mem-score-incorrect').textContent = '0';
-                if(document.getElementById('mem-avg-time')) {
-                    document.getElementById('mem-avg-time').innerHTML = `<i class="fas fa-clock"></i> 0s`;
-                    document.getElementById('mem-avg-time').className = "text-gray-300 ml-1";
-                }
-
                 screens.setup.classList.add('hidden');
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 updateEvaluationButton();
                 
-                // Mostrar u Ocultar UI dependiendo del modo
-                document.getElementById('action-buttons').style.display = isMemoryMode ? 'none' : 'block';
-                memoryModeUI.style.display = isMemoryMode ? 'flex' : 'none';
-                memoryStats.style.display = isMemoryMode ? 'flex' : 'none';
-                document.getElementById('live-score').style.display = isMemoryMode ? 'none' : 'flex';
+                document.getElementById('action-buttons').style.display = 'block';
                 timerContainer.style.display = 'flex';
+                opcionExpandida = null; // Reiniciar vista LockDown
 
-                if (isMemoryMode) {
+                if (isRealMode || isLockDownMode) {
+                    document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
                     timer = setInterval(() => { 
@@ -4499,7 +4672,8 @@
                         timerDisplay.textContent = `${seconds}s`;
                     }, 1000);
                     hintBtn.style.display = 'none';
-                } else if (isRealMode) {
+                    chatbotToggle.style.display = 'none';
+                } else if (isGameMode) {
                     document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
@@ -4613,8 +4787,62 @@
                 }
                 return null;
             }
+            function alternarVistaOpcionLockDown(idRef, evento) {
+                evento.stopPropagation();
+                if (userAnswers[currentQuestionIndex].status !== 'unanswered') return;
+
+                const targetContent = document.getElementById(`content-op-${idRef}`);
+                const targetBtnText = document.getElementById(`btn-text-${idRef}`);
+                
+                // Elementos específicos a ocultar (para no borrar las opciones)
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+
+                if (opcionExpandida === idRef) {
+                    // Restaurar la vista
+                    opcionExpandida = null;
+                    document.querySelectorAll('.option-wrapper').forEach(w => w.classList.remove('oculto'));
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.remove('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+                    if(targetContent) targetContent.classList.add('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ver respuesta";
+                } else {
+                    // Enfocar solo en esta opción
+                    opcionExpandida = idRef;
+                    document.querySelectorAll('.option-wrapper').forEach(w => {
+                        const btn = w.querySelector('.option-btn');
+                        if (btn && !btn.id.includes(idRef)) {
+                            w.classList.add('oculto');
+                        }
+                    });
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.add('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.add('oculto'); });
+                    if(targetContent) targetContent.classList.remove('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ocultar respuesta";
+                }
+
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise();
+                }
+            }
 
             function displayQuestion() {
+                // Restaurar vista LockDown al cambiar de pregunta
+                opcionExpandida = null;
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+                elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
                 dtSeconds = 90;
@@ -4673,6 +4901,7 @@
                     }, 1000);
                 }
                 justificationText.innerHTML = '';
+                renderMath(questionText, optionsContainer, justificationBox, textContent, justificationText);
                 
                 if (isContinuousMode) {
                     const allAnsweredIds = new Set([...pastedAnsweredIds, ...answeredIdsInContinuousMode]);
@@ -4701,8 +4930,21 @@
                 }
                 
                 questionIdDisplay.textContent = question.id || 'N/A';
-                uniTagsDisplay.innerHTML = (question.uni_tags || []).map(t => `<span class="uni-tag-display">${t}</span>`).join(' ');
-                levelTagDisplay.innerHTML = (question.level_tag || []).map(t => `<span class="level-tag-display">${t}</span>`).join(' ');
+                
+                let tagsHTML = '';
+                if (question.tag01 && question.tag01.length > 0) {
+                    tagsHTML += question.tag01.map(t => `<span class="uni-tag-display ml-1" style="color: #a78bfa; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag02 && question.tag02.length > 0) {
+                    tagsHTML += question.tag02.map(t => `<span class="uni-tag-display ml-1" style="color: #f472b6; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag03 && question.tag03.length > 0) {
+                    tagsHTML += question.tag03.map(t => `<span class="uni-tag-display ml-1" style="color: #fbbf24; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag04 && question.tag04.length > 0) {
+                    tagsHTML += question.tag04.map(t => `<span class="uni-tag-display ml-1" style="color: #34d399; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                questionTagsDisplay.innerHTML = tagsHTML;
                 questionText.style.whiteSpace = 'pre-line'; // Esta línea hace que el navegador respete los saltos de línea \n
                 let questionHTML = question.question;
                 questionText.innerHTML = questionHTML;
@@ -4764,48 +5006,7 @@
                 }
                 optionsContainer.innerHTML = '';
                 
-                // --- LÓGICA MODO MEMORIA ---
-                if (isMemoryMode) {
-                    optionsContainer.style.display = 'none';
-                    memoryShowAnswerBtn.style.display = 'block';
-                    memoryAnswerBox.style.display = 'none';
-                    memoryEvalButtons.style.display = 'none';
-                    memoryCorrectText.innerHTML = '';
-                    memoryCorrectImage.innerHTML = '';
-
-                    const isHybridMem = question.options.some(opt => 'text_op1' in opt);
-                    if (isHybridMem) {
-                        const correctOp1 = question.options.find(o => 'text_op1' in o && o.correct)?.text_op1 || '';
-                        const correctOp2 = question.options.find(o => 'text_op2' in o && o.correct)?.text_op2 || '';
-                        
-                        let html1 = isImageOption(correctOp1) ? `<img src="${correctOp1}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp1;
-                        let html2 = isImageOption(correctOp2) ? `<img src="${correctOp2}" style="max-height:150px; border-radius:5px; margin:auto;">` : correctOp2;
-                        
-                        memoryCorrectText.innerHTML = `<div class="grid grid-cols-2 gap-4 w-full"><div class="bg-gray-700 p-3 rounded">${html1}</div><div class="bg-gray-700 p-3 rounded">${html2}</div></div>`;
-                    } else {
-                        const correctOption = question.options.find(opt => opt.correct);
-                        if (correctOption) {
-                            if (isImageOption(correctOption.text)) {
-                                memoryCorrectImage.innerHTML = `<img src="${correctOption.text}" style="max-height:200px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.3);">`;
-                            } else {
-                                memoryCorrectText.innerHTML = correctOption.text;
-                            }
-                        }
-                    }
-
-                    setTimeout(() => { 
-                        if (window.MathJax) {
-                            if (window.MathJax.typesetClear) {
-                                window.MathJax.typesetClear([questionText, textContent, memoryCorrectText]);
-                            }
-                            MathJax.typesetPromise([questionText, textContent, memoryCorrectText]).catch((err) => console.log('Error renderizando formulas en memoria:', err));
-                        }
-                    }, 50);
-                    return; // Terminamos aquí la renderización de la pregunta
-                } else {
-                    optionsContainer.style.display = ''; 
-                }
-
+                
                 // DETECCIÓN DE FORMATO HÍBRIDO NORMAL
                 const isHybrid = question.options.some(opt => 'text_op1' in opt);
 
@@ -4877,9 +5078,26 @@
                             }
                             
                             btn.appendChild(letter);
-                            const span = document.createElement('span');
-                            span.innerHTML = opt.text;
-                            btn.appendChild(span);
+                            btn.id = `option-btn-hyb-${groupNum}-${idx}`;
+                            const contentContainer = document.createElement('span');
+                            contentContainer.id = `content-op-hyb-${groupNum}-${idx}`;
+                            contentContainer.className = 'option-content flex-grow text-left';
+                            contentContainer.innerHTML = opt.text;
+
+                            if (isLockDownMode && !opt.isNoId) {
+                                contentContainer.classList.add('oculto');
+                                const toggleBtn = document.createElement('div');
+                                toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-700 z-10';
+                                toggleBtn.id = `btn-toggle-hyb-${groupNum}-${idx}`;
+                                toggleBtn.innerHTML = `
+                                    <svg class="lock-icon w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                    <span id="btn-text-hyb-${groupNum}-${idx}">Ver respuesta</span>
+                                `;
+                                toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`hyb-${groupNum}-${idx}`, e);
+                                btn.appendChild(toggleBtn);
+                            }
+                            
+                            btn.appendChild(contentContainer);
 
                             // Agregamos las nuevas funciones (presión de 2 seg y contador)
                             const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
@@ -4950,23 +5168,40 @@
 
                         button.appendChild(letterElement);
 
+                        button.id = `option-btn-std-${index}`;
+                        const contentContainer = document.createElement('div');
+                        contentContainer.id = `content-op-std-${index}`;
+                        contentContainer.className = 'option-content flex-grow text-left';
+
                         if (isImg) {
                             const img = document.createElement('img');
                             img.src = option.text;
                             img.className = 'option-image-content';
-                            button.appendChild(img);
+                            contentContainer.appendChild(img);
                              if (option.text.includes('imgur.com')) {
                                 const watermark = document.createElement('div');
                                 watermark.className = 'option-watermark';
                                 watermark.textContent = (currentUser.name + ' CEPREDIX ').repeat(50);
-                                button.appendChild(watermark);
+                                contentContainer.appendChild(watermark);
                             }
                         } else {
-                            const textSpan = document.createElement('span');
-                            textSpan.innerHTML = option.text;
-                            button.appendChild(textSpan);
+                            contentContainer.innerHTML = option.text;
                         }
 
+                        if (isLockDownMode && !isNoId) {
+                            contentContainer.classList.add('oculto');
+                            const toggleBtn = document.createElement('div');
+                            toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-3 py-1 rounded text-sm cursor-pointer hover:bg-gray-700 z-10 transition-colors';
+                            toggleBtn.id = `btn-toggle-std-${index}`;
+                            toggleBtn.innerHTML = `
+                                <svg class="lock-icon w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <span id="btn-text-std-${index}">Ver respuesta</span>
+                            `;
+                            toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`std-${index}`, e);
+                            button.appendChild(toggleBtn);
+                        }
+
+                        button.appendChild(contentContainer);
                         button.dataset.text = option.text;
                         
                         // Agregamos las nuevas funciones (presión de 2 seg y contador)
@@ -5003,12 +5238,7 @@
                     });
                 }
                 setTimeout(() => {
-                    // Liberar memoria de MathJax antes de renderizar (Crucial para evitar crasheos en iOS)
-                    if (window.MathJax && window.MathJax.typesetClear) {
-                        window.MathJax.typesetClear([questionText, optionsContainer, textContent]);
-                    }
-                    MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
-                    }).catch((err) => console.log('Error renderizando formulas:', err));
+                    renderMath(questionText, optionsContainer, textContent, justificationText);
                 }, 50);
                 
                 updateButtonStates();
@@ -5085,19 +5315,24 @@
                         const group = btn.dataset.group; // "1" o "2"
                         const isSelected = btn.classList.contains('selected');
 
-                        if (!isRealMode) {
-                            // Colorear Correctas
-                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
-                                btn.classList.add('correct');
-                            }
-                            
-                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
-                            if (isSelected && status !== 'correct') {
-                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
-                                     btn.classList.add('incorrect');
-                                 }
-                            }
-                        }
+                        if (!isRealMode && !isLockDownMode) {
+                            // Colorear Correctas
+                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
+                                btn.classList.add('correct');
+                            }
+                            
+                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
+                            if (isSelected && status !== 'correct') {
+                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
+                                     btn.classList.add('incorrect');
+                                 }
+                            }
+                        } else {
+                            // En MODO REAL O LOCKDOWN, solo mantenemos la selección en oscuro
+                            if (isSelected) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
 
                 } else {
@@ -5110,39 +5345,39 @@
                     document.querySelectorAll('.option-btn').forEach(btn => {
                         btn.disabled = true;
                         
-                        if (!isRealMode) {
-                            // 1. Marcar siempre la correcta en verde
-                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
-                            
-                            // 2. Verificar si este es el botón que el usuario presionó previamente
-                            // (Comparamos el texto del botón con lo guardado en userAnswers)
-                            if (btn.dataset.text === userSelectedText) {
-                                
-                                // Restauramos la clase visual de "seleccionado"
-                                btn.classList.add('selected'); 
+                        if (!isRealMode && !isLockDownMode) {
+                            // 1. Marcar siempre la correcta en verde
+                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
+                            
+                            // 2. Verificar si este es el botón que el usuario presionó previamente
+                            // (Comparamos el texto del botón con lo guardado en userAnswers)
+                            if (btn.dataset.text === userSelectedText) {
+                                
+                                // Restauramos la clase visual de "seleccionado"
+                                btn.classList.add('selected'); 
 
-                                // 3. Si el estado general de la respuesta fue incorrecto,
-                                // y este botón NO es la opción correcta, lo pintamos de rojo.
-                                if (status === 'incorrect' || status === 'unidentified') {
-                                    if (btn.dataset.text !== correctOption) {
-                                        btn.classList.add('incorrect');
-                                    }
-                                }
-                            }
-                        } else {
-                            // En MODO AVANCE REAL, solo mantenemos la selección en oscuro sin validación
-                            if (btn.dataset.text === userSelectedText) {
-                                btn.classList.add('selected');
-                            }
-                        }
+                                // 3. Si el estado general de la respuesta fue incorrecto,
+                                // y este botón NO es la opción correcta, lo pintamos de rojo.
+                                if (status === 'incorrect' || status === 'unidentified') {
+                                    if (btn.dataset.text !== correctOption) {
+                                        btn.classList.add('incorrect');
+                                    }
+                                }
+                            }
+                        } else {
+                            // En MODO AVANCE REAL O LOCKDOWN, solo mantenemos la selección en oscuro sin validación
+                            if (btn.dataset.text === userSelectedText) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
                 }
 
-                if (question.explanation && !isRealMode) {
-                    justificationText.innerHTML = question.explanation;
-                    justificationBox.classList.remove('hidden');
-                    MathJax.typesetPromise([justificationText]);
-                }
+                if (question.explanation && !isRealMode && !isLockDownMode) {
+                    justificationText.innerHTML = question.explanation;
+                    justificationBox.classList.remove('hidden');
+                    renderMath(justificationText);
+                }
             }
             
             function playSound(soundId) {
@@ -5238,6 +5473,10 @@
             cancelBtn.addEventListener('click', () => {
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
+                document.querySelectorAll('audio').forEach(function(audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
                 
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
@@ -5281,10 +5520,7 @@
                 modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
                     modalElement.remove();
                 });
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([modalElement.querySelector('.hint-content')]);
-                }
-                MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
+                renderMath(modalElement.querySelector('.hint-content'));
             });
             
             function updateLiveScore() {
@@ -5832,10 +6068,7 @@
                     </div>
                 `;
                 lookupResultContainer.classList.remove('hidden');
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([lookupResultContainer]);
-                }
-                MathJax.typesetPromise([lookupResultContainer]);
+                renderMath(lookupResultContainer);
             }
             
             loadData();
@@ -5991,7 +6224,7 @@
                 wbStep++;
                 
                 // LÍMITE DE MEMORIA PARA EVITAR CRASHEOS EN SAFARI/IPHONE
-                if (wbHistory.length > 8) {
+                if (wbHistory.length > 5) {
                     wbHistory.shift();
                     wbStep--;
                 }
@@ -6025,6 +6258,19 @@
                 });
             }
 
+            function simplifyPoints(points, tolerance) {
+                tolerance = tolerance || 3;
+                if (points.length <= 2) return points;
+                var simplified = [points[0]];
+                for (var i = 1; i < points.length - 1; i++) {
+                    var prev = simplified[simplified.length - 1];
+                    var curr = points[i];
+                    var dist = Math.sqrt(Math.pow(curr.x - prev.x, 2) + Math.pow(curr.y - prev.y, 2));
+                    if (dist > tolerance) simplified.push(curr);
+                }
+                simplified.push(points[points.length - 1]);
+                return simplified;
+            }
             if (wbOverlay) {
                 const openWhiteboard = () => {
                     wbOverlay.classList.remove('hidden');
@@ -6089,9 +6335,9 @@
                         wbPaths.push({
                             color: wbCurrentColor,
                             width: wbCurrentWidth,
-                            points: currentPathPoints
+                            points: simplifyPoints(currentPathPoints, 3)
                         });
-                        saveHistory(); // <--- GUARDAR ESTADO AL TERMINAR DE DIBUJAR
+                        saveHistory();
                     }
                 };
 
