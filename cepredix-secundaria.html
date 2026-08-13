@@ -1459,7 +1459,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">🟢 PLATAFORMA VIRTUAL (UNI) 💻 📱</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">🟢 PLATAFORMA VIRTUAL (SECUNDARIA) 💻 📱</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -5514,7 +5514,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 // 1. Empaquetamos los datos en un objeto simple
                 const payload = {
-                    EvaluationName: "🟢 PLATAFORMA VIRTUAL (UNI) 💻 📱",
+                    EvaluationName: "🟢 PLATAFORMA VIRTUAL (SECUNDARIA) 💻 📱",
                     Name: currentUser.name || 'Invitado',
                     Email: currentUser.email || 'sin_email',
                     WhatsApp: currentUser.whatsapp || '0000000000',
@@ -5799,7 +5799,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "🟢 PLATAFORMA VIRTUAL (UNI) 💻 📱";
+                summaryEvalName.textContent = "🟢 PLATAFORMA VIRTUAL (SECUNDARIA) 💻 📱";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
