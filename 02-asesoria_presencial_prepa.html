@@ -2,8 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASESORÍAS Tania Caely 😎</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>🟢 PLATAFORMA Presencial (Cuernavaca) 💻 📱</title>
     <link rel="icon" href="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/00-WEBLogo-circular-cepredix.png" type="image/png">
     
     <meta property="og:image" content="https://raw.githubusercontent.com/IALUMX/img_cepredix/main/Thumbnail-CEP-HTML.png">
@@ -12,14 +15,14 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <meta property="og:title" content="ASESORÍAS Tania Caely 😎 - CEPREDIX">
+    <meta property="og:title" content="🟢 PLATAFORMA Presencial (Cuernavaca) 💻 📱 - CEPREDIX">
     <meta property="og:description" content="Plataforma de evaluación educativa.">
     <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         window.MathJax = {
@@ -50,6 +53,9 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             line-height: 1.4; /* Ajuste global de interlineado */
             overscroll-behavior-y: none; /* EVITA EL PULL-TO-REFRESH EN IPHONE */
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+            touch-action: pan-y;
         }
         #question-text {
             line-height: 1.25 !important; /* Interlineado más compacto en la pregunta */
@@ -149,10 +155,29 @@
         }
         .question-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; justify-content: center; }
         .tag {
-            background: rgba(79, 195, 247, 0.2); padding: 4px 10px; border-radius: 15px;
-            font-size: 0.8rem; border: 1px solid #4fc3f7; cursor: pointer; transition: all 0.2s ease;
+            background: rgba(79, 195, 247, 0.05); /* Fondo casi transparente */
+            padding: 4px 10px !important;
+            border-radius: 12px !important; /* Bordes más redondeados tipo píldora */
+            font-size: 0.65rem !important; 
+            font-weight: 400 !important;
+            color: #81d4fa; /* Texto sutil */
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1 !important;
+            margin: 2px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: fit-content;
         }
-        .tag.selected { background: rgba(79, 195, 247, 0.8); color: white; font-weight: bold; transform: scale(1.05); }
+        .tag.selected { 
+            background: rgba(79, 195, 247, 0.5); /* Menos brillante al seleccionar */
+            color: white; 
+            font-weight: 600 !important; 
+            border-color: rgba(79, 195, 247, 0.7);
+            transform: scale(1.02); /* Efecto de crecimiento muy ligero */
+        }
         .option-btn {
             padding: 15px 15px 15px 50px; background: rgba(50, 50, 70, 0.8);
             border-radius: 10px; cursor: pointer; transition: all 0.3s ease;
@@ -413,7 +438,7 @@
             gap: 8px;
             width: fit-content;
         }
-        .question-id { color: #4fc3f7; }
+        .question-id { color: #4fc3f7; font-family: 'Roboto Mono', monospace; font-weight: 500; letter-spacing: 0.05em; }
         .mini-nav-btn {
             width: 32px; height: 32px; border-radius: 50%; 
             background: rgba(30, 30, 40, 0.8); border: 1px solid #4fc3f7; 
@@ -1266,6 +1291,24 @@
             color: #fff;
             line-height: 1;
         }
+        .profile-option { cursor: pointer; display: block; }
+        .profile-content {
+            display: block; padding: 8px 12px; background: rgba(30, 30, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+            font-size: 0.85rem; color: #bbb; transition: all 0.3s ease; text-align: center;
+        }
+        .profile-option:hover .profile-content {
+            background: rgba(50, 50, 70, 0.8); border-color: rgba(79, 195, 247, 0.4);
+        }
+        .profile-checkbox:checked + .profile-content {
+            background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7;
+            color: #fff; font-weight: bold; box-shadow: 0 0 8px rgba(79, 195, 247, 0.3);
+        }
+
+        /* Utilidad para el LockDown Browser */
+        .oculto {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4">
@@ -1416,7 +1459,7 @@
             <a href="https://simuladores.cepredix.com.mx/cepredix.html" target="_blank" title="Ir a Web CEPREDIX">
                 <div class="logo"></div>
             </a>
-            <h1 class="text-2xl sm:text-3xl font-bold">ASESORÍAS Tania Caely 😎</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold">🟢 PLATAFORMA Presencial (UNI) 💻 📱</h1>
             <h2 class="text-xl sm:text-2xl">Diseñado con pasión 💜 por el CEPREDIX</h2>
             <p class="text-sm sm:text-base">Prueba tus conocimientos con este cuestionario interactivo de opción múltiple 🧠</p>
         </header>
@@ -1482,7 +1525,7 @@
                 <h1 class="text-2xl sm:text-3xl font-bold">Hola, <span id="welcome-name" class="text-blue-400"></span></h1>
                 <p class="text-gray-300 mt-2">Configura tu prueba para comenzar a practicar. Recuerda que si estás como INVITADO tendrás funciones limitadas</p>
             </div>
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-4 pt-4 border-t border-gray-700">
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left mt-4 pt-4 border-t border-gray-700">
                 <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
                     <label class="font-medium flex items-start text-left cursor-pointer">
                         <input type="checkbox" id="continuous-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0" checked>
@@ -1504,6 +1547,13 @@
                     </label>
                     <p class="text-xs text-gray-400 text-left mt-2">Oculta aciertos, sin confirmación de color/audio.</p>
                 </div>
+               <div class="bg-gray-800 p-3 rounded-lg border border-gray-600 flex flex-col justify-between">
+                    <label class="font-medium flex items-start text-left cursor-pointer">
+                        <input type="checkbox" id="lockdown-mode-toggle" class="mr-2 mt-1 h-5 w-5 flex-shrink-0">
+                        <span class="text-sm">MODO LOCKDOWN 🔐<br><span class="text-xs font-normal text-gray-300">(Máxima Dificultad)</span></span>
+                    </label>
+                    <p class="text-xs text-gray-400 text-left mt-2">Oculta las opciones y las evalúa como en Modo Real.</p>
+                </div>
             </div>
             <div class="space-y-4">
                 <div class="space-y-2 border-b border-gray-700 pb-4">
@@ -1520,20 +1570,24 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <p class="font-medium">Proceso de Admisión o Materia</p>
-                    <p class="text-xs text-gray-400">Selecciona tu proceso de admisión o materia(s), recuerda que "GENERAL" significa que el ejercicio aplica para todos los procesos de admisión.</p>
-                    <div id="uni-tags-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-medium">Nivel de Dificultad</p>
-                    <p class="text-xs text-gray-400">Selecciona el grado de dificultad de los ejercicios.</p>
-                    <div id="level-tags-container" class="flex flex-wrap gap-2"></div>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-medium">Tipo de Reactivo</p>
-                    <p class="text-xs text-gray-400">Selecciona el tipo de pregunta (ej. TEST, REAL, HÍBRIDO).</p>
-                    <div id="type-tags-container" class="flex flex-wrap gap-2"></div>
+                <!-- Contenedores agrupados para evitar el margen forzado -->
+                <div class="flex flex-col gap-1 mt-1">
+                    <div id="tag01-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 1</p>
+                        <div id="tag01-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag02-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 2</p>
+                        <div id="tag02-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag03-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 3</p>
+                        <div id="tag03-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                    <div id="tag04-wrapper" class="hidden mb-1">
+                        <p class="text-[0.65rem] text-gray-500 mb-1 leading-none uppercase tracking-wider">Categoría 4</p>
+                        <div id="tag04-container" class="flex flex-wrap gap-1.5"></div>
+                    </div>
                 </div>
             </div>
             <div class="space-y-2">
@@ -1600,6 +1654,13 @@
                 <div id="live-score" class="flex gap-2 text-xs sm:text-lg order-2">
                     <span class="font-bold text-green-400">✓ <span id="live-correct">0</span></span>
                     <span class="font-bold text-red-400">✗ <span id="live-incorrect">0</span></span>
+                </div>
+                <div id="memory-stats" class="flex gap-3 text-xs sm:text-sm font-bold order-2 hidden items-center bg-gray-800 px-3 py-1 rounded-full border border-gray-600 shadow-md">
+                     <span class="text-green-400">✅ <span id="mem-score-correct">0</span></span>
+                     <span class="text-gray-500">|</span>
+                     <span class="text-red-400">❌ <span id="mem-score-incorrect">0</span></span>
+                     <span class="text-gray-500">|</span>
+                     <span id="mem-avg-time" class="text-gray-300"><i class="fas fa-clock"></i> 0s</span>
                 </div>
                 <div class="flex items-center space-x-1 text-xs sm:text-lg font-bold order-3" id="timer-container">
                     <svg class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -1680,8 +1741,7 @@
                     <div class="flex flex-row flex-wrap items-center justify-center gap-2">
                         <div id="question-id-tags" class="question-id-tags !m-0">
                             <span id="question-id-display" class="question-id"></span>
-                            <span id="uni-tags-display"></span>
-                            <span id="level-tag-display"></span>
+                            <span id="question-tags-display"></span>
                         </div>
 
                         <button id="whiteboard-trigger-btn" class="text-blue-400 hover:text-white transition-all hover:scale-110 p-2 bg-gray-800 bg-opacity-80 rounded-full w-10 h-10 flex items-center justify-center border border-blue-400 shadow-lg" title="Abrir Pizarra de Cálculos">
@@ -1694,6 +1754,33 @@
                     </button>
                 </div>
                 <div id="options-container" class="w-full space-y-3"></div>
+                
+                <div id="memory-mode-ui" class="w-full space-y-4 hidden flex-col items-center mt-4">
+                    <button id="memory-show-answer-btn" class="btn btn-primary w-full py-4 text-lg sm:text-xl shadow-lg border-2 border-blue-400 transition-all transform hover:scale-105">
+                        <i class="fas fa-eye"></i> MOSTRAR RESPUESTA
+                    </button>
+                    
+                    <div id="memory-answer-box" class="w-full bg-gray-800 p-4 sm:p-6 rounded-lg border-2 border-yellow-500 hidden flex-col items-center shadow-xl text-center">
+                        <h3 class="text-yellow-400 font-bold mb-3 text-sm sm:text-lg uppercase tracking-wider"><i class="fas fa-check-circle"></i> Respuesta Correcta</h3>
+                        <div id="memory-correct-text" class="text-lg sm:text-xl text-white font-semibold w-full overflow-x-auto break-words"></div>
+                        <div id="memory-correct-image" class="mt-4 flex justify-center w-full"></div>
+                    </div>
+                    
+                    <div id="memory-eval-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 w-full hidden mt-4">
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-green-500 hover:bg-green-600 text-white transition-colors" data-action="correct">
+                            <span class="text-2xl sm:text-3xl mb-1">✅</span> <span class="text-xs sm:text-sm">BIEN</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-red-500 hover:bg-red-600 text-white transition-colors" data-action="incorrect">
+                            <span class="text-2xl sm:text-3xl mb-1">❌</span> <span class="text-xs sm:text-sm">MAL</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-yellow-500 hover:bg-yellow-600 text-white transition-colors" data-action="repeat">
+                            <span class="text-2xl sm:text-3xl mb-1">🔁</span> <span class="text-xs sm:text-sm">REPETIR (+5)</span>
+                        </button>
+                        <button class="mem-eval-btn btn w-full flex flex-col items-center p-2 sm:p-3 bg-gray-800 border-2 border-gray-400 hover:bg-gray-500 text-white transition-colors" data-action="skip">
+                            <span class="text-2xl sm:text-3xl mb-1">⏭️</span> <span class="text-xs sm:text-sm">OMITIR</span>
+                        </button>
+                    </div>
+                </div>
                 <div id="justification-box" class="justification w-full hidden">
                     <h4>Justificación:</h4>
                     <p id="justification-text"></p>
@@ -1979,7 +2066,7 @@
                 <a href="#" id="privacy-link" class="footer-link">Aviso de Privacidad</a>
             </div>
             <div id="copyright">
-                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-3.0704
+                &copy; CEPREDIX 2026 - Todos los derechos reservados. Versión CEP-4.0526
             </div>
         </div>
     </div>
@@ -2041,7 +2128,9 @@
 </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const QUIZ_JSON_URL = 'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/02-Tania Caely-asesoria.json';
+            const QUIZ_JSON_URLS = [
+                'https://raw.githubusercontent.com/IALUMX/Bancos_prueba/refs/heads/main/05-Cuernavaca-prof-juan-cos.json',
+            ];
             const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS5sU2hYNByYHNDESXxZPoe3dikV115hY_TII15wZtF8E0NWBFmnLSW2ad7ZqDdwk-jTPQfX-92n6zQ/pub?gid=0&single=true&output=csv';
             const CORS_PROXY_URL = 'https://corsproxy.io/?' + encodeURIComponent(GOOGLE_SHEET_URL);
             const RESULTS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYESY3dBy0h5QrY5EyJ_jfHwlEwnhByFcPTywwK4jJhGa3rvrnIzR9OXleZUZ7zVqUqw/exec';
@@ -2062,6 +2151,33 @@
                 quiz: document.getElementById('quiz-screen'),
                 results: document.getElementById('results-screen'),
             };
+
+            // PREVENCIÓN DE PULL-TO-REFRESH Y RECARGA ACCIDENTAL EN IOS SAFARI
+            document.addEventListener('touchstart', function(e) {}, { passive: true });
+            
+            let lastTouchY = 0;
+            document.addEventListener('touchstart', function(e) {
+                lastTouchY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.addEventListener('touchmove', function(e) {
+                const touchY = e.touches[0].clientY;
+                const touchYDelta = touchY - lastTouchY;
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop === 0 && touchYDelta > 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevenir zoom con doble toque
+            let lastTap = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTap < 300) {
+                    e.preventDefault();
+                }
+                lastTap = now;
+            }, { passive: false });
 
             // ALERTA DE PROTECCIÓN CONTRA CIERRE ACCIDENTAL
             window.addEventListener('beforeunload', function (e) {
@@ -2084,9 +2200,14 @@
             const gameModeToggle = document.getElementById('game-mode-toggle');
             const continuousModeToggle = document.getElementById('continuous-mode-toggle');
             const realModeToggle = document.getElementById('real-mode-toggle');
-            const uniTagsContainer = document.getElementById('uni-tags-container');
-            const levelTagsContainer = document.getElementById('level-tags-container');
-            const typeTagsContainer = document.getElementById('type-tags-container');
+            const tag01Wrapper = document.getElementById('tag01-wrapper');
+            const tag02Wrapper = document.getElementById('tag02-wrapper');
+            const tag03Wrapper = document.getElementById('tag03-wrapper');
+            const tag04Wrapper = document.getElementById('tag04-wrapper');
+            const tag01Container = document.getElementById('tag01-container');
+            const tag02Container = document.getElementById('tag02-container');
+            const tag03Container = document.getElementById('tag03-container');
+            const tag04Container = document.getElementById('tag04-container');
             const answeredIdsInput = document.getElementById('answered-ids-input');
             const startIdInput = document.getElementById('start-id-input'); // Nuevo filtro ID inicio
             const endIdInput = document.getElementById('end-id-input');     // Nuevo filtro ID fin
@@ -2096,6 +2217,8 @@
             const statsRemainingFiltered = document.getElementById('stats-remaining-filtered');
             const startQuizBtn = document.getElementById('start-quiz-btn');
             const errorMessage = document.getElementById('error-message');
+            const lockdownModeToggle = document.getElementById('lockdown-mode-toggle');
+
             const currentQuestionNum = document.getElementById('current-question-num');
             const totalQuestionsNum = document.getElementById('total-questions-num');
             const liveCorrect = document.getElementById('live-correct');
@@ -2105,8 +2228,7 @@
             const progressBar = document.getElementById('progress-bar');
             const questionText = document.getElementById('question-text');
             const questionIdDisplay = document.getElementById('question-id-display');
-            const uniTagsDisplay = document.getElementById('uni-tags-display');
-            const levelTagDisplay = document.getElementById('level-tag-display');
+            const questionTagsDisplay = document.getElementById('question-tags-display');
             const imageContainer = document.getElementById('image-container');
             const watermarkOverlay = document.getElementById('watermark-overlay');
             const optionsContainer = document.getElementById('options-container');
@@ -2232,8 +2354,10 @@
             let totalQuestionTime = 0;
             let isGuest = false;
             let isGameMode = false;
-            let isContinuousMode = true;
-            let isRealMode = false;
+            let isContinuousMode = true;
+            let isRealMode = false;
+            let isLockDownMode = false;
+            let opcionExpandida = null;
             let gameModeLives = 3;
             let consecutiveCorrect = 0;
             let gameModeTimer;
@@ -2260,6 +2384,14 @@
             let lineProjectionDataset = null;
             let algebraicDataset = null;
             let guestAds = [];
+            function renderMath(...elements) {
+                const validElements = elements.filter(el => el && document.contains(el));
+                if (!window.MathJax) return;
+                try {
+                    if (MathJax.typesetClear) MathJax.typesetClear(validElements);
+                    MathJax.typesetPromise(validElements).catch(err => console.warn('MathJax:', err));
+                } catch(e) { console.warn('MathJax error:', e); }
+            }
             let mainBanner = null;
             let pubBanners = [];
             let lastShownAdUrl = null;
@@ -2344,7 +2476,7 @@
                 const linkEl = document.getElementById('banner-link');
                 const audioEl = document.getElementById('banner-audio-player');
 
-                if (imgEl) imgEl.src = item.Imagen;
+                if (imgEl) { imgEl.src = item.Imagen; }
                 
                 if (linkEl) {
                     if (item.Infolink && item.Infolink.length > 5) {
@@ -2381,7 +2513,7 @@
             });
 
             function showAd() {
-                if (!isGuest || !(isContinuousMode || isGameMode)) return;
+                if (!isGuest) return;
                 
                 if (!guestAds || guestAds.length === 0) return; 
 
@@ -2523,6 +2655,7 @@
 
             chatbotToggle.addEventListener('click', () => {
                 if (isGuest) {
+                    showProAlert();
                     return; 
                 }
                 const isHidden = chatbotContent.classList.toggle('hidden');
@@ -2848,42 +2981,39 @@
 
                 // --- BLOQUE DE SONIDOS Y VIDAS (Igual que antes) ---
                 if (statusResult === 'unidentified') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
 
-                } else if (statusResult === 'correct') {
-                    if (effectsVolume > 0 && !isRealMode) {
-                        correctSound.currentTime = 0;
-                        correctSound.volume = effectsVolume;
-                        correctSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) {
-                        consecutiveCorrect++;
-                        // Si es híbrido cuenta doble en la mente del usuario, pero en sistema es 1 acierto lógico. 
-                        // Sin embargo, podemos dar doble bonificación de racha si lo deseas, 
-                        // pero para mantener simpleza, mantendremos +1 a la racha normal.
-                        if (consecutiveCorrect >= 3) {
-                            if (gameModeLives < 3) {
-                                gameModeLives++;
-                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
-                            }
-                            consecutiveCorrect = 0;
-                            updateGameModeLivesDisplay();
-                        }
-                    }
-                } else {
-                    // Incorrecto
-                    if (effectsVolume > 0 && !isRealMode) {
-                        incorrectSound.currentTime = 0;
-                        incorrectSound.volume = effectsVolume;
-                        incorrectSound.play().catch(e => console.error(e));
-                    }
-                    if (isGameMode) handleGameModeLifeLoss();
-                }
+                } else if (statusResult === 'correct') {
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        correctSound.currentTime = 0;
+                        correctSound.volume = effectsVolume;
+                        correctSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) {
+                        consecutiveCorrect++;
+                        if (consecutiveCorrect >= 3) {
+                            if (gameModeLives < 3) {
+                                gameModeLives++;
+                                showTemporaryMessage("¡3 aciertos seguidos! +1 Vida ❤️", "bg-green-600");
+                            }
+                            consecutiveCorrect = 0;
+                            updateGameModeLivesDisplay();
+                        }
+                    }
+                } else {
+                    // Incorrecto
+                    if (effectsVolume > 0 && !isRealMode && !isLockDownMode) {
+                        incorrectSound.currentTime = 0;
+                        incorrectSound.volume = effectsVolume;
+                        incorrectSound.play().catch(e => console.error(e));
+                    }
+                    if (isGameMode) handleGameModeLifeLoss();
+                }
 
                 // ... resto de la lógica (Continuous Mode, Live Score, etc.) se mantiene igual
                 if (isContinuousMode && currentAnswer.status !== 'unanswered') {
@@ -2896,7 +3026,7 @@
                 updateButtonStates();
 
                 // Publicidad
-                if (isGuest && (isContinuousMode || isGameMode)) {
+                if (isGuest) {
                     questionCountInGuestMode++;
                     if (questionCountInGuestMode % 5 === 0) {
                         setTimeout(showAd, 500);
@@ -3820,7 +3950,28 @@
                 }
                 showSimulacroEndScreen();
             }
-            
+
+            function showProAlert() {
+                const modalElement = document.createElement('div');
+                modalElement.className = "fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-[9999]";
+                modalElement.innerHTML = `
+                    <div class="bg-gray-800 border-2 border-yellow-500 rounded-xl p-6 w-full max-w-md text-center relative shadow-2xl">
+                        <button class="absolute top-2 right-4 text-3xl font-bold text-gray-500 hover:text-white close-modal-btn">&times;</button>
+                        <div class="text-5xl mb-4">🌟</div>
+                        <h3 class="text-xl font-bold text-yellow-400 mb-4">¡Función PRO Descubierta!</h3>
+                        <p class="text-white text-md mb-6">
+                            Felicidades, acabas de descubrir una función PRO. Desbloquéala enviando mensaje por WhatsApp a CEPREDIX al <strong>777 451 6364</strong> o da clic aquí abajo 👇
+                        </p>
+                        <a href="https://wa.link/97gwu6" target="_blank" class="btn w-full text-lg" style="background: linear-gradient(45deg, #25D366, #128C7E); color: white; display: block; text-decoration: none;">
+                            <i class="fab fa-whatsapp"></i> Desbloquear PRO
+                        </a>
+                    </div>
+                `;
+                document.body.appendChild(modalElement);
+                modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
+                    modalElement.remove();
+                });
+            }
             function showTemporaryMessage(message, bgColor = "bg-blue-600") {
                 const tempMessage = document.createElement('div');
                 tempMessage.className = `fixed top-1/4 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg z-50`;
@@ -3937,50 +4088,23 @@
             }
             
             guestLoginBtn.addEventListener('click', () => {
+               
                 isGuest = true;
                 currentUser = { name: 'Invitado', email: 'invitado@example.com', whatsapp: '0000000000' };
                 screens.login.classList.add('hidden');
                 screens.setup.classList.remove('hidden');
                 if(logoutBtn) logoutBtn.style.display = 'flex';
                 welcomeName.textContent = 'Invitado';
-                answeredIdsInput.disabled = true;
-                setupLookupForGuest();
-                loadData().then(() => {
-                    uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        if (tagEl.textContent === 'GENERAL') {
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                    levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                        if (tagEl.textContent === 'BÁSICO') {
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                    updateQuestionStats();
-                   // Bloquear tags de Tipo para invitado
-                    typeTagsContainer.querySelectorAll('.tag').forEach((tagEl, index) => {
-                        if (index === 0) { // O lógica de selección por defecto
-                            tagEl.classList.add('selected');
-                        }
-                        tagEl.style.pointerEvents = 'none';
-                        tagEl.style.opacity = '0.5';
-                    });
-                });
-                gameModeToggle.disabled = false;
-                gameModeToggle.checked = false;
-                gameModeToggle.parentElement.style.opacity = '1';
-                gameModeToggle.parentElement.style.pointerEvents = 'auto';
-                continuousModeToggle.disabled = false;
                 
-                if(chatbotToggle) {
-                    chatbotToggle.style.opacity = '0.5';
-                    chatbotToggle.style.cursor = 'not-allowed';
-                    chatbotToggle.title = "No disponible para invitados";
-                }
+                // Activar Modo Avance Real por defecto
+                realModeToggle.checked = true;
+                isRealMode = true;
+                continuousModeToggle.checked = false;
+                isContinuousMode = false;
+                gameModeToggle.checked = false;
+                isGameMode = false;
+
+                loadData();
             });
             
             noAccessBtn.addEventListener('click', (e) => {
@@ -3992,6 +4116,8 @@
             
             loginForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
+
+
                 const name = nameInput.value.trim();
                 const emailToValidate = emailInput.value.trim();
                 const whatsappToValidate = whatsappInput.value.trim();
@@ -4034,27 +4160,74 @@
             
             const loadData = async () => {
                 try {
-                    const response = await fetch(QUIZ_JSON_URL + '?v=' + new Date().getTime());
-                    if (!response.ok) {
-                        throw new Error('No se pudo cargar el archivo JSON');
+                    startQuizBtn.disabled = true;
+                    if(statsTotal) statsTotal.textContent = 'Cargando...';
+
+                    const timestamp = new Date().getTime();
+                    let loadedCount = 0;
+                    let errorCount = 0;
+
+                    const fetchPromises = QUIZ_JSON_URLS.map(url =>
+                        fetch(url + '?v=' + timestamp)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Error al cargar: ' + url);
+                                return response.text();
+                            })
+                            .then(jsonText => {
+                                jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
+                                jsonText = jsonText.replace(/\\u00a0/g, ' ');
+                                jsonText = jsonText.replace(/,\s*}/g, '}');
+                                jsonText = jsonText.replace(/,\s*\]/g, ']');
+                                try {
+                                    const questions = JSON.parse(jsonText);
+                                    loadedCount++;
+                                    if(statsTotal) statsTotal.textContent = 'Cargando ' + loadedCount + '/' + QUIZ_JSON_URLS.length + '...';
+                                    return Array.isArray(questions) ? questions : [];
+                                } catch (parseError) {
+                                    console.error('Error al parsear JSON de: ' + url, parseError.message);
+                                    errorCount++;
+                                    return [];
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Error al cargar archivo:', err.message);
+                                errorCount++;
+                                return [];
+                            })
+                    );
+
+                    const results = await Promise.all(fetchPromises);
+
+                    allQuestions = results.flat();
+
+                    // Eliminar duplicados por ID
+                    const seen = new Set();
+                    allQuestions = allQuestions.filter(q => {
+                        if (!q.id || seen.has(q.id)) return false;
+                        seen.add(q.id);
+                        return true;
+                    });
+
+                    if (allQuestions.length === 0) {
+                        throw new Error('No se pudo cargar ningún archivo JSON correctamente.');
                     }
-                    let jsonText = await response.text();
-                    jsonText = jsonText.replace(/\\\\\\\\/g, '\\\\');
-                    jsonText = jsonText.replace(/\\u00a0/g, ' ');
-                    jsonText = jsonText.replace(/,\s*}/g, '}');
-                    jsonText = jsonText.replace(/,\s*\]/g, ']');
-                    try {
-                        allQuestions = JSON.parse(jsonText);
-                    } catch (parseError) {
-                        console.error('Error al parsear JSON:', parseError.message);
-                        allQuestions = [];
+
+                    if (errorCount > 0) {
+                        showTemporaryMessage(
+                            errorCount + ' archivo(s) no se pudieron cargar. Se cargaron ' + loadedCount + ' de ' + QUIZ_JSON_URLS.length + ' archivos.',
+                            'bg-yellow-600'
+                        );
                     }
+
                     statsTotal.textContent = allQuestions.length;
                     populateTagFilters();
                     updateQuestionStats();
+                    startQuizBtn.disabled = false;
+
                 } catch (error) {
-                    errorMessage.textContent = 'Error: ' + error.message;
+                    if(errorMessage) errorMessage.textContent = 'Error: ' + error.message;
                     console.error('Error crítico:', error);
+                    if(statsTotal) statsTotal.textContent = 'Error';
                     startQuizBtn.disabled = true;
                 }
             };
@@ -4081,49 +4254,85 @@
                     return inIdRange;
                 });
 
-                // --- LÓGICA DE CASCADA PARA ETIQUETAS ---
+                // --- LÓGICA PARA ETIQUETAS NUEVAS ---
+                const getSelected = (container) => Array.from(container.querySelectorAll('.selected')).map(el => el.textContent);
                 
-                // Nivel 1: Universidades disponibles en el basePool
-                const availableUniTags = new Set(basePool.flatMap(q => q.uni_tags || []));
-                uniTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableUniTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                let selTag01 = getSelected(tag01Container);
+                let selTag02 = getSelected(tag02Container);
+                let selTag03 = getSelected(tag03Container);
+                let selTag04 = getSelected(tag04Container);
 
-                // Nivel 2: Niveles disponibles después de aplicar filtro de Universidad
-                const poolAfterUni = basePool.filter(q => selectedUniTags.length === 0 || (q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag))));
-                const availableLevelTags = new Set(poolAfterUni.flatMap(q => q.level_tag || []));
-                levelTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableLevelTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                // Control de visibilidad en cascada según selecciones previas
+                if (selTag01.length === 0) {
+                    tag02Wrapper.classList.add('hidden');
+                    tag02Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag02 = []; // Anular selecciones si el contenedor se oculta
+                } else {
+                    tag02Wrapper.classList.remove('hidden');
+                }
 
-                // Nivel 3: Tipos disponibles después de aplicar filtro de Nivel
-                const poolAfterLevel = poolAfterUni.filter(q => selectedLevelTags.length === 0 || (q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag))));
-                const availableTypeTags = new Set(poolAfterLevel.flatMap(q => q.type_tag || []));
-                typeTagsContainer.querySelectorAll('.tag').forEach(tagEl => {
-                    if (availableTypeTags.has(tagEl.textContent)) {
-                        tagEl.style.display = '';
-                    } else {
-                        tagEl.style.display = 'none';
-                        tagEl.classList.remove('selected');
-                    }
-                });
-                const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
+                if (selTag02.length === 0) {
+                    tag03Wrapper.classList.add('hidden');
+                    tag03Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag03 = [];
+                } else {
+                    tag03Wrapper.classList.remove('hidden');
+                }
 
-                // 4. Filtro Final de preguntas
-                let filteredQuestions = poolAfterLevel.filter(q => selectedTypeTags.length === 0 || (q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag))));
+                if (selTag03.length === 0) {
+                    tag04Wrapper.classList.add('hidden');
+                    tag04Container.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                    selTag04 = [];
+                } else {
+                    tag04Wrapper.classList.remove('hidden');
+                }
+
+                // Función auxiliar para actualizar UI de tags en cascada
+                const updateTagUI = (pool, tagKey, container) => {
+                    if (container.parentElement.classList.contains('hidden')) return;
+                    const availableTags = new Set(pool.flatMap(q => q[tagKey] || []));
+                    container.querySelectorAll('.tag').forEach(tagEl => {
+                        if (availableTags.has(tagEl.textContent)) {
+                            tagEl.style.display = '';
+                        } else {
+                            tagEl.style.display = 'none';
+                            tagEl.classList.remove('selected');
+                        }
+                    });
+                };
+
+                // Filtramos secuencialmente para actualizar la UI en cascada
+                updateTagUI(basePool, 'tag01', tag01Container);
+                const poolAfter1 = basePool.filter(q => selTag01.length === 0 || !q.tag01 || q.tag01.some(t => selTag01.includes(t)));
                 
+                updateTagUI(poolAfter1, 'tag02', tag02Container);
+                const poolAfter2 = poolAfter1.filter(q => selTag02.length === 0 || !q.tag02 || q.tag02.some(t => selTag02.includes(t)));
+                
+                updateTagUI(poolAfter2, 'tag03', tag03Container);
+                const poolAfter3 = poolAfter2.filter(q => selTag03.length === 0 || !q.tag03 || q.tag03.some(t => selTag03.includes(t)));
+                
+                updateTagUI(poolAfter3, 'tag04', tag04Container);
+                let filteredQuestions = poolAfter3.filter(q => selTag04.length === 0 || !q.tag04 || q.tag04.some(t => selTag04.includes(t)));
+                // REGLAS PARA INVITADOS: Sin Imgur y que terminen en A, B, C o D
+                if (isGuest) {
+                    filteredQuestions = filteredQuestions.filter(q => {
+                        const hasImgurMain = q.image && q.image.includes('imgur.com');
+                        const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
+                        const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
+                        const hasValidEndChar = ['A', 'B', 'C', 'D'].includes(lastChar);
+                        return !hasImgurMain && !hasImgurOption && hasValidEndChar;
+                    });
+                }
+
+                // REGLA MODO LOCKDOWN: Excluir ejercicios híbridos
+                const isLockDownActive = document.getElementById('lockdown-mode-toggle') ? document.getElementById('lockdown-mode-toggle').checked : false;
+                if (isLockDownActive) {
+                    filteredQuestions = filteredQuestions.filter(q => {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        return !isHybrid;
+                    });
+                }
+
                 // 2. Preguntas con Filtros
                 if(statsTotalFiltered) statsTotalFiltered.textContent = filteredQuestions.length;
 
@@ -4182,215 +4391,206 @@
                 });
             }
             
-            function populateTagFilters(dataSource = allQuestions) {
-                const uniTags = [...new Set(dataSource.flatMap(q => q.uni_tags || []))];
-                const levelTags = [...new Set(dataSource.flatMap(q => q.level_tag || []))];
-                const typeTags = [...new Set(dataSource.flatMap(q => q.type_tag || []))];
-
-                uniTagsContainer.innerHTML = '';
-                levelTagsContainer.innerHTML = '';
-                typeTagsContainer.innerHTML = ''; // Nuevo
-
-                // Filtro Universidades
-                uniTags.forEach(tag => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    if (tag.toUpperCase() === 'GENERAL') {
-                        tagEl.classList.add('selected');
+           function populateTagFilters(dataSource = allQuestions) {
+                const processTags = (tagKey, container, wrapper, shouldSort = false) => {
+                    let tags = [...new Set(dataSource.flatMap(q => q[tagKey] || []))].filter(t => t !== null && t !== '');
+                    
+                    if (shouldSort) {
+                        tags.sort((a, b) => {
+                            // Limpieza extrema: elimina temporalmente todo lo que NO sea letra, número, espacio o guion
+                            // Esto garantiza que cualquier símbolo, emoji compuesto o ícono sea ignorado
+                            const cleanA = a.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            const cleanB = b.replace(/[^\p{L}\p{N}\s-]/gu, '').trim();
+                            
+                            // Extraer el número al inicio si existe (ej. "01", "02-", "3 ", etc.)
+                            const matchA = cleanA.match(/^(\d+)/);
+                            const matchB = cleanB.match(/^(\d+)/);
+                            
+                            if (matchA && matchB) {
+                                // Si ambos inician con número, se ordenan matemáticamente
+                                const numA = parseInt(matchA[1], 10);
+                                const numB = parseInt(matchB[1], 10);
+                                if (numA === numB) {
+                                    return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                                }
+                                return numA - numB;
+                            } else if (matchA) {
+                                return -1; // A tiene número, va primero
+                            } else if (matchB) {
+                                return 1;  // B tiene número, va primero
+                            } else {
+                                return cleanA.localeCompare(cleanB, 'es', { sensitivity: 'base' });
+                            }
+                        });
                     }
-                    tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    uniTagsContainer.appendChild(tagEl);
-                });
 
-                // Filtro Niveles
-                levelTags.forEach(tag => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    if (tag.toUpperCase() === 'BÁSICO') {
-                        tagEl.classList.add('selected');
+                    container.innerHTML = '';
+                    if (tags.length > 0) {
+                        wrapper.classList.remove('hidden');
+                        tags.forEach((tag, index) => {
+                            const tagEl = document.createElement('span');
+                            tagEl.textContent = tag;
+                            tagEl.className = 'tag';
+                            if (tagKey === 'tag01' && tag.toUpperCase() === 'GENERAL') {
+                                tagEl.classList.add('selected');
+                            }
+                            tagEl.addEventListener('click', () => {
+                                tagEl.classList.toggle('selected');
+                                updateQuestionStats();
+                            });
+                            container.appendChild(tagEl);
+                        });
+                    } else {
+                        wrapper.classList.add('hidden');
                     }
-                    tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    levelTagsContainer.appendChild(tagEl);
-                });
+                };
 
-                // NUEVO: Filtro Tipos
-                typeTags.forEach((tag, index) => {
-                    const tagEl = document.createElement('span');
-                    tagEl.textContent = tag;
-                    tagEl.className = 'tag';
-                    // Seleccionar el primer tag por defecto
-                    if (index === 0) {
-                        tagEl.classList.add('selected');
-                    }
-                    tagEl.addEventListener('click', () => {
-                        if (isGuest) return;
-                        tagEl.classList.toggle('selected');
-                        updateQuestionStats();
-                    });
-                    typeTagsContainer.appendChild(tagEl);
-                });
+                processTags('tag01', tag01Container, tag01Wrapper, true);
+                processTags('tag02', tag02Container, tag02Wrapper, true);
+                processTags('tag03', tag03Container, tag03Wrapper, false);
+                processTags('tag04', tag04Container, tag04Wrapper, false);
 
                 updateQuestionStats();
             }
 
+            continuousModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); continuousModeToggle.checked = false; showProAlert(); return; }
+            });
             continuousModeToggle.addEventListener('change', () => {
-                isContinuousMode = continuousModeToggle.checked;
-                if (isContinuousMode) {
-                    gameModeToggle.checked = false;
-                    realModeToggle.checked = false;
-                    gameModeToggle.disabled = true;
-                    realModeToggle.disabled = true;
-                    isGameMode = false;
-                    isRealMode = false;
-                } else {
-                    gameModeToggle.disabled = false;
-                    realModeToggle.disabled = false;
-                }
-            });
+                if(isGuest) return;
+                isContinuousMode = continuousModeToggle.checked;
+                if (isContinuousMode) {
+                    gameModeToggle.checked = false; realModeToggle.checked = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isGameMode = false; isRealMode = false; isLockDownMode = false;
+                }
+            });
 
-            gameModeToggle.addEventListener('change', () => {
-                isGameMode = gameModeToggle.checked;
-                if (isGameMode) {
-                    continuousModeToggle.checked = false;
-                    realModeToggle.checked = false;
-                    continuousModeToggle.disabled = true;
-                    realModeToggle.disabled = true;
-                    isContinuousMode = false;
-                    isRealMode = false;
-                } else {
-                    continuousModeToggle.disabled = false;
-                    realModeToggle.disabled = false;
-                }
-            });
+            gameModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); gameModeToggle.checked = false; showProAlert(); return; }
+            });
+            gameModeToggle.addEventListener('change', () => {
+                if(isGuest) return;
+                isGameMode = gameModeToggle.checked;
+                if (isGameMode) {
+                    continuousModeToggle.checked = false; realModeToggle.checked = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isRealMode = false; isLockDownMode = false;
+                }
+            });
 
-            realModeToggle.addEventListener('change', () => {
-                isRealMode = realModeToggle.checked;
-                if (isRealMode) {
-                    continuousModeToggle.checked = false;
-                    gameModeToggle.checked = false;
-                    continuousModeToggle.disabled = true;
-                    gameModeToggle.disabled = true;
-                    isContinuousMode = false;
-                    isGameMode = false;
-                } else {
-                    continuousModeToggle.disabled = false;
-                    gameModeToggle.disabled = false;
-                }
-            });
+            realModeToggle.addEventListener('click', (e) => {
+                if (isGuest) { e.preventDefault(); realModeToggle.checked = true; showProAlert(); return; }
+            });
+            realModeToggle.addEventListener('change', () => {
+                if(isGuest) return;
+                isRealMode = realModeToggle.checked;
+                if (isRealMode) {
+                    continuousModeToggle.checked = false; gameModeToggle.checked = false;
+                    if(lockdownModeToggle) lockdownModeToggle.checked = false;
+                    isContinuousMode = false; isGameMode = false; isLockDownMode = false;
+                }
+            });
+
+            if (lockdownModeToggle) {
+                lockdownModeToggle.addEventListener('click', (e) => {
+                    if (isGuest) { e.preventDefault(); lockdownModeToggle.checked = false; showProAlert(); return; }
+                });
+                lockdownModeToggle.addEventListener('change', () => {
+                    if(isGuest) return;
+                    isLockDownMode = lockdownModeToggle.checked;
+                    if (isLockDownMode) {
+                        continuousModeToggle.checked = false; gameModeToggle.checked = false; realModeToggle.checked = false;
+                        isContinuousMode = false; isGameMode = false; isRealMode = false;
+                    }
+                    updateQuestionStats(); // Recalcula las preguntas al instante
+                });
+            }
             
            startQuizBtn.addEventListener('click', () => {
                 errorMessage.textContent = '';
                 isGameMode = gameModeToggle.checked;
-                isContinuousMode = continuousModeToggle.checked;
-                isRealMode = realModeToggle ? realModeToggle.checked : false;
+                isContinuousMode = continuousModeToggle.checked;
+                isRealMode = realModeToggle ? realModeToggle.checked : false;
+                isLockDownMode = lockdownModeToggle ? lockdownModeToggle.checked : false;
                 
                 if (isGuest) {
                     questionCountInGuestMode = 0;
                 }
 
-                let finalQuestionPool = [];
+                const selTag01 = Array.from(tag01Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag02 = Array.from(tag02Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag03 = Array.from(tag03Container.querySelectorAll('.selected')).map(el => el.textContent);
+                const selTag04 = Array.from(tag04Container.querySelectorAll('.selected')).map(el => el.textContent);
+                
+                if (!tag01Wrapper.classList.contains('hidden') && selTag01.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 1.';
+                    return;
+                }
+                if (!tag02Wrapper.classList.contains('hidden') && selTag02.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 2.';
+                    return;
+                }
+                if (!tag03Wrapper.classList.contains('hidden') && selTag03.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 3.';
+                    return;
+                }
+                if (!tag04Wrapper.classList.contains('hidden') && selTag04.length === 0) {
+                    errorMessage.textContent = 'Debes seleccionar al menos un filtro de la Categoría 4.';
+                    return;
+                }
 
-                if (isGuest) {
-                    // 1. Filtrar preguntas seguras (sin Imgur)
-                    let safeQuestions = allQuestions.filter(q => {
+                const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
+                const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
+
+                let availableQuestions = allQuestions.filter(q => {
+                    const hasTag01 = selTag01.length === 0 || !q.tag01 || q.tag01.length === 0 || q.tag01.some(tag => selTag01.includes(tag));
+                    const hasTag02 = selTag02.length === 0 || !q.tag02 || q.tag02.length === 0 || q.tag02.some(tag => selTag02.includes(tag));
+                    const hasTag03 = selTag03.length === 0 || !q.tag03 || q.tag03.length === 0 || q.tag03.some(tag => selTag03.includes(tag));
+                    const hasTag04 = selTag04.length === 0 || !q.tag04 || q.tag04.length === 0 || q.tag04.some(tag => selTag04.includes(tag));
+                    
+                    let inIdRange = true;
+                    if (startIdVal && endIdVal) {
+                        inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
+                    } else if (startIdVal) {
+                        inIdRange = (q.id >= startIdVal);
+                    } else if (endIdVal) {
+                        inIdRange = (q.id <= endIdVal);
+                    }
+
+                    // Regla de invitado integrada aquí
+                    let isAllowedForGuest = true;
+                    if (isGuest) {
                         const hasImgurMain = q.image && q.image.includes('imgur.com');
                         const hasImgurOption = q.options && q.options.some(opt => opt.text && opt.text.includes('imgur.com'));
-                        return !hasImgurMain && !hasImgurOption;
-                    });
+                        const lastChar = q.id ? q.id.slice(-1).toUpperCase() : '';
+                        isAllowedForGuest = !hasImgurMain && !hasImgurOption && ['A', 'B', 'C', 'D'].includes(lastChar);
+                    }
 
-                    // 2. RESTRICCIÓN DE INVITADO: Solo acceso a las primeras 30 preguntas del banco seguro
-                    let guestPool = safeQuestions.slice(0, 30);
+                    // Regla Modo LockDown: No admitir ejercicios híbridos
+                    let isAllowedForLockDown = true;
+                    if (isLockDownMode) {
+                        const isHybrid = q.options && q.options.some(opt => 'text_op1' in opt);
+                        isAllowedForLockDown = !isHybrid;
+                    }
 
-                    if (guestPool.length === 0) {
-                        errorMessage.textContent = 'No hay preguntas disponibles para el modo invitado.';
+                    return hasTag01 && hasTag02 && hasTag03 && hasTag04 && inIdRange && isAllowedForGuest && isAllowedForLockDown;
+                });
+
+                let finalQuestionPool = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
+
+                if (isGameMode) {
+                    if (availableQuestions.length < 20) {
+                        errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
                         return;
                     }
-
-                    // 3. Asignación según modo
-                    if (isGameMode) {
-                        // Simulacro: Intenta tomar 20 al azar de las 30
-                        let count = Math.min(guestPool.length, 20);
-                        finalQuestionPool = shuffleArray([...guestPool]).slice(0, count);
-                    } else {
-                        // MODO NORMAL / CONTINUO: Usa TODAS las disponibles en el pool de invitado (hasta 30)
-                        // Eliminamos el slice(0,10) para que puedan responder todas las que tengan permitidas
-                        finalQuestionPool = shuffleArray([...guestPool]);
-                    }
-
+                    finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
                 } else {
-                    // --- MODO USUARIO REGISTRADO ---
-                    const selectedUniTags = Array.from(uniTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    const selectedLevelTags = Array.from(levelTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    const selectedTypeTags = Array.from(typeTagsContainer.querySelectorAll('.selected')).map(el => el.textContent);
-                    
-                    // Validaciones de filtros vacíos
-                    if (selectedUniTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Proceso de Admisión o Materias".';
+                    if (finalQuestionPool.length < 5) {
+                        errorMessage.textContent = `Solo se encontraron ${finalQuestionPool.length} ejercicios disponibles. Se necesita un mínimo de 5.`;
                         return;
                     }
-                    if (selectedLevelTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Nivel de Dificultad".';
-                        return;
-                    }
-                    if (selectedTypeTags.length === 0) {
-                        errorMessage.textContent = 'Debes seleccionar al menos un filtro de "Tipo de Reactivo".';
-                        return;
-                    }
-
-                    // Filtrado Maestro
-                    // Captura valores actuales de los inputs de ID
-                    const startIdVal = startIdInput ? startIdInput.value.trim().toUpperCase() : '';
-                    const endIdVal = endIdInput ? endIdInput.value.trim().toUpperCase() : '';
-
-                    let availableQuestions = allQuestions.filter(q => {
-                        const hasUniTag = q.uni_tags && q.uni_tags.some(tag => selectedUniTags.includes(tag));
-                        const hasLevelTag = q.level_tag && q.level_tag.some(tag => selectedLevelTags.includes(tag));
-                        const hasTypeTag = q.type_tag && q.type_tag.some(tag => selectedTypeTags.includes(tag));
-                        
-                        // Lógica de filtro por Rango de IDs
-                        let inIdRange = true;
-                        if (startIdVal && endIdVal) {
-                            // Si hay inicio y fin, debe estar en medio
-                            inIdRange = (q.id >= startIdVal && q.id <= endIdVal);
-                        } else if (startIdVal) {
-                            // Solo inicio
-                            inIdRange = (q.id >= startIdVal);
-                        } else if (endIdVal) {
-                            // Solo fin
-                            inIdRange = (q.id <= endIdVal);
-                        }
-
-                        return hasUniTag && hasLevelTag && hasTypeTag && inIdRange;
-                    });
-
-                    let newQuestions = availableQuestions.filter(q => !pastedAnsweredIds.has(q.id));
-
-                    if (isGameMode) {
-                        if (availableQuestions.length < 20) {
-                            errorMessage.textContent = `No hay suficientes ejercicios con estos filtros (${availableQuestions.length}) para el Modo Simulacro. Se necesitan 20.`;
-                            return;
-                        }
-                        finalQuestionPool = shuffleArray(availableQuestions).slice(0, 20);
-                    } else {
-                        // MODO NORMAL / CONTINUO: 
-                        // Verificamos mínimo 5 (o 10 según prefieras, dejé 5 para no bloquear si quedan pocas)
-                        if (newQuestions.length < 5) {
-                            errorMessage.textContent = `Solo se encontraron ${newQuestions.length} ejercicios disponibles. Se necesita un mínimo de 5.`;
-                            return;
-                        }
-                        // CAMBIO CLAVE: Ya no cortamos a 10. Pasamos TODAS las preguntas filtradas.
-                        finalQuestionPool = shuffleArray(newQuestions);
-                    }
+                    finalQuestionPool = shuffleArray(finalQuestionPool);
                 }
                 
                 const availableCount = finalQuestionPool.length;
@@ -4439,8 +4639,22 @@
                 screens.results.classList.add('hidden');
                 screens.quiz.classList.remove('hidden');
                 updateEvaluationButton();
+                
+                document.getElementById('action-buttons').style.display = 'block';
                 timerContainer.style.display = 'flex';
-                if (isRealMode) {
+                opcionExpandida = null; // Reiniciar vista LockDown
+
+                if (isRealMode || isLockDownMode) {
+                    document.getElementById('live-score').style.display = 'none';
+                    gameModeRules.classList.add('hidden');
+                    clearInterval(timer);
+                    timer = setInterval(() => { 
+                        seconds++; 
+                        timerDisplay.textContent = `${seconds}s`;
+                    }, 1000);
+                    hintBtn.style.display = 'none';
+                    chatbotToggle.style.display = 'none';
+                } else if (isGameMode) {
                     document.getElementById('live-score').style.display = 'none';
                     gameModeRules.classList.add('hidden');
                     clearInterval(timer);
@@ -4554,8 +4768,62 @@
                 }
                 return null;
             }
+            function alternarVistaOpcionLockDown(idRef, evento) {
+                evento.stopPropagation();
+                if (userAnswers[currentQuestionIndex].status !== 'unanswered') return;
+
+                const targetContent = document.getElementById(`content-op-${idRef}`);
+                const targetBtnText = document.getElementById(`btn-text-${idRef}`);
+                
+                // Elementos específicos a ocultar (para no borrar las opciones)
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+
+                if (opcionExpandida === idRef) {
+                    // Restaurar la vista
+                    opcionExpandida = null;
+                    document.querySelectorAll('.option-wrapper').forEach(w => w.classList.remove('oculto'));
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.remove('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+                    if(targetContent) targetContent.classList.add('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ver respuesta";
+                } else {
+                    // Enfocar solo en esta opción
+                    opcionExpandida = idRef;
+                    document.querySelectorAll('.option-wrapper').forEach(w => {
+                        const btn = w.querySelector('.option-btn');
+                        if (btn && !btn.id.includes(idRef)) {
+                            w.classList.add('oculto');
+                        }
+                    });
+                    document.querySelectorAll('.hybrid-group-title').forEach(w => w.classList.add('oculto'));
+                    elementosOcultables.forEach(el => { if(el) el.classList.add('oculto'); });
+                    if(targetContent) targetContent.classList.remove('oculto');
+                    if(targetBtnText) targetBtnText.innerText = "Ocultar respuesta";
+                }
+
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise();
+                }
+            }
 
             function displayQuestion() {
+                // Restaurar vista LockDown al cambiar de pregunta
+                opcionExpandida = null;
+                const elementosOcultables = [
+                    document.getElementById('question-text'),
+                    document.getElementById('video-container'),
+                    document.getElementById('image-section-container'),
+                    document.getElementById('text-section-container'),
+                    document.querySelector('.flex.flex-row.flex-nowrap.items-center.justify-between.w-full.my-2')
+                ];
+                elementosOcultables.forEach(el => { if(el) el.classList.remove('oculto'); });
+
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false; 
                 dtSeconds = 90;
@@ -4614,6 +4882,7 @@
                     }, 1000);
                 }
                 justificationText.innerHTML = '';
+                renderMath(questionText, optionsContainer, justificationBox, textContent, justificationText);
                 
                 if (isContinuousMode) {
                     const allAnsweredIds = new Set([...pastedAnsweredIds, ...answeredIdsInContinuousMode]);
@@ -4642,16 +4911,39 @@
                 }
                 
                 questionIdDisplay.textContent = question.id || 'N/A';
-                uniTagsDisplay.innerHTML = (question.uni_tags || []).map(t => `<span class="uni-tag-display">${t}</span>`).join(' ');
-                levelTagDisplay.innerHTML = (question.level_tag || []).map(t => `<span class="level-tag-display">${t}</span>`).join(' ');
+                
+                let tagsHTML = '';
+                if (question.tag01 && question.tag01.length > 0) {
+                    tagsHTML += question.tag01.map(t => `<span class="uni-tag-display ml-1" style="color: #a78bfa; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag02 && question.tag02.length > 0) {
+                    tagsHTML += question.tag02.map(t => `<span class="uni-tag-display ml-1" style="color: #f472b6; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag03 && question.tag03.length > 0) {
+                    tagsHTML += question.tag03.map(t => `<span class="uni-tag-display ml-1" style="color: #fbbf24; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                if (question.tag04 && question.tag04.length > 0) {
+                    tagsHTML += question.tag04.map(t => `<span class="uni-tag-display ml-1" style="color: #34d399; font-size: 0.75rem;">${t}</span>`).join(' ');
+                }
+                questionTagsDisplay.innerHTML = tagsHTML;
                 questionText.style.whiteSpace = 'pre-line'; // Esta línea hace que el navegador respete los saltos de línea \n
                 let questionHTML = question.question;
                 questionText.innerHTML = questionHTML;
                 questionStartTime = Date.now();
                 if (question.explanative_video) {
-                    const videoId = getYouTubeID(question.explanative_video);
+                    const url = question.explanative_video;
+                    const videoId = getYouTubeID(url);
+                    
                     if (videoId) {
-                        videoIframe.src = `https://www.youtube.com/embed/${videoId}`;
+                        let embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+                        
+                        const startMatch = url.match(/[?&](start|t)=([0-9]+)/);
+                        if (startMatch) embedUrl += `&start=${startMatch[2]}`;
+                        
+                        const endMatch = url.match(/[?&]end=([0-9]+)/);
+                        if (endMatch) embedUrl += `&end=${endMatch[2]}`;
+
+                        videoIframe.src = embedUrl;
                         videoContainer.style.display = 'block';
                         videoContent.classList.add('hidden');
                         videoToggle.querySelector('.fa-chevron-down, .fa-chevron-up').classList.replace('fa-chevron-up', 'fa-chevron-down');
@@ -4695,7 +4987,8 @@
                 }
                 optionsContainer.innerHTML = '';
                 
-                // DETECCIÓN DE FORMATO HÍBRIDO
+                
+                // DETECCIÓN DE FORMATO HÍBRIDO NORMAL
                 const isHybrid = question.options.some(opt => 'text_op1' in opt);
 
                 if (isHybrid) {
@@ -4766,9 +5059,26 @@
                             }
                             
                             btn.appendChild(letter);
-                            const span = document.createElement('span');
-                            span.innerHTML = opt.text;
-                            btn.appendChild(span);
+                            btn.id = `option-btn-hyb-${groupNum}-${idx}`;
+                            const contentContainer = document.createElement('span');
+                            contentContainer.id = `content-op-hyb-${groupNum}-${idx}`;
+                            contentContainer.className = 'option-content flex-grow text-left';
+                            contentContainer.innerHTML = opt.text;
+
+                            if (isLockDownMode && !opt.isNoId) {
+                                contentContainer.classList.add('oculto');
+                                const toggleBtn = document.createElement('div');
+                                toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-2 py-1 rounded text-xs cursor-pointer hover:bg-gray-700 z-10';
+                                toggleBtn.id = `btn-toggle-hyb-${groupNum}-${idx}`;
+                                toggleBtn.innerHTML = `
+                                    <svg class="lock-icon w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                    <span id="btn-text-hyb-${groupNum}-${idx}">Ver respuesta</span>
+                                `;
+                                toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`hyb-${groupNum}-${idx}`, e);
+                                btn.appendChild(toggleBtn);
+                            }
+                            
+                            btn.appendChild(contentContainer);
 
                             // Agregamos las nuevas funciones (presión de 2 seg y contador)
                             const isCepredix = currentUser.email && currentUser.email.toLowerCase().includes('@cepredix.com');
@@ -4839,23 +5149,40 @@
 
                         button.appendChild(letterElement);
 
+                        button.id = `option-btn-std-${index}`;
+                        const contentContainer = document.createElement('div');
+                        contentContainer.id = `content-op-std-${index}`;
+                        contentContainer.className = 'option-content flex-grow text-left';
+
                         if (isImg) {
                             const img = document.createElement('img');
                             img.src = option.text;
                             img.className = 'option-image-content';
-                            button.appendChild(img);
+                            contentContainer.appendChild(img);
                              if (option.text.includes('imgur.com')) {
                                 const watermark = document.createElement('div');
                                 watermark.className = 'option-watermark';
                                 watermark.textContent = (currentUser.name + ' CEPREDIX ').repeat(50);
-                                button.appendChild(watermark);
+                                contentContainer.appendChild(watermark);
                             }
                         } else {
-                            const textSpan = document.createElement('span');
-                            textSpan.innerHTML = option.text;
-                            button.appendChild(textSpan);
+                            contentContainer.innerHTML = option.text;
                         }
 
+                        if (isLockDownMode && !isNoId) {
+                            contentContainer.classList.add('oculto');
+                            const toggleBtn = document.createElement('div');
+                            toggleBtn.className = 'btn-ver-respuesta ml-2 mb-2 inline-flex items-center gap-1 bg-transparent text-blue-400 border border-gray-600 px-3 py-1 rounded text-sm cursor-pointer hover:bg-gray-700 z-10 transition-colors';
+                            toggleBtn.id = `btn-toggle-std-${index}`;
+                            toggleBtn.innerHTML = `
+                                <svg class="lock-icon w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <span id="btn-text-std-${index}">Ver respuesta</span>
+                            `;
+                            toggleBtn.onclick = (e) => alternarVistaOpcionLockDown(`std-${index}`, e);
+                            button.appendChild(toggleBtn);
+                        }
+
+                        button.appendChild(contentContainer);
                         button.dataset.text = option.text;
                         
                         // Agregamos las nuevas funciones (presión de 2 seg y contador)
@@ -4892,12 +5219,7 @@
                     });
                 }
                 setTimeout(() => {
-                    // Liberar memoria de MathJax antes de renderizar (Crucial para evitar crasheos en iOS)
-                    if (window.MathJax && window.MathJax.typesetClear) {
-                        window.MathJax.typesetClear([questionText, optionsContainer, textContent]);
-                    }
-                    MathJax.typesetPromise([questionText, optionsContainer, textContent]).then(() => {
-                    }).catch((err) => console.log('Error renderizando formulas:', err));
+                    renderMath(questionText, optionsContainer, textContent, justificationText);
                 }, 50);
                 
                 updateButtonStates();
@@ -4974,19 +5296,24 @@
                         const group = btn.dataset.group; // "1" o "2"
                         const isSelected = btn.classList.contains('selected');
 
-                        if (!isRealMode) {
-                            // Colorear Correctas
-                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
-                                btn.classList.add('correct');
-                            }
-                            
-                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
-                            if (isSelected && status !== 'correct') {
-                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
-                                     btn.classList.add('incorrect');
-                                 }
-                            }
-                        }
+                        if (!isRealMode && !isLockDownMode) {
+                            // Colorear Correctas
+                            if ((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2)) {
+                                btn.classList.add('correct');
+                            }
+                            
+                            // Colorear Incorrectas Seleccionadas (Híbrido mantiene lógica visual simple)
+                            if (isSelected && status !== 'correct') {
+                                 if (!((group === "1" && txt === correctOp1) || (group === "2" && txt === correctOp2))) {
+                                     btn.classList.add('incorrect');
+                                 }
+                            }
+                        } else {
+                            // En MODO REAL O LOCKDOWN, solo mantenemos la selección en oscuro
+                            if (isSelected) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
 
                 } else {
@@ -4999,39 +5326,39 @@
                     document.querySelectorAll('.option-btn').forEach(btn => {
                         btn.disabled = true;
                         
-                        if (!isRealMode) {
-                            // 1. Marcar siempre la correcta en verde
-                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
-                            
-                            // 2. Verificar si este es el botón que el usuario presionó previamente
-                            // (Comparamos el texto del botón con lo guardado en userAnswers)
-                            if (btn.dataset.text === userSelectedText) {
-                                
-                                // Restauramos la clase visual de "seleccionado"
-                                btn.classList.add('selected'); 
+                        if (!isRealMode && !isLockDownMode) {
+                            // 1. Marcar siempre la correcta en verde
+                            if (btn.dataset.text === correctOption) btn.classList.add('correct');
+                            
+                            // 2. Verificar si este es el botón que el usuario presionó previamente
+                            // (Comparamos el texto del botón con lo guardado en userAnswers)
+                            if (btn.dataset.text === userSelectedText) {
+                                
+                                // Restauramos la clase visual de "seleccionado"
+                                btn.classList.add('selected'); 
 
-                                // 3. Si el estado general de la respuesta fue incorrecto,
-                                // y este botón NO es la opción correcta, lo pintamos de rojo.
-                                if (status === 'incorrect' || status === 'unidentified') {
-                                    if (btn.dataset.text !== correctOption) {
-                                        btn.classList.add('incorrect');
-                                    }
-                                }
-                            }
-                        } else {
-                            // En MODO AVANCE REAL, solo mantenemos la selección en oscuro sin validación
-                            if (btn.dataset.text === userSelectedText) {
-                                btn.classList.add('selected');
-                            }
-                        }
+                                // 3. Si el estado general de la respuesta fue incorrecto,
+                                // y este botón NO es la opción correcta, lo pintamos de rojo.
+                                if (status === 'incorrect' || status === 'unidentified') {
+                                    if (btn.dataset.text !== correctOption) {
+                                        btn.classList.add('incorrect');
+                                    }
+                                }
+                            }
+                        } else {
+                            // En MODO AVANCE REAL O LOCKDOWN, solo mantenemos la selección en oscuro sin validación
+                            if (btn.dataset.text === userSelectedText) {
+                                btn.classList.add('selected');
+                            }
+                        }
                     });
                 }
 
-                if (question.explanation && !isRealMode) {
-                    justificationText.innerHTML = question.explanation;
-                    justificationBox.classList.remove('hidden');
-                    MathJax.typesetPromise([justificationText]);
-                }
+                if (question.explanation && !isRealMode && !isLockDownMode) {
+                    justificationText.innerHTML = question.explanation;
+                    justificationBox.classList.remove('hidden');
+                    renderMath(justificationText);
+                }
             }
             
             function playSound(soundId) {
@@ -5091,7 +5418,7 @@
                 updateLiveScore();
                 updateEvaluationButton();
                 
-                if (isGuest && (isContinuousMode || isGameMode)) {
+                if (isGuest) {
                     questionCountInGuestMode++;
                     if (questionCountInGuestMode % 5 === 0) {
                         setTimeout(showAd, 500);
@@ -5127,6 +5454,10 @@
             cancelBtn.addEventListener('click', () => {
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
+                document.querySelectorAll('audio').forEach(function(audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
                 
                 if (dtInterval) clearInterval(dtInterval);
                 dtIsRunning = false;
@@ -5170,10 +5501,7 @@
                 modalElement.querySelector('.close-modal-btn').addEventListener('click', () => {
                     modalElement.remove();
                 });
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([modalElement.querySelector('.hint-content')]);
-                }
-                MathJax.typesetPromise([modalElement.querySelector('.hint-content')]);
+                renderMath(modalElement.querySelector('.hint-content'));
             });
             
             function updateLiveScore() {
@@ -5186,7 +5514,7 @@
             async function submitResults(stats, score, totalTime, idsString, numQuestions) {
                 // 1. Empaquetamos los datos en un objeto simple
                 const payload = {
-                    EvaluationName: "ASESORÍAS Tania Caely 😎",
+                    EvaluationName: "🟢 PLATAFORMA Presencial (UNI) 💻 📱",
                     Name: currentUser.name || 'Invitado',
                     Email: currentUser.email || 'sin_email',
                     WhatsApp: currentUser.whatsapp || '0000000000',
@@ -5286,7 +5614,7 @@
                 clearInterval(timer);
                 clearInterval(gameModeTimer);
                 
-                if (isGuest) {
+                if (isGuest && currentUser.email === 'invitado@example.com') {
                     showGuestInfoModal();
                     return;
                 }
@@ -5471,7 +5799,7 @@
             }
             
             function populateSummaryBox(score, idsString, allAnsweredIds) {
-                summaryEvalName.textContent = "ASESORÍAS Tania Caely 😎";
+                summaryEvalName.textContent = "🟢 PLATAFORMA Presencial (UNI) 💻 📱";
                 summaryDate.textContent = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
                 summaryScore.textContent = `${score.toFixed(2)} / 10.00`;
                 summaryIds.textContent = idsString;
@@ -5568,7 +5896,7 @@
             }
            lookupBtn.addEventListener('click', () => {
                 if (isGuest) {
-                    showTemporaryMessage("Esta función no está disponible para invitados", "bg-yellow-600");
+                    showProAlert();
                     return;
                 }
                 const lookupId = lookupIdInput.value.trim().toUpperCase();
@@ -5721,10 +6049,7 @@
                     </div>
                 `;
                 lookupResultContainer.classList.remove('hidden');
-                if (window.MathJax && window.MathJax.typesetClear) {
-                    window.MathJax.typesetClear([lookupResultContainer]);
-                }
-                MathJax.typesetPromise([lookupResultContainer]);
+                renderMath(lookupResultContainer);
             }
             
             loadData();
@@ -5880,7 +6205,7 @@
                 wbStep++;
                 
                 // LÍMITE DE MEMORIA PARA EVITAR CRASHEOS EN SAFARI/IPHONE
-                if (wbHistory.length > 8) {
+                if (wbHistory.length > 5) {
                     wbHistory.shift();
                     wbStep--;
                 }
@@ -5914,6 +6239,19 @@
                 });
             }
 
+            function simplifyPoints(points, tolerance) {
+                tolerance = tolerance || 3;
+                if (points.length <= 2) return points;
+                var simplified = [points[0]];
+                for (var i = 1; i < points.length - 1; i++) {
+                    var prev = simplified[simplified.length - 1];
+                    var curr = points[i];
+                    var dist = Math.sqrt(Math.pow(curr.x - prev.x, 2) + Math.pow(curr.y - prev.y, 2));
+                    if (dist > tolerance) simplified.push(curr);
+                }
+                simplified.push(points[points.length - 1]);
+                return simplified;
+            }
             if (wbOverlay) {
                 const openWhiteboard = () => {
                     wbOverlay.classList.remove('hidden');
@@ -5978,9 +6316,9 @@
                         wbPaths.push({
                             color: wbCurrentColor,
                             width: wbCurrentWidth,
-                            points: currentPathPoints
+                            points: simplifyPoints(currentPathPoints, 3)
                         });
-                        saveHistory(); // <--- GUARDAR ESTADO AL TERMINAR DE DIBUJAR
+                        saveHistory();
                     }
                 };
 
@@ -6118,6 +6456,59 @@
                     }
                 });
             }
+
+            // --- EVENTOS Y LÓGICA MODO MEMORIA ---
+            if (memoryShowAnswerBtn) {
+                memoryShowAnswerBtn.addEventListener('click', () => {
+                    memoryShowAnswerBtn.style.display = 'none';
+                    memoryAnswerBox.style.display = 'flex';
+                    memoryEvalButtons.style.display = 'grid';
+                });
+            }
+
+            document.querySelectorAll('.mem-eval-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const action = e.currentTarget.dataset.action;
+                    const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+                    memoryTotalTime += timeSpent;
+                    memoryAnsweredQuestions++;
+
+                    if (action === 'correct') {
+                        memoryCorrectCount++;
+                    } else if (action === 'incorrect') {
+                        memoryIncorrectCount++;
+                    } else if (action === 'repeat') {
+                        // Inserta la misma pregunta 5 lugares después o al final
+                        let insertIndex = currentQuestionIndex + 6; 
+                        if (insertIndex > userAnswers.length) insertIndex = userAnswers.length;
+                        userAnswers.splice(insertIndex, 0, {
+                            question: userAnswers[currentQuestionIndex].question,
+                            status: 'unanswered', selected: null, timeSpent: 0
+                        });
+                    }
+
+                    // Calculadora de promedios con colores
+                    let avg = Math.round(memoryTotalTime / memoryAnsweredQuestions);
+                    const memAvgEl = document.getElementById('mem-avg-time');
+                    memAvgEl.innerHTML = `<i class="fas fa-clock"></i> ${avg}s`;
+                    memAvgEl.className = "ml-1 font-bold " + (avg <= 45 ? "text-green-400" : (avg <= 90 ? "text-yellow-400" : "text-red-400"));
+
+                    document.getElementById('mem-score-correct').textContent = memoryCorrectCount;
+                    document.getElementById('mem-score-incorrect').textContent = memoryIncorrectCount;
+
+                    // Avanzar a la siguiente
+                    if (currentQuestionIndex < userAnswers.length - 1) {
+                        currentQuestionIndex++;
+                        questionStartTime = Date.now();
+                        displayQuestion();
+                    } else {
+                        // Fin automático 
+                        alert("¡Has terminado todas las Flashcards en este banco! Volviendo al menú principal.");
+                        document.getElementById('cancel-btn').click();
+                    }
+                });
+            });
+
         });
     </script>
 </body>
