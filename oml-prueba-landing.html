@@ -12,9 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <script>
-  /* === CAMBIA SOLO ESTAS 2 LÍNEAS === */
   var GAS_URL    = "https://script.google.com/macros/s/AKfycby1pFW0cdId-zlvuS73OxkLOnjgHheBWuTBRtbaGA74uQWIlnPxsz33p1U7b23r5kGD/exec";
   var LANDING_ID = "JCOLSAL200926";
+  var VIDEO_URL  = "https://raw.githubusercontent.com/contactoitziaoficial-a11y/OMISEY/main/Explicacion%20Plan%20Compensacion%20Omnilife.mp4";
   var FAVICON    = "https://i.imgur.com/aTuX8KV.jpg";
   document.addEventListener("DOMContentLoaded", function(){
     document.getElementById("faviconLink").href = FAVICON;
@@ -587,7 +587,11 @@ function onData(res){
   WA_GENERAL = c.waGeneral || '';
   WA_AFI     = c.waAfi || WA_GENERAL || '';
 
-  renderHero(c.videoPrincipal);
+  var hero = c.videoPrincipal || {};
+  if (VIDEO_URL) {
+    hero = { url: VIDEO_URL, description: hero.description || '¡Bienvenido! Mira este mensaje de bienvenida.' };
+  }
+  renderHero(hero);
   renderKits(c.kits || []);
   renderProductos(c.productos || []);
   renderTestimonios(c.testimonios || []);
