@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solucionador Maestro de Física - Mecánica y Cinemática</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              500: '#6366f1',
+              600: '#4f46e5',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos dinámicos para los estados de las celdas */
+    /* Entrada del usuario: Verde Neón */
+    .field-input {
+      background-color: rgba(6, 78, 59, 0.45) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+    .badge-input {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    /* Salida calculada: Amarillo Dorado Neón */
+    .field-output {
+      background-color: rgba(120, 53, 15, 0.45) !important;
+      border-color: #f59e0b !important;
+      color: #fcd34d !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+    }
+    .badge-output {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    /* Neutro / Vacío */
+    .field-neutral {
+      background-color: rgba(15, 23, 42, 0.7);
+      border-color: #334155;
+      color: #94a3b8;
+    }
+    .badge-neutral {
+      background-color: rgba(51, 65, 85, 0.4);
+      color: #64748b;
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+
+    /* Transición suave para cambios de color */
+    input[type="number"] {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Ocultar flechas de inputs numéricos en Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ENCABEZADO Y BARRA DE CONTROL GLOBAL -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-4 lg:px-8 py-3 shadow-lg">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Título y logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+          <i class="fa-solid fa-atom text-xl animate-pulse"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg lg:text-xl tracking-tight text-white flex items-center gap-2">
+            Solucionador Maestro de Física
+            <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-900/60 text-indigo-300 border border-indigo-700/50">SI</span>
+          </h1>
+          <p class="text-xs text-slate-400">Cinemática y Dinámica • 2° Parcial</p>
+        </div>
+      </div>
+
+      <!-- Leyenda de colores -->
+      <div class="hidden sm:flex items-center space-x-3 text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></span>
+          <span class="text-emerald-400 font-medium">Dato ingresado</span>
+        </div>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
+          <span class="text-amber-300 font-medium">Dato calculado</span>
+        </div>
+      </div>
+
+      <!-- Parámetros Globales (Decimales y Gravedad) -->
+      <div class="flex items-center flex-wrap gap-2 sm:gap-4">
+        
+        <!-- Control de Gravedad -->
+        <div class="flex items-center bg-slate-800/90 rounded-lg px-2.5 py-1.5 border border-slate-700">
+          <label for="global-g" class="text-xs text-slate-300 mr-2 flex items-center gap-1">
+            <span class="font-bold text-indigo-400">g:</span>
+          </label>
+          <input type="number" id="global-g" step="0.01" value="9.8" class="w-16 bg-slate-900 text-center text-xs font-mono text-cyan-300 rounded border border-slate-700 focus:outline-none focus:border-indigo-500 py-0.5">
+          <span class="text-[10px] text-slate-400 ml-1">m/s²</span>
+        </div>
+
+        <!-- Control de Decimales -->
+        <div class="flex items-center bg-slate-800/90 rounded-lg px-2.5 py-1.5 border border-slate-700">
+          <label for="global-decimals" class="text-xs text-slate-300 mr-2 flex items-center gap-1">
+            <i class="fa-solid fa-hashtag text-[10px] text-indigo-400"></i> Decimales:
+          </label>
+          <input type="number" id="global-decimals" min="0" max="6" value="3" class="w-12 bg-slate-900 text-center text-xs font-mono text-cyan-300 rounded border border-slate-700 focus:outline-none focus:border-indigo-500 py-0.5">
+        </div>
+
+        <!-- Botón Reiniciar Todo -->
+        <button onclick="resetCurrentTab()" class="px-3 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 text-xs font-medium transition flex items-center gap-1.5" title="Limpiar los campos del módulo actual">
+          <i class="fa-solid fa-rotate-left"></i> Limpiar
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- NAVEGACIÓN POR TEMAS (TABS RESPONSIVAS) -->
+  <div class="bg-slate-900 border-b border-slate-800 px-4 sticky top-[61px] z-40 overflow-x-auto">
+    <div class="max-w-7xl mx-auto flex space-x-1 py-2 text-sm min-w-max" id="tabs-container">
+      <button onclick="switchTab('vectores')" class="tab-btn active px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-indigo-400 bg-indigo-950/60 border border-indigo-800/60" data-tab="vectores">
+        <i class="fa-solid fa-arrows-split-up-and-left text-xs"></i> 1. Vectores
+      </button>
+      <button onclick="switchTab('mrua')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="mrua">
+        <i class="fa-solid fa-car-side text-xs"></i> 2. MRU / MRUA
+      </button>
+      <button onclick="switchTab('vertical')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="vertical">
+        <i class="fa-solid fa-arrow-up-down text-xs"></i> 3. Caída / Tiro Vertical
+      </button>
+      <button onclick="switchTab('proyectiles')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="proyectiles">
+        <i class="fa-solid fa-bullseye text-xs"></i> 4. Tiro Parabólico
+      </button>
+      <button onclick="switchTab('dinamica')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="dinamica">
+        <i class="fa-solid fa-cube text-xs"></i> 5. Plano Horizontal
+      </button>
+      <button onclick="switchTab('inclinado')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="inclinado">
+        <i class="fa-solid fa-mountain text-xs"></i> 6. Plano Inclinado
+      </button>
+      <button onclick="switchTab('tensiones')" class="tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800" data-tab="tensiones">
+        <i class="fa-solid fa-weight-hanging text-xs"></i> 7. Tensiones y Poleas
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL DE MÓDULOS -->
+  <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 1: VECTORES -->
+    <!-- ========================================== -->
+    <section id="module-vectores" class="module-section space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#1</span> Descomposición y Resultante de Vectores
+          </h2>
+          <p class="text-sm text-slate-400">Ingresa la magnitud y ángulo, o ambas componentes rectangulares ($v_x, v_y$).</p>
+        </div>
+        <button onclick="clearModule('vectores')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+        </button>
+      </div>
+
+      <!-- Grid de Celdas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Magnitud Resultante / Vectorial -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 relative">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Magnitud ($v$ o $v_R$)</label>
+            <span id="badge-vec_v" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vec_v" step="any" placeholder="Ej. 25" oninput="handleInput('vectores', 'v', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- Ángulo theta -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 relative">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Ángulo ($\theta$)</label>
+            <span id="badge-vec_theta" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vec_theta" step="any" placeholder="Ej. 30" oninput="handleInput('vectores', 'theta', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">° (grados)</span>
+          </div>
+        </div>
+
+        <!-- Componente X -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 relative">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Componente $v_x$</label>
+            <span id="badge-vec_vx" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vec_vx" step="any" placeholder="Ej. 21.65" oninput="handleInput('vectores', 'vx', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- Componente Y -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 relative">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Componente $v_y$</label>
+            <span id="badge-vec_vy" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vec_vy" step="any" placeholder="Ej. 12.5" oninput="handleInput('vectores', 'vy', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta informativa de fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas de Referencia:
+        </div>
+        <p class="font-mono">$v_x = v \cdot \cos(\theta)$ &nbsp;|&nbsp; $v_y = v \cdot \operatorname{sen}(\theta)$ &nbsp;|&nbsp; $v_R = \sqrt{v_x^2 + v_y^2}$ &nbsp;|&nbsp; $\theta = \arctan\left(\frac{v_y}{v_x}\right)$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 2: MRU / MRUA -->
+    <!-- ========================================== -->
+    <section id="module-mrua" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#2</span> Cinemática 1D: MRU & MRUA
+          </h2>
+          <p class="text-sm text-slate-400">Proporciona <strong>3 parámetros cualesquiera</strong> (ej: $v_i$, $a$, $t$) para resolver los restantes analíticamente.</p>
+        </div>
+        <button onclick="clearModule('mrua')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+        </button>
+      </div>
+
+      <!-- Celdas MRUA -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- vi -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Velocidad Inicial ($v_i$)</label>
+            <span id="badge-mrua_vi" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="mrua_vi" step="any" placeholder="Ej. 0" oninput="handleInput('mrua', 'vi', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- vf -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Velocidad Final ($v_f$)</label>
+            <span id="badge-mrua_vf" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="mrua_vf" step="any" placeholder="Ej. 20" oninput="handleInput('mrua', 'vf', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- a -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Aceleración ($a$)</label>
+            <span id="badge-mrua_a" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="mrua_a" step="any" placeholder="Ej. 2.5" oninput="handleInput('mrua', 'a', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s²</span>
+          </div>
+        </div>
+
+        <!-- t -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tiempo ($t$)</label>
+            <span id="badge-mrua_t" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="mrua_t" step="any" placeholder="Ej. 8" oninput="handleInput('mrua', 't', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">s</span>
+          </div>
+        </div>
+
+        <!-- x -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Desplazamiento ($x$)</label>
+            <span id="badge-mrua_x" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="mrua_x" step="any" placeholder="Ej. 80" oninput="handleInput('mrua', 'x', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas de MRU / MRUA:
+        </div>
+        <p class="font-mono">MRU: $x = v \cdot t$ &nbsp;|&nbsp; MRUA: $v_f = v_i + a \cdot t$ &nbsp;|&nbsp; $x = v_i \cdot t + \frac{1}{2} a \cdot t^2$ &nbsp;|&nbsp; $v_f^2 = v_i^2 + 2 a \cdot x$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 3: CAÍDA LIBRE Y TIRO VERTICAL -->
+    <!-- ========================================== -->
+    <section id="module-vertical" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#3</span> Caída Libre y Tiro Vertical
+          </h2>
+          <p class="text-sm text-slate-400">Toma $g = +$ en caída o se adapta automáticamente si sube hasta frenar ($v_y=0$).</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="setCaidaLibrePreset()" class="text-xs px-2.5 py-1 rounded bg-indigo-900/60 hover:bg-indigo-800/80 text-indigo-200 border border-indigo-700/50">
+            <i class="fa-solid fa-arrow-down mr-1"></i> Partir del reposo ($v_i=0$)
+          </button>
+          <button onclick="clearModule('vertical')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+            <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- viy -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Velocidad Inicial ($v_{iy}$)</label>
+            <span id="badge-vert_viy" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vert_viy" step="any" placeholder="Ej. 19.6" oninput="handleInput('vertical', 'viy', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- vfy -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Velocidad Final ($v_{fy}$)</label>
+            <span id="badge-vert_vfy" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vert_vfy" step="any" placeholder="Ej. 0 (punto máx)" oninput="handleInput('vertical', 'vfy', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <!-- h / y -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Altura ($h$ o $y$)</label>
+            <span id="badge-vert_h" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vert_h" step="any" placeholder="Ej. 19.6" oninput="handleInput('vertical', 'h', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m</span>
+          </div>
+        </div>
+
+        <!-- t -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tiempo ($t$)</label>
+            <span id="badge-vert_t" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="vert_t" step="any" placeholder="Ej. 2" oninput="handleInput('vertical', 't', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas Verticales:
+        </div>
+        <p class="font-mono">Subida: $v_{fy} = v_{iy} - g \cdot t$ &nbsp;|&nbsp; $h = v_{iy} \cdot t - \frac{1}{2} g \cdot t^2$ &nbsp;|&nbsp; $v_{fy}^2 = v_{iy}^2 - 2 g \cdot h$ &nbsp;|&nbsp; $h_{\max} = \frac{v_{iy}^2}{2g}$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 4: TIRO PARABÓLICO Y HORIZONTAL -->
+    <!-- ========================================== -->
+    <section id="module-proyectiles" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#4</span> Lanzamiento de Proyectiles (Parabólico y Horizontal)
+          </h2>
+          <p class="text-sm text-slate-400">Calcula altura máxima, alcance, tiempos y vector instantáneo a tiempo $t$.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="setTiroHorizontalPreset()" class="text-xs px-2.5 py-1 rounded bg-indigo-900/60 hover:bg-indigo-800/80 text-indigo-200 border border-indigo-700/50">
+            <i class="fa-solid fa-arrows-left-right mr-1"></i> Modo Tiro Horizontal ($\theta=0^\circ$)
+          </button>
+          <button onclick="clearModule('proyectiles')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+            <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Fila 1: Lanzamiento Base -->
+      <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+        <i class="fa-solid fa-crosshairs text-indigo-400"></i> Parámetros de Disparo
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Rapidez Inicial ($v_i$)</label>
+            <span id="badge-proj_vi" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_vi" step="any" placeholder="Ej. 30" oninput="handleInput('proyectiles', 'vi', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Ángulo de Lanzamiento ($\theta$)</label>
+            <span id="badge-proj_theta" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_theta" step="any" placeholder="Ej. 45 (o 0 para horizontal)" oninput="handleInput('proyectiles', 'theta', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">° (grados)</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Componente $v_{ix}$</label>
+            <span id="badge-proj_vix" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_vix" step="any" placeholder="Ej. 21.21" oninput="handleInput('proyectiles', 'vix', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Componente $v_{iy}$</label>
+            <span id="badge-proj_viy" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_viy" step="any" placeholder="Ej. 21.21" oninput="handleInput('proyectiles', 'viy', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 2: Resultados Globales de Trayectoria -->
+      <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 pt-2">
+        <i class="fa-solid fa-chart-line text-amber-400"></i> Resultados Globales de Vuelo
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tiempo de Subida ($t_y$ o $t_s$)</label>
+            <span id="badge-proj_tsubida" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_tsubida" step="any" oninput="handleInput('proyectiles', 'tsubida', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tiempo Total de Vuelo ($t_T$)</label>
+            <span id="badge-proj_ttotal" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_ttotal" step="any" oninput="handleInput('proyectiles', 'ttotal', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Altura Máxima ($h_{\max}$)</label>
+            <span id="badge-proj_hmax" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_hmax" step="any" oninput="handleInput('proyectiles', 'hmax', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Alcance Horizontal ($x_{\max}$)</label>
+            <span id="badge-proj_xmax" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_xmax" step="any" oninput="handleInput('proyectiles', 'xmax', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 3: Evaluación en Tiempo Arbitrario t -->
+      <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 pt-2">
+        <i class="fa-solid fa-stopwatch text-cyan-400"></i> Evaluación Cinemática en un Instante ($t$)
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tiempo evaluado ($t$)</label>
+            <span id="badge-proj_tinst" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_tinst" step="any" placeholder="Ej. 1.5" oninput="handleInput('proyectiles', 'tinst', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Velocidad $v_y(t)$</label>
+            <span id="badge-proj_vyinst" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_vyinst" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Rapidez Resultante $v(t)$</label>
+            <span id="badge-proj_vinst" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_vinst" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s</span>
+          </div>
+        </div>
+
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Altura $y(t)$</label>
+            <span id="badge-proj_yinst" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="proj_yinst" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas de Tiro Parabólico:
+        </div>
+        <p class="font-mono">$t_y = \frac{v_i \operatorname{sen}\theta}{g}$ &nbsp;|&nbsp; $t_T = 2 t_y$ &nbsp;|&nbsp; $h_{\max} = \frac{v_{iy}^2}{2g}$ &nbsp;|&nbsp; $x_{\max} = v_{ix} \cdot t_T$ &nbsp;|&nbsp; $v(t) = \sqrt{v_{ix}^2 + (v_{iy} - gt)^2}$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 5: DINÁMICA EN PLANO HORIZONTAL -->
+    <!-- ========================================== -->
+    <section id="module-dinamica" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#5</span> Leyes de Newton en Plano Horizontal
+          </h2>
+          <p class="text-sm text-slate-400">Calcula fuerza neta, fuerza de rozamiento cinético $f_k = \mu_k N$ y desaceleración pura ($a = -\mu_k g$).</p>
+        </div>
+        <button onclick="clearModule('dinamica')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Masa -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Masa ($m$)</label>
+            <span id="badge-din_m" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_m" step="any" placeholder="Ej. 10" oninput="handleInput('dinamica', 'm', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">kg</span>
+          </div>
+        </div>
+
+        <!-- Fuerza Aplicada Externa -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fuerza Aplicada Horizontal ($F$)</label>
+            <span id="badge-din_F" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_F" step="any" placeholder="Ej. 50" oninput="handleInput('dinamica', 'F', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Coeficiente de Fricción mu_k -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Coeficiente Fricción ($\mu_k$)</label>
+            <span id="badge-din_muk" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_muk" step="any" placeholder="Ej. 0.2" oninput="handleInput('dinamica', 'muk', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">adimensional</span>
+          </div>
+        </div>
+
+        <!-- Fuerza Normal N -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fuerza Normal ($N$)</label>
+            <span id="badge-din_N" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_N" step="any" oninput="handleInput('dinamica', 'N', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Fuerza de Fricción fk -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fuerza de Fricción ($f_k$)</label>
+            <span id="badge-din_fk" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_fk" step="any" oninput="handleInput('dinamica', 'fk', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Aceleración resultante a -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Aceleración Resultante ($a$)</label>
+            <span id="badge-din_a" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="din_a" step="any" placeholder="Ej. 3.04" oninput="handleInput('dinamica', 'a', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s²</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas de la 1ª y 2ª Ley de Newton:
+        </div>
+        <p class="font-mono">Fuerza Neta: $\sum F = m \cdot a$ &nbsp;|&nbsp; Normal: $N = m \cdot g$ &nbsp;|&nbsp; Fricción: $f_k = \mu_k \cdot N$ &nbsp;|&nbsp; Aceleración con fricción: $a = \frac{F - f_k}{m}$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 6: PLANO INCLINADO -->
+    <!-- ========================================== -->
+    <section id="module-inclinado" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#6</span> Dinámica en Plano Inclinado
+          </h2>
+          <p class="text-sm text-slate-400">Descomposición del peso en $w_x = mg\operatorname{sen}\alpha$, $w_y = mg\cos\alpha$, normal y fricción en la rampa.</p>
+        </div>
+        <button onclick="clearModule('inclinado')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Masa -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Masa ($m$)</label>
+            <span id="badge-inc_m" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_m" step="any" placeholder="Ej. 15" oninput="handleInput('inclinado', 'm', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">kg</span>
+          </div>
+        </div>
+
+        <!-- Ángulo alpha -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Ángulo rampa ($\alpha$)</label>
+            <span id="badge-inc_alpha" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_alpha" step="any" placeholder="Ej. 30" oninput="handleInput('inclinado', 'alpha', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">° (grados)</span>
+          </div>
+        </div>
+
+        <!-- Coeficiente mu_k -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Coeficiente $\mu_k$</label>
+            <span id="badge-inc_muk" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_muk" step="any" placeholder="Ej. 0 (liso) o 0.15" oninput="handleInput('inclinado', 'muk', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">adimensional</span>
+          </div>
+        </div>
+
+        <!-- Fuerza Externa paralela F_ext -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fuerza Externa paralela ($F$)</label>
+            <span id="badge-inc_fext" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_fext" step="any" placeholder="Ej. 0 (libre hacia abajo)" oninput="handleInput('inclinado', 'fext', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Peso Paralelo wx -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Peso Paralelo ($w_x$)</label>
+            <span id="badge-inc_wx" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_wx" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Peso Perpendicular wy / Normal N -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Normal ($N = w_y$)</label>
+            <span id="badge-inc_N" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_N" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Fuerza Fricción fk -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fuerza Fricción ($f_k$)</label>
+            <span id="badge-inc_fk" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_fk" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+
+        <!-- Aceleración en la rampa -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Aceleración Plano ($a$)</label>
+            <span id="badge-inc_a" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="inc_a" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s²</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Fórmulas Plano Inclinado:
+        </div>
+        <p class="font-mono">$w_x = m \cdot g \cdot \operatorname{sen}\alpha$ &nbsp;|&nbsp; $N = w_y = m \cdot g \cdot \cos\alpha$ &nbsp;|&nbsp; $f_k = \mu_k \cdot N$ &nbsp;|&nbsp; Deslizando abajo libre: $a = g(\operatorname{sen}\alpha - \mu_k \cos\alpha)$</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MÓDULO 7: TENSIONES Y MÁQUINA DE ATWOOD -->
+    <!-- ========================================== -->
+    <section id="module-tensiones" class="module-section hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="text-indigo-400">#7</span> Sistemas con Cuerdas, Poleas y Tensiones
+          </h2>
+          <p class="text-sm text-slate-400">Selecciona la configuración del sistema para acoplar las ecuaciones dinámicas.</p>
+        </div>
+        <button onclick="clearModule('tensiones')" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+          <i class="fa-solid fa-eraser mr-1"></i> Limpiar
+        </button>
+      </div>
+
+      <!-- Selector de Sistema Físico -->
+      <div class="flex flex-wrap gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+        <label class="text-xs text-slate-300 flex items-center gap-2 cursor-pointer">
+          <input type="radio" name="tension_system_type" value="atwood" checked onchange="handleSystemChange()" class="text-indigo-600 focus:ring-indigo-500">
+          <span class="font-medium text-slate-200">Máquina de Atwood Clásica (2 masas colgantes)</span>
+        </label>
+        <label class="text-xs text-slate-300 flex items-center gap-2 cursor-pointer ml-0 sm:ml-4">
+          <input type="radio" name="tension_system_type" value="mesa" onchange="handleSystemChange()" class="text-indigo-600 focus:ring-indigo-500">
+          <span class="font-medium text-slate-200">Masa $m_1$ en mesa horizontal con fricción $\mu_k$ y $m_2$ colgando</span>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Masa 1 -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Masa 1 ($m_1$)</label>
+            <span id="badge-ten_m1" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="ten_m1" step="any" placeholder="Ej. 6" oninput="handleInput('tensiones', 'm1', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">kg</span>
+          </div>
+        </div>
+
+        <!-- Masa 2 -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Masa 2 ($m_2$)</label>
+            <span id="badge-ten_m2" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="ten_m2" step="any" placeholder="Ej. 4" oninput="handleInput('tensiones', 'm2', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">kg</span>
+          </div>
+        </div>
+
+        <!-- Coeficiente friccion en mesa (si aplica) -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60" id="box-ten-muk">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Fricción en mesa ($\mu_k$)</label>
+            <span id="badge-ten_muk" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="ten_muk" step="any" placeholder="0 (liso) o ej. 0.2" oninput="handleInput('tensiones', 'muk', this.value)" class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">adimensional</span>
+          </div>
+        </div>
+
+        <!-- Aceleración común -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Aceleración común ($a$)</label>
+            <span id="badge-ten_a" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="ten_a" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">m/s²</span>
+          </div>
+        </div>
+
+        <!-- Tensión en la cuerda -->
+        <div class="cell-wrapper bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-semibold text-slate-300">Tensión en Cuerda ($T$)</label>
+            <span id="badge-ten_T" class="text-[10px] px-1.5 py-0.5 rounded badge-neutral">Neutro</span>
+          </div>
+          <div class="relative">
+            <input type="number" id="ten_T" readonly class="w-full field-neutral rounded-lg py-2.5 px-3 text-sm font-mono border focus:outline-none cursor-default">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono">N</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fórmulas -->
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+        <div class="font-semibold text-slate-300 mb-1 flex items-center gap-1">
+          <i class="fa-solid fa-square-root-variable text-indigo-400"></i> Ecuaciones de Dinámica Acoplada:
+        </div>
+        <p class="font-mono">Atwood: $a = \frac{|m_1 - m_2| \cdot g}{m_1 + m_2}$ &nbsp;|&nbsp; $T = \frac{2 m_1 m_2 g}{m_1 + m_2}$</p>
+        <p class="font-mono">Mesa con fricción: $a = \frac{m_2 g - \mu_k m_1 g}{m_1 + m_2}$ &nbsp;|&nbsp; $T = m_2(g - a)$</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="border-t border-slate-800/80 py-4 px-6 text-center text-xs text-slate-500 bg-slate-950">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>Física I & II • Sistema Internacional de Unidades (SI)</p>
+      <div class="flex items-center space-x-4">
+        <span><i class="fa-solid fa-check text-emerald-500 mr-1"></i>Verde = Entrada</span>
+        <span><i class="fa-solid fa-circle text-amber-400 mr-1"></i>Amarillo = Calculado</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- MOTOR MATEMÁTICO BIDIRECCIONAL Y LÓGICA DE INTERFAZ -->
+  <!-- ======================================================== -->
+  <script>
+    // ESTADO GLOBAL DE DATOS
+    const store = {
+      currentTab: 'vectores',
+      g: 9.8,
+      decimals: 3,
+
+      // Módulo 1: Vectores
+      vectores: {
+        inputs: {}, // almacena lo ingresado por el usuario: { v: 10, theta: 30 }
+        values: {}, // almacena todos los valores actuales: { v, theta, vx, vy }
+      },
+
+      // Módulo 2: MRUA
+      mrua: {
+        inputs: {}, // vi, vf, a, t, x
+        values: {},
+      },
+
+      // Módulo 3: Caída libre / vertical
+      vertical: {
+        inputs: {}, // viy, vfy, h, t
+        values: {},
+      },
+
+      // Módulo 4: Proyectiles
+      proyectiles: {
+        inputs: {}, // vi, theta, vix, viy, tsubida, ttotal, hmax, xmax, tinst
+        values: {},
+      },
+
+      // Módulo 5: Dinámica horizontal
+      dinamica: {
+        inputs: {}, // m, F, muk, N, fk, a
+        values: {},
+      },
+
+      // Módulo 6: Plano inclinado
+      inclinado: {
+        inputs: {}, // m, alpha, muk, fext
+        values: {},
+      },
+
+      // Módulo 7: Tensiones
+      tensiones: {
+        system: 'atwood',
+        inputs: {}, // m1, m2, muk
+        values: {},
+      }
+    };
+
+    // Funciones trigonométricas en grados
+    const rad = deg => (deg * Math.PI) / 180;
+    const deg = rad => (rad * 180) / Math.PI;
+
+    // Redondeo de precisión
+    function formatNum(val) {
+      if (val === null || val === undefined || isNaN(val) || !isFinite(val)) return '';
+      const d = store.decimals;
+      return Number(val.toFixed(d)).toString();
+    }
+
+    // Actualizar estilo visual de una celda
+    function setCellStyle(elemId, status) {
+      const input = document.getElementById(elemId);
+      const badge = document.getElementById('badge-' + elemId);
+      if (!input) return;
+
+      // Limpiar clases
+      input.classList.remove('field-input', 'field-output', 'field-neutral');
+      if (badge) badge.classList.remove('badge-input', 'badge-output', 'badge-neutral');
+
+      if (status === 'input') {
+        input.classList.add('field-input');
+        if (badge) {
+          badge.classList.add('badge-input');
+          badge.textContent = 'Entrada';
+        }
+      } else if (status === 'output') {
+        input.classList.add('field-output');
+        if (badge) {
+          badge.classList.add('badge-output');
+          badge.textContent = 'Calculado';
+        }
+      } else {
+        input.classList.add('field-neutral');
+        if (badge) {
+          badge.classList.add('badge-neutral');
+          badge.textContent = 'Neutro';
+        }
+      }
+    }
+
+    // Control de cambio de pestaña
+    function switchTab(tabId) {
+      store.currentTab = tabId;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.className = 'tab-btn active px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-indigo-400 bg-indigo-950/60 border border-indigo-800/60';
+        } else {
+          btn.className = 'tab-btn px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800';
+        }
+      });
+
+      document.querySelectorAll('.module-section').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+      const activeSec = document.getElementById('module-' + tabId);
+      if (activeSec) activeSec.classList.remove('hidden');
+    }
+
+    // Manejador central de inputs de usuario
+    function handleInput(module, key, rawVal) {
+      const parsed = parseFloat(rawVal);
+      const mod = store[module];
+
+      if (rawVal.trim() === '' || isNaN(parsed)) {
+        delete mod.inputs[key];
+        delete mod.values[key];
+      } else {
+        mod.inputs[key] = parsed;
+        mod.values[key] = parsed;
+      }
+
+      solveModule(module);
+    }
+
+    // Ejecuta el solucionador matemático según el módulo
+    function solveModule(module) {
+      switch (module) {
+        case 'vectores': solveVectores(); break;
+        case 'mrua': solveMRUA(); break;
+        case 'vertical': solveVertical(); break;
+        case 'proyectiles': solveProyectiles(); break;
+        case 'dinamica': solveDinamica(); break;
+        case 'inclinado': solveInclinado(); break;
+        case 'tensiones': solveTensiones(); break;
+      }
+    }
+
+    // ========================================================
+    // 1. SOLUCIONADOR DE VECTORES
+    // ========================================================
+    function solveVectores() {
+      const m = store.vectores;
+      const inp = m.inputs;
+      const out = {};
+
+      const hasV = inp.hasOwnProperty('v');
+      const hasTh = inp.hasOwnProperty('theta');
+      const hasVx = inp.hasOwnProperty('vx');
+      const hasVy = inp.hasOwnProperty('vy');
+
+      if (hasV && hasTh) {
+        out.vx = inp.v * Math.cos(rad(inp.theta));
+        out.vy = inp.v * Math.sin(rad(inp.theta));
+      } else if (hasVx && hasVy) {
+        out.v = Math.hypot(inp.vx, inp.vy);
+        out.theta = deg(Math.atan2(inp.vy, inp.vx));
+      } else if (hasV && hasVx) {
+        if (Math.abs(inp.vx) <= Math.abs(inp.v)) {
+          out.vy = Math.sqrt(Math.max(0, inp.v * inp.v - inp.vx * inp.vx));
+          out.theta = deg(Math.acos(inp.vx / inp.v));
+        }
+      } else if (hasV && hasVy) {
+        if (Math.abs(inp.vy) <= Math.abs(inp.v)) {
+          out.vx = Math.sqrt(Math.max(0, inp.v * inp.v - inp.vy * inp.vy));
+          out.theta = deg(Math.asin(inp.vy / inp.v));
+        }
+      } else if (hasVx && hasTh) {
+        out.v = inp.vx / Math.cos(rad(inp.theta));
+        out.vy = out.v * Math.sin(rad(inp.theta));
+      } else if (hasVy && hasTh) {
+        out.v = inp.vy / Math.sin(rad(inp.theta));
+        out.vx = out.v * Math.cos(rad(inp.theta));
+      }
+
+      renderModuleFields('vectores', ['v', 'theta', 'vx', 'vy'], 'vec_', out);
+    }
+
+    // ========================================================
+    // 2. SOLUCIONADOR MRUA (Cinemática 1D: vi, vf, a, t, x)
+    // Resuelve analíticamente cualquier combinación de 3 de 5 variables
+    // ========================================================
+    function solveMRUA() {
+      const m = store.mrua;
+      const inp = m.inputs;
+      const out = {};
+
+      let vi = inp.vi, vf = inp.vf, a = inp.a, t = inp.t, x = inp.x;
+      const keys = ['vi', 'vf', 'a', 't', 'x'];
+      const given = keys.filter(k => inp.hasOwnProperty(k));
+
+      if (given.length >= 3) {
+        // Caso 1: Conoce vi, vf, a
+        if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('vf') && inp.hasOwnProperty('a')) {
+          if (a !== 0) {
+            out.t = (vf - vi) / a;
+            out.x = (vf * vf - vi * vi) / (2 * a);
+          } else {
+            out.x = vi * (inp.t || 0);
+          }
+        }
+        // Caso 2: Conoce vi, vf, t
+        else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('vf') && inp.hasOwnProperty('t')) {
+          if (t !== 0) {
+            out.a = (vf - vi) / t;
+            out.x = ((vi + vf) / 2) * t;
+          }
+        }
+        // Caso 3: Conoce vi, vf, x
+        else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('vf') && inp.hasOwnProperty('x')) {
+          if (x !== 0) {
+            out.a = (vf * vf - vi * vi) / (2 * x);
+            out.t = (2 * x) / (vi + vf);
+          }
+        }
+        // Caso 4: Conoce vi, a, t
+        else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('a') && inp.hasOwnProperty('t')) {
+          out.vf = vi + a * t;
+          out.x = vi * t + 0.5 * a * t * t;
+        }
+        // Caso 5: Conoce vi, a, x
+        else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('a') && inp.hasOwnProperty('x')) {
+          const disc = vi * vi + 2 * a * x;
+          if (disc >= 0) {
+            out.vf = Math.sqrt(disc);
+            if (a !== 0) out.t = (out.vf - vi) / a;
+          }
+        }
+        // Caso 6: Conoce vi, t, x
+        else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('t') && inp.hasOwnProperty('x')) {
+          if (t !== 0) {
+            out.a = (2 * (x - vi * t)) / (t * t);
+            out.vf = vi + out.a * t;
+          }
+        }
+        // Caso 7: Conoce vf, a, t
+        else if (inp.hasOwnProperty('vf') && inp.hasOwnProperty('a') && inp.hasOwnProperty('t')) {
+          out.vi = vf - a * t;
+          out.x = vf * t - 0.5 * a * t * t;
+        }
+        // Caso 8: Conoce vf, a, x
+        else if (inp.hasOwnProperty('vf') && inp.hasOwnProperty('a') && inp.hasOwnProperty('x')) {
+          const disc = vf * vf - 2 * a * x;
+          if (disc >= 0) {
+            out.vi = Math.sqrt(disc);
+            if (a !== 0) out.t = (vf - out.vi) / a;
+          }
+        }
+        // Caso 9: Conoce vf, t, x
+        else if (inp.hasOwnProperty('vf') && inp.hasOwnProperty('t') && inp.hasOwnProperty('x')) {
+          if (t !== 0) {
+            out.vi = (2 * x) / t - vf;
+            out.a = (vf - out.vi) / t;
+          }
+        }
+        // Caso 10: Conoce a, t, x
+        else if (inp.hasOwnProperty('a') && inp.hasOwnProperty('t') && inp.hasOwnProperty('x')) {
+          if (t !== 0) {
+            out.vi = (x - 0.5 * a * t * t) / t;
+            out.vf = out.vi + a * t;
+          }
+        }
+      }
+
+      renderModuleFields('mrua', keys, 'mrua_', out);
+    }
+
+    // ========================================================
+    // 3. SOLUCIONADOR MOVIMIENTO VERTICAL (g configurable)
+    // ========================================================
+    function solveVertical() {
+      const m = store.vertical;
+      const inp = m.inputs;
+      const out = {};
+      const g = store.g;
+
+      // Parámetros: viy, vfy, h, t
+      if (inp.hasOwnProperty('viy') && inp.hasOwnProperty('t')) {
+        // Asumiendo subida / tiro vertical hacia arriba
+        out.vfy = inp.viy - g * inp.t;
+        out.h = inp.viy * inp.t - 0.5 * g * inp.t * inp.t;
+      } else if (inp.hasOwnProperty('viy') && inp.hasOwnProperty('vfy')) {
+        out.t = Math.abs(inp.vfy - inp.viy) / g;
+        out.h = Math.abs(inp.vfy * inp.vfy - inp.viy * inp.viy) / (2 * g);
+      } else if (inp.hasOwnProperty('viy') && inp.hasOwnProperty('h')) {
+        const disc = inp.viy * inp.viy - 2 * g * inp.h;
+        if (disc >= 0) {
+          out.vfy = Math.sqrt(disc);
+          out.t = (inp.viy - out.vfy) / g;
+        }
+      } else if (inp.hasOwnProperty('h') && inp.hasOwnProperty('t')) {
+        // En caída desde reposo si viy no existe o se deduce
+        out.viy = (inp.h + 0.5 * g * inp.t * inp.t) / inp.t;
+        out.vfy = out.viy - g * inp.t;
+      } else if (inp.hasOwnProperty('vfy') && inp.hasOwnProperty('h')) {
+        out.viy = Math.sqrt(inp.vfy * inp.vfy + 2 * g * inp.h);
+        out.t = (out.viy - inp.vfy) / g;
+      } else if (inp.hasOwnProperty('vfy') && inp.hasOwnProperty('t')) {
+        out.viy = inp.vfy + g * inp.t;
+        out.h = out.viy * inp.t - 0.5 * g * inp.t * inp.t;
+      }
+
+      renderModuleFields('vertical', ['viy', 'vfy', 'h', 't'], 'vert_', out);
+    }
+
+    function setCaidaLibrePreset() {
+      clearModule('vertical');
+      const inputViy = document.getElementById('vert_viy');
+      inputViy.value = '0';
+      handleInput('vertical', 'viy', '0');
+    }
+
+    // ========================================================
+    // 4. SOLUCIONADOR TIRO PARABÓLICO Y HORIZONTAL
+    // ========================================================
+    function solveProyectiles() {
+      const m = store.proyectiles;
+      const inp = m.inputs;
+      const out = {};
+      const g = store.g;
+
+      // 1. Obtener vi y theta
+      let vi = inp.vi;
+      let theta = inp.theta;
+
+      if (inp.hasOwnProperty('vix') && inp.hasOwnProperty('viy')) {
+        vi = Math.hypot(inp.vix, inp.viy);
+        theta = deg(Math.atan2(inp.viy, inp.vix));
+        out.vi = vi;
+        out.theta = theta;
+      } else if (inp.hasOwnProperty('vi') && inp.hasOwnProperty('theta')) {
+        out.vix = vi * Math.cos(rad(theta));
+        out.viy = vi * Math.sin(rad(theta));
+      } else if (inp.hasOwnProperty('vix') && inp.hasOwnProperty('theta')) {
+        vi = inp.vix / Math.cos(rad(theta));
+        out.vi = vi;
+        out.viy = vi * Math.sin(rad(theta));
+      } else if (inp.hasOwnProperty('viy') && inp.hasOwnProperty('theta')) {
+        vi = inp.viy / Math.sin(rad(theta));
+        out.vi = vi;
+        out.vix = vi * Math.cos(rad(theta));
+      } else if (inp.hasOwnProperty('hmax') && inp.hasOwnProperty('theta')) {
+        // hmax = (vi*sen(th))^2 / 2g => viy = sqrt(2*g*hmax)
+        const viy = Math.sqrt(2 * g * inp.hmax);
+        out.viy = viy;
+        vi = viy / Math.sin(rad(theta));
+        out.vi = vi;
+        out.vix = vi * Math.cos(rad(theta));
+      }
+
+      // 2. Parámetros globales si se tienen vi y theta
+      const currentVi = inp.vi ?? out.vi;
+      const currentTheta = inp.theta ?? out.theta;
+
+      if (currentVi !== undefined && currentTheta !== undefined) {
+        const radTh = rad(currentTheta);
+        const vix = currentVi * Math.cos(radTh);
+        const viy = currentVi * Math.sin(radTh);
+
+        if (!inp.hasOwnProperty('vix')) out.vix = vix;
+        if (!inp.hasOwnProperty('viy')) out.viy = viy;
+
+        const ts = viy / g;
+        const tt = 2 * ts;
+        const hmax = (viy * viy) / (2 * g);
+        const xmax = vix * tt;
+
+        if (!inp.hasOwnProperty('tsubida')) out.tsubida = ts;
+        if (!inp.hasOwnProperty('ttotal')) out.ttotal = tt;
+        if (!inp.hasOwnProperty('hmax')) out.hmax = hmax;
+        if (!inp.hasOwnProperty('xmax')) out.xmax = xmax;
+
+        // Evaluación en instante t
+        if (inp.hasOwnProperty('tinst')) {
+          const t = inp.tinst;
+          const vx_t = vix;
+          const vy_t = viy - g * t;
+          const v_t = Math.hypot(vx_t, vy_t);
+          const y_t = viy * t - 0.5 * g * t * t;
+
+          out.vyinst = vy_t;
+          out.vinst = v_t;
+          out.yinst = y_t;
+        }
+      }
+
+      renderModuleFields('proyectiles', 
+        ['vi', 'theta', 'vix', 'viy', 'tsubida', 'ttotal', 'hmax', 'xmax', 'tinst', 'vyinst', 'vinst', 'yinst'], 
+        'proj_', out
+      );
+    }
+
+    function setTiroHorizontalPreset() {
+      clearModule('proyectiles');
+      const inputTheta = document.getElementById('proj_theta');
+      inputTheta.value = '0';
+      handleInput('proyectiles', 'theta', '0');
+    }
+
+    // ========================================================
+    // 5. SOLUCIONADOR DINÁMICA HORIZONTAL
+    // ========================================================
+    function solveDinamica() {
+      const m = store.dinamica;
+      const inp = m.inputs;
+      const out = {};
+      const g = store.g;
+
+      // Si da masa m -> Normal N = m * g
+      if (inp.hasOwnProperty('m')) {
+        if (!inp.hasOwnProperty('N')) out.N = inp.m * g;
+      } else if (inp.hasOwnProperty('N')) {
+        if (!inp.hasOwnProperty('m')) out.m = inp.N / g;
+      }
+
+      const effectiveM = inp.m ?? out.m;
+      const effectiveN = inp.N ?? out.N;
+
+      // Fricción fk = muk * N
+      if (inp.hasOwnProperty('muk') && effectiveN !== undefined) {
+        if (!inp.hasOwnProperty('fk')) out.fk = inp.muk * effectiveN;
+      } else if (inp.hasOwnProperty('fk') && effectiveN !== undefined && effectiveN !== 0) {
+        if (!inp.hasOwnProperty('muk')) out.muk = inp.fk / effectiveN;
+      }
+
+      const effectiveFk = inp.fk ?? out.fk ?? 0;
+
+      // Segunda ley F_net = m * a
+      // Si hay fuerza aplicada F
+      if (inp.hasOwnProperty('F') && effectiveM !== undefined) {
+        if (!inp.hasOwnProperty('a')) {
+          out.a = (inp.F - effectiveFk) / effectiveM;
+        }
+      } else if (inp.hasOwnProperty('a') && effectiveM !== undefined) {
+        if (!inp.hasOwnProperty('F')) {
+          out.F = effectiveM * inp.a + effectiveFk;
+        }
+      } else if (!inp.hasOwnProperty('F') && inp.hasOwnProperty('muk')) {
+        // Frenado por fricción pura sin empuje: a = -muk * g
+        if (!inp.hasOwnProperty('a')) {
+          out.a = -inp.muk * g;
+        }
+      }
+
+      renderModuleFields('dinamica', ['m', 'F', 'muk', 'N', 'fk', 'a'], 'din_', out);
+    }
+
+    // ========================================================
+    // 6. SOLUCIONADOR PLANO INCLINADO
+    // ========================================================
+    function solveInclinado() {
+      const m = store.inclinado;
+      const inp = m.inputs;
+      const out = {};
+      const g = store.g;
+
+      if (inp.hasOwnProperty('m') && inp.hasOwnProperty('alpha')) {
+        const alphaRad = rad(inp.alpha);
+        const mass = inp.m;
+
+        const wx = mass * g * Math.sin(alphaRad);
+        const wy = mass * g * Math.cos(alphaRad);
+        const N = wy;
+
+        out.wx = wx;
+        out.N = N;
+
+        const muk = inp.muk ?? 0;
+        const fk = muk * N;
+        out.fk = fk;
+
+        const fext = inp.fext ?? 0;
+        // Si fext empuja hacia abajo o es positiva en sentido de bajada:
+        // sum Fx = wx + fext - fk = m * a
+        out.a = (wx + fext - fk) / mass;
+      }
+
+      renderModuleFields('inclinado', ['m', 'alpha', 'muk', 'fext', 'wx', 'N', 'fk', 'a'], 'inc_', out);
+    }
+
+    // ========================================================
+    // 7. SOLUCIONADOR TENSIONES Y MÁQUINA DE ATWOOD
+    // ========================================================
+    function solveTensiones() {
+      const m = store.tensiones;
+      const inp = m.inputs;
+      const out = {};
+      const g = store.g;
+
+      if (inp.hasOwnProperty('m1') && inp.hasOwnProperty('m2')) {
+        const m1 = inp.m1;
+        const m2 = inp.m2;
+        const totalM = m1 + m2;
+
+        if (totalM > 0) {
+          if (m.system === 'atwood') {
+            // Máquina de atwood vertical clásica
+            const diff = Math.abs(m1 - m2);
+            out.a = (diff * g) / totalM;
+            out.T = (2 * m1 * m2 * g) / totalM;
+          } else {
+            // Masa 1 en mesa, masa 2 colgando
+            const muk = inp.muk ?? 0;
+            const f_motriz = m2 * g - muk * m1 * g;
+            out.a = Math.max(0, f_motriz / totalM);
+            out.T = m2 * (g - out.a);
+          }
+        }
+      }
+
+      renderModuleFields('tensiones', ['m1', 'm2', 'muk', 'a', 'T'], 'ten_', out);
+    }
+
+    function handleSystemChange() {
+      const radios = document.getElementsByName('tension_system_type');
+      for (const r of radios) {
+        if (r.checked) store.tensiones.system = r.value;
+      }
+      const mukBox = document.getElementById('box-ten-muk');
+      if (store.tensiones.system === 'atwood') {
+        mukBox.classList.add('opacity-40', 'pointer-events-none');
+      } else {
+        mukBox.classList.remove('opacity-40', 'pointer-events-none');
+      }
+      solveTensiones();
+    }
+
+    // ========================================================
+    // RENDERIZADO VISUAL UNIFICADO DE CAMPOS
+    // ========================================================
+    function renderModuleFields(moduleName, fieldKeys, prefix, computedObj) {
+      const mod = store[moduleName];
+
+      fieldKeys.forEach(key => {
+        const elementId = prefix + key;
+        const inputElem = document.getElementById(elementId);
+        if (!inputElem) return;
+
+        if (mod.inputs.hasOwnProperty(key)) {
+          // El usuario ingresó este dato
+          setCellStyle(elementId, 'input');
+        } else if (computedObj.hasOwnProperty(key) && computedObj[key] !== null && !isNaN(computedObj[key])) {
+          // Calculado por el motor físico
+          setCellStyle(elementId, 'output');
+          inputElem.value = formatNum(computedObj[key]);
+          mod.values[key] = computedObj[key];
+        } else {
+          // Neutro / No determinado
+          setCellStyle(elementId, 'neutral');
+          inputElem.value = '';
+          delete mod.values[key];
+        }
+      });
+    }
+
+    // ========================================================
+    // LIMPIEZA Y REINICIO
+    // ========================================================
+    function clearModule(moduleName) {
+      store[moduleName].inputs = {};
+      store[moduleName].values = {};
+      solveModule(moduleName);
+    }
+
+    function resetCurrentTab() {
+      clearModule(store.currentTab);
+    }
+
+    // Controles Globales (Gravedad y Decimales)
+    document.getElementById('global-g').addEventListener('input', function(e) {
+      const val = parseFloat(e.target.value);
+      if (!isNaN(val) && val > 0) {
+        store.g = val;
+        // Re-calcular todos los módulos activos
+        ['vectores', 'mrua', 'vertical', 'proyectiles', 'dinamica', 'inclinado', 'tensiones'].forEach(solveModule);
+      }
+    });
+
+    document.getElementById('global-decimals').addEventListener('input', function(e) {
+      const val = parseInt(e.target.value, 10);
+      if (!isNaN(val) && val >= 0 && val <= 8) {
+        store.decimals = val;
+        ['vectores', 'mrua', 'vertical', 'proyectiles', 'dinamica', 'inclinado', 'tensiones'].forEach(solveModule);
+      }
+    });
+
+    // Iniciar con Atwood por defecto configurado
+    window.addEventListener('DOMContentLoaded', () => {
+      handleSystemChange();
+    });
+  </script>
+</body>
+</html>
