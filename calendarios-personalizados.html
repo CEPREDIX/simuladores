@@ -1,68 +1,160 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendarios Personalizados</title>
+  <title>CEPREDIX | Calendarios Personalizados</title>
+  
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://i.imgur.com/vrXLmkG.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   
   <style>
-    :root { --primary: #0056b3; --bg: #f4f7f6; }
-    body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 500px; box-sizing: border-box; }
-    h2 { text-align: center; color: #333; margin-top: 0; }
-    input[type="text"], input[type="email"], input[type="password"], select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 16px; }
-    button { background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-    button:hover { background-color: #004494; }
+    /* VARIABLES DE TEMA */
+    :root {
+      --bg-body: #f4f7f9;
+      --bg-card: #ffffff;
+      --text-main: #333333;
+      --text-muted: #666666;
+      --border-color: #dddddd;
+      --input-bg: #ffffff;
+      --primary: #0056b3;
+      --primary-hover: #004494;
+      --accent: #d9534f;
+      --success: #28a745;
+      --canvas-bg: #e9ecef;
+    }
+    
+    [data-theme="dark"] {
+      --bg-body: #121212;
+      --bg-card: #1e1e1e;
+      --text-main: #f0f0f0;
+      --text-muted: #aaaaaa;
+      --border-color: #333333;
+      --input-bg: #2c2c2c;
+      --primary: #4dabf7;
+      --primary-hover: #3b8cd6;
+      --accent: #ff6b6b;
+      --success: #40c057;
+      --canvas-bg: #252525;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; transition: background-color 0.3s, color 0.3s; }
+    
+    body { background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    
+    /* HEADER (Logo y Controles Globales) */
+    .header-app { width: 100%; max-width: 600px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .header-logo { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; }
+    .header-logo img { width: 32px; height: 32px; border-radius: 6px; }
+    .btn-icon { background: none; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 14px; opacity: 0.8; }
+    .btn-icon:hover { opacity: 1; color: var(--primary); }
+
+    /* CONTENEDOR PRINCIPAL */
+    .card { background: var(--bg-card); padding: 30px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); width: 100%; max-width: 600px; border: 1px solid var(--border-color); }
+    h2 { text-align: center; margin-top: 0; font-size: 1.5rem; color: var(--primary); }
+    .greeting { text-align: center; margin-bottom: 20px; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+
+    /* FORMULARIOS Y BOTONES */
+    label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.9rem; }
+    input[type="text"], input[type="email"], input[type="password"], select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 15px; margin-bottom: 10px; }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    
+    .btn-main { width: 100%; padding: 14px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 15px; display: flex; justify-content: center; align-items: center; gap: 8px; color: #fff; background-color: var(--primary); }
+    .btn-main:hover { background-color: var(--primary-hover); }
+    .btn-nube { background-color: transparent; border: 2px solid var(--primary); color: var(--primary); margin-bottom: 20px; }
+    .btn-nube:hover { background-color: var(--primary); color: #fff; }
+    
+    .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-group .btn-main { flex: 1; }
+    .btn-pdf { background-color: var(--accent); }
+    .btn-pdf:hover { background-color: #c9302c; }
+
+    /* CONTROLES Y CANVAS */
+    .filtros { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; }
+    .filtros input, .filtros select { margin-bottom: 0; }
+    
+    .controles { background: var(--bg-body); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; }
+    .controles input[type="range"] { width: 100%; margin-top: 5px; accent-color: var(--primary); }
+
+    #canvas-container { width: 100%; min-height: 250px; overflow: hidden; margin-top: 20px; border: 2px dashed var(--border-color); border-radius: 8px; background: var(--canvas-bg); display: flex; justify-content: center; align-items: center; position: relative; }
+    canvas { width: 100%; height: auto; display: block; }
+    
     .hidden { display: none !important; }
-    .error { color: #d9534f; text-align: center; font-size: 14px; margin-bottom: 10px; }
-    #estado-carga { color: #0056b3; font-size: 14px; text-align: center; font-style: italic; margin-bottom: 10px;}
-    .filtros { display: flex; gap: 10px; margin-bottom: 10px; }
-    .filtros input, .filtros select { margin: 0; }
-    #canvas-container { width: 100%; min-height: 200px; overflow: hidden; margin-top: 15px; border: 2px dashed #ccc; border-radius: 8px; background: #e9ecef; display: flex; justify-content: center; align-items: center; }
-    canvas { width: 100%; height: auto; display: block; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-    .controles { margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
-    .controles label { font-size: 13px; font-weight: bold; color: #555; display: block; margin-top: 10px; }
-    .controles input[type="range"] { width: 100%; margin-top: 5px; }
+    .error { color: var(--accent); text-align: center; font-size: 14px; margin-bottom: 15px; font-weight: bold; }
+    #estado-carga { color: var(--primary); font-size: 13px; text-align: center; font-style: italic; margin-bottom: 10px;}
+
+    /* FOOTER Y MODAL PRIVACIDAD */
+    .footer { margin-top: auto; padding: 20px 0; text-align: center; font-size: 12px; color: var(--text-muted); width: 100%; max-width: 600px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-enlace { color: var(--primary); cursor: pointer; text-decoration: underline; background: none; border: none; font-size: 12px; }
+    
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(3px); }
+    .modal-content { background: var(--bg-card); padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .modal-content h3 { margin-top: 0; color: var(--primary); }
+    .modal-content p { font-size: 14px; line-height: 1.5; color: var(--text-muted); }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
+  <div class="header-app">
+    <div class="header-logo">
+      <img src="https://i.imgur.com/vrXLmkG.png" alt="Logo">
+      CEPREDIX
+    </div>
+    <div style="display: flex; gap: 15px;">
+      <button class="btn-icon" onclick="toggleTheme()" title="Cambiar Tema">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button id="btn-logout" class="btn-icon hidden" onclick="cerrarSesion()" title="Cerrar Sesión">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+    </div>
+  </div>
 
   <!-- PANTALLA DE LOGIN -->
   <div id="login-view" class="card">
     <h2>Acceso al Sistema</h2>
     <div id="login-error" class="error"></div>
-    <input type="email" id="correo" placeholder="Tu Correo Electrónico" required>
-    <input type="password" id="password" placeholder="Contraseña" required>
-    <button onclick="iniciarSesion()" id="btn-login">Ingresar</button>
+    <form id="form-login" onsubmit="event.preventDefault(); iniciarSesion();">
+      <input type="text" id="nombre" placeholder="Tu Nombre Completo" required>
+      <input type="email" id="correo" placeholder="Correo Electrónico" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button type="submit" class="btn-main" id="btn-login">Ingresar</button>
+    </form>
   </div>
 
   <!-- PANTALLA DE LA APLICACIÓN -->
   <div id="app-view" class="card hidden">
-    <h2>Personaliza tu Calendario</h2>
-    <p style="text-align: center; margin-top: 0; font-size: 14px; color: #666;">
-      ¡Bienvenido/a <span id="user-name-display"></span>! <a href="#" onclick="cerrarSesion()" style="color:#d9534f; margin-left:10px;">Salir</a>
-    </p>
+    <div class="greeting">¡Bienvenido/a <b id="user-name-display"></b>!</div>
+    
+    <!-- Botón Nube -->
+    <button class="btn-main btn-nube" onclick="window.open('#', '_blank')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+      Ir a materiales en la NUBE
+    </button>
     
     <label>1. Busca y selecciona una plantilla:</label>
     <div class="filtros">
-      <input type="text" id="buscador" placeholder="Buscar por palabra clave..." onkeyup="aplicarFiltros()">
-      <select id="ordenar" onchange="aplicarFiltros()">
-        <option value="recientes">Más recientes</option>
-        <option value="antiguos">Más antiguos</option>
+      <input type="text" id="buscador" placeholder="Buscar palabra clave..." onkeyup="aplicarFiltros()">
+      <select id="ordenar" onchange="aplicarFiltros()" style="width: auto;">
+        <option value="recientes">Recientes</option>
+        <option value="antiguos">Antiguos</option>
         <option value="az">A - Z</option>
       </select>
+      <button class="btn-icon" onclick="cargarRecursos()" title="Recargar base de datos" style="background: var(--bg-body); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+      </button>
     </div>
-    <select id="selector-plantillas" onchange="cargarPlantillaEnCanvas()"></select>
     
+    <select id="selector-plantillas" onchange="cargarPlantillaEnCanvas()"></select>
     <div id="estado-carga"></div>
 
-    <label>2. Sube tu foto:</label>
+    <label>2. Sube tu foto (remplaza la zona verde):</label>
     <input type="file" id="foto-usuario" accept="image/*">
     
     <div id="controles-ajuste" class="controles hidden">
-      <label>Tamaño de tu foto (Zoom):</label>
+      <label>Tamaño (Zoom):</label>
       <input type="range" id="escala" min="0.1" max="3" step="0.05" value="1" oninput="dibujarCanvasFinal()">
       <label>Mover Horizontal:</label>
       <input type="range" id="posX" min="-1500" max="1500" value="0" oninput="dibujarCanvasFinal()">
@@ -75,33 +167,63 @@
     </div>
     
     <div class="btn-group">
-      <button onclick="descargarImagen()">Descargar JPG</button>
-      <button onclick="descargarPDF()" style="background-color:#d9534f;">Descargar PDF</button>
+      <button class="btn-main" onclick="descargarImagen()">Descargar JPG</button>
+      <button class="btn-main btn-pdf" onclick="descargarPDF()">Descargar PDF</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Construido con cariño por CEPREDIX</span>
+    <div>
+      <button class="footer-enlace" onclick="togglePrivacidad()">Aviso de Privacidad</button>
+      <span style="margin-left: 10px;">021126.V3</span>
+    </div>
+  </div>
+
+  <!-- MODAL DE PRIVACIDAD -->
+  <div id="modal-privacidad" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3>Aviso de Privacidad</h3>
+      <p>En <strong>CEPREDIX</strong> hacemos un uso responsable de tus datos personales. La información recopilada (como tu nombre y correo) tiene como única finalidad personalizar tu experiencia y gestionar el acceso a nuestra plataforma.</p>
+      <p>Tus datos permanecerán en nuestras bases de datos exclusivamente durante el tiempo que mantengas tu acceso de pago activo. Una vez finalizada tu vigencia, la información será depurada de forma segura.</p>
+      <button class="btn-main" style="margin-top: 15px;" onclick="togglePrivacidad()">Entendido</button>
     </div>
   </div>
 
   <script>
-    // --- PEGA AQUÍ TU URL DE APPS SCRIPT ---
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrFt20mnR3zdAKZkp35_qgeXvqFL9NsefDr2thyXwXCKSZ_IHJwarKUgGmijuO-LPt/exec'; 
+    // --- CONFIGURACIÓN ---
+    // ¡PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT!
+    const APPS_SCRIPT_URL = 'URL_DE_TU_WEB_APP_AQUI'; 
     const CODE_HTML = 'CAL_PERS_01';
     
-    let sesionActual = { correo: '', token: '', intervalo: null };
+    let sesionActual = { nombre: '', correo: '', token: '', intervalo: null };
     let todasLasPlantillas = [];
-    
     let imgPlantilla = new Image();
     let imgUsuario = new Image();
     let plantillaCromaProcesada = null; 
 
-    // --- SISTEMA DE SESIÓN Y TOKEN ---
+    // --- TEMA CLARO/OSCURO ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    // --- PRIVACIDAD ---
+    function togglePrivacidad() {
+      document.getElementById('modal-privacidad').classList.toggle('hidden');
+    }
+
+    // --- LOGIN ---
     async function iniciarSesion() {
+      const nombre = document.getElementById('nombre').value;
       const correo = document.getElementById('correo').value;
       const password = document.getElementById('password').value;
       const btn = document.getElementById('btn-login');
       const errorDiv = document.getElementById('login-error');
 
-      if(!correo || !password) return errorDiv.innerText = "Campos obligatorios.";
-
-      btn.innerText = "Verificando..."; btn.disabled = true; errorDiv.innerText = "";
+      btn.innerHTML = "Verificando..."; btn.disabled = true; errorDiv.innerText = "";
 
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
@@ -112,16 +234,16 @@
         const data = await response.json();
 
         if (data.success) {
+          sesionActual.nombre = nombre; // Usamos el nombre ingresado
           sesionActual.correo = correo;
           sesionActual.token = data.token;
           
-          document.getElementById('user-name-display').innerText = correo.split('@')[0];
+          document.getElementById('user-name-display').innerText = nombre;
           document.getElementById('login-view').classList.add('hidden');
           document.getElementById('app-view').classList.remove('hidden');
+          document.getElementById('btn-logout').classList.remove('hidden');
           
           cargarRecursos();
-          
-          // Iniciar verificación de token cada 15 segundos
           sesionActual.intervalo = setInterval(verificarTokenActivo, 15000);
         } else {
           errorDiv.innerText = data.message;
@@ -129,7 +251,7 @@
       } catch (e) {
         errorDiv.innerText = "Error de conexión con el servidor.";
       } finally {
-        btn.innerText = "Ingresar"; btn.disabled = false;
+        btn.innerHTML = "Ingresar"; btn.disabled = false;
       }
     }
 
@@ -139,37 +261,37 @@
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ 
-            action: 'checkToken', 
-            correo: sesionActual.correo, 
-            codeHtml: CODE_HTML, 
-            token: sesionActual.token 
-          })
+          body: JSON.stringify({ action: 'checkToken', correo: sesionActual.correo, codeHtml: CODE_HTML, token: sesionActual.token })
         });
         const data = await response.json();
-        
-        if (!data.valid) {
-          cerrarSesion(data.message || "Tu sesión ha expirado o se abrió en otro lugar.");
-        }
-      } catch(e) { console.log("Error verificando token", e); }
+        if (!data.valid) cerrarSesion(data.message || "Tu sesión ha expirado o se abrió en otro lugar.");
+      } catch(e) {}
     }
 
     function cerrarSesion(mensaje = "") {
       if(sesionActual.intervalo) clearInterval(sesionActual.intervalo);
-      sesionActual = { correo: '', token: '', intervalo: null };
+      sesionActual = { nombre: '', correo: '', token: '', intervalo: null };
       
       document.getElementById('app-view').classList.add('hidden');
+      document.getElementById('btn-logout').classList.add('hidden');
       document.getElementById('login-view').classList.remove('hidden');
       
+      // Limpiar formulario y canvas
+      document.getElementById('form-login').reset();
+      const ctx = document.getElementById('miCanvas').getContext('2d');
+      ctx.clearRect(0, 0, miCanvas.width, miCanvas.height);
+      document.getElementById('foto-usuario').value = '';
+      document.getElementById('controles-ajuste').classList.add('hidden');
+      
       if(mensaje) {
-        alert(mensaje);
         document.getElementById('login-error').innerText = mensaje;
       }
     }
 
-    // --- CARGA, FILTRADO Y ORDENAMIENTO ---
+    // --- CARGA Y FILTRADO ---
     async function cargarRecursos() {
-      document.getElementById('selector-plantillas').innerHTML = '<option>Buscando plantillas...</option>';
+      const select = document.getElementById('selector-plantillas');
+      select.innerHTML = '<option>Sincronizando base de datos...</option>';
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
@@ -180,11 +302,11 @@
         
         if (data.success && data.plantillas.length > 0) {
           todasLasPlantillas = data.plantillas;
-          aplicarFiltros(); // Renderiza usando filtros por defecto (Recientes)
+          aplicarFiltros();
         } else {
-          document.getElementById('selector-plantillas').innerHTML = '<option>No hay plantillas</option>';
+          select.innerHTML = '<option>No hay plantillas disponibles</option>';
         }
-      } catch (e) { document.getElementById('selector-plantillas').innerHTML = '<option>Error al cargar</option>'; }
+      } catch (e) { select.innerHTML = '<option>Error de sincronización</option>'; }
     }
 
     function aplicarFiltros() {
@@ -192,36 +314,29 @@
       const orden = document.getElementById('ordenar').value;
       const select = document.getElementById('selector-plantillas');
 
-      // 1. Filtrar por palabra clave
-      let plantillasFiltradas = todasLasPlantillas.filter(p => 
-        p.nombre.toLowerCase().includes(textoBuscado) || p.descripcion.toLowerCase().includes(textoBuscado)
-      );
+      let filtradas = todasLasPlantillas.filter(p => p.nombre.toLowerCase().includes(textoBuscado) || p.descripcion.toLowerCase().includes(textoBuscado));
 
-      // 2. Ordenar
-      plantillasFiltradas.sort((a, b) => {
+      filtradas.sort((a, b) => {
         if(orden === 'recientes') return b.fecha - a.fecha;
         if(orden === 'antiguos') return a.fecha - b.fecha;
         if(orden === 'az') return a.nombre.localeCompare(b.nombre);
       });
 
-      // 3. Renderizar en el select
       select.innerHTML = '';
-      if(plantillasFiltradas.length === 0) {
-        select.innerHTML = '<option value="">No se encontraron resultados</option>';
+      if(filtradas.length === 0) {
+        select.innerHTML = '<option value="">Sin resultados</option>';
         return;
       }
 
-      plantillasFiltradas.forEach(p => {
+      filtradas.forEach(p => {
         const opt = document.createElement('option');
-        opt.value = p.url; 
-        opt.text = p.nombre;
+        opt.value = p.url; opt.text = p.nombre;
         select.appendChild(opt);
       });
-      
       cargarPlantillaEnCanvas();
     }
 
-    // --- CANVAS Y CROMA (Igual que versión anterior) ---
+    // --- PROCESAMIENTO DE IMAGEN ---
     function formatearUrlSegura(url) {
       if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
         url = url.replace('imgur.com', 'i.imgur.com');
@@ -235,14 +350,14 @@
       if(!urlRaw) return;
 
       const estado = document.getElementById('estado-carga');
-      estado.innerText = "Cargando plantilla...";
+      estado.innerText = "Preparando marco...";
       plantillaCromaProcesada = null; 
       
       imgPlantilla = new Image();
       imgPlantilla.crossOrigin = "Anonymous"; 
       
       imgPlantilla.onload = function() {
-        estado.innerText = "Plantilla lista.";
+        estado.innerText = "Listo para personalizar.";
         procesarCromaPlantilla();
       }
       imgPlantilla.onerror = () => estado.innerText = "Error cargando imagen.";
@@ -251,14 +366,12 @@
 
     function procesarCromaPlantilla() {
       const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = imgPlantilla.width;
-      tempCanvas.height = imgPlantilla.height;
+      tempCanvas.width = imgPlantilla.width; tempCanvas.height = imgPlantilla.height;
       const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
       tempCtx.drawImage(imgPlantilla, 0, 0);
 
       const frame = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-      const l = frame.data.length / 4;
-      for (let i = 0; i < l; i++) {
+      for (let i = 0; i < frame.data.length / 4; i++) {
         let r = frame.data[i * 4 + 0], g = frame.data[i * 4 + 1], b = frame.data[i * 4 + 2];
         if (g > 130 && r < 140 && b < 140) frame.data[i * 4 + 3] = 0; 
       }
@@ -305,7 +418,7 @@
 
     function descargarImagen() {
       const link = document.createElement('a');
-      link.download = 'Mi_Calendario.jpg';
+      link.download = `CEPREDIX_${Date.now()}.jpg`;
       link.href = document.getElementById('miCanvas').toDataURL("image/jpeg", 0.9);
       link.click();
     }
@@ -316,7 +429,7 @@
       const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? 'landscape' : 'portrait', unit: 'mm' });
       const pdfWidth = pdf.internal.pageSize.getWidth();
       pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
-      pdf.save("Mi_Calendario.pdf");
+      pdf.save(`CEPREDIX_${Date.now()}.pdf`);
     }
   </script>
 </body>
