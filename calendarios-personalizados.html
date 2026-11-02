@@ -158,7 +158,6 @@
       <button class="btn-main btn-pdf" onclick="descargarPDF()">Descargar PDF</button>
     </div>
 
-    <!-- Botón Nube reubicado -->
     <button class="btn-main btn-nube" onclick="window.open('#', '_blank')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
       Ir a materiales en la NUBE
@@ -185,8 +184,8 @@
   </div>
 
   <script>
-    // ¡PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT!
-    const APPS_SCRIPT_URL = 'URL_DE_TU_WEB_APP_AQUI'; 
+    // IMPORTANTE: REEMPLAZA ESTA LÍNEA CON LA NUEVA URL QUE GENERASTE EN EL PASO 1
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxsP9CK0ctO5Vuy6CcC6DRi8KZdxanrM8fPNAANkxVoNGXpDC6XQvrL5Tyx9ZAu_D5/exec'; 
     const CODE_HTML = 'CAL_PERS_01';
     
     let sesionActual = { nombre: '', correo: '', token: '', intervalo: null };
@@ -212,14 +211,23 @@
       const btn = document.getElementById('btn-login');
       const errorDiv = document.getElementById('login-error');
 
+      if (APPS_SCRIPT_URL === 'URL_DE_TU_WEB_APP_AQUI') {
+        errorDiv.innerText = "Error: Falta colocar la URL de Apps Script en el código HTML.";
+        return;
+      }
+
       btn.innerHTML = "Verificando..."; btn.disabled = true; errorDiv.innerText = "";
 
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'login', correo, password, codeHtml: CODE_HTML })
+          body: JSON.stringify({ action: 'login', correo, password, codeHtml: CODE_HTML }),
+          redirect: 'follow' // Añadido para asegurar compatibilidad de red con Google
         });
+        
+        if (!response.ok) throw new Error("Error en el servidor de Google.");
+        
         const data = await response.json();
 
         if (data.success) {
@@ -238,7 +246,9 @@
           errorDiv.innerText = data.message;
         }
       } catch (e) {
-        errorDiv.innerText = "Error de conexión con el servidor.";
+        console.error(e);
+        // Si hay error en la red o de sintaxis JSON (por no haber hecho "Nueva implementación")
+        errorDiv.innerText = "Error de conexión. Verifica haber publicado una 'Nueva implementación' en Apps Script.";
       } finally {
         btn.innerHTML = "Ingresar"; btn.disabled = false;
       }
@@ -250,7 +260,8 @@
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'checkToken', correo: sesionActual.correo, codeHtml: CODE_HTML, token: sesionActual.token })
+          body: JSON.stringify({ action: 'checkToken', correo: sesionActual.correo, codeHtml: CODE_HTML, token: sesionActual.token }),
+          redirect: 'follow'
         });
         const data = await response.json();
         if (!data.valid) cerrarSesion(data.message || "Tu sesión ha expirado o se abrió en otro lugar.");
@@ -283,7 +294,8 @@
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'getTemplates', codeHtml: CODE_HTML })
+          body: JSON.stringify({ action: 'getTemplates', codeHtml: CODE_HTML }),
+          redirect: 'follow'
         });
         const data = await response.json();
         
@@ -324,14 +336,12 @@
     }
 
     function formatearUrlSegura(url) {
-      // Solo nos aseguramos de que el dominio sea i.imgur.com y tenga extensión
       if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
         url = url.replace('imgur.com', 'i.imgur.com');
       }
       if (!url.match(/\.(jpeg|jpg|gif|png)$/i)) {
         url += '.jpg';
       }
-      // Retornamos la URL limpia sin el proxy que estaba causando conflictos
       return url;
     }
 
@@ -344,7 +354,6 @@
       plantillaCromaProcesada = null; 
       
       imgPlantilla = new Image();
-      // Crucial para leer píxeles desde Imgur directamente
       imgPlantilla.crossOrigin = "Anonymous"; 
       
       imgPlantilla.onload = function() {
