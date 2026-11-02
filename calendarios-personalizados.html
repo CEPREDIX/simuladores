@@ -8,38 +8,20 @@
   
   <style>
     :root { --primary: #0056b3; --bg: #f4f7f6; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg); margin: 0; padding: 20px;
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .card {
-      background: white; padding: 25px; border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%;
-      max-width: 450px; box-sizing: border-box;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 500px; box-sizing: border-box; }
     h2 { text-align: center; color: #333; margin-top: 0; }
-    input[type="text"], input[type="email"], input[type="password"], select, button {
-      width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px;
-      border: 1px solid #ccc; box-sizing: border-box; font-size: 16px;
-    }
-    button {
-      background-color: var(--primary); color: white; border: none;
-      font-weight: bold; cursor: pointer; transition: background 0.3s;
-    }
+    input[type="text"], input[type="email"], input[type="password"], select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 16px; }
+    button { background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.3s; }
     button:hover { background-color: #004494; }
     .hidden { display: none !important; }
     .error { color: #d9534f; text-align: center; font-size: 14px; margin-bottom: 10px; }
     #estado-carga { color: #0056b3; font-size: 14px; text-align: center; font-style: italic; margin-bottom: 10px;}
-    
-    #canvas-container {
-      width: 100%; min-height: 200px; overflow: hidden; margin-top: 20px;
-      border: 2px dashed #ccc; border-radius: 8px; background: #e9ecef;
-      display: flex; justify-content: center; align-items: center;
-    }
+    .filtros { display: flex; gap: 10px; margin-bottom: 10px; }
+    .filtros input, .filtros select { margin: 0; }
+    #canvas-container { width: 100%; min-height: 200px; overflow: hidden; margin-top: 15px; border: 2px dashed #ccc; border-radius: 8px; background: #e9ecef; display: flex; justify-content: center; align-items: center; }
     canvas { width: 100%; height: auto; display: block; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-    
     .controles { margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
     .controles label { font-size: 13px; font-weight: bold; color: #555; display: block; margin-top: 10px; }
     .controles input[type="range"] { width: 100%; margin-top: 5px; }
@@ -52,16 +34,26 @@
     <h2>Acceso al Sistema</h2>
     <div id="login-error" class="error"></div>
     <input type="email" id="correo" placeholder="Tu Correo Electrónico" required>
-    <input type="password" id="password" placeholder="Contraseña (Tu WhatsApp)" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
     <button onclick="iniciarSesion()" id="btn-login">Ingresar</button>
   </div>
 
   <!-- PANTALLA DE LA APLICACIÓN -->
   <div id="app-view" class="card hidden">
     <h2>Personaliza tu Calendario</h2>
-    <p style="text-align: center; margin-top: 0;">¡Bienvenido/a <span id="user-name-display"></span>!</p>
+    <p style="text-align: center; margin-top: 0; font-size: 14px; color: #666;">
+      ¡Bienvenido/a <span id="user-name-display"></span>! <a href="#" onclick="cerrarSesion()" style="color:#d9534f; margin-left:10px;">Salir</a>
+    </p>
     
-    <label>1. Selecciona una plantilla:</label>
+    <label>1. Busca y selecciona una plantilla:</label>
+    <div class="filtros">
+      <input type="text" id="buscador" placeholder="Buscar por palabra clave..." onkeyup="aplicarFiltros()">
+      <select id="ordenar" onchange="aplicarFiltros()">
+        <option value="recientes">Más recientes</option>
+        <option value="antiguos">Más antiguos</option>
+        <option value="az">A - Z</option>
+      </select>
+    </div>
     <select id="selector-plantillas" onchange="cargarPlantillaEnCanvas()"></select>
     
     <div id="estado-carga"></div>
@@ -72,10 +64,8 @@
     <div id="controles-ajuste" class="controles hidden">
       <label>Tamaño de tu foto (Zoom):</label>
       <input type="range" id="escala" min="0.1" max="3" step="0.05" value="1" oninput="dibujarCanvasFinal()">
-      
       <label>Mover Horizontal:</label>
       <input type="range" id="posX" min="-1500" max="1500" value="0" oninput="dibujarCanvasFinal()">
-      
       <label>Mover Vertical:</label>
       <input type="range" id="posY" min="-1500" max="1500" value="0" oninput="dibujarCanvasFinal()">
     </div>
@@ -91,14 +81,18 @@
   </div>
 
   <script>
-    // --- PEGA AQUÍ LA URL DE APPS SCRIPT ---
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN3gjGmOyqvZFofm5LGO_Tyag57TP14epCa11wfWMQJ0kjwC2uXqs4gYVuhpJPiRJ-/exec'; 
+    // --- PEGA AQUÍ TU URL DE APPS SCRIPT ---
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrFt20mnR3zdAKZkp35_qgeXvqFL9NsefDr2thyXwXCKSZ_IHJwarKUgGmijuO-LPt/exec'; 
     const CODE_HTML = 'CAL_PERS_01';
+    
+    let sesionActual = { correo: '', token: '', intervalo: null };
+    let todasLasPlantillas = [];
     
     let imgPlantilla = new Image();
     let imgUsuario = new Image();
     let plantillaCromaProcesada = null; 
 
+    // --- SISTEMA DE SESIÓN Y TOKEN ---
     async function iniciarSesion() {
       const correo = document.getElementById('correo').value;
       const password = document.getElementById('password').value;
@@ -118,26 +112,64 @@
         const data = await response.json();
 
         if (data.success) {
-          // Extraemos el nombre del correo para saludar (ej: juan@correo -> ¡Bienvenido/a juan!)
-          const nombreUsuario = correo.split('@')[0];
-          document.getElementById('user-name-display').innerText = nombreUsuario;
+          sesionActual.correo = correo;
+          sesionActual.token = data.token;
           
+          document.getElementById('user-name-display').innerText = correo.split('@')[0];
           document.getElementById('login-view').classList.add('hidden');
           document.getElementById('app-view').classList.remove('hidden');
+          
           cargarRecursos();
+          
+          // Iniciar verificación de token cada 15 segundos
+          sesionActual.intervalo = setInterval(verificarTokenActivo, 15000);
         } else {
           errorDiv.innerText = data.message;
         }
       } catch (e) {
-        errorDiv.innerText = "Error de conexión con la base de datos.";
+        errorDiv.innerText = "Error de conexión con el servidor.";
       } finally {
         btn.innerText = "Ingresar"; btn.disabled = false;
       }
     }
 
+    async function verificarTokenActivo() {
+      if(!sesionActual.token) return;
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ 
+            action: 'checkToken', 
+            correo: sesionActual.correo, 
+            codeHtml: CODE_HTML, 
+            token: sesionActual.token 
+          })
+        });
+        const data = await response.json();
+        
+        if (!data.valid) {
+          cerrarSesion(data.message || "Tu sesión ha expirado o se abrió en otro lugar.");
+        }
+      } catch(e) { console.log("Error verificando token", e); }
+    }
+
+    function cerrarSesion(mensaje = "") {
+      if(sesionActual.intervalo) clearInterval(sesionActual.intervalo);
+      sesionActual = { correo: '', token: '', intervalo: null };
+      
+      document.getElementById('app-view').classList.add('hidden');
+      document.getElementById('login-view').classList.remove('hidden');
+      
+      if(mensaje) {
+        alert(mensaje);
+        document.getElementById('login-error').innerText = mensaje;
+      }
+    }
+
+    // --- CARGA, FILTRADO Y ORDENAMIENTO ---
     async function cargarRecursos() {
-      const select = document.getElementById('selector-plantillas');
-      select.innerHTML = '<option>Buscando plantillas...</option>';
+      document.getElementById('selector-plantillas').innerHTML = '<option>Buscando plantillas...</option>';
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
@@ -146,27 +178,55 @@
         });
         const data = await response.json();
         
-        select.innerHTML = '';
-        if (data.urls && data.urls.length > 0) {
-          data.urls.forEach((url, index) => {
-            const opt = document.createElement('option');
-            opt.value = url; opt.text = 'Plantilla ' + (index + 1);
-            select.appendChild(opt);
-          });
-          cargarPlantillaEnCanvas();
+        if (data.success && data.plantillas.length > 0) {
+          todasLasPlantillas = data.plantillas;
+          aplicarFiltros(); // Renderiza usando filtros por defecto (Recientes)
         } else {
-          select.innerHTML = '<option>No hay plantillas disponibles</option>';
+          document.getElementById('selector-plantillas').innerHTML = '<option>No hay plantillas</option>';
         }
-      } catch (e) { select.innerHTML = '<option>Error al cargar recursos</option>'; }
+      } catch (e) { document.getElementById('selector-plantillas').innerHTML = '<option>Error al cargar</option>'; }
     }
 
+    function aplicarFiltros() {
+      const textoBuscado = document.getElementById('buscador').value.toLowerCase();
+      const orden = document.getElementById('ordenar').value;
+      const select = document.getElementById('selector-plantillas');
+
+      // 1. Filtrar por palabra clave
+      let plantillasFiltradas = todasLasPlantillas.filter(p => 
+        p.nombre.toLowerCase().includes(textoBuscado) || p.descripcion.toLowerCase().includes(textoBuscado)
+      );
+
+      // 2. Ordenar
+      plantillasFiltradas.sort((a, b) => {
+        if(orden === 'recientes') return b.fecha - a.fecha;
+        if(orden === 'antiguos') return a.fecha - b.fecha;
+        if(orden === 'az') return a.nombre.localeCompare(b.nombre);
+      });
+
+      // 3. Renderizar en el select
+      select.innerHTML = '';
+      if(plantillasFiltradas.length === 0) {
+        select.innerHTML = '<option value="">No se encontraron resultados</option>';
+        return;
+      }
+
+      plantillasFiltradas.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.url; 
+        opt.text = p.nombre;
+        select.appendChild(opt);
+      });
+      
+      cargarPlantillaEnCanvas();
+    }
+
+    // --- CANVAS Y CROMA (Igual que versión anterior) ---
     function formatearUrlSegura(url) {
-      // Forzar formato de imagen directa de Imgur
       if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
         url = url.replace('imgur.com', 'i.imgur.com');
         if (!url.match(/\.(jpeg|jpg|gif|png)$/i)) url += '.jpg';
       }
-      // Usar un proxy público gratuito para evitar que el navegador bloquee la manipulación de píxeles (CORS Taint)
       return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
     }
 
@@ -176,7 +236,7 @@
 
       const estado = document.getElementById('estado-carga');
       estado.innerText = "Cargando plantilla...";
-      plantillaCromaProcesada = null; // Reiniciar
+      plantillaCromaProcesada = null; 
       
       imgPlantilla = new Image();
       imgPlantilla.crossOrigin = "Anonymous"; 
@@ -185,9 +245,7 @@
         estado.innerText = "Plantilla lista.";
         procesarCromaPlantilla();
       }
-      imgPlantilla.onerror = function() {
-        estado.innerText = "Error cargando la plantilla. Verifica el enlace.";
-      }
+      imgPlantilla.onerror = () => estado.innerText = "Error cargando imagen.";
       imgPlantilla.src = formatearUrlSegura(urlRaw);
     }
 
@@ -200,23 +258,14 @@
 
       const frame = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
       const l = frame.data.length / 4;
-
       for (let i = 0; i < l; i++) {
-        let r = frame.data[i * 4 + 0];
-        let g = frame.data[i * 4 + 1];
-        let b = frame.data[i * 4 + 2];
-        
-        // Tolerancia del color verde croma
-        if (g > 130 && r < 140 && b < 140) {
-          frame.data[i * 4 + 3] = 0; 
-        }
+        let r = frame.data[i * 4 + 0], g = frame.data[i * 4 + 1], b = frame.data[i * 4 + 2];
+        if (g > 130 && r < 140 && b < 140) frame.data[i * 4 + 3] = 0; 
       }
       tempCtx.putImageData(frame, 0, 0);
 
       plantillaCromaProcesada = new Image();
-      plantillaCromaProcesada.onload = function() {
-        dibujarCanvasFinal();
-      }
+      plantillaCromaProcesada.onload = dibujarCanvasFinal;
       plantillaCromaProcesada.src = tempCanvas.toDataURL("image/png");
     }
 
@@ -228,10 +277,7 @@
         imgUsuario = new Image();
         imgUsuario.onload = function() {
           document.getElementById('controles-ajuste').classList.remove('hidden');
-          // Resetear controles al subir nueva foto
-          document.getElementById('escala').value = 1;
-          document.getElementById('posX').value = 0;
-          document.getElementById('posY').value = 0;
+          document.getElementById('escala').value = 1; document.getElementById('posX').value = 0; document.getElementById('posY').value = 0;
           dibujarCanvasFinal();
         }
         imgUsuario.src = event.target.result;
@@ -242,62 +288,34 @@
     function dibujarCanvasFinal() {
       const canvas = document.getElementById('miCanvas');
       const ctx = canvas.getContext('2d');
-
-      // Determinar el tamaño del lienzo basado en la plantilla, o usar 800x600 de respaldo
       if (plantillaCromaProcesada && plantillaCromaProcesada.width > 0) {
-        canvas.width = plantillaCromaProcesada.width;
-        canvas.height = plantillaCromaProcesada.height;
-      } else {
-        canvas.width = 800;
-        canvas.height = 600;
-      }
-
-      // Limpiar canvas
+        canvas.width = plantillaCromaProcesada.width; canvas.height = plantillaCromaProcesada.height;
+      } else { canvas.width = 800; canvas.height = 600; }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. Dibujar foto de usuario debajo ajustada con sliders
       if (imgUsuario.src && imgUsuario.width > 0) {
         const escala = parseFloat(document.getElementById('escala').value);
         const posX = parseInt(document.getElementById('posX').value);
         const posY = parseInt(document.getElementById('posY').value);
-
-        const w = imgUsuario.width * escala;
-        const h = imgUsuario.height * escala;
-        
-        // Centrar imagen base y sumar los desplazamientos
-        const centroX = (canvas.width - w) / 2 + posX;
-        const centroY = (canvas.height - h) / 2 + posY;
-
-        ctx.drawImage(imgUsuario, centroX, centroY, w, h);
+        const w = imgUsuario.width * escala, h = imgUsuario.height * escala;
+        ctx.drawImage(imgUsuario, (canvas.width - w) / 2 + posX, (canvas.height - h) / 2 + posY, w, h);
       }
-
-      // 2. Dibujar plantilla con marco transparente encima
-      if (plantillaCromaProcesada && plantillaCromaProcesada.src) {
-        ctx.drawImage(plantillaCromaProcesada, 0, 0);
-      }
+      if (plantillaCromaProcesada && plantillaCromaProcesada.src) ctx.drawImage(plantillaCromaProcesada, 0, 0);
     }
 
     function descargarImagen() {
-      const canvas = document.getElementById('miCanvas');
       const link = document.createElement('a');
       link.download = 'Mi_Calendario.jpg';
-      link.href = canvas.toDataURL("image/jpeg", 0.9);
+      link.href = document.getElementById('miCanvas').toDataURL("image/jpeg", 0.9);
       link.click();
     }
 
     function descargarPDF() {
       const canvas = document.getElementById('miCanvas');
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const { jsPDF } = window.jspdf;
-      
-      const pdf = new jsPDF({
-        orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-        unit: 'mm'
-      });
+      const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? 'landscape' : 'portrait', unit: 'mm' });
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
       pdf.save("Mi_Calendario.pdf");
     }
   </script>
