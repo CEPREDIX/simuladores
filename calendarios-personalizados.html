@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendarios Personalizados</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <style>
+    :root {
+      --primary: #0056b3;
+      --bg: #f4f7f6;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    h2 { text-align: center; color: #333; }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #004494; }
+    .hidden { display: none; }
+    .error { color: #d9534f; text-align: center; font-size: 14px; margin-bottom: 10px; }
+    #canvas-container {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 20px;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+    }
+    canvas {
+      width: 100%; 
+      height: auto;
+      display: block;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE LOGIN -->
+  <div id="login-view" class="card">
+    <h2>Acceso al Sistema</h2>
+    <div id="login-error" class="error"></div>
+    <input type="text" id="nombre" placeholder="Tu Nombre (Opcional)">
+    <input type="email" id="correo" placeholder="Tu Correo Electrónico" required>
+    <input type="password" id="password" placeholder="Contraseña (Tu WhatsApp)" required>
+    <button onclick="iniciarSesion()" id="btn-login">Ingresar</button>
+  </div>
+
+  <!-- PANTALLA DE LA APLICACIÓN -->
+  <div id="app-view" class="card hidden">
+    <h2>Personaliza tu Calendario</h2>
+    <p>¡Bienvenido/a <span id="user-name-display"></span>!</p>
+    
+    <label>1. Selecciona una plantilla:</label>
+    <select id="selector-plantillas" onchange="cargarPlantillaEnCanvas()"></select>
+    
+    <label>2. Sube tu foto (remplaza la zona verde):</label>
+    <input type="file" id="foto-usuario" accept="image/*" onchange="aplicarCroma()">
+    
+    <div id="canvas-container">
+      <canvas id="miCanvas"></canvas>
+    </div>
+    
+    <div class="btn-group" style="margin-top:15px;">
+      <button onclick="descargarImagen()">Descargar JPG</button>
+      <button onclick="descargarPDF()" style="background-color:#d9534f;">Descargar PDF</button>
+    </div>
+  </div>
+
+  <script>
+    // --- CONFIGURACIÓN PRINCIPAL ---
+    // PEGA AQUÍ LA URL QUE TE DIO GOOGLE APPS SCRIPT AL IMPLEMENTAR
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYUVEzE2D5BS0OUfg2OcyCNLljs2X9v4VIgHTqM4fqCHpGiiGevEeAMMKjKlot86-o/exec'; 
+    const CODE_HTML = 'CAL_PERS_01';
+    
+    let imgPlantilla = new Image();
+    let imgUsuario = new Image();
+
+    // --- LÓGICA DE LOGIN DESDE GITHUB PAGES ---
+    async function iniciarSesion() {
+      const nombre = document.getElementById('nombre').value || 'Usuario';
+      const correo = document.getElementById('correo').value;
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('btn-login');
+      const errorDiv = document.getElementById('login-error');
+
+      if(!correo || !password) {
+        errorDiv.innerText = "Correo y contraseña son obligatorios.";
+        return;
+      }
+
+      if(APPS_SCRIPT_URL === 'URL_DE_TU_WEB_APP_AQUI') {
+        errorDiv.innerText = "Falta configurar la URL de Apps Script en el código HTML.";
+        return;
+      }
+
+      btn.innerText = "Verificando...";
+      btn.disabled = true;
+      errorDiv.innerText = "";
+
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          // Usamos text/plain para evitar bloqueos de CORS (preflight options) en Apps Script
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'login',
+            correo: correo,
+            password: password,
+            codeHtml: CODE_HTML
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('app-view').classList.remove('hidden');
+          document.getElementById('user-name-display').innerText = nombre;
+          cargarRecursos();
+        } else {
+          errorDiv.innerText = data.message;
+        }
+      } catch (error) {
+        errorDiv.innerText = "Error de conexión con la base de datos.";
+      } finally {
+        btn.innerText = "Ingresar";
+        btn.disabled = false;
+      }
+    }
+
+    // --- CARGA DE PLANTILLAS DESDE GITHUB PAGES ---
+    async function cargarRecursos() {
+      const select = document.getElementById('selector-plantillas');
+      select.innerHTML = '<option>Cargando plantillas...</option>';
+      
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'getTemplates',
+            codeHtml: CODE_HTML
+          })
+        });
+
+        const data = await response.json();
+
+        select.innerHTML = '';
+        if (data.urls && data.urls.length > 0) {
+          data.urls.forEach((url, index) => {
+            const option = document.createElement('option');
+            option.value = url;
+            option.text = 'Plantilla ' + (index + 1);
+            select.appendChild(option);
+          });
+          cargarPlantillaEnCanvas();
+        } else {
+          select.innerHTML = '<option>No hay plantillas disponibles</option>';
+        }
+      } catch (error) {
+        select.innerHTML = '<option>Error al cargar recursos</option>';
+      }
+    }
+
+    // --- LÓGICA DEL CANVAS Y CROMA KEY (Se mantiene igual, procesa en local) ---
+    function cargarPlantillaEnCanvas() {
+      const url = document.getElementById('selector-plantillas').value;
+      if(!url) return;
+
+      imgPlantilla = new Image();
+      imgPlantilla.crossOrigin = "Anonymous"; 
+      
+      imgPlantilla.onload = function() {
+        if(imgUsuario.src) {
+          aplicarCroma(); 
+        } else {
+          const canvas = document.getElementById('miCanvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = imgPlantilla.width;
+          canvas.height = imgPlantilla.height;
+          ctx.drawImage(imgPlantilla, 0, 0);
+        }
+      }
+      imgPlantilla.src = url;
+    }
+
+    document.getElementById('foto-usuario').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        imgUsuario = new Image();
+        imgUsuario.onload = function() {
+          aplicarCroma();
+        }
+        imgUsuario.src = event.target.result;
+      }
+      reader.readAsDataURL(file);
+    });
+
+    function aplicarCroma() {
+      if(!imgPlantilla.src || !imgUsuario.src) return;
+
+      const canvas = document.getElementById('miCanvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      canvas.width = imgPlantilla.width;
+      canvas.height = imgPlantilla.height;
+
+      const hRatio = canvas.width / imgUsuario.width;
+      const vRatio = canvas.height / imgUsuario.height;
+      const ratio  = Math.max(hRatio, vRatio);
+      const centerShift_x = (canvas.width - imgUsuario.width*ratio) / 2;
+      const centerShift_y = (canvas.height - imgUsuario.height*ratio) / 2;  
+      
+      ctx.drawImage(imgUsuario, 0,0, imgUsuario.width, imgUsuario.height,
+                    centerShift_x, centerShift_y, imgUsuario.width*ratio, imgUsuario.height*ratio);
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(imgPlantilla, 0, 0);
+
+      const frame = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+      const l = frame.data.length / 4;
+
+      for (let i = 0; i < l; i++) {
+        let r = frame.data[i * 4 + 0];
+        let g = frame.data[i * 4 + 1];
+        let b = frame.data[i * 4 + 2];
+        
+        if (g > 100 && r < 120 && b < 120) {
+          frame.data[i * 4 + 3] = 0; 
+        }
+      }
+      tempCtx.putImageData(frame, 0, 0);
+      ctx.drawImage(tempCanvas, 0, 0);
+    }
+
+    // --- DESCARGAS ---
+    function descargarImagen() {
+      const canvas = document.getElementById('miCanvas');
+      const link = document.createElement('a');
+      link.download = 'Mi_Calendario.jpg';
+      link.href = canvas.toDataURL("image/jpeg", 0.9);
+      link.click();
+    }
+
+    function descargarPDF() {
+      const canvas = document.getElementById('miCanvas');
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+        unit: 'mm'
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save("Mi_Calendario.pdf");
+    }
+  </script>
+</body>
+</html>
