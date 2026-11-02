@@ -7,65 +7,38 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   
   <style>
-    :root {
-      --primary: #0056b3;
-      --bg: #f4f7f6;
-    }
+    :root { --primary: #0056b3; --bg: #f4f7f6; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background-color: var(--bg); margin: 0; padding: 20px;
+      display: flex; flex-direction: column; align-items: center;
     }
     .card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
+      background: white; padding: 25px; border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%;
+      max-width: 450px; box-sizing: border-box;
     }
     h2 { text-align: center; color: #333; }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-size: 16px;
+    input[type="text"], input[type="email"], input[type="password"], select, button {
+      width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px;
+      border: 1px solid #ccc; box-sizing: border-box; font-size: 16px;
     }
     button {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
+      background-color: var(--primary); color: white; border: none;
+      font-weight: bold; cursor: pointer; transition: background 0.3s;
     }
     button:hover { background-color: #004494; }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     .error { color: #d9534f; text-align: center; font-size: 14px; margin-bottom: 10px; }
     #canvas-container {
-      width: 100%;
-      overflow: hidden;
-      margin-top: 20px;
-      border: 1px dashed #ccc;
-      border-radius: 8px;
+      width: 100%; overflow: hidden; margin-top: 20px;
+      border: 1px dashed #ccc; border-radius: 8px; background: #e9ecef;
     }
-    canvas {
-      width: 100%; 
-      height: auto;
-      display: block;
-    }
-    .btn-group {
-      display: flex;
-      gap: 10px;
-    }
+    canvas { width: 100%; height: auto; display: block; }
+    .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+    .controles { margin-top: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+    .controles label { font-size: 12px; font-weight: bold; color: #555; }
+    .controles input[type="range"] { width: 100%; margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -74,7 +47,6 @@
   <div id="login-view" class="card">
     <h2>Acceso al Sistema</h2>
     <div id="login-error" class="error"></div>
-    <input type="text" id="nombre" placeholder="Tu Nombre (Opcional)">
     <input type="email" id="correo" placeholder="Tu Correo Electrónico" required>
     <input type="password" id="password" placeholder="Contraseña (Tu WhatsApp)" required>
     <button onclick="iniciarSesion()" id="btn-login">Ingresar</button>
@@ -83,178 +55,123 @@
   <!-- PANTALLA DE LA APLICACIÓN -->
   <div id="app-view" class="card hidden">
     <h2>Personaliza tu Calendario</h2>
-    <p>¡Bienvenido/a <span id="user-name-display"></span>!</p>
     
     <label>1. Selecciona una plantilla:</label>
     <select id="selector-plantillas" onchange="cargarPlantillaEnCanvas()"></select>
     
-    <label>2. Sube tu foto (remplaza la zona verde):</label>
-    <input type="file" id="foto-usuario" accept="image/*" onchange="aplicarCroma()">
+    <label>2. Sube tu foto:</label>
+    <input type="file" id="foto-usuario" accept="image/*">
     
+    <div id="controles-ajuste" class="controles hidden">
+      <label>Tamaño (Zoom):</label>
+      <input type="range" id="escala" min="0.1" max="3" step="0.05" value="1" oninput="dibujarCanvasFinal()">
+      <label>Mover Horizontal:</label>
+      <input type="range" id="posX" min="-1000" max="1000" value="0" oninput="dibujarCanvasFinal()">
+      <label>Mover Vertical:</label>
+      <input type="range" id="posY" min="-1000" max="1000" value="0" oninput="dibujarCanvasFinal()">
+    </div>
+
     <div id="canvas-container">
       <canvas id="miCanvas"></canvas>
     </div>
     
-    <div class="btn-group" style="margin-top:15px;">
+    <div class="btn-group">
       <button onclick="descargarImagen()">Descargar JPG</button>
       <button onclick="descargarPDF()" style="background-color:#d9534f;">Descargar PDF</button>
     </div>
   </div>
 
   <script>
-    // --- CONFIGURACIÓN PRINCIPAL ---
-    // PEGA AQUÍ LA URL QUE TE DIO GOOGLE APPS SCRIPT AL IMPLEMENTAR
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYUVEzE2D5BS0OUfg2OcyCNLljs2X9v4VIgHTqM4fqCHpGiiGevEeAMMKjKlot86-o/exec'; 
+    // PEGA AQUÍ LA NUEVA URL DE APPS SCRIPT
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN3gjGmOyqvZFofm5LGO_Tyag57TP14epCa11wfWMQJ0kjwC2uXqs4gYVuhpJPiRJ-/exec'; 
     const CODE_HTML = 'CAL_PERS_01';
     
     let imgPlantilla = new Image();
     let imgUsuario = new Image();
+    let plantillaCromaProcesada = null; // Almacena la plantilla con el fondo transparente
 
-    // --- LÓGICA DE LOGIN DESDE GITHUB PAGES ---
     async function iniciarSesion() {
-      const nombre = document.getElementById('nombre').value || 'Usuario';
       const correo = document.getElementById('correo').value;
       const password = document.getElementById('password').value;
       const btn = document.getElementById('btn-login');
       const errorDiv = document.getElementById('login-error');
 
-      if(!correo || !password) {
-        errorDiv.innerText = "Correo y contraseña son obligatorios.";
-        return;
-      }
+      if(!correo || !password) return errorDiv.innerText = "Campos obligatorios.";
 
-      if(APPS_SCRIPT_URL === 'URL_DE_TU_WEB_APP_AQUI') {
-        errorDiv.innerText = "Falta configurar la URL de Apps Script en el código HTML.";
-        return;
-      }
-
-      btn.innerText = "Verificando...";
-      btn.disabled = true;
-      errorDiv.innerText = "";
+      btn.innerText = "Verificando..."; btn.disabled = true; errorDiv.innerText = "";
 
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          // Usamos text/plain para evitar bloqueos de CORS (preflight options) en Apps Script
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'login',
-            correo: correo,
-            password: password,
-            codeHtml: CODE_HTML
-          })
+          body: JSON.stringify({ action: 'login', correo, password, codeHtml: CODE_HTML })
         });
-
         const data = await response.json();
 
         if (data.success) {
           document.getElementById('login-view').classList.add('hidden');
           document.getElementById('app-view').classList.remove('hidden');
-          document.getElementById('user-name-display').innerText = nombre;
           cargarRecursos();
         } else {
           errorDiv.innerText = data.message;
         }
-      } catch (error) {
-        errorDiv.innerText = "Error de conexión con la base de datos.";
+      } catch (e) {
+        errorDiv.innerText = "Error de conexión.";
       } finally {
-        btn.innerText = "Ingresar";
-        btn.disabled = false;
+        btn.innerText = "Ingresar"; btn.disabled = false;
       }
     }
 
-    // --- CARGA DE PLANTILLAS DESDE GITHUB PAGES ---
     async function cargarRecursos() {
       const select = document.getElementById('selector-plantillas');
-      select.innerHTML = '<option>Cargando plantillas...</option>';
-      
+      select.innerHTML = '<option>Cargando...</option>';
       try {
         const response = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'getTemplates',
-            codeHtml: CODE_HTML
-          })
+          body: JSON.stringify({ action: 'getTemplates', codeHtml: CODE_HTML })
         });
-
         const data = await response.json();
-
+        
         select.innerHTML = '';
         if (data.urls && data.urls.length > 0) {
           data.urls.forEach((url, index) => {
-            const option = document.createElement('option');
-            option.value = url;
-            option.text = 'Plantilla ' + (index + 1);
-            select.appendChild(option);
+            const opt = document.createElement('option');
+            opt.value = url; opt.text = 'Plantilla ' + (index + 1);
+            select.appendChild(opt);
           });
           cargarPlantillaEnCanvas();
-        } else {
-          select.innerHTML = '<option>No hay plantillas disponibles</option>';
         }
-      } catch (error) {
-        select.innerHTML = '<option>Error al cargar recursos</option>';
-      }
+      } catch (e) { select.innerHTML = '<option>Error</option>'; }
     }
 
-    // --- LÓGICA DEL CANVAS Y CROMA KEY (Se mantiene igual, procesa en local) ---
+    function formatearUrlImgur(url) {
+      if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
+        url = url.replace('imgur.com', 'i.imgur.com');
+        if (!url.match(/\.(jpeg|jpg|gif|png)$/)) url += '.jpg';
+      }
+      return url;
+    }
+
     function cargarPlantillaEnCanvas() {
-      const url = document.getElementById('selector-plantillas').value;
-      if(!url) return;
+      let urlRaw = document.getElementById('selector-plantillas').value;
+      if(!urlRaw) return;
 
       imgPlantilla = new Image();
       imgPlantilla.crossOrigin = "Anonymous"; 
       
       imgPlantilla.onload = function() {
-        if(imgUsuario.src) {
-          aplicarCroma(); 
-        } else {
-          const canvas = document.getElementById('miCanvas');
-          const ctx = canvas.getContext('2d');
-          canvas.width = imgPlantilla.width;
-          canvas.height = imgPlantilla.height;
-          ctx.drawImage(imgPlantilla, 0, 0);
-        }
+        procesarCromaPlantilla();
       }
-      imgPlantilla.src = url;
+      imgPlantilla.src = formatearUrlImgur(urlRaw);
     }
 
-    document.getElementById('foto-usuario').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if(!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        imgUsuario = new Image();
-        imgUsuario.onload = function() {
-          aplicarCroma();
-        }
-        imgUsuario.src = event.target.result;
-      }
-      reader.readAsDataURL(file);
-    });
-
-    function aplicarCroma() {
-      if(!imgPlantilla.src || !imgUsuario.src) return;
-
-      const canvas = document.getElementById('miCanvas');
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      canvas.width = imgPlantilla.width;
-      canvas.height = imgPlantilla.height;
-
-      const hRatio = canvas.width / imgUsuario.width;
-      const vRatio = canvas.height / imgUsuario.height;
-      const ratio  = Math.max(hRatio, vRatio);
-      const centerShift_x = (canvas.width - imgUsuario.width*ratio) / 2;
-      const centerShift_y = (canvas.height - imgUsuario.height*ratio) / 2;  
-      
-      ctx.drawImage(imgUsuario, 0,0, imgUsuario.width, imgUsuario.height,
-                    centerShift_x, centerShift_y, imgUsuario.width*ratio, imgUsuario.height*ratio);
-
+    // Procesa el color verde y lo hace transparente antes de mezclar las imágenes
+    function procesarCromaPlantilla() {
       const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = canvas.width;
-      tempCanvas.height = canvas.height;
-      const tempCtx = tempCanvas.getContext('2d');
+      tempCanvas.width = imgPlantilla.width;
+      tempCanvas.height = imgPlantilla.height;
+      const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
       tempCtx.drawImage(imgPlantilla, 0, 0);
 
       const frame = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
@@ -265,15 +182,69 @@
         let g = frame.data[i * 4 + 1];
         let b = frame.data[i * 4 + 2];
         
-        if (g > 100 && r < 120 && b < 120) {
+        // Tolerancia del color verde
+        if (g > 130 && r < 140 && b < 140) {
           frame.data[i * 4 + 3] = 0; 
         }
       }
       tempCtx.putImageData(frame, 0, 0);
-      ctx.drawImage(tempCanvas, 0, 0);
+
+      plantillaCromaProcesada = new Image();
+      plantillaCromaProcesada.onload = function() {
+        dibujarCanvasFinal();
+      }
+      plantillaCromaProcesada.src = tempCanvas.toDataURL("image/png");
     }
 
-    // --- DESCARGAS ---
+    document.getElementById('foto-usuario').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        imgUsuario = new Image();
+        imgUsuario.onload = function() {
+          document.getElementById('controles-ajuste').classList.remove('hidden');
+          // Resetear controles
+          document.getElementById('escala').value = 1;
+          document.getElementById('posX').value = 0;
+          document.getElementById('posY').value = 0;
+          dibujarCanvasFinal();
+        }
+        imgUsuario.src = event.target.result;
+      }
+      reader.readAsDataURL(file);
+    });
+
+    function dibujarCanvasFinal() {
+      if(!plantillaCromaProcesada) return;
+      const canvas = document.getElementById('miCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = imgPlantilla.width;
+      canvas.height = imgPlantilla.height;
+
+      // Limpiar canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Dibujar foto de usuario debajo ajustada con sliders
+      if (imgUsuario.src) {
+        const escala = parseFloat(document.getElementById('escala').value);
+        const posX = parseInt(document.getElementById('posX').value);
+        const posY = parseInt(document.getElementById('posY').value);
+
+        const w = imgUsuario.width * escala;
+        const h = imgUsuario.height * escala;
+        
+        // Centrar imagen base y sumar los desplazamientos
+        const centroX = (canvas.width - w) / 2 + posX;
+        const centroY = (canvas.height - h) / 2 + posY;
+
+        ctx.drawImage(imgUsuario, centroX, centroY, w, h);
+      }
+
+      // 2. Dibujar plantilla con marco transparente encima
+      ctx.drawImage(plantillaCromaProcesada, 0, 0);
+    }
+
     function descargarImagen() {
       const canvas = document.getElementById('miCanvas');
       const link = document.createElement('a');
@@ -285,16 +256,13 @@
     function descargarPDF() {
       const canvas = document.getElementById('miCanvas');
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({
         orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
         unit: 'mm'
       });
-
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
       pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
       pdf.save("Mi_Calendario.pdf");
     }
